@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($title) ? $title : "Data Speed"; ?></title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
-    <script src="https://kit.fontawesome.com/286d2a7519.js" crossorigin="anonymous"></script>
-</head>
+
+<header>
+    <div class="logo">DataSpeed</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Products</a>
+        <a href="#">Pricing</a>
+    </nav>
+    <div class="auth-buttons">
+        <a href="login.php" class="login-btn">Login</a>
+        <a href="register.php" class="signup-btn">Create an account</a>
+    </div>
+</header>
+
