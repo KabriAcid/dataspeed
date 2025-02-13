@@ -17,15 +17,19 @@
              
 
             <form action="login.php" method="POST">
-                <label class="input">First Name</label>
-                <input type="text" name="firstname" required placeholder="First name">
+            <label class="form-label">Phone Number</label>
+    <div class="input-group">
+        <span class="input-group-text">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/32px-Flag_of_Nigeria.svg.png" 
+                 alt="Nigeria Flag" width="25">
+        </span>
+        <input type="tel" id="phone" name="phone" class="form-control" required placeholder="+234">
+     
+    </div>
 
-                <label class="input">Last Name</label>
-                <input type="password" name="lastname" required placeholder="Last name">
+              
 
-               
-
-                <button type="submit">Next</button>
+                <button type="submit">Verify</button>
                 
                
             </form>
@@ -33,5 +37,6 @@
     </main>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ 
 </body>
 </html>

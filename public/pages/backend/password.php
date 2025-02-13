@@ -17,11 +17,11 @@
              
 
             <form action="login.php" method="POST">
-                <label class="input">First Name</label>
-                <input type="text" name="firstname" required placeholder="First name">
+                <label class="input">Password</label>
+                <input type="text" name="password" required placeholder="Password">
 
-                <label class="input">Last Name</label>
-                <input type="password" name="lastname" required placeholder="Last name">
+                <label class="input">Confirm password</label>
+                <input type="Confirm password" name="confirm password" required placeholder="Confirm password">
 
                
 

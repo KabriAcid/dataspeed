@@ -3,8 +3,8 @@
   --primary: #B93C7E;
   --primary-light: #FBF0F6;
   
-  --danger: #ff4120;
-  --danger-light: #FEF3F1;
+  --danger: #94241E;
+  --danger-light: #fefefe;
   
   --success: #44C07E;
   --success-light: #F3FCF7;
@@ -12,7 +12,7 @@
   --dark: #110009;
   --light: #EDF2F5;
   
-  --gray-bg: #F1F5F6;
+  --gray-bg: #d9d9d9;
   --gray-text: #8B9398;
 
   --mb-1: 16px;
@@ -39,9 +39,7 @@ html {
   scroll-behavior: smooth;
   font-family: 'Montserrat';
 }
-body {
-  background-color: #F9EEED;
-}
+
 
 .header-container {
   display: flex;
@@ -56,4 +54,132 @@ body {
 
 i {
   color: var(--primary)!important;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--gray-bg);
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Header */
+header {
+ display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: d9d9d9d;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--danger);
+}
+
+nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.login-btn, .signup-btn {
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.login-btn {
+  border: 2px solid var(--danger);
+  color: var(--danger);
+}
+
+.signup-btn {
+  background: var(--danger);
+  color: var(--danger-light);
+}
+p {
+  margin-bottom: 25px; /* Adds spacing below the paragraph */
+}
+/* Login Form */
+main {
+  background: var(--danger-light);
+  padding: 20px;
+  margin: 70px auto;
+  width: 550px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.login-container{
+  padding: 20px;
+  margin: 20px auto;
+  width: 320px;
+  border-radius: 10px;
+  
+}
+
+h2 {
+  font-size: 24px;
+}
+
+p {
+  font-size: 14px;
+  color: gray;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5p x;
+}
+
+button {
+  background: var(--danger);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--danger);
+}
+
+.forgot-password{
+  text-align: right;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+.forgot-password .link{
+  text-decoration:none ;
+  color: var(--gray-text);
+}
+.signup-link {
+  font-size: 14px;
+  color: #110009;
+}
+.input{
+  text-align: left;
+  color: var(--danger);
+}
+.signup-link .link{
+  color: var(--danger);
+  text-decoration: none;
 }
