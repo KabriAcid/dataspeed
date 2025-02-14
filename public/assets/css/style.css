@@ -1,28 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
-:root {
-  --primary: #B93C7E;
-  --primary-light: #FBF0F6;
-  
-  --danger: #94241E;
-  --danger-light: #fefefe;
-  
-  --success: #44C07E;
-  --success-light: #F3FCF7;
-  
-  --dark: #110009;
-  --light: #EDF2F5;
-  
-  --gray-bg: #d9d9d9;
-  --gray-text: #8B9398;
-
-  --mb-1: 16px;
-  --mb-2: 32px;
-  --mb-3: 64px;
-
-  --fs-1: 1.2em;
-  --fs-2: 1.5em;
-  --fs-3: 1.7em;
-}
+@import url('variables.css');
+@import url('buttons.css');
+@import url('utilities.css');
+@import url('reusables.css');
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
 
 * {
   padding: 0;
@@ -37,15 +17,38 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--light);
   font-family: 'Montserrat';
 }
 
+main {
+  padding: 30px;
+}
+
+#main-header {
+  color: var(--dark);
+  font-size: var(--fs-3);
+  font-weight: 700;
+  margin-bottom: var(--mb-2);
+  line-height: normal;
+}
+
+#header-para {
+  color: var(--gray-text);
+  font-size: var(--fs-1);
+  font-weight: 400;
+  line-height: 1.6;
+}
 
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .avatar {
   width: 50px;
   height: 50px;
@@ -53,14 +56,5 @@ html {
 }
 
 i {
-  color: var(--primary)!important;
+  color: var(--primary);
 }
-
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: var(--gray-bg);
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
-

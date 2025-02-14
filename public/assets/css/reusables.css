@@ -1,0 +1,29 @@
+/* REUSABLE CLASSES */
+.primary {
+    color: var(--primary);
+}
+
+.input {
+    width: 100%;
+    padding: var(--spacing-2);
+    border: 1px solid var(--gray-text);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.card {
+    background: white;
+    padding: var(--spacing-3);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-fast);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}

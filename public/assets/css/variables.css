@@ -1,0 +1,61 @@
+:root {
+    --primary: #94241E;
+    --primary-light: #FBF0F6;
+
+    --danger: #94241E;
+    --danger-light: #fefefe;
+
+    --success: #44C07E;
+    --success-light: #F3FCF7;
+
+    --dark: #110009;
+    --light: #EDF2F5;
+
+    --gray-bg: #d9d9d9;
+    --gray-text: #8B9398;
+
+    --mb-1: 16px;
+    --mb-2: 32px;
+    --mb-3: 64px;
+
+    --fs-1: 1.2em;
+    --fs-2: 1.5em;
+    --fs-3: 1.7em;
+    /* Spacing */
+    --spacing-1: 8px;
+    --spacing-2: 16px;
+    --spacing-3: 24px;
+    --spacing-4: 32px;
+    --spacing-5: 48px;
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-pill: 50px;
+
+    /* Shadows */
+    --shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0px 6px 12px rgba(0, 0, 0, 0.2);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease-in-out;
+    --transition-medium: 0.4s ease-in-out;
+    --transition-slow: 0.6s ease-in-out;
+
+    /* Font Sizes */
+    --fs-h1: 2.5em;
+    /* Adjust based on design */
+    --fs-h2: 2em;
+    --fs-h3: 1.75em;
+    --fs-p: 1em;
+
+    /* Font Weights */
+    --fw-bold: 700;
+    --fw-regular: 400;
+
+    /* Line Heights */
+    --lh-heading: 1.2;
+    --lh-text: 1.5;
+}

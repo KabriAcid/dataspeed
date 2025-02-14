@@ -1,0 +1,75 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-heading);
+}
+
+h1 {
+    font-size: var(--fs-h1);
+    margin-bottom: var(--mb-2);
+    color: var(--dark);
+}
+
+p {
+    font-size: var(--fs-p);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-text);
+    color: var(--gray-text);
+    margin-bottom: var(--mb-1);
+}
+
+.p-1 {
+    padding: var(--spacing-1);
+}
+
+.p-2 {
+    padding: var(--spacing-2);
+}
+
+.p-3 {
+    padding: var(--spacing-3);
+}
+
+.p-4 {
+    padding: var(--spacing-4);
+}
+
+.m-1 {
+    margin: var(--spacing-1);
+}
+
+.m-2 {
+    margin: var(--spacing-2);
+}
+
+.m-3 {
+    margin: var(--spacing-3);
+}
+
+.rounded-sm {
+    border-radius: var(--radius-sm);
+}
+
+.rounded-md {
+    border-radius: var(--radius-md);
+}
+
+.rounded-lg {
+    border-radius: var(--radius-lg);
+}
+
+.shadow-sm {
+    box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+    box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-lg);
+}
