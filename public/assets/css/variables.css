@@ -41,14 +41,58 @@
     --dark: #110009;
     /* Darkest text */
 
+    /* Font Weights */
+    --fw-light: 300;
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-bold: 700;
+
     --mb-1: 16px;
     --mb-2: 32px;
     --mb-3: 64px;
 
-    --fs-1: 1.2em;
-    --fs-2: 1.5em;
-    --fs-3: 1.7em;
-    --fs-4: 3em;
+    /* Font Sizes */
+    --fs-h1: 2.5rem;
+    --fs-h2: 2rem;
+    --fs-h3: 1.75rem;
+    --fs-h4: 1.5rem;
+    --fs-h5: 1.25rem;
+    --fs-h6: 1rem;
+    --fs-p: 1rem;
+
+    /* Font Weights */
+    --fw-light: 300;
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-bold: 700;
+
+    /* Font Sizes */
+    --fs-h1: 2.5rem;
+    /* 40px */
+    --fs-h2: 2rem;
+    /* 32px */
+    --fs-h3: 1.75rem;
+    /* 28px */
+    --fs-h4: 1.5rem;
+    /* 24px */
+    --fs-h5: 1.25rem;
+    /* 20px */
+    --fs-h6: 1rem;
+    /* 16px */
+    --fs-p: 1rem;
+    /* 16px */
+
+    /* Line Heights */
+    --lh-heading: 1.2;
+    --lh-text: 1.6;
+
+    /* Spacing */
+    --mb-1: 16px;
+    --mb-2: 32px;
+    --mb-3: 48px;
+    /* Line Heights */
+    --lh-heading: 1.2;
+    --lh-text: 1.6;
     /* Spacing */
     --spacing-1: 8px;
     --spacing-2: 16px;

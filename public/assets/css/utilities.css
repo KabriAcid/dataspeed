@@ -1,3 +1,4 @@
+/* Apply Styles */
 h1,
 h2,
 h3,
@@ -11,14 +12,44 @@ h6 {
 h1 {
     font-size: var(--fs-h1);
     margin-bottom: var(--mb-2);
-    color: var(--dark);
+    color: var(--gray-900);
+}
+
+h2 {
+    font-size: var(--fs-h2);
+    margin-bottom: var(--mb-2);
+    color: var(--gray-800);
+}
+
+h3 {
+    font-size: var(--fs-h3);
+    margin-bottom: var(--mb-1);
+    color: var(--gray-700);
+}
+
+h4 {
+    font-size: var(--fs-h4);
+    margin-bottom: var(--mb-1);
+    color: var(--gray-600);
+}
+
+h5 {
+    font-size: var(--fs-h5);
+    margin-bottom: var(--mb-1);
+    color: var(--gray-500);
+}
+
+h6 {
+    font-size: var(--fs-h6);
+    margin-bottom: var(--mb-1);
+    color: var(--gray-400);
 }
 
 p {
     font-size: var(--fs-p);
     font-weight: var(--fw-regular);
     line-height: var(--lh-text);
-    color: var(--gray-text);
+    color: var(--gray-500);
     margin-bottom: var(--mb-1);
 }
 
