@@ -2,17 +2,44 @@
     --primary: #94241E;
     --primary-light: #FBF0F6;
 
-    --danger: #94241E;
-    --danger-light: #fefefe;
-
     --success: #44C07E;
+    --success-dark: #3A9A68;
     --success-light: #F3FCF7;
 
-    --dark: #110009;
-    --light: #EDF2F5;
+    --warning: #E6A300;
+    --warning-dark: #B68400;
+    --warning-light: #FFF3CD;
 
-    --gray-bg: #d9d9d9;
-    --gray-text: #8B9398;
+    --danger: #D9534F;
+    --danger-dark: #A52A2A;
+    --danger-light: #FDECEA;
+
+    --info: #3498db;
+    --info-dark: #217dbb;
+    --info-light: #D6EAF8;
+
+    /* 🌑 Neutral Grays */
+    --gray-900: #1A1A1A;
+    /* Very Dark Gray */
+    --gray-800: #2E2E2E;
+    --gray-700: #4A4A4A;
+    --gray-600: #6B6B6B;
+    --gray-500: #8B9398;
+    /* Medium Gray (used for text) */
+    --gray-400: #B0B8C0;
+    --gray-300: #D9D9D9;
+    /* Light Gray Background */
+    --gray-200: #EAECEF;
+    --gray-100: #F2F4F6;
+    /* Softest Gray */
+
+    /* 🎨 Background & UI */
+    --body-bg: #F5F5F5;
+    /* Page background */
+    --light: #F2F4F6;
+    /* Light background */
+    --dark: #110009;
+    /* Darkest text */
 
     --mb-1: 16px;
     --mb-2: 32px;
@@ -21,6 +48,7 @@
     --fs-1: 1.2em;
     --fs-2: 1.5em;
     --fs-3: 1.7em;
+    --fs-4: 3em;
     /* Spacing */
     --spacing-1: 8px;
     --spacing-2: 16px;

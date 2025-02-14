@@ -1,19 +1,38 @@
 /* REUSABLE CLASSES */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-3);
+}
+
 .primary {
     color: var(--primary);
 }
 
 .input {
     width: 100%;
-    padding: var(--spacing-2);
-    border: 1px solid var(--gray-text);
-    border-radius: var(--radius-sm);
-    transition: border-color var(--transition-fast);
+    padding: 12px;
+    border: 1px solid var(--gray-text, #8B9398);
+    border-radius: 8px;
+    background-color: var(--light, #fff);
+    font-size: 1rem;
+    color: var(--dark, #110009);
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
 }
 
+/* 🔹 Focus State: Soft glow effect */
 .input:focus {
-    border-color: var(--primary);
+    border-color: var(--primary, #94241E);
     outline: none;
+    box-shadow: 0px 4px 8px rgba(148, 36, 30, 0.2);
+}
+
+/* 🔹 Placeholder Styling */
+.input::placeholder {
+    color: var(--gray-text, #8B9398);
+    opacity: 0.7;
 }
 
 .card {

@@ -73,3 +73,20 @@ p {
 .shadow-lg {
     box-shadow: var(--shadow-lg);
 }
+
+.avatar-sm {
+    --avatar-size: 30px;
+}
+
+.avatar-md {
+    --avatar-size: 50px;
+}
+
+/* Default */
+.avatar-lg {
+    --avatar-size: 80px;
+}
+
+.avatar-xl {
+    --avatar-size: 120px;
+}
