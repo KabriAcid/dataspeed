@@ -1,37 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataSpeed - Register</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../assets/css/style.css">
-</head>
+<?php require __DIR__ . '/../../partials/header.php'; ?>
+
 <body>
-    <?php include '../../partials/header.php'; ?>
-    
-    <main>
-        <div class="login-container">
-            <h2>Create an account</h2>
-            <p>Set up your account in seconds</p>
-             
+    <?php require __DIR__ . '/../../partials/navbar.php'; ?>
 
-            <form action="login.php" method="POST">
-                <label class="input">First Name</label>
-                <input type="text" name="firstname" required placeholder="First name">
-
-                <label class="input">Last Name</label>
-                <input type="password" name="lastname" required placeholder="Last name">
-
-               
-
-                <button type="submit">Next</button>
-                
-               
-            </form>
-        </div>
-    </main>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<main class="container">
+    <form class="form-card" action="/register" method="post">
+        <div id="pagination">
+            <span class="text-right d-block">1 / 2</span>
+        </div>
+        <div style="margin-top: 30px;width: 100%;">
+            <h3>Create an account</h3>
+            <p>Set up your accounts in seconds.</p>
+        </div>
+        <div id="form-field">
+            <label for="email" class="strong-color">Email address</label>
+            <input type="email" name="email" class="input" placeholder="Email">
+            <button type="submit" name="submit" class="btn submit-btn btn-primary w-100" style="margin-top: 20px;width: 100%;">Submit</button>
+        </div>
+    </form>
+</main>
+
 </html>

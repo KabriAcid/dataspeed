@@ -1,8 +1,8 @@
 .btn {
     display: inline-block;
-    padding: 16px 32px;
+    padding: 12px 28px;
     font-size: var(--fs-3);
-    font-weight: 600;
+    font-weight: var(--fw-medium);
     border: none;
     border-radius: var(--radius-md);
     font-family: 'Montserrat';

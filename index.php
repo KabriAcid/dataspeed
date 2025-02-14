@@ -29,9 +29,9 @@ session_start();
             <div id="join-people">
                 <h3>Join over <span class="strong-color">500</span><br>people who use <span class="strong-color">DataSpeed.</span></h3>
             </div>
-            <div class="row g-4 justify-content-center">
+            <div class="row">
                 <!-- Card 1 -->
-                <div class="col-sm-6 col-md-4">
+                <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/airtime-to-cash.png" alt="icon" class="card-icon">
                         <h6 class="strong-color">Instant airtime to cash</h6>
@@ -40,7 +40,7 @@ session_start();
                 </div>
 
                 <!-- Card 2 -->
-                <div class="col-sm-6 col-md-4">
+                <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/airtime.png" alt="icon" class="card-icon">
                         <h6 class="strong-color">Airtime top up</h6>
@@ -49,25 +49,24 @@ session_start();
                 </div>
 
                 <!-- Card 3 -->
-                <div class="col-sm-6 col-md-4">
+                <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/data.png" alt="icon" class="card-icon">
                         <h6 class="strong-color">Data purchase</h6>
                         <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
                     </div>
                 </div>
-
-                <!-- Card 4 -->
-                <div class="col-sm-6 col-md-4">
+                <!-- Card 1 -->
+                <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/bills.png" alt="icon" class="card-icon">
                         <h6 class="strong-color">Bill payments</h6>
-                        <p>Pay your bills instantly and conveniently with no hidden charges.</p>
+                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.</p>
                     </div>
                 </div>
 
-                <!-- Card 5 -->
-                <div class="col-sm-6 col-md-4">
+                <!-- Card 2 -->
+                <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/nairapin.png" alt="icon" class="card-icon">
                         <h6 class="strong-color">Airtime payments</h6>
@@ -75,8 +74,8 @@ session_start();
                     </div>
                 </div>
 
-                <!-- Card 6 -->
-                <div class="col-sm-6 col-md-4">
+                <!-- Card 3 -->
+                <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/send-receive.png" alt="icon" class="card-icon">
                         <h6 class="strong-color">Send & Receive money</h6>
@@ -84,7 +83,50 @@ session_start();
                     </div>
                 </div>
             </div>
-
+        </section>
+        <!--  -->
+        <section id="sectionIII">
+            <div>
+                <h2 class="strong-color text-center">Transactions Made Easy!</h2>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="icon">xxx</i>
+                            <h6>Seamless Transcation</h6>
+                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using the DataSpeed app.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="icon">xxx</i>
+                            <h6>Seamless Transcation</h6>
+                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using the DataSpeed app.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="icon">xxx</i>
+                            <h6>Seamless Transcation</h6>
+                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using the DataSpeed app.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="icon">xxx</i>
+                            <h6>Seamless Transcation</h6>
+                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using the DataSpeed app.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 </body>

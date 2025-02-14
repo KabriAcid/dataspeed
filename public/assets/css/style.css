@@ -46,7 +46,7 @@ a {
 }
 
 main section {
-  margin-top: 30px;
+  /* margin-top: 30px; */
   padding: 80px;
   padding-top: calc(80px + 30px);
 }
@@ -75,4 +75,13 @@ section:not(.jumbotoron){
   border-left: 6px solid var(--primary);
   padding-left: calc(132px - 90px);
   margin-bottom: 80px;
+}
+
+#sectionIII {
+  background: url(../img/icons/bg-util.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: right;
+  height: 100vh;
 }
