@@ -52,13 +52,18 @@
     --mb-3: 64px;
 
     /* Font Sizes */
-    --fs-h1: 3rem;
+    --fs-h1: 3.5rem;
     --fs-h2: 2rem;
     --fs-h3: 1.75rem;
     --fs-h4: 1.5rem;
     --fs-h5: 1.25rem;
     --fs-h6: 1rem;
     --fs-p: 1rem;
+
+    --fs-1: 12px;
+    --fs-2: 14px;
+    --fs-3: 16px;
+    --fs-4: 18px;
 
     /* Font Weights */
     --fw-light: 300;
@@ -77,6 +82,9 @@
     /* Line Heights */
     --lh-heading: 1.2;
     --lh-text: 1.6;
+
+    /* Letter spacing */
+    --ls-1: .9px;
     /* Spacing */
     --spacing-1: 8px;
     --spacing-2: 16px;
@@ -86,7 +94,7 @@
 
     /* Border Radius */
     --radius-sm: 4px;
-    --radius-md: 8px;
+    --radius-md: 6px;
     --radius-lg: 12px;
     --radius-pill: 50px;
 

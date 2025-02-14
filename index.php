@@ -21,6 +21,13 @@ session_start();
             <h1 id="main-header">The cheapest and most <br>affordable <span class="primary">airtime</span> data <br>plug.</h1>
             <p id="header-para">Convert your airtime to cash, make & receive payments,<br> instant airtime and data
                 delivery, make bill payments <br> with DataSpeed. The all-in-one payments app.</p>
+            <a href="" class="btn btn-primary">Get Started</a>
+        </section>
+        <!--  -->
+        <section id="sectionII">
+            <div>
+                <h3>Join over <span class="strong-color">500</span> <br>people who use <span class="strong-color">DataSpeed</span></h3>
+            </div>
         </section>
     </main>
 </body>

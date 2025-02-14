@@ -2,7 +2,7 @@
 @import url('buttons.css');
 @import url('utilities.css');
 @import url('reusables.css');
-/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
   padding: 0;
@@ -36,17 +36,25 @@ html {
 }
 
 body {
-  background-color: var(--body-bg, #f5f5f5);
+  /* background-color: var(--body-bg, #f5f5f5); */
   font-family: 'Montserrat';
+  background-color: #F9EEED;
 }
 
+a {
+  text-decoration: none;
+}
 main {
   padding: 30px;
 }
 
+main section {
+  padding-top: 30px;
+}
 #main-header {
   color: var(--dark);
   font-size: var(--fs-h1);
+  font-size: 3rem;
   font-weight: 700;
   margin-bottom: var(--mb-2);
   line-height: normal;
@@ -59,16 +67,10 @@ main {
   line-height: 1.6;
 }
 
-.avatar {
-  display: inline-block;
-  width: var(--avatar-size, 50px);
-  height: var(--avatar-size, 50px);
-  border-radius: 50%;
-  object-fit: cover;
-  border: var(--avatar-border, 2px solid var(--primary, #94241E));
-  background-color: var(--gray-bg, #d9d9d9);
-  /* Placeholder color */
+#sectionII > div {
+  border-left: 3px solid var(--primary);
 }
+
 
 i {
   color: var(--primary);
