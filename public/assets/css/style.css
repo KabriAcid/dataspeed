@@ -46,15 +46,15 @@ main {
 
 #main-header {
   color: var(--dark);
-  font-size: var(--fs-4);
+  font-size: var(--fs-h1);
   font-weight: 700;
   margin-bottom: var(--mb-2);
   line-height: normal;
 }
 
 #header-para {
-  color: var(--gray-text);
-  font-size: var(--fs-1);
+  color: var(--gray-800);
+  font-size: var(--fs-p);
   font-weight: 400;
   line-height: 1.6;
 }

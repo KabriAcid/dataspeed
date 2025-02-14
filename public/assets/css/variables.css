@@ -52,7 +52,7 @@
     --mb-3: 64px;
 
     /* Font Sizes */
-    --fs-h1: 2.5rem;
+    --fs-h1: 3rem;
     --fs-h2: 2rem;
     --fs-h3: 1.75rem;
     --fs-h4: 1.5rem;
@@ -65,22 +65,6 @@
     --fw-regular: 400;
     --fw-medium: 500;
     --fw-bold: 700;
-
-    /* Font Sizes */
-    --fs-h1: 2.5rem;
-    /* 40px */
-    --fs-h2: 2rem;
-    /* 32px */
-    --fs-h3: 1.75rem;
-    /* 28px */
-    --fs-h4: 1.5rem;
-    /* 24px */
-    --fs-h5: 1.25rem;
-    /* 20px */
-    --fs-h6: 1rem;
-    /* 16px */
-    --fs-p: 1rem;
-    /* 16px */
 
     /* Line Heights */
     --lh-heading: 1.2;
@@ -130,4 +114,6 @@
     /* Line Heights */
     --lh-heading: 1.2;
     --lh-text: 1.5;
+
+    
 }

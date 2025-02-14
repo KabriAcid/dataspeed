@@ -1,6 +1,5 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
-
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -12,7 +11,10 @@ $DB_PASS = $_ENV['DB_PASS'];
 $DB_NAME = $_ENV['DB_NAME'];
 
 try {
-    $conn = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, $DB_PASS);
+    $pdo = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, $DB_PASS, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
 } catch (PDOException $e) {
-    echo $e->getMessage();
+    die("Database connection failed: " . $e->getMessage());
 }
