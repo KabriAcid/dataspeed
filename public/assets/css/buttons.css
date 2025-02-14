@@ -1,6 +1,6 @@
 .btn {
     display: inline-block;
-    padding: var(--spacing-2) var(--spacing-4);
+    padding: 16px 32px;
     font-size: var(--fs-3);
     font-weight: 600;
     border: none;

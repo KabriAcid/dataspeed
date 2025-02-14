@@ -108,6 +108,16 @@
     --transition-medium: 0.4s ease-in-out;
     --transition-slow: 0.6s ease-in-out;
 
+    /* Paddings */
+    --pd-1: 4px;
+    --pd-2: 6px;
+    --pd-3: 8px;
+    
+    /* Paddings */
+    --pd-1: 4px;
+    --pd-2: 6px;
+    --pd-3: 8px;
+
     /* Font Sizes */
     --fs-h1: 2.5em;
     /* Adjust based on design */

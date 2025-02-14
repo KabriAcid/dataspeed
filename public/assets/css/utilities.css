@@ -49,7 +49,10 @@ p {
     font-size: var(--fs-p);
     font-weight: var(--fw-regular);
     line-height: var(--lh-text);
-    color: var(--gray-500);
+    color: var(--gray-800);
     margin-bottom: var(--mb-2);
 }
 
+i {
+    color: var(--primary);
+}

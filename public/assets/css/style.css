@@ -44,13 +44,17 @@ body {
 a {
   text-decoration: none;
 }
-main {
-  padding: 30px;
-}
 
 main section {
-  padding-top: 30px;
+  margin-top: 30px;
+  padding: 80px;
+  padding-top: calc(80px + 30px);
 }
+
+section:not(.jumbotoron){
+  background-color: white;
+}
+
 #main-header {
   color: var(--dark);
   font-size: var(--fs-h1);
@@ -67,11 +71,8 @@ main section {
   line-height: 1.6;
 }
 
-#sectionII > div {
-  border-left: 3px solid var(--primary);
-}
-
-
-i {
-  color: var(--primary);
+#join-people {
+  border-left: 6px solid var(--primary);
+  padding-left: calc(132px - 90px);
+  margin-bottom: 80px;
 }

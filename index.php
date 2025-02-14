@@ -10,14 +10,15 @@ session_start();
     <title>Dataspeed - Home</title>
     <link rel="shortcut icon" href="public/logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
     <link rel="stylesheet" href="public/assets/css/style.css">
 </head>
 
 <body>
     <?php require __DIR__ . "/public/partials/navbar.php"; ?>
-    <main class="container">
+    <main>
         <section class="mt-5"></section>
-        <section class="jumbotoron">
+        <section class="jumbotoron" id="sectionI">
             <h1 id="main-header">The cheapest and most <br>affordable <span class="primary">airtime</span> data <br>plug.</h1>
             <p id="header-para">Convert your airtime to cash, make & receive payments,<br> instant airtime and data
                 delivery, make bill payments <br> with DataSpeed. The all-in-one payments app.</p>
@@ -25,9 +26,65 @@ session_start();
         </section>
         <!--  -->
         <section id="sectionII">
-            <div>
-                <h3>Join over <span class="strong-color">500</span> <br>people who use <span class="strong-color">DataSpeed</span></h3>
+            <div id="join-people">
+                <h3>Join over <span class="strong-color">500</span><br>people who use <span class="strong-color">DataSpeed.</span></h3>
             </div>
+            <div class="row g-4 justify-content-center">
+                <!-- Card 1 -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="card card-container text-md-start text-center">
+                        <img src="public/assets/img/icons/airtime-to-cash.png" alt="icon" class="card-icon">
+                        <h6 class="strong-color">Instant airtime to cash</h6>
+                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="card card-container text-md-start text-center">
+                        <img src="public/assets/img/icons/airtime.png" alt="icon" class="card-icon">
+                        <h6 class="strong-color">Airtime top up</h6>
+                        <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="card card-container text-md-start text-center">
+                        <img src="public/assets/img/icons/data.png" alt="icon" class="card-icon">
+                        <h6 class="strong-color">Data purchase</h6>
+                        <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="card card-container text-md-start text-center">
+                        <img src="public/assets/img/icons/bills.png" alt="icon" class="card-icon">
+                        <h6 class="strong-color">Bill payments</h6>
+                        <p>Pay your bills instantly and conveniently with no hidden charges.</p>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="card card-container text-md-start text-center">
+                        <img src="public/assets/img/icons/nairapin.png" alt="icon" class="card-icon">
+                        <h6 class="strong-color">Airtime payments</h6>
+                        <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="card card-container text-md-start text-center">
+                        <img src="public/assets/img/icons/send-receive.png" alt="icon" class="card-icon">
+                        <h6 class="strong-color">Send & Receive money</h6>
+                        <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </main>
 </body>
