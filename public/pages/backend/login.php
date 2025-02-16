@@ -1,62 +1,37 @@
-<?php
-session_start();
-include '../../../config/config.php';// Database connection
+<?php require __DIR__ . '/../../partials/header.php'; ?>
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email_or_phone = $_POST["email_or_phone"];
-    $password = $_POST["password"];
-
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? OR phone = ?");
-    $stmt->execute([$email_or_phone, $email_or_phone]);
-    $user = $stmt->fetch();
-
-    if ($user && password_verify($password, $user["password"])) {
-        $_SESSION["user_id"] = $user["id"];
-        header("Location: dashboard.php"); // Redirect to user dashboard
-        exit();
-    } else {
-        echo "<script>alert('Invalid email/phone or password'); window.location.href='index.html';</script>";
-    }
-}
-?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataSpeed - Login</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    
-</head>
 <body>
-
-    <?php include '../../partials/header.php'; ?>
-
-    <main>
-        <div class="login-container">
-            <h2>Login to your account</h2>
-            <p>Enter your correct details</p>
-             
-
-            <form action="login.php" method="POST">
-                <label class="input">Email address or phone number</label>
-                <input type="text" name="email_or_phone" required placeholder="Email or phone number">
-
-                <label class="input">Password</label>
-                <input type="password" name="password" required placeholder="Password">
-
-                <div class="forgot-password">
-                    <a href="#" class="link">Forgot password?</a>
-                </div>
-
-                <button type="submit">Sign in</button>
-                
-                <p class="signup-link">Don't have an account? <a href="register.html" class="link">Sign up</a></p>
-            </form>
-        </div>
-    </main>
+    <?php #require __DIR__ . '/../../partials/navbar.php'; 
+    ?>
 
 </body>
+<main class="container">
+    <div class="form-container text-center">
+        <div class="form-top-container">
+            <a href="">
+                <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.60564 1.65147L3.73182 6.5253H16V8.47483H3.73182L8.60564 13.3487L7.22712 14.7272L0 7.50006L7.22712 0.272949L8.60564 1.65147Z" fill="#722F37" />
+                </svg>
+            </a>
+        </div>
+        <form id="multi-step-form">
+            <div class="form-step">
+                <h3>What's your full name?</h3>
+                <p>Enter your correct name details.</p>
+                <div class="form-field">
+                    <input type="number" name="phone_number" placeholder="Phone Number" class="input">
+                    <label for="" class="error-label"></label>
+                    <div class="my-3"></div>
+                    <input type="password" name="password" placeholder="Password" class="input">
+                    <label for="" class="error-label"></label>
+                    <button type="button" class="btn btn-primary mt-3">Login</button>
+                </div>
+                <p>Don't have an account? <a href="register.php" class="text-">Register</a></p>
+            </div>
+        </form>
+    </div>
+</main>
+<script src="../../assets/js/multi-step.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </html>

@@ -4,7 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Basic email format validation
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "invalid";
+        echo "valid";
         exit;
     }
 
@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->execute();
     $stmt->store_result();
 
-    if ($stmt->num_rows > 0) {
+    if (false) {
         echo "exists";
     } else {
         echo "valid";

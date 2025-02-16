@@ -60,10 +60,10 @@
     --fs-h6: 1rem;
     --fs-p: 1rem;
 
-    --fs-1: 12px;
-    --fs-2: 14px;
-    --fs-3: 16px;
-    --fs-4: 18px;
+    --fs-1: 3rem;
+    --fs-2: 1.75rem;
+    --fs-3: 1.25rem;
+    --fs-small: 0.9rem;
 
     /* Font Weights */
     --fw-light: 300;
@@ -102,6 +102,7 @@
     --shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.1);
     --shadow-md: 0px 4px 8px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    --shadow: 0px 0px 44px 0px rgba(45, 45, 45, 0.15);
 
     /* Transitions */
     --transition-fast: 0.2s ease-in-out;

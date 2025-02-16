@@ -35,6 +35,26 @@
     opacity: 0.7;
 }
 
+.d-flex {
+    display: flex;
+}
+.justify-content-between {
+    justify-content: space-between;
+}
+.align-items-center {
+    align-items: center;
+}
+.flex-row {
+    flex-direction: row;
+}
+.gap-3 {
+    gap: 1rem;
+}
+.px-4 {
+    padding: 0 20px;
+}
+
+
 .card {
     background: white;
     padding: var(--spacing-3);
@@ -69,7 +89,9 @@
     box-shadow: 0px 16px 54px 0px rgba(110, 106, 106, 0.2);
     padding: 30px;
 }
-
+.form-label {
+    margin-bottom: var(--mb-1);
+}
 .form-card form:nth-child(2) {
     margin-top: 310px;
 }
@@ -168,4 +190,63 @@
 
 #pagination {
     font-weight: 700;
+}
+
+#multi-step-form h3, p{
+    text-align: left;
+    margin: 10px 0;
+}
+#multi-step-form h3 {
+    margin-top: calc(10px * 6);
+}
+
+.error {
+    border: 2px solid red !important;
+}
+
+.error-label {
+    color: red;
+    font-size: 14px;
+}
+
+.step-indicator {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-weight: 600;
+    font-size: .8em;
+    letter-spacing: 3px;
+    color: #ccc;
+}
+
+
+.form-container {
+    max-width: 600px;
+    margin: 150px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+.form-top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-field {
+    margin: 25px 0;
+}
+.pagination {
+    display: flex;
+    justify-content: space-between;
+}
+.pagination span {
+    background-color: var(--gray-500);
+    margin: 0 3px;
+    border-radius: 5px;
+    width: 20px;
+    height: 4px;
 }
