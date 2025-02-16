@@ -10,6 +10,18 @@
     color: var(--primary);
 }
 
+.link {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.copyright {
+    font-size: small;
+    color: #afb2b4;
+    text-align: center;
+}
+
 .input {
     width: 100%;
     padding: 12px;
@@ -35,21 +47,49 @@
     opacity: 0.7;
 }
 
+.otp-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.otp-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 20px;
+    border: 2px solid #eee;
+    box-shadow: 0 0 12px #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+.otp-input:focus {
+    border-color: var(--primary);
+}
+
 .d-flex {
     display: flex;
 }
+
 .justify-content-between {
     justify-content: space-between;
 }
+
 .align-items-center {
     align-items: center;
 }
+
 .flex-row {
     flex-direction: row;
 }
+
 .gap-3 {
     gap: 1rem;
 }
+
 .px-4 {
     padding: 0 20px;
 }
@@ -89,16 +129,18 @@
     box-shadow: 0px 16px 54px 0px rgba(110, 106, 106, 0.2);
     padding: 30px;
 }
+
 .form-label {
     margin-bottom: var(--mb-1);
 }
+
 .form-card form:nth-child(2) {
     margin-top: 310px;
 }
 
-#form-field>* {
+/* #form-field>* {
     display: block;
-}
+} */
 
 #form-field label {
     margin-bottom: 12px;
@@ -192,10 +234,12 @@
     font-weight: 700;
 }
 
-#multi-step-form h3, p{
+#multi-step-form h3,
+p {
     text-align: left;
     margin: 10px 0;
 }
+
 #multi-step-form h3 {
     margin-top: calc(10px * 6);
 }
@@ -239,10 +283,12 @@
 .form-field {
     margin: 25px 0;
 }
+
 .pagination {
     display: flex;
     justify-content: space-between;
 }
+
 .pagination span {
     background-color: var(--gray-500);
     margin: 0 3px;

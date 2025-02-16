@@ -21,35 +21,17 @@
             </div>
         </div>
         <form id="multi-step-form">
-            <div class="form-step d-none">
-                <h3>What's your email address?</h3>
-                <p>You will recieve a verification code so make sure it is active.</p>
-                <div class="form-field">
-                    <input type="email" name="email" placeholder="Email address" class="input">
-                    <label for="" class="error-label"></label>
-                    <button type="button" class="btn btn-primary mt-3">Continue</button>
-                </div>
-            </div>
-            <div class="form-step d-none">
-                <h3>What's your phone number?</h3>
-                <p>Omit the first digit and insert the rest.</p>
-                <div class="form-field">
-                    <input type="number" name="phone_number" placeholder="Phone Number" class="input">
-                    <label for="" class="error-label"></label>
-                    <button type="button" class="btn btn-primary mt-3">Continue</button>
-                </div>
-            </div>
             <div class="form-step">
-                <h3>What's your full name?</h3>
-                <p>Enter your correct name details.</p>
+                <h3>What's your email address?</h3>
+                <p>You will receive a verification code, so make sure it is active.</p>
                 <div class="form-field">
-                    <input type="text" name="first_name" placeholder="First Name" class="input">
-                    <div class="my-3"></div>
-                    <input type="text" name="last_name" placeholder="Last Name" class="input">
-                    <label for="" class="error-label"></label>
-                    <button type="button" class="btn btn-primary mt-3">Continue</button>
+                    <input type="email" name="email" id="email" placeholder="Email address" class="input">
+                    <label for="" class="error-label" id="email-error"></label>
+                    <button type="button" class="btn btn-primary mt-3" id="email-submit">Continue</button>
                 </div>
             </div>
+
+           
         </form>
     </div>
 </main>
