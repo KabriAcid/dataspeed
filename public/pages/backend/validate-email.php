@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../config/database.php';
+require __DIR__ . '/../../../config/config.php';
 
 header('Content-Type: application/json');
 
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Check if email exists in the database
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT user_id FROM users WHERE email = ?");
     $stmt->execute([$email]);
     
     if ($stmt->fetch()) {

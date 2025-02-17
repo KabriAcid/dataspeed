@@ -230,8 +230,24 @@
     color: var(--primary);
 }
 
-#pagination {
-    font-weight: 700;
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.page {
+    width: 12px;
+    height: 12px;
+    background-color: #ccc;
+    border-radius: 50%;
+    transition: background 0.3s ease-in-out, transform 0.3s;
+}
+
+.page.active {
+    background-color: #722F37;
+    transform: scale(1.2);
 }
 
 #multi-step-form h3,
@@ -245,24 +261,15 @@ p {
 }
 
 .error {
-    border: 2px solid red !important;
+    border: 1px solid rgb(175, 0, 0) !important;
 }
 
 .error-label {
     color: red;
+    display: block;
+    margin: 10px 0;
     font-size: 14px;
 }
-
-.step-indicator {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-weight: 600;
-    font-size: .8em;
-    letter-spacing: 3px;
-    color: #ccc;
-}
-
 
 .form-container {
     max-width: 600px;
@@ -282,17 +289,4 @@ p {
 
 .form-field {
     margin: 25px 0;
-}
-
-.pagination {
-    display: flex;
-    justify-content: space-between;
-}
-
-.pagination span {
-    background-color: var(--gray-500);
-    margin: 0 3px;
-    border-radius: 5px;
-    width: 20px;
-    height: 4px;
 }

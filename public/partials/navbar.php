@@ -12,7 +12,7 @@
 
     <!-- Login & Create Account: Always visible -->
     <div class="nav-buttons d-flex">
-        <a href="#" class="nav-btn btn-outline me-2">Login</a>
-        <a href="#" class="nav-btn btn-primary">Create an account</a>
+        <a href="public/pages/backend/login.php" class="nav-btn btn-outline me-2">Login</a>
+        <a href="public/pages/backend/register.php" class="nav-btn btn-primary">Create an account</a>
     </div>
 </nav>
