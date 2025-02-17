@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->execute([$email]);
     
     if ($stmt->fetch()) {
+        
         echo json_encode(["success" => false, "message" => "Email already exists. Try another."]);
     } else {
         echo json_encode(["success" => true]);
