@@ -30,29 +30,29 @@ document.addEventListener("DOMContentLoaded", function () {
             const email = emailInput.value.trim();
 
             if (!email || !email.includes("@")) {
-                emailInput.classList.add('error')
                 emailError.textContent = "Enter a valid email address.";
                 return;
             }
 
+            
             // Send OTP request via AJAX
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "send-otp.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
+            
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
+                if (xhr.readyState === 4) {
                     const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        nextStep(); // Move to OTP verification step
-                    } else {
-                        emailError.textContent = response.message;
+                    nextStep();
+                    if (!response.success) {
+                        emailError.textContent = response.message; // Show error if email sending fails
                     }
                 }
             };
 
             xhr.send("email=" + encodeURIComponent(email));
         });
+
     } else {
         console.error("Email continue button not found!");
     }
