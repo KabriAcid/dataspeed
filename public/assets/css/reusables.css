@@ -261,7 +261,7 @@ p {
 }
 
 .error {
-    border: 1px solid rgb(175, 0, 0) !important;
+    border: 1px solid rgb(245, 0, 0) !important;
 }
 
 .error-label {
@@ -289,4 +289,9 @@ p {
 
 .form-field {
     margin: 25px 0;
+}
+
+.d-none {
+    display: none;
+    
 }

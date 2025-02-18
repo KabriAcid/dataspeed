@@ -34,7 +34,7 @@
             <div class="form-step d-none">
                 <h3>Verify Your OTP Code</h3>
                 <p>Enter the 6-digit code sent to your email or phone.</p>
-                <div class="form-field">
+                <div class="form-field">    
                     <div class="otp-container my-4">
                         <input type="text" maxlength="1" class="otp-input">
                         <input type="text" maxlength="1" class="otp-input">

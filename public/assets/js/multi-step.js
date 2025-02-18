@@ -29,8 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
         emailContinueBtn.addEventListener("click", function () {
             const email = emailInput.value.trim();
 
-            if (!email || !email.includes("@")) {
+            if (email.length < 6) {
                 emailError.textContent = "Enter a valid email address.";
+                emailInput.classList.add('error')
+                return;
+            } else if(email.includes('mailinator')){
+                emailError.textContent = "Email format not supported.";
+                emailInput.classList.add('error')
                 return;
             }
 

@@ -14,12 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check if email exists in the database
     $stmt = $pdo->prepare("SELECT user_id FROM users WHERE email = ?");
     $stmt->execute([$email]);
-    
+
     if ($stmt->fetch()) {
-        
         echo json_encode(["success" => false, "message" => "Email already exists. Try another."]);
     } else {
         echo json_encode(["success" => true]);
     }
 }
-?>
