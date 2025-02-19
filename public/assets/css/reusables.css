@@ -260,8 +260,7 @@
     margin: 25px 0;
 }
 
-.form
-.d-none {
+.form .d-none {
     display: none;
 
 }

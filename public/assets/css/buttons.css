@@ -21,6 +21,13 @@
     color: white;
 }
 
+.btn-secondary {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
 .btn-outline {
     background: transparent;
     border: 1px solid var(--primary);

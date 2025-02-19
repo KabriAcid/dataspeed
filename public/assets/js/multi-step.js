@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Spinners
+    const spinner = document.getElementById('spinner-icon');
+
     // EMAIL VALIDATION
     const emailInput = document.querySelector("input[name='email']");
     const emailError = document.querySelector(".error-label");
@@ -45,9 +48,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     showError(response.message);
                 } else {
                     // Step 2: If validation passes, send OTP
+                    emailContinueBtn.classList.remove('btn-primary');
+                    emailContinueBtn.classList.add('btn-secondary');
+                    spinner.classList.remove('d-none');
+
                     sendAjaxRequest("send-otp.php", "POST", "email=" + encodeURIComponent(email), function (otpResponse) {
                         if (otpResponse.success) {
-                            nextStep(); // Move to the next step after OTP is sent
+                            nextStep();
                         } else {
                             showError(otpResponse.message);
                         }
@@ -113,11 +120,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
+
+
                     try {
                         const response = JSON.parse(xhr.responseText.trim());
                         if (response.success) {
                             otpError.textContent = "";
-                            nextStep(); // Move to the next step after OTP verification
+                            nextStep();
                         } else {
                             otpError.textContent = response.message;
                         }
@@ -132,47 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     } else {
         console.error("Verify OTP button not found!");
-    }
-
-    // PHONE NUMBER VERIFICATION
-    
-    const phoneInput = document.getElementById("phone");
-    const phoneError = document.getElementById("phone-error");
-    const phoneSubmit = document.getElementById("phone-submit");
-
-    if (phoneSubmit) {
-        phoneSubmit.addEventListener("click", function () {
-            const phone = phoneInput.value.trim();
-
-            // Nigerian phone number validation (must start with a valid prefix)
-            const phonePattern = /^(070|080|081|090|091|701|702|703|704|705|706|707|708|709|802|803|804|805|806|807|808|809|810|811|812|813|814|815|816|817|818|819|909|908|901|902|903|904|905|906|907)\d{7}$/;
-
-            if (!phonePattern.test(phone)) {
-                phoneError.textContent = "Enter a valid Nigerian phone number.";
-                return;
-            }
-
-            // AJAX request to verify phone number
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "validate-phone.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        phoneError.textContent = "";
-                        nextStep(); // Move to next step
-                    } else {
-                        phoneError.textContent = response.message;
-                    }
-                }
-            };
-
-            xhr.send("phone=" + encodeURIComponent(phone));
-        });
-    } else {
-        console.error("Phone submit button not found!");
     }
 
     // OTP INPUT HANDLING
@@ -197,4 +165,68 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+
+
+    // PHONE NUMBER VERIFICATION
+    const phoneInput = document.getElementById("phone");
+    const phoneError = document.getElementById("phone-error");
+    const phoneSubmit = document.getElementById("phone-submit");
+
+    if (phoneSubmit) {
+        phoneSubmit.addEventListener("click", function () {
+            let phone = phoneInput.value.trim();
+
+            // Automatically remove leading zero if present
+            if (phone.startsWith("0")) {
+                phone = phone.substring(1);
+            }
+
+            // Nigerian phone number validation (after stripping 0)
+            const phonePattern = /^(70|80|81|90|91|701|702|703|704|705|706|707|708|709|802|803|804|805|806|807|808|809|810|811|812|813|814|815|816|817|818|819|909|908|901|902|903|904|905|906|907)\d{7}$/;
+
+            if (!phonePattern.test(phone)) {
+                phoneError.textContent = "Enter a valid Nigerian phone number.";
+                return;
+            }
+
+            // Disable button & show spinner during request
+            phoneSubmit.disabled = true;
+            spinner.classList.remove("d-none");
+
+            // AJAX request to verify phone number
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "validate-phone.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    phoneSubmit.disabled = false; // Re-enable button
+                    spinner.classList.add("d-none"); // Hide spinner
+
+                    try {
+                        const response = JSON.parse(xhr.responseText.trim());
+                        if (response.success) {
+                            phoneError.textContent = "";
+                            nextStep(); // Move to next step
+                        } else {
+                            phoneError.textContent = response.message;
+                        }
+                    } catch (error) {
+                        phoneError.textContent = "An error occurred. Please try again.";
+                        console.error("Invalid JSON response:", xhr.responseText);
+                    }
+                }
+            };
+
+            xhr.send("phone=" + encodeURIComponent(phone));
+        });
+
+        // Clear error message when user types
+        phoneInput.addEventListener("input", function () {
+            phoneError.textContent = "";
+        });
+    } else {
+        console.error("Phone submit button not found!");
+    }
+
 });

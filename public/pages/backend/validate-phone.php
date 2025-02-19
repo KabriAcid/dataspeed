@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../../config/database.php'; // Adjust path as needed
+require __DIR__ . '/../../../config/config.php';
 
 header("Content-Type: application/json");
 
