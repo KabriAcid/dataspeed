@@ -188,6 +188,7 @@
 .form-step-header,
 .form-step-para {
     text-align: center;
+    margin: 15px;
 }
 
 .form-label {
@@ -227,9 +228,6 @@
     transform: scale(1.2);
 }
 
-#multi-step-form h3 {
-    margin-top: calc(10px * 6);
-}
 
 .error {
     border: 1px solid rgb(245, 0, 0) !important;
@@ -262,6 +260,7 @@
     margin: 25px 0;
 }
 
+.form
 .d-none {
     display: none;
 

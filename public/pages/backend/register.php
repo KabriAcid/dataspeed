@@ -22,16 +22,18 @@
 
         </div>
         <form id="multi-step-form" method="post">
+            <!-- EMAIL VERIFICATION -->
             <div class="form-step">
                 <h3 class="form-step-header">What's your email address?</h3>
                 <p class="form-step-para">You will receive a verification code, so make sure it is active.</p>
-                
+
                 <div class="form-field">
                     <input type="email" name="email" id="email" placeholder="Email address" class="input">
                     <label for="" class="error-label" id="email-error"></label>
                     <button type="button" class="btn btn-primary mt-3" id="email-submit">Continue</button>
                 </div>
             </div>
+            <!-- OTP VERIFICATION -->
             <div class="form-step d-none">
                 <h3 class="form-step-header">Verify Your OTP Code</h3>
                 <p class="form-step-para">Enter the 6-digit code sent to your email or phone.</p>
@@ -51,7 +53,17 @@
                 <div class="otp-timer-container">
                     <p>Time remaining: <span id="otp-timer">10:00</span></p>
                 </div>
+            </div>
 
+            <!-- PHONE NUMBER VERIFICATION-->
+            <div class="form-step d-none">
+                <h3>What's your phone number?</h3>
+                <p>Omit the first digit and insert the rest.</p>
+                <div class="form-field">
+                    <input type="number" name="phone_number" placeholder="Phone Number" class="input" id="phone">
+                    <label for="" class="error-label" id="phone-error"></label>
+                    <button type="button" class="btn btn-primary mt-3" id="phone-submit">Continue</button>
+                </div>
             </div>
         </form>
     </div>

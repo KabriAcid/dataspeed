@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (email.length < 6) {
                 showError("Please enter a valid email address.");
                 return;
-            } else if (email.includes("mailinator")) {
+            } else if (email.includes("xxxxxxxxxx")) {
                 showError("Email format not supported.");
                 return;
             }
@@ -99,9 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (verifyOtpBtn) {
         verifyOtpBtn.addEventListener("click", function () {
             let otp = "";
-            otpInputs.forEach(input => otp += input.value);
+            otpInputs.forEach(input => otp += input.value.trim());
 
-            if (otp.length !== 6) {
+            if (otp.length !== 6 || isNaN(otp)) {
                 otpError.textContent = "Enter a valid 6-digit OTP.";
                 return;
             }
@@ -112,13 +112,18 @@ document.addEventListener("DOMContentLoaded", function () {
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        otpError.textContent = "";
-                        nextStep(); // Move to the next step after OTP verification
-                    } else {
-                        otpError.textContent = response.message;
+                if (xhr.readyState === 4) {
+                    try {
+                        const response = JSON.parse(xhr.responseText.trim());
+                        if (response.success) {
+                            otpError.textContent = "";
+                            nextStep(); // Move to the next step after OTP verification
+                        } else {
+                            otpError.textContent = response.message;
+                        }
+                    } catch (error) {
+                        console.error("Invalid JSON response:", xhr.responseText);
+                        otpError.textContent = "An error occurred. Please try again.";
                     }
                 }
             };
@@ -130,44 +135,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // PHONE NUMBER VERIFICATION
-    // const phoneInput = document.getElementById("phone");
-    // const phoneError = document.getElementById("phone-error");
-    // const phoneSubmit = document.getElementById("phone-submit");
+    
+    const phoneInput = document.getElementById("phone");
+    const phoneError = document.getElementById("phone-error");
+    const phoneSubmit = document.getElementById("phone-submit");
 
-    // if (phoneSubmit) {
-    //     phoneSubmit.addEventListener("click", function () {
-    //         const phone = phoneInput.value.trim();
+    if (phoneSubmit) {
+        phoneSubmit.addEventListener("click", function () {
+            const phone = phoneInput.value.trim();
 
-    //         // Nigerian phone number validation (must start with a valid prefix)
-    //         const phonePattern = /^(070|080|081|090|091|701|702|703|704|705|706|707|708|709|802|803|804|805|806|807|808|809|810|811|812|813|814|815|816|817|818|819|909|908|901|902|903|904|905|906|907)\d{7}$/;
+            // Nigerian phone number validation (must start with a valid prefix)
+            const phonePattern = /^(070|080|081|090|091|701|702|703|704|705|706|707|708|709|802|803|804|805|806|807|808|809|810|811|812|813|814|815|816|817|818|819|909|908|901|902|903|904|905|906|907)\d{7}$/;
 
-    //         if (!phonePattern.test(phone)) {
-    //             phoneError.textContent = "Enter a valid Nigerian phone number.";
-    //             return;
-    //         }
+            if (!phonePattern.test(phone)) {
+                phoneError.textContent = "Enter a valid Nigerian phone number.";
+                return;
+            }
 
-    //         // AJAX request to verify phone number
-    //         const xhr = new XMLHttpRequest();
-    //         xhr.open("POST", "validate-phone.php", true);
-    //         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            // AJAX request to verify phone number
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "validate-phone.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    //         xhr.onreadystatechange = function () {
-    //             if (xhr.readyState === 4 && xhr.status === 200) {
-    //                 const response = JSON.parse(xhr.responseText);
-    //                 if (response.success) {
-    //                     phoneError.textContent = "";
-    //                     nextStep(); // Move to next step
-    //                 } else {
-    //                     phoneError.textContent = response.message;
-    //                 }
-    //             }
-    //         };
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        phoneError.textContent = "";
+                        nextStep(); // Move to next step
+                    } else {
+                        phoneError.textContent = response.message;
+                    }
+                }
+            };
 
-    //         xhr.send("phone=" + encodeURIComponent(phone));
-    //     });
-    // } else {
-    //     console.error("Phone submit button not found!");
-    // }
+            xhr.send("phone=" + encodeURIComponent(phone));
+        });
+    } else {
+        console.error("Phone submit button not found!");
+    }
 
     // OTP INPUT HANDLING
     otpInputs.forEach((input, index) => {

@@ -29,6 +29,6 @@
 }
 
 #otp-timer {
-    color: var(--gray-600);
+    color: var(--primary);
     font-weight: 600;
 }

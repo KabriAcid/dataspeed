@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../config/database.php'; // Adjust path as needed
+require __DIR__ . '/../../../config/database.php'; // Adjust path as needed
 
 header("Content-Type: application/json");
 
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Check if the phone exists in the database
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE phone_number = ?");
+    $stmt = $pdo->prepare("SELECT user_id FROM users WHERE phone_number = ?");
     $stmt->execute([$phone]);
 
     if ($stmt->fetch()) {

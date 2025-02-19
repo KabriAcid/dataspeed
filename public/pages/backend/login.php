@@ -19,13 +19,13 @@
                 <h3>Welcome Back!</h3>
                 <p>Enter your correct login details to continue.</p>
                 <div class="form-field">
-                    <input type="number" name="phone_number" placeholder="Phone Number" class="input" required>
+                    <input type="number" name="phone_number" placeholder="Phone Number" class="input">
                     <label for="" class="error-label"></label>
                     <div class="my-3"></div>
-                    <input type="password" name="password" placeholder="Password" class="input" required>
+                    <input type="password" name="password" placeholder="Password" class="input">
                     <label for="" class="error-label"></label>
                     <p class="text-end"><a href="forgot-password.php" class="text-secondary">Forgot password?</a></p>
-                    <button type="submit" class="btn btn-primary mt-3">Login</button>
+                    <button type="submit" class="btn btn-primary mt-3" name="login">Login</button>
                 </div>
                 <p class="text-center">Don't have an account? <a href="register.php" class="link">Register</a></p>
                 <p class="copyright">Copyright @DreamCodes</p>
