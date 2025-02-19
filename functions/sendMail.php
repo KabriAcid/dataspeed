@@ -5,10 +5,9 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-function sendMail($to, $subject, $otpCode)
+function sendMail($to, $subject, $body)
 {
     $config = require __DIR__ . '/../config/mail.php';
-
     $mail = new PHPMailer(true);
 
     try {
@@ -25,9 +24,6 @@ function sendMail($to, $subject, $otpCode)
         $mail->setFrom($config["from_email"], $config["from_name"]);
         $mail->addAddress($to);
 
-        // Custom Email Body
-        
-
         // Content
         $mail->isHTML(true);
         $mail->Subject = $subject;
@@ -35,6 +31,7 @@ function sendMail($to, $subject, $otpCode)
 
         return $mail->send();
     } catch (Exception $e) {
+        error_log("Mail error: " . $mail->ErrorInfo);
         return false;
     }
 }

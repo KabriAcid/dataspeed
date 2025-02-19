@@ -4,5 +4,10 @@
         "plasticbrain/php-flash-messages": "^1.0",
         "phpmailer/phpmailer": "^6.9",
         "respect/validation": "^2.4"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0.30"
+        }
     }
 }

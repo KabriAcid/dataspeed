@@ -1,5 +1,6 @@
 @import url('variables.css');
 @import url('utilities.css');
+@import url('custom.css');
 @import url('reusables.css');
 @import url('print.css');
 @import url('navbar.css');

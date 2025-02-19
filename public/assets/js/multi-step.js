@@ -28,56 +28,68 @@ document.addEventListener("DOMContentLoaded", function () {
     if (emailContinueBtn) {
         emailContinueBtn.addEventListener("click", function () {
             const email = emailInput.value.trim();
+            emailError.textContent = ""; // Clear previous errors
+            emailInput.classList.remove("error");
 
             if (email.length < 6) {
-                emailError.textContent = "Enter a valid email address.";
-                emailInput.classList.add('error')
+                showError("Please enter a valid email address.");
                 return;
-            } else if(email.includes('mailinator')){
-                emailError.textContent = "Email format not supported.";
-                emailInput.classList.add('error')
-                return;
-            } else if(email == "kabriacid01@gmail.com"){
-                emailError.textContent = "Email already exist.";
-                emailInput.classList.add('error')
+            } else if (email.includes("mailinator")) {
+                showError("Email format not supported.");
                 return;
             }
 
-            
-            // Send OTP request via AJAX
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "send-otp.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    const response = JSON.parse(xhr.responseText);
-                    nextStep();
-                    if (!response.success) {
-                        emailError.textContent = response.message; // Show error if email sending fails
-                    }
+            // Step 1: Validate email before sending OTP
+            sendAjaxRequest("validate-email.php?email=" + encodeURIComponent(email), "GET", null, function (response) {
+                if (!response.success) {
+                    showError(response.message);
+                } else {
+                    // Step 2: If validation passes, send OTP
+                    sendAjaxRequest("send-otp.php", "POST", "email=" + encodeURIComponent(email), function (otpResponse) {
+                        if (otpResponse.success) {
+                            nextStep(); // Move to the next step after OTP is sent
+                        } else {
+                            showError(otpResponse.message);
+                        }
+                    });
                 }
-            };
-
-            xhr.send("email=" + encodeURIComponent(email));
-
-            const request = new XMLHttpRequest();
-            request.open('GET', 'validate-email.php', true);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            request.onreadystatechange = function(){
-                if(request.readyState === 4){
-                    const response = JSON.parse(request.responseText);
-                    if(!response.success){
-                        emailError.textContent = response.message;
-                    }
-                }
-            }
+            });
         });
-
     } else {
         console.error("Email continue button not found!");
     }
+
+    // Helper function to show error messages
+    function showError(message) {
+        emailError.textContent = message;
+        emailInput.classList.add("error");
+    }
+
+    // Generic AJAX Request Function
+    function sendAjaxRequest(url, method, data, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                try {
+                    console.log(`Response from ${url}:`, xhr.responseText); // Debugging
+                    const response = JSON.parse(xhr.responseText);
+                    callback(response);
+                } catch (error) {
+                    console.error("Invalid JSON response from " + url, error);
+                    console.error("Raw Response:", xhr.responseText);
+                    showError("Unexpected error. Try again later.");
+                }
+            }
+        };
+
+        xhr.send(data);
+    }
+
+
+
 
     // OTP VERIFICATION
     const otpInputs = document.querySelectorAll(".otp-input");

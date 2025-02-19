@@ -23,8 +23,9 @@
         </div>
         <form id="multi-step-form" method="post">
             <div class="form-step">
-                <h3>What's your email address?</h3>
-                <p>You will receive a verification code, so make sure it is active.</p>
+                <h3 class="form-step-header">What's your email address?</h3>
+                <p class="form-step-para">You will receive a verification code, so make sure it is active.</p>
+                
                 <div class="form-field">
                     <input type="email" name="email" id="email" placeholder="Email address" class="input">
                     <label for="" class="error-label" id="email-error"></label>
@@ -32,9 +33,10 @@
                 </div>
             </div>
             <div class="form-step d-none">
-                <h3>Verify Your OTP Code</h3>
-                <p>Enter the 6-digit code sent to your email or phone.</p>
-                <div class="form-field">    
+                <h3 class="form-step-header">Verify Your OTP Code</h3>
+                <p class="form-step-para">Enter the 6-digit code sent to your email or phone.</p>
+
+                <div class="form-field">
                     <div class="otp-container my-4">
                         <input type="text" maxlength="1" class="otp-input">
                         <input type="text" maxlength="1" class="otp-input">
@@ -46,10 +48,37 @@
                     <label id="otp-error" class="error-label"></label>
                     <button type="button" id="verify-otp-btn" class="btn btn-primary mt-3">Verify OTP</button>
                 </div>
+                <div class="otp-timer-container">
+                    <p>Time remaining: <span id="otp-timer">10:00</span></p>
+                </div>
+
             </div>
         </form>
     </div>
 </main>
+<script>
+    let countdown = 600; // 10 minutes in seconds
+    const timerDisplay = document.getElementById("otp-timer");
+    const verifyBtn = document.getElementById("verify-otp-btn");
+
+    function updateTimer() {
+        if (!timerDisplay) return; // Avoid errors if element is missing
+
+        const minutes = Math.floor(countdown / 60);
+        const seconds = countdown % 60;
+        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        if (countdown === 0) {
+            timerDisplay.textContent = "OTP Expired! Request a new one.";
+            verifyBtn.disabled = true;
+            clearInterval(timerInterval);
+        }
+
+        countdown--;
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000); // Start the countdown
+</script>
 <script src="../../assets/js/multi-step.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

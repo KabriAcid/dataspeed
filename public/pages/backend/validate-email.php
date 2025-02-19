@@ -1,6 +1,5 @@
 <?php
 require __DIR__ . '/../../../config/config.php';
-
 header('Content-Type: application/json');
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
@@ -11,13 +10,19 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         exit;
     }
 
-    // Check if email exists in the database
-    $stmt = $pdo->prepare("SELECT user_id FROM users WHERE email = ?");
-    $stmt->execute([$email]);
+    try {
+        // Check if email exists in the database
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $exists = $stmt->fetchColumn();
 
-    if ($stmt->fetch()) {
-        echo json_encode(["success" => false, "message" => "Email already exists. Try another."]);
-    } else {
+        if ($exists) {
+            echo json_encode(["success" => false, "message" => "Email already exists. Try another."]);
+            exit;
+        }
+
         echo json_encode(["success" => true]);
+    } catch (PDOException $e) {
+        echo json_encode(["success" => false, "message" => "Database error. Please try again later."]);
     }
 }
