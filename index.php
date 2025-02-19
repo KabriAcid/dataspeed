@@ -128,6 +128,17 @@ session_start();
                 </div>
             </div>
         </section>
+        <!--  -->
+        <section id="sectionIV">
+            <div class="text-center">
+                <h4>Newsletter</h4>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. At aut neque consectetur nihil sint excepturi omnis adipisci possimus!</p>
+                <form action="" method="post" class="d-flex" style="width: 50%;margin: auto;">
+                    <input type="email" name="email" class="input" placeholder="Your email">
+                    <button type="submit" name="submit" class="btn btn-primary ml-3">SUBSCRIBE</button>
+                </form>
+            </div>
+        </section>
     </main>
 </body>
 

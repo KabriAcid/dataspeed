@@ -53,7 +53,7 @@ main section {
   padding-top: calc(80px + 30px);
 }
 
-section:not(.jumbotoron){
+section:not(.jumbotoron) {
   background-color: white;
 }
 
@@ -86,4 +86,9 @@ section:not(.jumbotoron){
   background-attachment: fixed;
   background-position: right;
   height: 100vh;
+}
+
+#sectionIV {
+  background: #FEF9FC;
+  height: 80vh;
 }

@@ -3,8 +3,8 @@ require __DIR__ . '/../../../config/config.php';
 
 header('Content-Type: application/json');
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = trim($_POST["email"] ?? '');
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    $email = trim($_GET["email"] ?? '');
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(["success" => false, "message" => "Invalid email format."]);

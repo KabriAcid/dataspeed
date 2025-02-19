@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 emailError.textContent = "Email format not supported.";
                 emailInput.classList.add('error')
                 return;
+            } else if(email == "kabriacid01@gmail.com"){
+                emailError.textContent = "Email already exist.";
+                emailInput.classList.add('error')
+                return;
             }
 
             
@@ -56,6 +60,19 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             xhr.send("email=" + encodeURIComponent(email));
+
+            const request = new XMLHttpRequest();
+            request.open('GET', 'validate-email.php', true);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            request.onreadystatechange = function(){
+                if(request.readyState === 4){
+                    const response = JSON.parse(request.responseText);
+                    if(!response.success){
+                        emailError.textContent = response.message;
+                    }
+                }
+            }
         });
 
     } else {
