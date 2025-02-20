@@ -1,5 +1,10 @@
 <?php require __DIR__ . '/../../partials/header.php'; ?>
 
+<?php 
+session_start();
+var_dump($_SESSION['registration_id'])
+?>
+
 <body>
     <?php #require __DIR__ . '/../../partials/navbar.php'; 
     ?>
@@ -23,7 +28,7 @@
         </div>
         <form id="multi-step-form" method="post">
             <!-- EMAIL VERIFICATION -->
-            <div class="form-step d-none">
+            <div class="form-step">
                 <div class="form-step-header">
                     <h3>What's your email address?</h3>
                     <p>You will receive a verification code, so make sure it is active.</p>
@@ -62,7 +67,7 @@
             </div>
 
             <!-- PHONE NUMBER VERIFICATION-->
-            <div class="form-step">
+            <div class="form-step d-none">
                 <div class="form-step-header">
                     <h3>What's your phone number?</h3>
                     <p>Omit the first digit and insert the rest.</p>
@@ -80,6 +85,21 @@
                         <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Continue
                     </button>
+                </div>
+            </div>
+
+            <!-- NAMES VERIFICATION -->
+            <div class="form-step d-none">
+                <div class="form-step-header">
+                    <h3>What's your full name?</h3>
+                    <p>Enter your correct name details.</p>
+                </div>
+                <div class="form-field">
+                    <input type="text" name="first_name" id="first_name" placeholder="First Name" class="input">
+                    <div class="my-3"></div>
+                    <input type="text" name="last_name" id="last_name" placeholder="Last Name" class="input">
+                    <label for="" class="error-label" id="names-error"></label>
+                    <button type="button" class="btn btn-primary mt-3" id="names-submit">Continue</button>
                 </div>
             </div>
         </form>

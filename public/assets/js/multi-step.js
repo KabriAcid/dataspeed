@@ -23,77 +23,49 @@ document.addEventListener("DOMContentLoaded", function () {
     // Spinners
     const spinner = document.getElementById('spinner-icon');
 
-    // EMAIL VALIDATION
-    const emailInput = document.querySelector("input[name='email']");
-    const emailError = document.querySelector(".error-label");
-    const emailContinueBtn = document.querySelector(".form-step:first-child .btn");
+    emailContinueBtn.addEventListener("click", function () {
+        if (emailContinueBtn.disabled) return; // Prevent multiple clicks
 
-    if (emailContinueBtn) {
-        emailContinueBtn.addEventListener("click", function () {
-            const email = emailInput.value.trim();
-            emailError.textContent = ""; // Clear previous errors
-            emailInput.classList.remove("error");
+        const email = emailInput.value.trim();
+        emailError.textContent = ""; // Clear previous errors
+        emailInput.classList.remove("error");
 
-            if (email.length < 6) {
-                showError("Please enter a valid email address.");
-                return;
-            } else if (email.includes("xxxxxxxxxx")) {
-                showError("Email format not supported.");
-                return;
-            }
+        if (email == "") {
+            showError("Email address is required.");
+            return;
+        } else if (email.length <= 6) {
+            showError("Please enter a valid email address");
+            return;
+        } else if (email.includes("xxxxx")) {
+            showError("Email format not supported.");
+            return;
+        }
 
-            // Step 1: Validate email before sending OTP
-            sendAjaxRequest("validate-email.php?email=" + encodeURIComponent(email), "GET", null, function (response) {
-                if (!response.success) {
-                    showError(response.message);
-                } else {
-                    // Step 2: If validation passes, send OTP
-                    emailContinueBtn.classList.remove('btn-primary');
-                    emailContinueBtn.classList.add('btn-secondary');
-                    spinner.classList.remove('d-none');
+        emailContinueBtn.disabled = true; // Disable button
 
-                    sendAjaxRequest("send-otp.php", "POST", "email=" + encodeURIComponent(email), function (otpResponse) {
-                        if (otpResponse.success) {
+        sendAjaxRequest("validate-email.php", "POST", "email=" + encodeURIComponent(email), function (response) {
+            if (!response.success) {
+                showError(response.message);
+                emailContinueBtn.disabled = false; // Re-enable button on error
+            } else {
+                // Step 2: If validation passes, send OTP
+                sendAjaxRequest("send-otp.php", "POST", "email=" + encodeURIComponent(email), function (otpResponse) {
+                    if (otpResponse.success) {
+                        emailContinueBtn.classList.remove('btn-primary');
+                        emailContinueBtn.classList.add('btn-secondary');
+                        spinner.classList.remove('d-none');
+
+                        setTimeout(() => {
                             nextStep();
-                        } else {
-                            showError(otpResponse.message);
-                        }
-                    });
-                }
-            });
-        });
-    } else {
-        console.error("Email continue button not found!");
-    }
-
-    // Helper function to show error messages
-    function showError(message) {
-        emailError.textContent = message;
-        emailInput.classList.add("error");
-    }
-
-    // Generic AJAX Request Function
-    function sendAjaxRequest(url, method, data, callback) {
-        const xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                try {
-                    console.log(`Response from ${url}:`, xhr.responseText); // Debugging
-                    const response = JSON.parse(xhr.responseText);
-                    callback(response);
-                } catch (error) {
-                    console.error("Invalid JSON response from " + url, error);
-                    console.error("Raw Response:", xhr.responseText);
-                    showError("Unexpected error. Try again later.");
-                }
+                        }, 500);
+                    } else {
+                        showError(otpResponse.message);
+                        emailContinueBtn.disabled = false; // Re-enable button if OTP fails
+                    }
+                });
             }
-        };
-
-        xhr.send(data);
-    }
+        });
+    });
 
 
 
@@ -159,11 +131,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         input.addEventListener("paste", (e) => {
             e.preventDefault();
-            let pastedData = e.clipboardData.getData("text").split("");
-            otpInputs.forEach((inp, i) => {
-                inp.value = pastedData[i] || "";
-            });
+            let pastedData = e.clipboardData.getData("text").replace(/\D/g, '').slice(0, otpInputs.length);
+            otpInputs.forEach((inp, i) => inp.value = pastedData[i] || "");
         });
+
     });
 
 
@@ -177,12 +148,14 @@ document.addEventListener("DOMContentLoaded", function () {
             let phone = phoneInput.value.trim();
 
             // Automatically remove leading zero if present
-            if (phone.startsWith("0")) {
-                phone = phone.substring(1);
+            if (/^0[7-9]\d{9}$/.test(phone)) {
+                phone = phone.substring(1); // Remove only ONE leading zero
             }
 
+
             // Nigerian phone number validation (after stripping 0)
-            const phonePattern = /^(70|80|81|90|91|701|702|703|704|705|706|707|708|709|802|803|804|805|806|807|808|809|810|811|812|813|814|815|816|817|818|819|909|908|901|902|903|904|905|906|907)\d{7}$/;
+            const phonePattern = /^(234)?(70\d|80\d|81\d|90\d|91\d|701|702|703|704|705|706|707|708|709|802|803|804|805|806|807|808|809|810|811|812|813|814|815|816|817|818|819|908|909|901|902|903|904|905|906|907|912|913|914|915|916|917|918|919)\d{6}$/;
+
 
             if (!phonePattern.test(phone)) {
                 phoneError.textContent = "Enter a valid Nigerian phone number.";
@@ -190,7 +163,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Disable button & show spinner during request
-            phoneSubmit.disabled = true;
             spinner.classList.remove("d-none");
 
             // AJAX request to verify phone number
@@ -228,5 +200,43 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("Phone submit button not found!");
     }
+
+    // NAME VERIFICATION
+    const firstNameInput = document.getElementById("first_name");
+    const lastNameInput = document.getElementById("last_name");
+    const nameError = document.getElementById("names-error");
+    const nameSubmitBtn = document.getElementById("names-submit");
+
+    if (nameSubmitBtn) {
+        nameSubmitBtn.addEventListener("click", function () {
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+            nameError.textContent = ""; // Clear previous errors
+
+            // Validate names (at least 2 letters, no numbers or symbols)
+            const namePattern = /^[A-Za-z]{3,}(?:\s[A-Za-z]{3,})?$/;
+
+            if (!namePattern.test(firstName) || !namePattern.test(lastName)) {
+                nameError.textContent = "Enter a valid first and last name.";
+                return;
+            }
+
+            // Send AJAX request to update names
+            sendAjaxRequest("validate-names.php", "POST",`first_name=${encodeURIComponent(firstName)}&last_name=${encodeURIComponent(lastName)}`,
+                function (response) {
+                    if (response.success) {
+                        nameError.textContent = "";
+                        nextStep(); // Proceed to the next step
+                    } else {
+                        nameError.textContent = response.message;
+                    }
+                }
+            );
+        });
+    } else {
+        console.error("Name submit button not found!");
+    }
+
+
 
 });
