@@ -1,6 +1,6 @@
 <head>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/navbar.css">
+    <!-- <link rel="stylesheet" href="../assets/css/navbar.css"> -->
 </head>
 <div class="hero-anime">
     <div class="navigation-wrap bg-light start-header start-style">
@@ -58,10 +58,6 @@
 
     <!-- Link to page
 ================================================== -->
-
-    <a href="https://front.codes/" class="logo" target="_blank">
-        <img src="https://assets.codepen.io/1462889/fcy.png" alt="">
-    </a>
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script>
         /* Please ❤ this if you like it! */
