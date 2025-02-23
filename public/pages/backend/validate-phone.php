@@ -1,44 +1,54 @@
 <?php
+
 require __DIR__ . '/../../../config/config.php';
-session_start();
 
 header("Content-Type: application/json");
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $phone = trim($_POST["phone"] ?? '');
+session_start();
 
-    // Ensure user has a session registration ID
-    if (!isset($_SESSION['registration_id'])) {
-        echo json_encode(["success" => false, "message" => "Session expired. Restart registration."]);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $phone = $_POST['phone'] ?? '';
+    $registration_id = $_POST['registration_id'] ?? '';
+
+    // Check if country code is present
+    if (preg_match('/^(\+234|234)/', $phone)) {
+        echo json_encode(["success" => false, "message" => "Remove the country code."]);
         exit;
     }
 
-    $registration_id = $_SESSION['registration_id'];
+    // Sanitize input to remove leading zero if present
+    $phone = preg_replace('/^0/', '', $phone);
 
-    // Normalize phone number (Handle users omitting first '0')
-    if (preg_match('/^(234)?([789][01]\d{8})$/', $phone, $matches)) {
-        $phone = "234" . $matches[2]; // Convert to full international format
-    } else {
-        echo json_encode(["success" => false, "message" => "Invalid Nigerian phone number."]);
+    // Nigerian phone number validation (should be 10 digits after sanitization)
+    $phonePattern = '/^\d{10}$/';
+
+    if (!preg_match($phonePattern, $phone)) {
+        echo json_encode(["success" => false, "message" => "Enter a valid Nigerian phone number."]);
         exit;
     }
 
     try {
-        // Check if the phone number already exists
-        $stmt = $pdo->prepare("SELECT user_id FROM users WHERE phone_number = ?");
+        // Check if the phone number already exists and its registration status
+        $stmt = $pdo->prepare("SELECT registration_status FROM users WHERE phone_number = ?");
         $stmt->execute([$phone]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($stmt->fetch()) {
-            echo json_encode(["success" => false, "message" => "Phone number already in use."]);
-            exit;
+        if ($user) {
+            if ($user['registration_status'] === 'complete') {
+                echo json_encode(["success" => false, "message" => "Phone number already registered."]);
+                exit;
+            } else {
+                echo json_encode(["success" => true, "message" => "Resuming incomplete registration."]);
+                $_SESSION['phone'] = $phone;
+            }
+        } else {
+            // If the phone number is valid and not already registered, update users table using registration_id
+            $stmt = $pdo->prepare("UPDATE users SET phone_number = ? WHERE registration_id = ?");
+            $stmt->execute([$phone, $registration_id]);
+
+            echo json_encode(["success" => true, "message" => "Phone number is valid and updated."]);
         }
-
-        // Update phone number for the current registration
-        $stmt = $pdo->prepare("UPDATE users SET phone_number = ? WHERE registration_id = ?");
-        $stmt->execute([$phone, $registration_id]);
-
-        echo json_encode(["success" => true]);
-    } catch (PDOException $e) {
-        echo json_encode(["success" => false, "message" => "Database error. Please try again later."]);
+    } catch (Exception $e) {
+        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
 }

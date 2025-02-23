@@ -25,7 +25,7 @@
                     <input type="password" name="password" placeholder="Password" class="input">
                     <label for="" class="error-label"></label>
                     <p class="text-end"><a href="forgot-password.php" class="text-secondary">Forgot password?</a></p>
-                    <button type="submit" class="btn btn-primary mt-3" name="login">Login</button>
+                    <button type="submit" class="btn primary-btn mt-3" name="login">Login</button>
                 </div>
                 <p class="text-center">Don't have an account? <a href="register.php" class="link">Register</a></p>
                 <p class="copyright">Copyright @DreamCodes</p>

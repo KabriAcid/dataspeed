@@ -229,9 +229,9 @@
 }
 
 
-.error {
+/* .error {
     border: 1px solid rgb(245, 0, 0) !important;
-}
+} */
 
 .error-label {
     color: red;
@@ -263,6 +263,10 @@
 .form .d-none {
     display: none;
 
+}
+
+#spinner-icon {
+    color: white;
 }
 
 /* OTP */

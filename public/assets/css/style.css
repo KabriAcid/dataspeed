@@ -13,6 +13,10 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: var(--primary-light);
+}
+
 @font-face {
   font-family: 'Montserrat';
   src: url('../fonts/static/Montserrat-Regular.ttf') format('truetype');

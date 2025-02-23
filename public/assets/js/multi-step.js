@@ -20,100 +20,125 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function showError(element, message) {
+        element.textContent = message;
+        element.classList.add("error");
+    }
+
+    function sendAjaxRequest(url, method, data, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    callback(response);
+                } catch (error) {
+                    callback({ success: false, message: "Invalid JSON response" });
+                }
+            }
+        };
+        xhr.send(data);
+    }
+
     // Spinners
     const spinner = document.getElementById('spinner-icon');
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email-error');
+    const emailContinueBtn = document.getElementById('email-submit');
 
     emailContinueBtn.addEventListener("click", function () {
-        if (emailContinueBtn.disabled) return; // Prevent multiple clicks
-
         const email = emailInput.value.trim();
         emailError.textContent = ""; // Clear previous errors
         emailInput.classList.remove("error");
 
-        if (email == "") {
-            showError("Email address is required.");
+        if (email === "") {
+            showError(emailError, "Email address is required.");
             return;
         } else if (email.length <= 6) {
-            showError("Please enter a valid email address");
+            showError(emailError, "Please enter a valid email address");
             return;
         } else if (email.includes("xxxxx")) {
-            showError("Email format not supported.");
+            showError(emailError, "Email format not supported.");
             return;
         }
 
-        emailContinueBtn.disabled = true; // Disable button
+        spinner.classList.remove('d-none');
+        emailContinueBtn.style.cursor = 'not-allowed';
 
+        // Validate email and send OTP
         sendAjaxRequest("validate-email.php", "POST", "email=" + encodeURIComponent(email), function (response) {
             if (!response.success) {
-                showError(response.message);
-                emailContinueBtn.disabled = false; // Re-enable button on error
+                showError(emailError, response.message);
+                spinner.classList.add('d-none');
+                emailContinueBtn.style.cursor = 'pointer';
             } else {
-                // Step 2: If validation passes, send OTP
-                sendAjaxRequest("send-otp.php", "POST", "email=" + encodeURIComponent(email), function (otpResponse) {
+                // Save the email and registration_id to sessionStorage for use in the OTP page
+                sessionStorage.setItem('email', email);
+                const registration_id = response.registration_id;
+                sessionStorage.setItem('registration_id', registration_id);
+
+                console.log("Email stored:", email);
+                console.log("Registration ID stored:", registration_id);
+
+                sendAjaxRequest("send-otp.php", "POST", "email=" + encodeURIComponent(email) + "&registration_id=" + encodeURIComponent(registration_id), function (otpResponse) {
                     if (otpResponse.success) {
                         emailContinueBtn.classList.remove('btn-primary');
                         emailContinueBtn.classList.add('btn-secondary');
-                        spinner.classList.remove('d-none');
+                        spinner.classList.add('d-none');
 
                         setTimeout(() => {
                             nextStep();
-                        }, 500);
+                        }, 500); // Delay before moving to the next step
                     } else {
-                        showError(otpResponse.message);
-                        emailContinueBtn.disabled = false; // Re-enable button if OTP fails
+                        showError(emailError, otpResponse.message);
+                        spinner.classList.add('d-none');
+                        emailContinueBtn.style.cursor = 'pointer';
                     }
                 });
             }
         });
     });
 
-
-
-
-    // OTP VERIFICATION
+    // OTP Verification
     const otpInputs = document.querySelectorAll(".otp-input");
     const verifyOtpBtn = document.getElementById("verify-otp-btn");
     const otpError = document.getElementById("otp-error");
 
-    if (verifyOtpBtn) {
-        verifyOtpBtn.addEventListener("click", function () {
-            let otp = "";
-            otpInputs.forEach(input => otp += input.value.trim());
+    verifyOtpBtn.addEventListener("click", function () {
+        let otp = "";
+        otpInputs.forEach(input => otp += input.value.trim());
 
-            if (otp.length !== 6 || isNaN(otp)) {
-                otpError.textContent = "Enter a valid 6-digit OTP.";
-                return;
+        if (otp.length !== 6 || isNaN(otp)) {
+            showError(otpError, "Enter a valid 6-digit OTP.");
+            return;
+        }
+
+        const email = sessionStorage.getItem('email');
+        const registration_id = sessionStorage.getItem('registration_id');
+
+        console.log("Email retrieved:", email);
+        console.log("Registration ID retrieved:", registration_id);
+
+        spinner.classList.remove('d-none');
+        verifyOtpBtn.style.cursor = 'not-allowed';
+
+        // Verify OTP
+        sendAjaxRequest("verify-otp.php", "POST", "email=" + encodeURIComponent(email) + "&otp=" + encodeURIComponent(otp) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
+            if (response.success) {
+                spinner.classList.add('d-none');
+                verifyOtpBtn.style.cursor = 'pointer';
+                setTimeout(() => {
+                    nextStep();
+                }, 500); // Delay before moving to the next step
+            } else {
+                showError(otpError, response.message);
+                spinner.classList.add('d-none');
+                verifyOtpBtn.style.cursor = 'pointer';
             }
-
-            // AJAX request to verify OTP
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "verify-otp.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-
-
-                    try {
-                        const response = JSON.parse(xhr.responseText.trim());
-                        if (response.success) {
-                            otpError.textContent = "";
-                            nextStep();
-                        } else {
-                            otpError.textContent = response.message;
-                        }
-                    } catch (error) {
-                        console.error("Invalid JSON response:", xhr.responseText);
-                        otpError.textContent = "An error occurred. Please try again.";
-                    }
-                }
-            };
-
-            xhr.send("otp=" + encodeURIComponent(otp));
         });
-    } else {
-        console.error("Verify OTP button not found!");
-    }
+    });
 
     // OTP INPUT HANDLING
     otpInputs.forEach((input, index) => {
@@ -134,109 +159,170 @@ document.addEventListener("DOMContentLoaded", function () {
             let pastedData = e.clipboardData.getData("text").replace(/\D/g, '').slice(0, otpInputs.length);
             otpInputs.forEach((inp, i) => inp.value = pastedData[i] || "");
         });
-
     });
 
-
-    // PHONE NUMBER VERIFICATION
+    // Phone Number Verification
     const phoneInput = document.getElementById("phone");
     const phoneError = document.getElementById("phone-error");
     const phoneSubmit = document.getElementById("phone-submit");
 
-    if (phoneSubmit) {
-        phoneSubmit.addEventListener("click", function () {
-            let phone = phoneInput.value.trim();
+    phoneSubmit.addEventListener("click", function () {
+        let phone = phoneInput.value.trim();
+        phoneError.textContent = ""; // Clear previous errors
+        phoneInput.classList.remove("error");
 
-            // Automatically remove leading zero if present
-            if (/^0[7-9]\d{9}$/.test(phone)) {
-                phone = phone.substring(1); // Remove only ONE leading zero
+        // Check if country code is present
+        if (/^(\+234|234)/.test(phone)) {
+            showError(phoneError, "Remove the country code.");
+            return;
+        }
+
+        // Check for leading zero
+        if (/^0/.test(phone)) {
+            phone = phone.replace(/^0/, '');
+        }
+
+        // Nigerian phone number validation (should be 10 digits after sanitization)
+        const phonePattern = /^\d{10}$/;
+
+        if (!phonePattern.test(phone)) {
+            showError(phoneError, "Enter a valid Nigerian phone number.");
+            return;
+        }
+
+        spinner.classList.remove('d-none');
+        phoneSubmit.style.cursor = 'not-allowed';
+
+        const registration_id = sessionStorage.getItem('registration_id');
+
+        console.log("Registration ID for phone validation:", registration_id);
+
+        // Validate phone number and update users table
+        sendAjaxRequest("validate-phone.php", "POST", "phone=" + encodeURIComponent(phone) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
+            if (!response.success) {
+                showError(phoneError, response.message);
+                spinner.classList.add('d-none');
+                phoneSubmit.style.cursor = 'pointer';
+            } else {
+                phoneSubmit.classList.remove('btn-primary');
+                phoneSubmit.classList.add('btn-secondary');
+                spinner.classList.add('d-none');
+
+                setTimeout(() => {
+                    nextStep();
+                }, 500); // Delay before moving to the next step
             }
-
-
-            // Nigerian phone number validation (after stripping 0)
-            const phonePattern = /^(234)?(70\d|80\d|81\d|90\d|91\d|701|702|703|704|705|706|707|708|709|802|803|804|805|806|807|808|809|810|811|812|813|814|815|816|817|818|819|908|909|901|902|903|904|905|906|907|912|913|914|915|916|917|918|919)\d{6}$/;
-
-
-            if (!phonePattern.test(phone)) {
-                phoneError.textContent = "Enter a valid Nigerian phone number.";
-                return;
-            }
-
-            // Disable button & show spinner during request
-            spinner.classList.remove("d-none");
-
-            // AJAX request to verify phone number
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "validate-phone.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    phoneSubmit.disabled = false; // Re-enable button
-                    spinner.classList.add("d-none"); // Hide spinner
-
-                    try {
-                        const response = JSON.parse(xhr.responseText.trim());
-                        if (response.success) {
-                            phoneError.textContent = "";
-                            nextStep(); // Move to next step
-                        } else {
-                            phoneError.textContent = response.message;
-                        }
-                    } catch (error) {
-                        phoneError.textContent = "An error occurred. Please try again.";
-                        console.error("Invalid JSON response:", xhr.responseText);
-                    }
-                }
-            };
-
-            xhr.send("phone=" + encodeURIComponent(phone));
         });
+    });
 
-        // Clear error message when user types
-        phoneInput.addEventListener("input", function () {
-            phoneError.textContent = "";
-        });
-    } else {
-        console.error("Phone submit button not found!");
-    }
-
-    // NAME VERIFICATION
     const firstNameInput = document.getElementById("first_name");
     const lastNameInput = document.getElementById("last_name");
-    const nameError = document.getElementById("names-error");
-    const nameSubmitBtn = document.getElementById("names-submit");
+    const namesError = document.getElementById("names-error");
+    const namesSubmit = document.getElementById("names-submit");
 
-    if (nameSubmitBtn) {
-        nameSubmitBtn.addEventListener("click", function () {
-            const firstName = firstNameInput.value.trim();
-            const lastName = lastNameInput.value.trim();
-            nameError.textContent = ""; // Clear previous errors
+    namesSubmit.addEventListener("click", function () {
+        const firstName = firstNameInput.value.trim();
+        const lastName = lastNameInput.value.trim();
+        namesError.textContent = ""; // Clear previous errors
+        firstNameInput.classList.remove("error");
+        lastNameInput.classList.remove("error");
 
-            // Validate names (at least 2 letters, no numbers or symbols)
-            const namePattern = /^[A-Za-z]{3,}(?:\s[A-Za-z]{3,})?$/;
+        // Validate first name and last name
+        if (!firstName || !lastName) {
+            showError(namesError, "Both first name and last name are required.");
+            return;
+        }
 
-            if (!namePattern.test(firstName) || !namePattern.test(lastName)) {
-                nameError.textContent = "Enter a valid first and last name.";
-                return;
+        const namePattern = /^[A-Za-z\s'-]+$/;
+
+        if (!namePattern.test(firstName)) {
+            showError(namesError, "Enter a valid first name.");
+            return;
+        }
+
+        if (!namePattern.test(lastName)) {
+            showError(namesError, "Enter a valid last name.");
+            return;
+        }
+
+        // Update user in the database with first name and last name
+        const registration_id = sessionStorage.getItem('registration_id');
+        console.log("Registration ID for name validation:", registration_id);
+
+        spinner.classList.remove('d-none');
+        namesSubmit.style.cursor = 'not-allowed';
+
+        // AJAX request to update names
+        sendAjaxRequest("validate-names.php", "POST", "first_name=" + encodeURIComponent(firstName) + "&last_name=" + encodeURIComponent(lastName) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
+            if (!response.success) {
+                showError(namesError, response.message);
+                spinner.classList.add('d-none');
+                namesSubmit.style.cursor = 'pointer';
+            } else {
+                namesSubmit.classList.remove('btn-primary');
+                namesSubmit.classList.add('btn-secondary');
+                spinner.classList.add('d-none');
+
+                setTimeout(() => {
+                    nextStep();
+                }, 500); // Delay before moving to the next step
             }
-
-            // Send AJAX request to update names
-            sendAjaxRequest("validate-names.php", "POST",`first_name=${encodeURIComponent(firstName)}&last_name=${encodeURIComponent(lastName)}`,
-                function (response) {
-                    if (response.success) {
-                        nameError.textContent = "";
-                        nextStep(); // Proceed to the next step
-                    } else {
-                        nameError.textContent = response.message;
-                    }
-                }
-            );
         });
-    } else {
-        console.error("Name submit button not found!");
-    }
+    });
 
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+    const passwordError = document.getElementById("password-error");
+    const passwordSubmit = document.getElementById("password-submit");
+
+    passwordSubmit.addEventListener("click", function () {
+        const password = passwordInput.value.trim();
+        const confirmPassword = confirmPasswordInput.value.trim();
+        passwordError.textContent = ""; // Clear previous errors
+        passwordInput.classList.remove("error");
+        confirmPasswordInput.classList.remove("error");
+
+        // Validate password and confirm password
+        if (password === "" || confirmPassword === "") {
+            showError(passwordError, "Both password and confirm password are required.");
+            return;
+        }
+
+        if (password.length < 8) {
+            showError(passwordError, "Password must be at least 8 characters long.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            showError(passwordError, "Passwords do not match.");
+            return;
+        }
+
+        // Update user in the database with password
+        const registration_id = sessionStorage.getItem('registration_id');
+        console.log("Registration ID for password validation:", registration_id);
+
+        spinner.classList.remove('d-none');
+        passwordSubmit.style.cursor = 'not-allowed';
+
+        // AJAX request to update password
+        sendAjaxRequest("validate-password.php", "POST", "password=" + encodeURIComponent(password) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
+            if (!response.success) {
+                showError(passwordError, response.message);
+                spinner.classList.add('d-none');
+                passwordSubmit.style.cursor = 'pointer';
+            } else {
+                passwordSubmit.classList.remove('btn-primary');
+                passwordSubmit.classList.add('btn-secondary');
+                spinner.classList.add('d-none');
+
+                setTimeout(() => {
+                    // Redirect to login page
+                    window.location.href = "login.php";
+                }, 500); // Delay before redirecting to the login page
+            }
+        });
+    });
 
 
 });
