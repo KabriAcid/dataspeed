@@ -8,7 +8,7 @@ require __DIR__ . "/../../partials/header.php";
 ?>
 
 <body style="font-family: 'Montserrat';">
-    <?php #require __DIR__ . "/../../partials/navbar.php"; ?>
+    <?php require __DIR__ . "/../../partials/sidebar.php"; ?>
     <main>
 
     </main>

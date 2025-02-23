@@ -49,8 +49,8 @@
                             </div>
 
                             <div class="d-flex">
-                                <a href="public/pages/" class="btn btn-secondary ml-2">Login</a>
-                                <a href="public/pages/" class="btn btn-primary ml-2">Create account</a>
+                                <a href="public/pages/" class="btn secondary-btn ml-2">Login</a>
+                                <a href="public/pages/" class="btn primary-btn ml-2">Create account</a>
                             </div>
                         </nav>
                     </div>

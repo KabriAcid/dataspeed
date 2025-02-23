@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showError(element, message) {
         element.textContent = message;
-        element.classList.add("error");
     }
 
     function sendAjaxRequest(url, method, data, callback) {
@@ -51,16 +50,18 @@ document.addEventListener("DOMContentLoaded", function () {
     emailContinueBtn.addEventListener("click", function () {
         const email = emailInput.value.trim();
         emailError.textContent = ""; // Clear previous errors
-        emailInput.classList.remove("error");
-
+        
         if (email === "") {
             showError(emailError, "Email address is required.");
+            emailInput.classList.add("error-input");
             return;
         } else if (email.length <= 6) {
             showError(emailError, "Please enter a valid email address");
+            emailInput.classList.add("error-input");
             return;
-        } else if (email.includes("xxxxx")) {
+        } else if (email.includes("mailinator")) {
             showError(emailError, "Email format not supported.");
+            emailInput.classList.add("error-input");
             return;
         }
 
