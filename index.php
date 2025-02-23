@@ -11,18 +11,80 @@ session_start();
     <link rel="shortcut icon" href="public/logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="public/assets/css/style.css">
 </head>
 
 <body>
-    <?php require __DIR__ . "/public/partials/navbar.php"; ?>
+    <nav>
+        <div class="hero-anime">
+            <div class="navigation-wrap bg-light start-header start-style">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <nav class="navbar navbar-expand-md navbar-light">
+
+                                <a class="navbar-brand" href="index.php">DataSpeed</a>
+
+                                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav ml-auto py-4 py-md-0">
+                                        <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 active">
+                                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                                aria-haspopup="true" aria-expanded="false">Home</a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                            <a class="nav-link" href="#">Portfolio</a>
+                                        </li>
+                                        <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                                aria-haspopup="true" aria-expanded="false">Services</a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                            <a class="nav-link" href="#">Journal</a>
+                                        </li>
+                                        <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                            <a class="nav-link" href="#">Contact</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="d-flex">
+                                    <a href="public/pages/backend/login.php" class="btn btn-secondary ml-2">Login</a>
+                                    <a href="public/pages/backend/register.php" class="btn primary-btn ml-2">Create account</a>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
     <main>
         <section class="mt-5"></section>
         <section class="jumbotoron" id="sectionI">
             <h1 id="main-header">The cheapest and most <br>affordable <span class="primary">airtime</span> data <br>plug.</h1>
             <p id="header-para">Convert your airtime to cash, make & receive payments,<br> instant airtime and data
                 delivery, make bill payments <br> with DataSpeed. The all-in-one payments app.</p>
-            <a href="" class="btn btn-primary">Get Started</a>
+            <a href="" class="btn primary-btn">Get Started</a>
         </section>
         <!--  -->
         <section id="sectionII">
@@ -128,7 +190,90 @@ session_start();
                 </div>
             </div>
         </section>
+        <!--  -->
+        <section id="sectionIV">
+            <div class="text-center">
+                <h4>Newsletter</h4>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. At aut neque consectetur nihil sint excepturi omnis adipisci possimus!</p>
+                <form action="" method="post" class="d-flex" style="width: 50%;margin: auto;">
+                    <input type="email" name="email" class="input" placeholder="Your email">
+                    <button type="submit" name="submit" class="btn primary-btn ml-3">SUBSCRIBE</button>
+                </form>
+            </div>
+        </section>
     </main>
+    <footer>
+        <div style="height: 400px;"> </div>
+        <div class="dataspeed-footer">
+            <div class="dataspeed-footer-top">
+
+            </div>
+            <div class="dataspeed-footer-content">
+                <div class="dataspeed-footer-section">
+                    <h1 class="dataspeed-footer-heading">dataspeed</h1>
+                </div>
+                <div class="dataspeed-footer-section">
+                    <ul class="d-footer-ul">
+                        <li class="d-footer-li-h"><b>Links</b></li>
+                        <li class="d-footer-li">Home</li>
+                        <li class="d-footer-li">About</li>
+                        <li class="d-footer-li">Blog</li>
+                        <li class="d-footer-li">Design</li>
+                        <li class="d-footer-li">Documentation</li>
+                    </ul>
+                </div>
+                <div class="dataspeed-footer-section">
+                    <ul class="d-footer-ul">
+                        <li class="d-footer-li-h"><b>Blog</b></li>
+                        <li class="d-footer-li">UI / UX</li>
+                        <li class="d-footer-li">CodePens</li>
+                        <li class="d-footer-li">Codedamn</li>
+                        <li class="d-footer-li">Figma</li>
+                        <li class="d-footer-li">Oracle EBS</li>
+                    </ul>
+                </div>
+                <div class="dataspeed-footer-section">
+                    <ul class="d-footer-ul">
+                        <li class="d-footer-li-h"><b>Privacy policy</b></li>
+                        <li class="d-footer-li-h"><b>Contact Us</b></li>
+
+                    </ul>
+                </div>
+                <div class="dataspeed-footer-section">
+                    <div class="logo-head">
+                        <b>Follow me on</b>
+                    </div>
+                    <div class="logo">
+                        <a href="https://www.instagram.com/dark.soul.io/" target="_blank"><img width="30" height="30" src="https://img.icons8.com/ios-glyphs/100/instagram-new.png" alt="instagram-new" /></a>
+                        <a href="https://www.youtube.com/channel/UCooCOD2j8Q4Y9ysYZIFzI_w" target="_blank"><img width="30" height="30" src="https://img.icons8.com/ios-filled/100/youtube-squared.png" alt="youtube-squared" /></a>
+                        <a href="https://dribbble.com/dark-soul" target="_blank"><img width="25" height="25" src="https://img.icons8.com/offices/100/dribbble.png" alt="dribbble" /></a>
+                    </div>
+                </div>
+            </div>
+            <div class="dataspeed-footer-bottom">
+                <div class="dataspeed-footer-bottom-sec">
+                    <p>Icons by <a href="https://icons8.com/" target="_blank">Icons8</a></p>
+                </div>
+                <div class="dataspeed-footer-bottom-sec">
+                    <p>Designed & Created by dataspeed</p>
+                </div>
+                <div class="dataspeed-footer-bottom-sec">
+                    <p>&copy; 2024 dataspeed</p>
+                </div>
+
+            </div>
+
+        </div>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Popper.js (for tooltips and popovers) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="public/assets/js/navbar.js"></script>
 </body>
 
 </html>

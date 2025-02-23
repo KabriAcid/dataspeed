@@ -1,152 +1,4 @@
 /* REUSABLE CLASSES */
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--spacing-3);
-}
-
-.primary {
-    color: var(--primary);
-}
-
-.link {
-    text-decoration: none;
-    color: var(--primary);
-    font-weight: 600;
-}
-
-.copyright {
-    font-size: small;
-    color: #afb2b4;
-    text-align: center;
-}
-
-.input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #E9E9E9;
-    border-radius: 8px;
-    background-color: var(--light, #fff);
-    font-size: 1rem;
-    color: #9B9B9B;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-/* 🔹 Focus State: Soft glow effect */
-.input:focus {
-    border-color: var(--primary, #94241E);
-    outline: none;
-    box-shadow: 0px 4px 8px rgba(148, 36, 30, 0.2);
-}
-
-/* 🔹 Placeholder Styling */
-.input::placeholder {
-    color: var(--gray-text, #8B9398);
-    opacity: 0.7;
-}
-
-.otp-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin: 10px 0;
-}
-
-.otp-input {
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    font-size: 20px;
-    border: 2px solid #eee;
-    box-shadow: 0 0 12px #ddd;
-    border-radius: 5px;
-    outline: none;
-}
-
-.otp-input:focus {
-    border-color: var(--primary);
-}
-
-.d-flex {
-    display: flex;
-}
-
-.justify-content-between {
-    justify-content: space-between;
-}
-
-.align-items-center {
-    align-items: center;
-}
-
-.flex-row {
-    flex-direction: row;
-}
-
-.gap-3 {
-    gap: 1rem;
-}
-
-.px-4 {
-    padding: 0 20px;
-}
-
-
-.card {
-    background: white;
-    padding: var(--spacing-3);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow var(--transition-fast);
-}
-
-.card-container {
-    box-shadow: 0px 0px 44px 0px rgba(45, 45, 45, 0.15);
-    border-radius: var(--radius-md);
-    padding: var(--spacing-4);
-}
-
-.card:hover {
-    box-shadow: 0px 0px 24px 0px rgba(45, 45, 45, 0.15);
-}
-
-.card-icon {
-    width: 52px;
-    height: 52px;
-    margin-bottom: 25px;
-    aspect-ratio: 1/1;
-}
-
-.form-card {
-    width: 75%;
-    margin: auto;
-    margin-top: calc(0px + 50px);
-    border-radius: 7px;
-    background-color: #fcfcfc;
-    box-shadow: 0px 16px 54px 0px rgba(110, 106, 106, 0.2);
-    padding: 30px;
-}
-
-.form-label {
-    margin-bottom: var(--mb-1);
-}
-
-.form-card form:nth-child(2) {
-    margin-top: 310px;
-}
-
-/* #form-field>* {
-    display: block;
-} */
-
-#form-field label {
-    margin-bottom: 12px;
-    font-weight: normal;
-}
-
 .avatar {
     display: inline-block;
     width: var(--avatar-size, 50px);
@@ -226,6 +78,132 @@
     --avatar-size: 120px;
 }
 
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-3);
+}
+
+.primary {
+    color: var(--primary);
+}
+
+.link {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.copyright {
+    font-size: small;
+    color: #afb2b4;
+    text-align: center;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    background-color: var(--light, #fff);
+    font-size: 1rem;
+    color: #9B9B9B;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* 🔹 Focus State: Soft glow effect */
+.input:focus {
+    border-color: var(--primary, #94241E);
+    outline: none;
+    box-shadow: 0px 4px 8px rgba(148, 36, 30, 0.2);
+}
+
+/* 🔹 Placeholder Styling */
+.input::placeholder {
+    color: var(--gray-text, #8B9398);
+    opacity: 0.7;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.gap-3 {
+    gap: 1rem;
+}
+
+.px-4 {
+    padding: 0 20px;
+}
+
+.card {
+    background: white;
+    padding: var(--spacing-3);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-fast);
+}
+
+.card-container {
+    box-shadow: 0px 0px 44px 0px rgba(45, 45, 45, 0.15);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4);
+}
+
+.card:hover {
+    box-shadow: 0px 0px 24px 0px rgba(45, 45, 45, 0.15);
+}
+
+.card-icon {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 25px;
+    aspect-ratio: 1/1;
+}
+
+.form-card {
+    width: 75%;
+    margin: auto;
+    margin-top: calc(0px + 50px);
+    border-radius: 7px;
+    background-color: #fcfcfc;
+    box-shadow: 0px 16px 54px 0px rgba(110, 106, 106, 0.2);
+    padding: 30px;
+}
+
+.form-step-header,
+.form-step-para {
+    text-align: center;
+    margin: 15px;
+}
+
+.form-label {
+    margin-bottom: var(--mb-1);
+}
+
+.form-card form:nth-child(2) {
+    margin-top: 310px;
+}
+
+#form-field label {
+    margin-bottom: 12px;
+    font-weight: normal;
+}
+
 .strong-color {
     color: var(--primary);
 }
@@ -250,18 +228,9 @@
     transform: scale(1.2);
 }
 
-#multi-step-form h3,
-p {
-    text-align: left;
-    margin: 10px 0;
-}
 
-#multi-step-form h3 {
-    margin-top: calc(10px * 6);
-}
-
-.error {
-    border: 1px solid rgb(175, 0, 0) !important;
+.error-input {
+    border: 1px solid rgb(245, 0, 0) !important;
 }
 
 .error-label {
@@ -290,3 +259,14 @@ p {
 .form-field {
     margin: 25px 0;
 }
+
+.form .d-none {
+    display: none;
+
+}
+
+#spinner-icon {
+    color: white;
+}
+
+/* OTP */

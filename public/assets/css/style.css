@@ -1,5 +1,7 @@
+@import url('bootstrap.min.css');
 @import url('variables.css');
 @import url('utilities.css');
+@import url('custom.css');
 @import url('reusables.css');
 @import url('print.css');
 @import url('navbar.css');
@@ -10,6 +12,10 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+body {
+  background-color: var(--primary-light);
 }
 
 @font-face {
@@ -40,7 +46,7 @@ html {
 body {
   /* background-color: var(--body-bg, #f5f5f5); */
   font-family: 'Montserrat';
-  background-color: #F9EEED;
+  /* background-color: #F9EEED; */
 }
 
 a {
@@ -53,7 +59,7 @@ main section {
   padding-top: calc(80px + 30px);
 }
 
-section:not(.jumbotoron){
+section:not(.jumbotoron) {
   background-color: white;
 }
 
@@ -86,4 +92,9 @@ section:not(.jumbotoron){
   background-attachment: fixed;
   background-position: right;
   height: 100vh;
+}
+
+#sectionIV {
+  background: #FEF9FC;
+  height: 80vh;
 }

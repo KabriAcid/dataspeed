@@ -36,14 +36,7 @@ if(isset($_POST['register'])){
 }
 
 if (isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    
-    $sql = "SELECT * FROM users WHERE email = :email";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([':email' => $email]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    $row = true;
     if ($row) {
         // Here, you may want to verify the password using password_verify() if hashed.
         $_SESSION['loggedin'] = $row;

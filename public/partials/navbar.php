@@ -1,18 +1,61 @@
-<nav class="navbar navbar-light bg-light px-4 d-flex justify-content-between align-items-center fixed-top shadow-sm" id="navbar">
-    <a class="navbar-brand text-danger fw-bold" href="../../../index.php">DataSpeed</a>
+<nav>
+    <div class="hero-anime">
+        <div class="navigation-wrap bg-light start-header start-style">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <nav class="navbar navbar-expand-md navbar-light">
 
-    <!-- Nav links: Only show on large screens -->
-    <div class="d-none d-lg-block">
-        <ul class="navbar-nav d-flex flex-row gap-3">
-            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
-        </ul>
-    </div>
+                            <a class="navbar-brand" href="index.php">DataSpeed</a>
 
-    <!-- Login & Create Account: Always visible -->
-    <div class="nav-buttons d-flex">
-        <a href="public/pages/backend/login.php" class="nav-btn btn-outline me-2">Login</a>
-        <a href="public/pages/backend/register.php" class="nav-btn btn-primary">Create an account</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav ml-auto py-4 py-md-0">
+                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 active">
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                            aria-haspopup="true" aria-expanded="false">Home</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                        <a class="nav-link" href="#">Portfolio</a>
+                                    </li>
+                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                            aria-haspopup="true" aria-expanded="false">Services</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                        <a class="nav-link" href="#">Journal</a>
+                                    </li>
+                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                        <a class="nav-link" href="#">Contact</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="d-flex">
+                                <a href="public/pages/" class="btn secondary-btn ml-2">Login</a>
+                                <a href="public/pages/" class="btn primary-btn ml-2">Create account</a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </nav>

@@ -1,7 +1,7 @@
 <?php require __DIR__ . '/../../partials/header.php'; ?>
 
 <body>
-    <?php #require __DIR__ . '/../../partials/navbar.php'; 
+    <?php require __DIR__ . '/../../partials/navbar.php';
     ?>
 
 </body>
@@ -14,18 +14,25 @@
                 </svg>
             </a>
         </div>
-        <form id="multi-step-form" action="process.php" method="post">
-            <div class="form-step">
+        <form method="post" onsubmit="return false;">
+            <div id="login-form">
                 <h3>Welcome Back!</h3>
                 <p>Enter your correct login details to continue.</p>
                 <div class="form-field">
-                    <input type="number" name="phone_number" placeholder="Phone Number" class="input" required>
-                    <label for="" class="error-label"></label>
+                    <div>
+                        <input type="text" id="user" name="user" placeholder="Email address or Phone Number" class="input">
+                    </div>
                     <div class="my-3"></div>
-                    <input type="password" name="password" placeholder="Password" class="input" required>
-                    <label for="" class="error-label"></label>
-                    <p class="text-end"><a href="forgot-password.php" class="text-secondary">Forgot password?</a></p>
-                    <button type="submit" class="btn btn-primary mt-3">Login</button>
+                    <div>
+                        <input type="password" id="password" name="password" placeholder="Password" class="input">
+                    </div>
+                    <label for="" class="error-label" id="email-error"></label>
+
+                    <p class="text-right"><a href="forgot-password.php" class="text-secondary">Forgot password?</a></p>
+                    <button type="submit" class="btn primary-btn mt-3" name="login" id="login">
+                        <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
+                        Login
+                    </button>
                 </div>
                 <p class="text-center">Don't have an account? <a href="register.php" class="link">Register</a></p>
                 <p class="copyright">Copyright @DreamCodes</p>
@@ -33,7 +40,7 @@
         </form>
     </div>
 </main>
-<script src="../../assets/js/multi-step.js"></script>
+<script src="../../assets/js/auth.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>

@@ -1,33 +1,42 @@
 <?php
+
 require __DIR__ . '/../../../config/config.php';
 require __DIR__ . '/../../../functions/sendMail.php';
 
 header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = $_POST["email"] ?? '';
+    session_start();
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(["success" => false, "message" => "Invalid email address."]);
-        exit;
-    }
+    $email = $_POST['email'] ?? '';
 
-    // Generate 6-digit OTP
+    // Generate OTP
     $otp = rand(100000, 999999);
-    $expires_at = date("Y-m-d H:i:s", strtotime("+10 minutes")); // OTP expires in 10 minutes
+    $expires_at = date("Y-m-d H:i:s", strtotime("+10 minutes"));
 
-    // Store OTP in database
-    $stmt = $pdo->prepare("INSERT INTO otp_codes (email, otp_code, expires_at) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE 
-    otp_code = VALUES(otp_code), expires_at = VALUES(expires_at), created_at = CURRENT_TIMESTAMP");
-    $stmt->execute([$email, $otp, $expires_at]);
+    try {
+        // Insert or update OTP
+        $stmt = $pdo->prepare("INSERT INTO otp_codes (email, otp_code, expires_at) VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE otp_code = VALUES(otp_code), expires_at = VALUES(expires_at)");
+        $stmt->execute([$email, $otp, $expires_at]);
 
-    // Send OTP via email
-    $subject = "Your OTP Code";
-    $body = "<p>Your OTP code is: <strong>$otp</strong></p><p>It will expire in 10 minutes.</p>";
+        // Send OTP Email
+        $subject = "Your OTP Code";
+        $body = "
+            <div style='font-family: 'Montserrat', sans-serif; max-width: 500px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; text-align: center; background-color: #f9f9f9;'>
+                <h2 style='color: #94241E;'>DataSpeed OTP Verification</h2>
+                <p style='font-size: 16px; color: #555;'>Use the OTP code below to verify your email:</p>
+                <h1 style='font-size: 28px; font-weight: bold; background: #94241E; color: #fff; padding: 10px; border-radius: 5px; display: inline-block;'>$otp</h1>
+                <p style='color: #888; font-size: 14px;'>This OTP is valid for 10 minutes. Do not share it with anyone.</p>
+                <hr style='margin: 20px 0; border: none; border-top: 1px solid #ddd;'>
+                <p style='font-size: 12px; color: #999;'>If you did not request this, please ignore this email.</p>
+            </div>
+        ";
 
-    if (sendMail($email, $subject, $body)) {
+        sendMail($email, $subject, $body);
+
         echo json_encode(["success" => true, "message" => "OTP sent successfully."]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Failed to send OTP."]);
+    } catch (Exception $e) {
+        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
 }

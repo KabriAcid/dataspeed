@@ -1,27 +1,31 @@
 <?php
-require __DIR__ . '/../../../config/config.php'; // Load database connection
+
+require __DIR__ . '/../../../config/config.php';
+
 header("Content-Type: application/json");
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $otp = $_POST["otp"] ?? '';
+    $email = $_POST['email'] ?? '';
+    $otp = $_POST['otp'] ?? '';
 
-    if (empty($otp) || strlen($otp) !== 6) {
-        echo json_encode(["success" => false, "message" => "Invalid OTP."]);
-        exit;   
-    }
+    try {
+        // Check if the OTP is valid
+        $stmt = $pdo->prepare("SELECT * FROM otp_codes WHERE email = ? AND otp_code = ? AND expires_at > NOW()");
+        $stmt->execute([$email, $otp]);
+        $otpRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Retrieve OTP from the database
-    $stmt = $pdo->prepare("SELECT * FROM otp_codes WHERE otp_code = ? AND expires_at > NOW() LIMIT 1");
-    $stmt->execute([$otp]);
-    $otpRecord = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($otpRow) {
+            // OTP is valid, delete the entry
+            $stmt = $pdo->prepare("DELETE FROM otp_codes WHERE email = ? AND otp_code = ?");
+            $stmt->execute([$email, $otp]);
 
-    if ($otpRecord) {
-        // OTP is valid, delete it to prevent reuse
-        $stmt = $pdo->prepare("DELETE FROM otp_codes WHERE otp_code = ?");
-        $stmt->execute([$otp]);
-
-        echo json_encode(["success" => true, "message" => "OTP verified successfully."]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Invalid or expired OTP."]);
+            echo json_encode(["success" => true, "message" => "OTP verified successfully."]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid or expired OTP."]);
+        }
+    } catch (Exception $e) {
+        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
 }
