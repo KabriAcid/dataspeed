@@ -39,12 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 exit;
             } else {
                 echo json_encode(["success" => true, "message" => "Resuming incomplete registration."]);
-                $_SESSION['phone'] = $phone;
             }
         } else {
-            // If the phone number is valid and not already registered, update users table using registration_id
-            $stmt = $pdo->prepare("UPDATE users SET phone_number = ? WHERE registration_id = ?");
-            $stmt->execute([$phone, $registration_id]);
+            // Update the user's password and set registration status to complete
+            $stmt = $pdo->prepare("UPDATE users SET password = ?, registration_status = 'complete' WHERE registration_id = ?");
+            $stmt->execute([$hashedPassword, $registration_id]);
 
             echo json_encode(["success" => true, "message" => "Phone number is valid and updated."]);
         }
