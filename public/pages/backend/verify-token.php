@@ -16,12 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Check if token is valid
-        $stmt = $pdo->prepare("SELECT email FROM forgot_password WHERE token = ?");
+        $stmt = $pdo->prepare("SELECT token FROM forgot_password WHERE token = ?");
         $stmt->execute([$token]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            // Token is valid, store email in session
             echo json_encode(["success" => true, "message" => "Token verified."]);
         } else {
             echo json_encode(["success" => false, "message" => "Invalid token."]);

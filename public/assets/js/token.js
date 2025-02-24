@@ -70,10 +70,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 emailInput.classList.add('error-input');
                 spinner.classList.add('d-none');
             } else {
+                // Create and store the reset email.
+                sessionStorage.setItem('reset_email', email);
                 setTimeout(() => {
                     spinner.classList.add('d-none');
                     nextStep(); // Move to the next step
-                }, 1000); // 1-second delay
+                }, 10); // 1-second delay
             }
         });
     });
@@ -100,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!response.success) {
                 showError(tokenError, response.message);
                 spinner.classList.add('d-none');
+                console.log(sessionStorage.getItem('reset_email'));
             } else {
                 setTimeout(() => {
                     spinner.classList.add('d-none');
@@ -121,8 +124,10 @@ document.addEventListener("DOMContentLoaded", function () {
         passwordInput.classList.remove("error");
         confirmPasswordInput.classList.remove("error");
 
+        const reset_email = sessionStorage.getItem('reset_email');
+
         if (password === "" || confirmPassword === "") {
-            showError(passwordError, "Both password and confirm password are required.");
+            showError(passwordError, "Both fields are required.");
             return;
         }
 
@@ -139,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
         spinner.classList.remove('d-none');
 
         // AJAX request to reset password
-        sendAjaxRequest("reset-password.php", "POST", "password=" + encodeURIComponent(password), function (response) {
+        sendAjaxRequest("reset-password.php", "POST", "password=" + encodeURIComponent(password) + "&reset_email=" + encodeURIComponent(reset_email), function (response) {
             if (!response.success) {
                 showError(passwordError, response.message);
                 spinner.classList.add('d-none');

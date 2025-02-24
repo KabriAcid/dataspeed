@@ -1,6 +1,4 @@
-<?php require __DIR__ . '/../../partials/header.php'; ?>
-
-<?php
+<?php require __DIR__ . '/../../partials/header.php';
 session_start();
 ?>
 <main class="container">
@@ -48,11 +46,14 @@ session_start();
                         Submit
                     </button>
                 </div>
+                <div class="otp-timer-container">
+                    <p>Time remaining: <span id="otp-timer">10:00</span></p>
+                </div>
             </div>
             <!-- PASSWORD -->
             <div class="form-step d-none" id="password-step">
                 <div class="form-step-header">
-                    <h3>Create your password.</h3>
+                    <h3>Reset your password.</h3>
                     <p>Make sure your password is strong.</p>
                 </div>
                 <div class="form-field">
@@ -72,6 +73,31 @@ session_start();
 
     </div>
 </main>
+<script>
+    let countdown = 600; // 10 minutes in seconds
+    const timerDisplay = document.getElementById("otp-timer");
+    const verifyBtn = document.getElementById("verify-otp-btn");
+
+    function updateTimer() {
+        if (!timerDisplay) return; // Avoid errors if element is missing
+
+        const minutes = Math.floor(countdown / 60);
+        const seconds = countdown % 60;
+        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        if (countdown === 0) {
+            timerDisplay.textContent = "OTP Expired! Request a new one.";
+            verifyBtn.disabled = true;
+            verifyBtn.classList.add('secondary-btn');
+            verifyBtn.style.cursor = 'not-allowed';
+            clearInterval(timerInterval);
+        }
+
+        countdown--;
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+</script>
 <script src="../../assets/js/token.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
