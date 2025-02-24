@@ -14,6 +14,7 @@ session_start();
             <div class="pagination">
                 <span class="page active"></span>
                 <span class="page"></span>
+                <span class="page"></span>
             </div>
 
         </div>
@@ -36,11 +37,11 @@ session_start();
             <!-- TOKEN -->
             <div class="form-step d-none">
                 <div class="form-step-header">
-                    <h3>Enter token</h3>
+                    <h3>Enter generated token</h3>
                     <p>Enter the token that was sent to your email</p>
                 </div>
                 <div class="form-field">
-                    <input type="text" name="token" id="toke" placeholder="Token" class="input">
+                    <input type="text" name="token" id="token" placeholder="Insert your token" class="input">
                     <label for="" class="error-label" id="token-error"></label>
                     <button type="button" class="btn primary-btn mt-3" id="token-submit">
                         <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
@@ -48,12 +49,30 @@ session_start();
                     </button>
                 </div>
             </div>
+            <!-- PASSWORD -->
+            <div class="form-step d-none" id="password-step">
+                <div class="form-step-header">
+                    <h3>Create your password.</h3>
+                    <p>Make sure your password is strong.</p>
+                </div>
+                <div class="form-field">
+                    <input type="password" class="input" id="password" name="password" placeholder="Password">
+                </div>
+                <div class="form-field">
+                    <input type="password" class="input" id="confirm-password" name="confirm_password" placeholder="Password">
+                </div>
+                <label for="" class="error-label" id="password-error"></label>
+                <button type="button" class="btn primary-btn" id="password-submit">
+                    <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
+                    Finish
+                </button>
+            </div>
 
         </form>
 
     </div>
 </main>
-<script src="../../assets/js/send-token.js"></script>
+<script src="../../assets/js/token.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>

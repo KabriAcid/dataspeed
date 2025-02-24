@@ -50,14 +50,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Spin
         spinner.classList.remove('d-none')
+        login.style.cursor = 'not-allowed';
 
-        sendAjaxRequest("validate-user.php", "POST", "user=" + encodeURIComponent(user), function (response) {
+        sendAjaxRequest("validate-user.php", "POST", "user=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(password), function (response) {
             if (!response.success) {
                 showError(errorLabel, response.message);
                 spinner.classList.add('d-none');
             } else {
                 // Save the email and registration_id to sessionStorage for use in the OTP page
-                errorLabel.textContent = response.message;
+                window.location.href = 'dashboard.php';
             }
         });
     });

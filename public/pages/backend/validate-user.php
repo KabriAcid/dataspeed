@@ -1,25 +1,44 @@
 <?php
 
 require __DIR__ . '/../../../config/config.php';
-header("Content-type: application/json");
+
+header("Content-Type: application/json");
 
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user = trim($_POST['user']) ?? '';
-    $password = trim($_POST['password']) ?? '';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $user = $_POST['user'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    // Validate input
+    if (empty($user) || empty($password)) {
+        echo json_encode(["success" => false, "message" => "Both user and password are required."]);
+        exit;
+    }
 
     try {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE user = ? AND password = ?");
-        $stmt->execute([$user, $password]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if($user){
-            echo json_encode(["success" => true, "message" => "Credentials found."]);
+        // Check if user is email or phone number
+        if (filter_var($user, FILTER_VALIDATE_EMAIL)) {
+            // User is email
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         } else {
-            echo json_encode(["success" => false, "message" => "No credentialsss found."]);
+            // Sanitize and format phone number
+            $user = preg_replace('/^(\+234|234|0)/', '', $user);
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE phone_number = ?");
         }
-    } catch(error){
-        echo json_encode(["success" => false, "message" => "No credentials found."]);
+
+        $stmt->execute([$user]);
+        $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($userRow && password_verify($password, $userRow['password'])) {
+            // Set session variables
+            $_SESSION['user'] = $userRow;
+
+            echo json_encode(["success" => true, "message" => "Login successful."]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid user or password."]);
+        }
+    } catch (Exception $e) {
+        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
 }

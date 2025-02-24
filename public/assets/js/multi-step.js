@@ -128,8 +128,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Verify OTP
         sendAjaxRequest("verify-otp.php", "POST", "email=" + encodeURIComponent(email) + "&otp=" + encodeURIComponent(otp) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (response.success) {
-                spinner.classList.add('d-none');
                 verifyOtpBtn.style.cursor = 'pointer';
+                spinner.classList.add('d-none');
                 setTimeout(() => {
                     nextStep();
                 }, 500); // Delay before moving to the next step

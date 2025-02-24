@@ -50,3 +50,6 @@
 5️⃣ **User receives OTP email** 🎉  
 
 Let me know if you need more clarification! 🚀
+
+
+https://www.figma.com/proto/b4pCL3Rx5monu7krNL0n8c/PAYMENT-APP%2F-Fintech%2FBNPL-Payments-(Community)?node-id=0-1&t=dytT6oViyyYkVzms-1

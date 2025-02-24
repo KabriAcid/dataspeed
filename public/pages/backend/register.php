@@ -139,6 +139,8 @@ session_start();
         if (countdown === 0) {
             timerDisplay.textContent = "OTP Expired! Request a new one.";
             verifyBtn.disabled = true;
+            verifyBtn.classList.add('secondary-btn');
+            verifyBtn.style.cursor = 'not-allowed';
             clearInterval(timerInterval);
         }
 
