@@ -1,4 +1,5 @@
 # dataspeed
+---
  A VTU airtime web application for purchasing data, airtime, and bill payment.
 
 ## **How `send-otp.php` and `sendMail.php` Work Together**  
@@ -51,5 +52,6 @@
 
 Let me know if you need more clarification! 🚀
 
-
+### Notes
+- 
 https://www.figma.com/proto/b4pCL3Rx5monu7krNL0n8c/PAYMENT-APP%2F-Fintech%2FBNPL-Payments-(Community)?node-id=0-1&t=dytT6oViyyYkVzms-1
