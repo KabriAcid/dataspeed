@@ -53,3 +53,7 @@ Let me know if you need more clarification! 🚀
 
 
 https://www.figma.com/proto/b4pCL3Rx5monu7krNL0n8c/PAYMENT-APP%2F-Fintech%2FBNPL-Payments-(Community)?node-id=0-1&t=dytT6oViyyYkVzms-1
+
+
+# Message
+i have test it here and its working fine, every step to the dashboard , i will try to create those static page insha allah starting from now 
