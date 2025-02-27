@@ -490,7 +490,7 @@ button:focus {
   }
 }
 .page-content {
-  $mobile-breakpoint: 880px;
+  mobile-breakpoint: 880px;
 }
 .page-content table {
   border-collapse: collapse;

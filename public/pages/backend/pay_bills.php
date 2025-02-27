@@ -1,159 +1,109 @@
-<?php
-require __DIR__ . '/../../partials/header.php'; 
-require __DIR__ . '/../../../config/config.php'; // Ensure database connection is included
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pay Bill</title>
-    <link rel="stylesheet" href="style.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: #f9f4f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #d89ca0;
+            color: white;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #b5767b;
+        }
+        .search-box {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        input {
+            flex: 1;
+            border: none;
+            outline: none;
+        }
+        .recent-payments {
+            margin-top: 20px;
+        }
+        .payment-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffe8e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
         
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f7f7f7;
-}
-
- 
-
-header {
-    text-align: center;
-    background: #dba7a3;
-    padding: 15px;
-    border-radius: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
-}
-
-.bill-btn {
-    width: 48%;
-    padding: 10px;
-    background: #f4d3d1;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.bill-btn:hover {
-    background: #dba7a3;
-    color: white;
-}
-
-.recent-payments {
-    margin-top: 20px;
-}
-
-h2 {
-    margin-bottom: 10px;
-}
-
-.search-bar input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.payments-list {
-    margin-top: 15px;
-}
-
-.payment-item {
-    display: flex;
-    align-items: center;
-    background: #fff3f2;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.icon {
-    background: #dba7a3;
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
-    font-size: 20px;
-    margin-right: 10px;
-}
-
-.details {
-    flex-grow: 1;
-}
-
-.title {
-    font-weight: bold;
-}
-
-.amount {
-    font-weight: bold;
-    color: black;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-    }
-
-    .buttons {
-        flex-direction: column;
-    }
-
-    .bill-btn {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-}
-
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <header>
-            <h1>Pay Bill</h1>
-        </header>
-
-        <section class="buttons">
-            <button class="bill-btn">📄 Pay a new bill</button>
-            <button class="bill-btn">💾 Pay saved bill</button>
-        </section>
-
-        <section class="recent-payments">
-            <h2>Recent Payments</h2>
-            <div class="search-bar">
-                <input type="text" placeholder="🔍 Search">
+        <h2>Pay Bill</h2>
+        <div class="buttons">
+            <button class="btn">Pay a New Bill</button>
+            <button class="btn">Pay Saved Bill</button>
+        </div>
+        <div class="search-box">
+            <span>&#128269;</span>
+            <input type="text" placeholder="Search recent payments...">
+        </div>
+        <div class="recent-payments">
+            <h3>Recent Payments</h3>
+            <div class="payment-card">
+                <span>BUYOPOWER</span>
+                <strong>N24,000</strong>
             </div>
-
-            <div class="payments-list">
-                <?php foreach ($payments as $payment) : ?>
-                    <div class="payment-item">
-                        <div class="icon">📋</div>
-                        <div class="details">
-                            <p class="title"><?php echo $payment['title']; ?></p>
-                            <p class="desc"><?php echo $payment['description']; ?></p>
-                        </div>
-                        <p class="amount">₦<?php echo number_format($payment['amount'], 0); ?></p>
-                    </div>
-                <?php endforeach; ?>
+            <div class="payment-card">
+                <span>DSTV</span>
+                <strong>N24,000</strong>
             </div>
-        </section>
+        </div>
     </div>
-
 </body>
 </html>
