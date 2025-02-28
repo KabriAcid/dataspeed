@@ -59,7 +59,7 @@ session_start();
                                             </div>
                                         </li>
                                         <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                            <a class="nav-link" href="#">Journal</a>
+                                            <a class="nav-link" href="#">About</a>
                                         </li>
                                         <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                             <a class="nav-link" href="#">Contact</a>
@@ -79,7 +79,6 @@ session_start();
         </div>
     </nav>
     <main>
-        <section class="mt-5"></section>
         <section class="jumbotoron" id="sectionI">
             <h1 id="main-header">The cheapest and most <br>affordable <span class="primary">airtime</span> data <br>plug.</h1>
             <p id="header-para">Convert your airtime to cash, make & receive payments,<br> instant airtime and data

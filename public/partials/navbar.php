@@ -27,7 +27,7 @@
                                         </div>
                                     </li>
                                     <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                        <a class="nav-link" href="#">Portfolio</a>
+                                        <a class="nav-link" href="#">Contact</a>
                                     </li>
                                     <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
@@ -40,10 +40,7 @@
                                         </div>
                                     </li>
                                     <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                        <a class="nav-link" href="#">Journal</a>
-                                    </li>
-                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                        <a class="nav-link" href="#">Contact</a>
+                                        <a class="nav-link" href="#">About</a>
                                     </li>
                                 </ul>
                             </div>

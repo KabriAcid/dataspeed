@@ -1,0 +1,16 @@
+#navigations {
+    background-color: #ffffff;
+    padding: 10px;
+}
+.navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    justify-content: center;
+}
+.navigation span {
+    color: #555;
+    font-size: 1em;
+}
