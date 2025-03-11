@@ -14,5 +14,10 @@
     <link rel="stylesheet" href="../../assets/css/bottom-nav.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
 
+    <style>
+        body {
+            font-family: 'Montserrat';
+        }
+    </style>
 
 </head>
