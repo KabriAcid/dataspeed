@@ -18,7 +18,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         <header class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="text-white fs-2 fw-bold mb-0">Welcome back,</h1>
-                <p class="text-secondary">Alex Thompson</p>
+                <p class="text-secondary">Musa Jidda</p>
             </div>
             <div class="profile-avatar">
                 <span>A</span>
@@ -149,7 +149,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                                 </svg>
                             </div>
                             <div>
-                                <p class="mb-0 text-white">YouTube Premium</p>
+                                <p class="mb-0 text-white">Airtime Purchase</p>
                                 <p class="text-secondary small mb-0">Mar 15, 2024</p>
                             </div>
                         </div>
@@ -166,7 +166,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                                 </svg>
                             </div>
                             <div>
-                                <p class="mb-0 text-white">Vimeo Pro Subscription</p>
+                                <p class="mb-0 text-white">Electricity Bills</p>
                                 <p class="text-secondary small mb-0">Mar 14, 2024</p>
                             </div>
                         </div>
@@ -181,7 +181,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                                 </svg>
                             </div>
                             <div>
-                                <p class="mb-0 text-white">Client Payment</p>
+                                <p class="mb-0 text-white">Payment Deposit</p>
                                 <p class="text-secondary small mb-0">Mar 13, 2024</p>
                             </div>
                         </div>
@@ -192,6 +192,23 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         </div>
     </main>
 
+    <script>
+        document.getElementById('toggleBalance').addEventListener('click', function() {
+            const balanceAmount = document.getElementById('balanceAmount');
+            const hiddenBalance = document.getElementById('hiddenBalance');
+            const eyeIcon = this.querySelector('svg');
+
+            if (balanceAmount.classList.contains('d-none')) {
+                balanceAmount.classList.remove('d-none');
+                hiddenBalance.classList.add('d-none');
+                eyeIcon.innerHTML = '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
+            } else {
+                balanceAmount.classList.add('d-none');
+                hiddenBalance.classList.remove('d-none');
+                eyeIcon.innerHTML = '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/>';
+            }
+        });
+    </script>
     <script src="assets/js/auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
