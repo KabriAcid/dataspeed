@@ -66,7 +66,7 @@ section:not(.jumbotoron) {
 #main-header {
   color: var(--dark);
   font-size: var(--fs-h1);
-  font-size: 3rem;
+  font-size: 3vw;
   font-weight: 700;
   margin-bottom: var(--mb-2);
   line-height: normal;

@@ -56,3 +56,8 @@ p {
 i {
     color: var(--primary);
 }
+
+img {
+    max-width: 100%;
+    height: auto;
+}

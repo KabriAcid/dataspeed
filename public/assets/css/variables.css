@@ -120,11 +120,11 @@
     --pd-3: 8px;
 
     /* Font Sizes */
-    --fs-h1: 2.5em;
+    --fs-h1: 2.5rem;
     /* Adjust based on design */
-    --fs-h2: 2em;
-    --fs-h3: 1.75em;
-    --fs-p: 1em;
+    --fs-h2: 2rem;
+    --fs-h3: 1.75rem;
+    --fs-p: 1rem;
 
     /* Font Weights */
     --fw-bold: 700;

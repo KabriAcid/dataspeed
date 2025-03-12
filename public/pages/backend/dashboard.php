@@ -13,12 +13,12 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
 
 <body>
 
-    <main class="container py-4">
+    <main class="container-fluid py-4">
         <!-- Header Section -->
-        <header class="d-flex justify-content-between align-items-center mb-4">
+        <header class="d-flex justify-content-between align-items-start mb-4">
             <div>
                 <h1 class="text-white fs-2 fw-bold mb-0">Welcome back,</h1>
-                <p class="text-secondary">Musa Jidda</p>
+                <p class="text-secondary">Kabri Acid</p>
             </div>
             <div class="profile-avatar">
                 <span>A</span>
@@ -136,9 +136,11 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         </div>
 
         <!-- Transactions Section -->
-        <div class="card bg-dark-subtle">
-            <div class="card-body">
+        <div class="card bg-dark-subtle p-0">
+            <div class="card-header">
                 <h3 class="text-white fs-4 fw-semibold mb-4">Recent Transactions</h3>
+            </div>
+            <div class="card-body">
                 <div class="transaction-list">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center gap-3">
@@ -190,6 +192,38 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                 </div>
             </div>
         </div>
+        <!-- Bottom navigation -->
+        <div class="container-fluid fixed-bottom bg-white shadow-md border-top">
+            <div class="row text-center">
+                <div class="col">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-home"></i>
+                        <p>Home</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-bell"></i>
+                        <p>Notification</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-cog"></i>
+                        <p>Settings</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-user"></i>
+                        <p>Profile</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- FontAwesome CDN -->
+        <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
     </main>
 
     <script>
