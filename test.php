@@ -1,6 +1,3 @@
-<?php
-require __DIR__ . '/config/config.php';
-?>
 <!doctype html>
 <html lang="en">
 
@@ -13,39 +10,59 @@ require __DIR__ . '/config/config.php';
 </head>
 
 <body class="">
+    <?php
+    // Load environment variables
+    require __DIR__ . '/config/config.php';
 
-    <main>
-        <div class="container">
-            <button id="airtimeButton" class="action-button bg-success">
-                Airtime
-            </button>
-        </div>
-    </main>
+    // Flutterwave API endpoint for initiating payments
+    $url = "https://api.flutterwave.com/v3/payments";
 
-    <script type="text/javascript" src="https://sdk.monnify.com/plugin/monnify.js"></script>
-    <script>
-        document.getElementById('airtimeButton').addEventListener('click', function() {
-            MonnifySDK.initialize({
-                amount: 1000,
-                currency: "NGN",
-                reference: "txn-" + Math.floor((Math.random() * 1000000000) + 1),
-                customerName: "Kabri Acid",
-                customerEmail: "kabriacid01@gmail.com",
-                apiKey: "<?php echo $_ENV['MONNIFY_API_KEY']; ?>",
-                contractCode: "<?php echo $_ENV['MONNIFY_CONTRACT_CODE']; ?>",
-                paymentDescription: "Airtime Purchase",
-                metadata: {
-                    customField: "Custom data"
-                },
-                onComplete: function(response) {
-                    console.log("Payment successful: ", response);
-                },
-                onClose: function(data) {
-                    console.log("Payment closed: ", data);
-                }
-            });
-        });
-    </script>
+    // Set up the payload for the payment request
+    $data = [
+        "tx_ref" => "TX_" . time(),
+        "amount" => 1000, // Payment amount
+        "currency" => "NGN",
+        "redirect_url" => "https://yourwebsite.com/payment-callback.php",
+        "payment_options" => "card,banktransfer,ussd",
+        "customer" => [
+            "email" => "kabriacid01@gmail.com",
+            "phonenumber" => "08012345678",
+            "name" => "Abdullahi Kabri"
+        ],
+        "customizations" => [
+            "title" => "DataSpeed Payment",
+            "description" => "Payment for data recharge",
+            "logo" => "https://yourwebsite.com/logo.png"
+        ]
+    ];
+
+    // Initialize cURL session
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . $_ENV['FLW_SECRET_KEY'],
+        'Content-Type: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    // Execute request and capture the response
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    // Decode JSON response
+    $result = json_decode($response, true);
+
+    // Handle the response
+    if ($result && $result['status'] === 'success') {
+        $payment_link = $result['data']['link'];
+        header('Location: ' . $payment_link); // Redirect user to the payment page
+        exit();
+    } else {
+        echo "Payment initiation failed: " . $result['message'];
+    }
+    ?>
+
 </body>
 
 </html>

@@ -1,13 +1,5 @@
 body {
     min-height: 100vh;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-}
-
-.card {
-    border: none;
-    border-radius: 1rem;
-    background: rgba(33, 37, 41, 0.5) !important;
-    backdrop-filter: blur(10px);
 }
 
 .profile-avatar {

@@ -17,7 +17,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         <!-- Header Section -->
         <header class="d-flex justify-content-between align-items-start mb-4">
             <div>
-                <h1 class="text-white fs-2 fw-bold mb-0">Welcome back,</h1>
+                <h1 class=" fs-2 fw-bold mb-0">Welcome back,</h1>
                 <p class="text-secondary">Kabri Acid</p>
             </div>
             <div class="profile-avatar">
@@ -26,19 +26,19 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         </header>
 
         <!-- Balance Section -->
-        <div class="card bg-dark-subtle mb-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <p class="text-secondary mb-0">Total Balance</p>
-                    <button class="btn btn-link text-secondary p-0" id="toggleBalance">
+        <div class="card mb-4">
+            <div class="card-body bg-none">
+                <div class="">
+                    <p class="text-secondary text-center mb-0">Total Balance</p>
+                    <!-- <button class="btn btn-link text-secondary p-0" id="toggleBalance">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                             <circle cx="12" cy="12" r="3" />
                         </svg>
-                    </button>
+                    </button> -->
                 </div>
-                <h2 class="display-5 fw-bold text-white" id="balanceAmount">$2,850.75</h2>
-                <h2 class="display-5 fw-bold text-white d-none" id="hiddenBalance">••••••</h2>
+                <h2 class="display-5 fw-bold text-center " id="balanceAmount">$2,850.75</h2>
+                <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">••••••</h2>
             </div>
         </div>
 
@@ -55,17 +55,19 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                     <span class="text-secondary mt-2">Airtime</span>
                 </div>
             </div>
+            <!--  -->
             <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <button class="action-button bg-danger">
+                    <a href="data.php" class="action-button bg-danger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
                             <path d="M12 12h.01" />
                         </svg>
-                    </button>
-                    <span class="text-secondary mt-2">Withdraw</span>
+                    </a>
+                    <span class="text-secondary mt-2">Data</span>
                 </div>
             </div>
+            <!--  -->
             <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
                     <a class="action-button bg-primary">
@@ -138,7 +140,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         <!-- Transactions Section -->
         <div class="card bg-dark-subtle p-0">
             <div class="card-header">
-                <h3 class="text-white fs-4 fw-semibold mb-4">Recent Transactions</h3>
+                <h3 class=" fs-4 fw-semibold mb-4">Recent Transactions</h3>
             </div>
             <div class="card-body">
                 <div class="transaction-list">
@@ -151,7 +153,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                                 </svg>
                             </div>
                             <div>
-                                <p class="mb-0 text-white">Airtime Purchase</p>
+                                <p class="mb-0 ">Airtime Purchase</p>
                                 <p class="text-secondary small mb-0">Mar 15, 2024</p>
                             </div>
                         </div>
@@ -168,7 +170,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                                 </svg>
                             </div>
                             <div>
-                                <p class="mb-0 text-white">Electricity Bills</p>
+                                <p class="mb-0 ">Electricity Bills</p>
                                 <p class="text-secondary small mb-0">Mar 14, 2024</p>
                             </div>
                         </div>
@@ -183,7 +185,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                                 </svg>
                             </div>
                             <div>
-                                <p class="mb-0 text-white">Payment Deposit</p>
+                                <p class="mb-0 ">Payment Deposit</p>
                                 <p class="text-secondary small mb-0">Mar 13, 2024</p>
                             </div>
                         </div>
