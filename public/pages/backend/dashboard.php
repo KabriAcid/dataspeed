@@ -37,7 +37,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                         </svg>
                     </button>
                 </div>
-                <h2 class="display-5 fw-bold text-white" id="balanceAmount">$24,850.75</h2>
+                <h2 class="display-5 fw-bold text-white" id="balanceAmount">$2,850.75</h2>
                 <h2 class="display-5 fw-bold text-white d-none" id="hiddenBalance">••••••</h2>
             </div>
         </div>
@@ -46,13 +46,13 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         <div class="row g-4 mb-4">
             <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <button class="action-button bg-success">
+                    <a href="airtime.php" class="action-button bg-success">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m22 2-7 20-4-9-9-4Z" />
                             <path d="M22 2 11 13" />
                         </svg>
-                    </button>
-                    <span class="text-secondary mt-2">Send</span>
+                    </a>
+                    <span class="text-secondary mt-2">Airtime</span>
                 </div>
             </div>
             <div class="col-3">
@@ -68,13 +68,13 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
             </div>
             <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <button class="action-button bg-primary">
+                    <a class="action-button bg-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z" />
                             <path d="M2 9v1c0 1.1.9 2 2 2h1" />
                             <path d="M16 5h0" />
                         </svg>
-                    </button>
+                    </a>
                     <span class="text-secondary mt-2">Invest</span>
                 </div>
             </div>
@@ -193,34 +193,14 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
             </div>
         </div>
         <!-- Bottom navigation -->
-        <div class="container-fluid fixed-bottom bg-white shadow-md border-top">
-            <div class="row text-center">
-                <div class="col">
-                    <a href="#" class="nav-link">
-                        <i class="fa fa-home"></i>
-                        <p>Home</p>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="nav-link">
-                        <i class="fa fa-bell"></i>
-                        <p>Notification</p>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="nav-link">
-                        <i class="fa fa-cog"></i>
-                        <p>Settings</p>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="nav-link">
-                        <i class="fa fa-user"></i>
-                        <p>Profile</p>
-                    </a>
-                </div>
-            </div>
-        </div>
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="#" class="mobile-nav-link" id="home"><i class="fa fa-home"></i></a></li>
+                <li><a href="#" class="mobile-nav-link" id="wallet"><i class="fa fa-bell"></i></a></li>
+                <li><a href="#" class="mobile-nav-link" id="transactions"><i class="fa fa-list"></i></a></li>
+                <li><a href="#" class="mobile-nav-link" id="settings"><i class="fa fa-cog"></i></a></li>
+            </ul>
+        </nav>
 
         <!-- FontAwesome CDN -->
         <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
