@@ -14,21 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     try {
-        // Check if virtual account exists
-        $stmt = $pdo->prepare("SELECT id FROM virtual_accounts WHERE user_id = (SELECT user_id FROM users WHERE registration_id = ?)");
-        $stmt->execute([$registration_id]);
-        $virtualAccount = $stmt->fetch();
-
-        if ($virtualAccount) {
-            // Update the user's password and set registration status to complete
-            $stmt = $pdo->prepare("UPDATE users SET password = ?, registration_status = 'complete' WHERE registration_id = ?");
-            $stmt->execute([$hashedPassword, $registration_id]);
-
-            echo json_encode(["success" => true, "message" => "Password updated successfully. Registration complete."]);
-        } else {
-            echo json_encode(["success" => false, "message" => "Vvalirtual account not created yet."]);
-        }
-    } catch (Exception $e) {
+        // Update the user's password and set registration status to complete
+        $stmt = $pdo->prepare("UPDATE users SET password = ?, registration_status = 'complete' WHERE registration_id = ?");
+        $stmt->execute([$hashedPassword, $registration_id]);
+        echo json_encode(["success" => true, "message" => "Password updated successfully. Registration complete."]);
+    } 
+    catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
-}

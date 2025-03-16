@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     emailContinueBtn.addEventListener("click", function () {
         const email = emailInput.value.trim();
         emailError.textContent = ""; // Clear previous errors
-        
+
         if (email === "") {
             showError(emailError, "Email address is required.");
             emailInput.classList.add("error-input");
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 setTimeout(() => {
                     nextStep();
-                }, 500); 
+                }, 500);
             }
         });
     });
@@ -306,17 +306,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 spinner.classList.add('d-none');
                 passwordSubmit.style.cursor = 'pointer';
             } else {
-                // Request to create virtual account after successful registration
-                sendAjaxRequest("create_virtual_account.php", "POST", "registration_id=" + encodeURIComponent(registration_id), function (vaResponse) {
-                    spinner.classList.add('d-none');
-                    if (vaResponse.success) {
-                        console.log("Registration completed! Virtual account created.");
-                        window.location.href = "dashboard.php"; // Redirect after completion
-                    } else {
-                        showError(passwordError, "Failed to create virtual account. Please try again.");
-                        passwordSubmit.style.cursor = 'pointer';
-                    }
-                });
+                setTimeout(() => {
+                    window.location.href = "login.php";
+                }, 500);
             }
         });
     });
