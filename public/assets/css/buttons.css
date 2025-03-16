@@ -1,4 +1,4 @@
-.btn {
+.primary-btn {
     display: inline-block;
     padding: 12px 22px;
     font-size: 14px;
@@ -10,16 +10,13 @@
     text-align: center;
     transition: background-color var(--transition-fast), transform var(--transition-fast);
     box-shadow: var(--shadow-md);
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    background-color: var(--danger-dark);
+    background-color: var(--primary);
     color: white;
 }
 
-.primary-btn {
-    background: var(--primary);
+.primary-btn:hover {
+    transform: translateY(-2px);
+    background-color: var(--danger-dark);
     color: white;
 }
 

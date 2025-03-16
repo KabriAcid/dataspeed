@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const timeout = 500;
     const steps = document.querySelectorAll(".form-step");
     const indicators = document.querySelectorAll(".pagination .page");
     let currentStep = 0;
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
             showError(emailError, "Please enter a valid email address");
             emailInput.classList.add("error-input");
             return;
-        } else if (email.includes("mailinator")) {
+        } else if (email.includes("xxxx")) {
             showError(emailError, "Email format not supported.");
             emailInput.classList.add("error-input");
             return;
@@ -91,11 +92,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         setTimeout(() => {
                             nextStep();
-                        }, 500); // Delay before moving to the next step
+                        }, timeout); 
                     } else {
-                        showError(emailError, otpResponse.message);
-                        spinner.classList.add('d-none');
-                        emailContinueBtn.style.cursor = 'pointer';
+                        setTimeout(() => {
+                            showError(emailError, otpResponse.message);
+                            spinner.classList.add('d-none');
+                            emailContinueBtn.style.cursor = 'pointer';
+                        }, timeout);
                     }
                 });
             }
@@ -132,11 +135,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 spinner.classList.add('d-none');
                 setTimeout(() => {
                     nextStep();
-                }, 500); // Delay before moving to the next step
+                }, timeout); 
             } else {
-                showError(otpError, response.message);
-                spinner.classList.add('d-none');
-                verifyOtpBtn.style.cursor = 'pointer';
+                setTimeout(() => {
+                    showError(otpError, response.message);
+                    spinner.classList.add('d-none');
+                    verifyOtpBtn.style.cursor = 'pointer'; 
+                }, timeout);
             }
         });
     });
@@ -209,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 setTimeout(() => {
                     nextStep();
-                }, 500); // Delay before moving to the next step
+                }, timeout); 
             }
         });
     });
@@ -263,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 setTimeout(() => {
                     nextStep();
-                }, 500);
+                }, timeout);
             }
         });
     });
@@ -308,7 +313,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 setTimeout(() => {
                     window.location.href = "login.php";
-                }, 500);
+                }, timeout);
             }
         });
     });

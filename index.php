@@ -39,14 +39,14 @@ session_start();
         <!--  -->
         <section id="sectionII">
             <div id="join-people">
-                <h3>Join over <span class="strong-color">500</span><br>people who use <span class="strong-color">DataSpeed.</span></h3>
+                <h3>Join over <span class="primary">500</span><br>people who use <span class="primary">DataSpeed.</span></h3>
             </div>
             <div class="row">
                 <!-- Card 1 -->
                 <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/airtime-to-cash.png" alt="icon" class="card-icon">
-                        <h6 class="strong-color">Instant airtime to cash</h6>
+                        <h6 class="primary">Instant airtime to cash</h6>
                         <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.</p>
                     </div>
                 </div>
@@ -55,7 +55,7 @@ session_start();
                 <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/airtime.png" alt="icon" class="card-icon">
-                        <h6 class="strong-color">Airtime top up</h6>
+                        <h6 class="primary">Airtime top up</h6>
                         <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
                     </div>
                 </div>
@@ -64,7 +64,7 @@ session_start();
                 <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/data.png" alt="icon" class="card-icon">
-                        <h6 class="strong-color">Data purchase</h6>
+                        <h6 class="primary">Data purchase</h6>
                         <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
                     </div>
                 </div>
@@ -72,7 +72,7 @@ session_start();
                 <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/bills.png" alt="icon" class="card-icon">
-                        <h6 class="strong-color">Bill payments</h6>
+                        <h6 class="primary">Bill payments</h6>
                         <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.</p>
                     </div>
                 </div>
@@ -81,7 +81,7 @@ session_start();
                 <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/nairapin.png" alt="icon" class="card-icon">
-                        <h6 class="strong-color">Airtime payments</h6>
+                        <h6 class="primary">Airtime payments</h6>
                         <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ session_start();
                 <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <img src="public/assets/img/icons/send-receive.png" alt="icon" class="card-icon">
-                        <h6 class="strong-color">Send & Receive money</h6>
+                        <h6 class="primary">Send & Receive money</h6>
                         <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
                     </div>
                 </div>
@@ -99,7 +99,7 @@ session_start();
         <!--  -->
         <section id="sectionIII">
             <div>
-                <h2 class="strong-color text-center">Transactions Made Easy!</h2>
+                <h2 class="primary text-center">Transactions Made Easy!</h2>
             </div>
             <div class="row">
                 <div class="col-xl-3 col-lg-6">

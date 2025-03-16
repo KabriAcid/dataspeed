@@ -6,18 +6,19 @@ require __DIR__ . '/../../../config/config.php';
 $public_key = htmlspecialchars($_ENV['FLW_PUBLIC_KEY']);
 $email = htmlspecialchars($_SESSION['user']['email']);
 $phone_number = htmlspecialchars($_SESSION['user']['phone_number']);
-$names = htmlspecialchars($_SESSION['user']['first_name'] . "&nbsp;" . $_SESSION['user']['last_name']);
+$names = $_SESSION['user']['first_name'] . " " . $_SESSION['user']['last_name'];
 ?>
 
 <body>
 
     <main class="container-fluid py-4">
         <header class="d-flex justify-content-between align-items-start mb-4">
-            <a href="dashboard.php" class="btn btn-secondary">Back</a>
+            <a href="dashboard.php" class="btn btn-secondary btn-sm">Back</a>
+
         </header>
 
-        <div class="box-shadow container">
-            <h2 class="text-center mb-4">Fund Your Wallet</h2>
+        <div class="form-container container">
+            <h3 class="text-center mb-4">Fund Your Wallet</h3>
 
             <form id="depositForm">
                 <div class="form-group">
@@ -38,14 +39,8 @@ $names = htmlspecialchars($_SESSION['user']['first_name'] . "&nbsp;" . $_SESSION
             </form>
         </div>
 
-        <nav class="mobile-nav mt-4">
-            <ul class="nav justify-content-around">
-                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-home"></i></a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-wallet"></i></a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-list"></i></a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-cog"></i></a></li>
-            </ul>
-        </nav>
+        <!-- BOTTOM NAVIGATION -->
+        <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://checkout.flutterwave.com/v3.js"></script>

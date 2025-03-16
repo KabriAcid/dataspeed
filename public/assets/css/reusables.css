@@ -189,101 +189,11 @@
     aspect-ratio: 1/1;
 }
 
-.form-card {
-    width: 75%;
-    margin: auto;
-    margin-top: calc(0px + 50px);
-    border-radius: 7px;
-    background-color: #fcfcfc;
-    box-shadow: 0px 16px 54px 0px rgba(110, 106, 106, 0.2);
-    padding: 30px;
-}
-
-.form-step-header {
-    text-align: center;
-    margin: 15px;
-}
-
-.form-label {
-    margin-bottom: var(--mb-1);
-}
-
-.form-card form:nth-child(2) {
-    margin-top: 310px;
-}
-
-#form-field label {
-    margin-bottom: 12px;
-    font-weight: normal;
-}
-
-.strong-color {
-    color: var(--primary);
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin: 10px 0;
-}
-
-.page {
-    width: 8px;
-    height: 8px;
-    background-color: #ccc;
-    border-radius: 50%;
-    transition: background 0.3s ease-in-out, transform 0.3s;
-}
-
-.page.active {
-    background-color: #722F37;
-    transform: scale(1.2);
-}
-
-
-.error-input {
-    border: 1px solid rgb(245, 0, 0) !important;
-}
-
-.error-label {
-    color: red;
-    display: block;
-    margin: 10px 0;
-    font-size: 14px;
-}
-
-.form-container, .box-shadow {
-    max-width: 600px;
-    margin: 15px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-    position: relative;
-}
 
 .card {
     border: 0!important;
 }
 
-.form-top-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.form-field {
-    margin: 25px 0;
-}
-
-.form .d-none {
-    display: none;
-
-}
-
-#spinner-icon {
-    color: white;
-}
 
 /* OTP */

@@ -24,12 +24,12 @@ require __DIR__ . '/../../partials/header.php';
             <!-- EMAIL VERIFICATION -->
             <div class="form-step">
                 <div class="form-step-header">
-                    <h3>What's your email address?</h3>
+                    <h4 class="">What's your email address?</h4>
                     <p class="text-sm">You will receive a verification code, so make sure it is active.</p>
                 </div>
                 <div class="form-field">
                     <input type="email" name="email" id="email" placeholder="Email address" class="input">
-                    <label for="" class="error-label" id="email-error"></label>
+                    <span class="error-label" id="email-error"></span>
                     <button type="button" class="btn primary-btn mt-3" id="email-submit">
                         <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Continue
@@ -39,7 +39,7 @@ require __DIR__ . '/../../partials/header.php';
             <!-- OTP VERIFICATION -->
             <div class="form-step d-none">
                 <div class="form-step-header">
-                    <h3>Verify Your OTP Code</h3>
+                    <h4>Verify Your OTP Code</h3>
                     <p class="text-sm">Enter the 6-digit code sent to your email.</p>
                 </div>
                 <div class="form-field">
@@ -51,7 +51,7 @@ require __DIR__ . '/../../partials/header.php';
                         <input type="text" maxlength="1" class="otp-input">
                         <input type="text" maxlength="1" class="otp-input">
                     </div>
-                    <label id="otp-error" class="error-label"></label>
+                    <span id="otp-error" class="error-label"></span>
                     <button type="button" id="verify-otp-btn" class="btn primary-btn mt-3">
                         <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Verify OTP
@@ -65,17 +65,17 @@ require __DIR__ . '/../../partials/header.php';
             <!-- PHONE NUMBER VERIFICATION-->
             <div class="form-step d-none">
                 <div class="form-step-header">
-                    <h3>What's your phone number?</h3>
-                    <p>Omit the first digit and insert the rest.</p>
+                    <h4>What's your phone number?</h4>
+                    <p class="text-sm">Omit the first digit and insert the rest.</p>
                 </div>
                 <div class="form-field">
                     <div class="phone-container">
-                        <span class="phone-prefix">
+                        <span class="phone-prefix text-sm">
                             <img src="https://flagcdn.com/w40/ng.png" alt="Nigeria Flag"> +234
                         </span>
                         <input type="tel" id="phone" name="phone_number" placeholder="Phone Number" class="input">
                     </div>
-                    <label for="" class="error-label" id="phone-error"></label>
+                    <span for="" class="error-label" id="phone-error"></span>
                     <button type="button" class="btn primary-btn mt-3" id="phone-submit">
                         <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Continue
@@ -86,14 +86,14 @@ require __DIR__ . '/../../partials/header.php';
             <!-- NAMES VERIFICATION -->
             <div class="form-step d-none">
                 <div class="form-step-header">
-                    <h3>What's your full name?</h3>
-                    <p>Enter your correct name details.</p>
+                    <h4>What's your full name?</h3>
+                    <p class="text-sm">Enter your correct name details.</p>
                 </div>
                 <div class="form-field">
                     <input type="text" name="first_name" id="first_name" placeholder="First Name" class="input">
                     <div class="my-3"></div>
                     <input type="text" name="last_name" id="last_name" placeholder="Last Name" class="input">
-                    <label for="" class="error-label" id="names-error"></label>
+                    <span for="" class="error-label" id="names-error"></span>
                     <button type="button" class="btn primary-btn mt-3" id="names-submit">
                         <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Continue
@@ -104,8 +104,8 @@ require __DIR__ . '/../../partials/header.php';
             <!-- PASSWORD -->
             <div class="form-step d-none" id="password-step">
                 <div class="form-step-header">
-                    <h3>Create your password.</h3>
-                    <p>Make sure your password is strong.</p>
+                    <h4>Create your password.</h4>
+                    <p class="text-sm">Make sure your password is strong.</p>
                 </div>
                 <div class="form-field">
                     <input type="password" class="input" id="password" name="password" placeholder="Password">
@@ -113,7 +113,7 @@ require __DIR__ . '/../../partials/header.php';
                 <div class="form-field">
                     <input type="password" class="input" id="confirm-password" name="confirm_password" placeholder="Password">
                 </div>
-                <label for="" class="error-label" id="password-error"></label>
+                <span for="" class="error-label" id="password-error"></span>
                 <button type="button" class="btn primary-btn" id="password-submit">
                     <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                     Finish

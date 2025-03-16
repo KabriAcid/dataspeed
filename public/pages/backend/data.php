@@ -9,7 +9,7 @@ require __DIR__ . '/../../partials/header.php';
         <header class="d-flex justify-content-between align-items-start mb-4">
             <a href="dashboard.php">Back</a>
         </header>
-        <div class="box-shadow container">
+        <div class="form-container container">
             <h2 class="text-center mb-4">Buy data</h2>
             <form id="dataPurchaseForm" action="" method="post">
                 <!-- Network Selection -->
@@ -58,14 +58,7 @@ require __DIR__ . '/../../partials/header.php';
         </div>
 
         <!-- Bottom navigation -->
-        <nav class="mobile-nav">
-            <ul>
-                <li><a href="#" class="mobile-nav-link" id="home"><i class="fa fa-home"></i></a></li>
-                <li><a href="#" class="mobile-nav-link" id="wallet"><i class="fa fa-bell"></i></a></li>
-                <li><a href="#" class="mobile-nav-link" id="transactions"><i class="fa fa-list"></i></a></li>
-                <li><a href="#" class="mobile-nav-link" id="settings"><i class="fa fa-cog"></i></a></li>
-            </ul>
-        </nav>
+        <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
@@ -170,7 +163,6 @@ require __DIR__ . '/../../partials/header.php';
             });
         </script>
         <!-- FontAwesome CDN -->
-        <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

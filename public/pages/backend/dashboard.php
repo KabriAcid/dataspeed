@@ -24,9 +24,11 @@ if (isset($_SESSION['user'])) {
                 <p class="text-secondary"><?= $username; ?></p>
             </div>
             <div>
-                <span>
-                    <img src="../<?= $_SESSION['user']['photo'] ?>" alt="photo" class="profile-avatar">
-                </span>
+                <a href="profile.php">
+                    <span>
+                        <img src="../<?= $_SESSION['user']['photo'] ?>" alt="photo" class="profile-avatar">
+                    </span>
+                </a>
             </div>
         </header>
 
@@ -49,7 +51,7 @@ if (isset($_SESSION['user'])) {
 
         <!-- Action Buttons -->
         <div class="row g-4 mb-4">
-            <div class="col-3">
+            <div class="col-4">
                 <div class="d-flex flex-column align-items-center">
                     <a href="airtime.php" class="action-button bg-success">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -61,7 +63,7 @@ if (isset($_SESSION['user'])) {
                 </div>
             </div>
             <!--  -->
-            <div class="col-3">
+            <div class="col-4">
                 <div class="d-flex flex-column align-items-center">
                     <a href="data.php" class="action-button bg-danger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -73,19 +75,7 @@ if (isset($_SESSION['user'])) {
                 </div>
             </div>
             <!--  -->
-            <div class="col-3">
-                <div class="d-flex flex-column align-items-center">
-                    <a class="action-button bg-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z" />
-                            <path d="M2 9v1c0 1.1.9 2 2 2h1" />
-                            <path d="M16 5h0" />
-                        </svg>
-                    </a>
-                    <span class="text-secondary mt-2">Invest</span>
-                </div>
-            </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="d-flex flex-column align-items-center">
                     <a href="deposit.php" class="action-button bg-info">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -96,7 +86,18 @@ if (isset($_SESSION['user'])) {
                     <span class="text-secondary mt-2">Deposit</span>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
+                <div class="d-flex flex-column align-items-center">
+                    <a href="deposit.php" class="action-button bg-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14" />
+                            <path d="M5 12h14" />
+                        </svg>
+                    </a>
+                    <span class="text-secondary mt-2">JAMB</span>
+                </div>
+            </div>
+            <div class="col-4">
                 <div class="d-flex flex-column align-items-center">
                     <button class="action-button bg-warning">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -109,17 +110,7 @@ if (isset($_SESSION['user'])) {
                     <span class="text-secondary mt-2">Transfer</span>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="d-flex flex-column align-items-center">
-                    <button class="action-button" style="background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                        </svg>
-                    </button>
-                    <span class="text-secondary mt-2">Donate</span>
-                </div>
-            </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="d-flex flex-column align-items-center">
                     <button class="action-button bg-secondary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -129,23 +120,12 @@ if (isset($_SESSION['user'])) {
                     <span class="text-secondary mt-2">Bills</span>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="d-flex flex-column align-items-center">
-                    <button class="action-button" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="3" />
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z" />
-                        </svg>
-                    </button>
-                    <span class="text-secondary mt-2">Settings</span>
-                </div>
-            </div>
         </div>
 
         <!-- Transactions Section -->
-        <div class="card bg-dark-subtle shadow-sm p-0">
-            <div class="card-header bg-primary text-white">
-                <h3 class="fs-5 fw-semibold mb-0">Recent Transactions</h3>
+        <div class="card p-0">
+            <div class="card-header text-white">
+                <h4 class="fw-semibold mb-0">Recent Transactions</h4>
             </div>
             <div class="card-body">
                 <div class="transaction-list">
@@ -166,7 +146,7 @@ if (isset($_SESSION['user'])) {
 
                             if ($transactions) {
                     ?>
-                                <div class='d-flex justify-content-between align-items-center mb-3 border-bottom pb-2'>
+                                <div class='d-flex justify-content-between align-items-start mb-3 border-bottom pb-2'>
                                     <div class='d-flex align-items-center gap-3'>
                                         <div class='transaction-icon bg-dark rounded-circle p-2 text-white'><?= $icon ?></div>
                                         <div>
@@ -185,15 +165,7 @@ if (isset($_SESSION['user'])) {
             </div>
         </div>
 
-        <!-- Bottom navigation -->
-        <nav class="mobile-nav">
-            <ul>
-                <li><a href="#" class="mobile-nav-link" id="home"><i class="fa fa-home"></i></a></li>
-                <li><a href="#" class="mobile-nav-link" id="wallet"><i class="fa fa-bell"></i></a></li>
-                <li><a href="#" class="mobile-nav-link" id="transactions"><i class="fa fa-list"></i></a></li>
-                <li><a href="logout.php" class="mobile-nav-link" id="settings"><i class="fa fa-cog"></i></a></li>
-            </ul>
-        </nav>
+        <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
 
         <!-- FontAwesome CDN -->
     </main>
