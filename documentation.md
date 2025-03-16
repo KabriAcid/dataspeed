@@ -6,3 +6,4 @@ TASKS TO DO
 4- Create a beautiful bottom nav.
 5- Fixing the navbar to become responsive.
 6- Using creative-tim pro (when the need arises).
+
