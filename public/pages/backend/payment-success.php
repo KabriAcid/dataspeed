@@ -1,0 +1,77 @@
+<?php
+session_start();
+require __DIR__ . '/../../../config/config.php';
+
+if (!isset($_GET['transaction_id'])) {
+    echo json_encode(["success" => false, "message" => "Transaction ID missing"]);
+    exit;
+}
+
+if(isset($_SESSION['user'])){
+    $user_id = $_SESSION['user']['user_id'];
+}
+
+$transaction_id = $_GET['transaction_id'];
+$FLW_SECRET_KEY = $_ENV['FLW_SECRET_KEY'];
+
+// Make a cURL request to verify transaction status
+$curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/{$transaction_id}/verify",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    CURLOPT_HTTPHEADER => array(
+        "Authorization: Bearer $FLW_SECRET_KEY",
+        "Content-Type: application/json"
+    ),
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+curl_close($curl);
+
+if ($err) {
+    echo json_encode(["success" => false, "message" => "cURL Error: $err"]);
+    exit;
+}
+
+$transaction = json_decode($response, true);
+
+// Check if the transaction is completed
+if ($transaction['status'] == "success" && $transaction['data']['status'] == "successful") {
+    $payment_status = $transaction['data']['status'] ?? '';
+    $amount = $transaction['data']['amount'] ?? 0;
+    $user_email = $transaction['data']['customer']['email'] ?? '';
+    $transaction_type = "Deposit";
+
+    // Insert transaction details into the database
+    try {
+        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, transaction_id, transaction_type, customer_email, amount, status) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$user_id, $transaction_id, $transaction_type, $user_email, $amount, $payment_status]);
+
+        $stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        $userRow = $stmt->fetch();
+
+        $wallet_balance = $userRow['wallet_balance'];
+        $current_balance = $wallet_balance + $amount;
+
+        $stmt = $pdo->prepare("UPDATE users SET wallet_balance = ? WHERE user_id = ?");
+        $stmt->execute([$current_balance, $user_id]);
+
+        echo "<script>
+            setTimeout(function() {
+                window.location.href = 'dashboard.php';
+            }, 1000);
+        </script>";
+    } catch (Exception $e) {
+        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    }
+} else {
+    echo json_encode(["success" => false, "message" => "Transaction not completed"]);
+    exit;
+}

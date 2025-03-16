@@ -240,7 +240,7 @@
     font-size: 14px;
 }
 
-.form-container {
+.form-container, .box-shadow {
     max-width: 600px;
     margin: 150px auto;
     background: white;
@@ -248,6 +248,14 @@
     border-radius: 8px;
     box-shadow: var(--shadow);
     position: relative;
+}
+
+.box-shadow {
+    margin-top: 0;
+}
+
+.card {
+    border: 0!important;
 }
 
 .form-top-container {

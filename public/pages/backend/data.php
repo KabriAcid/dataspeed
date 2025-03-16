@@ -9,11 +9,12 @@ require __DIR__ . '/../../partials/header.php';
         <header class="d-flex justify-content-between align-items-start mb-4">
             <a href="dashboard.php">Back</a>
         </header>
-        <div class="container">
+        <div class="box-shadow container">
+            <h2 class="text-center mb-4">Buy data</h2>
             <form id="dataPurchaseForm" action="" method="post">
                 <!-- Network Selection -->
                 <div class="form-group">
-                    <label for="network" class="form-label">Select Network</label>
+                    <label for="network">Select Network</label>
                     <select name="network" id="network" class="input" required>
                         <option value="">-- Select Network --</option>
                         <option value="MTN">MTN</option>
@@ -25,7 +26,7 @@ require __DIR__ . '/../../partials/header.php';
 
                 <!-- Data Plan Selection -->
                 <div class="form-group">
-                    <label for="data_plan" class="form-label">Select Data Plan</label>
+                    <label for="data_plan">Select Data Plan</label>
                     <select name="data_plan" id="data_plan" class="input" disabled required>
                         <option value="">-- Select Data Plan --</option>
                     </select>
@@ -33,20 +34,20 @@ require __DIR__ . '/../../partials/header.php';
 
                 <!-- Phone Number -->
                 <div class="form-group">
-                    <label for="phone_number" class="form-label">Phone Number</label>
-                    <input type="tel" name="phone_number" id="phone_number" class="form-control" placeholder="Phone Number" required maxlength="11">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="tel" name="phone_number" id="phone_number" class="input" placeholder="Phone Number" required maxlength="11">
                 </div>
 
                 <!-- Amount -->
                 <div class="form-group">
-                    <label for="amount" class="form-label">Amount</label>
-                    <input type="number" name="amount" id="amount" class="form-control" placeholder="Amount" required min="50" max="50000">
+                    <label for="amount">Amount</label>
+                    <input type="number" name="amount" id="amount" class="input" placeholder="Amount" required min="50" max="50000">
                 </div>
 
                 <!-- Transaction Pin -->
                 <div class="form-group">
-                    <label for="txn_pin" class="form-label">Transaction Pin</label>
-                    <input type="number" name="txn_pin" id="txn_pin" class="form-control" placeholder="Transaction Pin" required min="1000" max="9999">
+                    <label for="txn_pin">Transaction Pin</label>
+                    <input type="number" name="txn_pin" id="txn_pin" class="input" placeholder="Transaction Pin" required min="1000" max="9999">
                 </div>
 
                 <!-- Submit Button -->
@@ -72,25 +73,57 @@ require __DIR__ . '/../../partials/header.php';
                 const dataPlanSelect = document.getElementById("data_plan");
 
                 const dataPlans = {
-                    "MTN": [
-                        { name: "500MB - ₦100", value: "MTN_500MB" },
-                        { name: "1GB - ₦300", value: "MTN_1GB" },
-                        { name: "2GB - ₦500", value: "MTN_2GB" }
+                    "MTN": [{
+                            name: "500MB - ₦100",
+                            value: "MTN_500MB"
+                        },
+                        {
+                            name: "1GB - ₦300",
+                            value: "MTN_1GB"
+                        },
+                        {
+                            name: "2GB - ₦500",
+                            value: "MTN_2GB"
+                        }
                     ],
-                    "Airtel": [
-                        { name: "750MB - ₦200", value: "Airtel_750MB" },
-                        { name: "1.5GB - ₦500", value: "Airtel_1.5GB" },
-                        { name: "3GB - ₦1000", value: "Airtel_3GB" }
+                    "Airtel": [{
+                            name: "750MB - ₦200",
+                            value: "Airtel_750MB"
+                        },
+                        {
+                            name: "1.5GB - ₦500",
+                            value: "Airtel_1.5GB"
+                        },
+                        {
+                            name: "3GB - ₦1000",
+                            value: "Airtel_3GB"
+                        }
                     ],
-                    "9Mobile": [
-                        { name: "500MB - ₦150", value: "9Mobile_500MB" },
-                        { name: "1GB - ₦500", value: "9Mobile_1GB" },
-                        { name: "2.5GB - ₦1200", value: "9Mobile_2.5GB" }
+                    "9Mobile": [{
+                            name: "500MB - ₦150",
+                            value: "9Mobile_500MB"
+                        },
+                        {
+                            name: "1GB - ₦500",
+                            value: "9Mobile_1GB"
+                        },
+                        {
+                            name: "2.5GB - ₦1200",
+                            value: "9Mobile_2.5GB"
+                        }
                     ],
-                    "Glo": [
-                        { name: "1GB - ₦300", value: "Glo_1GB" },
-                        { name: "3GB - ₦1000", value: "Glo_3GB" },
-                        { name: "5GB - ₦1500", value: "Glo_5GB" }
+                    "Glo": [{
+                            name: "1GB - ₦300",
+                            value: "Glo_1GB"
+                        },
+                        {
+                            name: "3GB - ₦1000",
+                            value: "Glo_3GB"
+                        },
+                        {
+                            name: "5GB - ₦1500",
+                            value: "Glo_5GB"
+                        }
                     ]
                 };
 

@@ -11,6 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $registration_id = $_POST['registration_id'] ?? '';
 
     // Check if country code is present
+    if (!isset($phone) || empty($phone)) {
+        echo json_encode(["success" => false, "message" => "Phone number is required."]);
+        exit;
+    }
+    
     if (preg_match('/^(\+234|234)/', $phone)) {
         echo json_encode(["success" => false, "message" => "Remove the country code."]);
         exit;
@@ -39,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 exit;
             } else {
                 echo json_encode(["success" => true, "message" => "Resuming incomplete registration."]);
-                $_SESSION['phone'] = $phone;
             }
         } else {
             // If the phone number is valid and not already registered, update users table using registration_id

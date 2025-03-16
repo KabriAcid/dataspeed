@@ -1,5 +1,8 @@
 <?php
-require_once "config/db.php";
-require_once "functions/auth.php";
-require_once "functions/transactions.php";
-require_once "functions/utilities.php";
+function showBalance($pdo, $user_id){
+    $stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE user_id = ?");
+    $stmt->execute([$user_id]);
+    $balance = $stmt->fetch();
+
+    return $balance;
+}

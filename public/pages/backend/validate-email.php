@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } else {
             // Generate a unique registration ID
-            $registration_id = uniqid();
+            $registration_id = md5(uniqid());
             $_SESSION['registration_id'] = $registration_id;
 
             // Insert the new user with incomplete registration status

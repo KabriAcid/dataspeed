@@ -1,10 +1,13 @@
 <?php
-require __DIR__ . '/../../partials/header.php';
-require __DIR__ . '/../../../config/config.php'; // Ensure database connection is included
 session_start();
+require __DIR__ . '/../../partials/header.php';
+require __DIR__ . '/../../../config/config.php';
+require __DIR__ . '/../../../functions/Model.php';
+// var_dump($_SESSION['user']);
 
 // Check if user session exists
-if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
+if (isset($_SESSION['user'])) {
+    $user_id = $_SESSION['user']['user_id'];
     $username = $_SESSION['user']['first_name'];
 } else {
     $username = "Unknown User"; // Fallback if session is not set
@@ -18,10 +21,12 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         <header class="d-flex justify-content-between align-items-start mb-4">
             <div>
                 <h1 class=" fs-2 fw-bold mb-0">Welcome back,</h1>
-                <p class="text-secondary">Kabri Acid</p>
+                <p class="text-secondary"><?= $username; ?></p>
             </div>
-            <div class="profile-avatar">
-                <span>A</span>
+            <div>
+                <span>
+                    <img src="../<?= $_SESSION['user']['photo'] ?>" alt="photo" class="profile-avatar">
+                </span>
             </div>
         </header>
 
@@ -37,7 +42,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
                         </svg>
                     </button> -->
                 </div>
-                <h2 class="display-5 fw-bold text-center " id="balanceAmount">$2,850.75</h2>
+                <h2 class="display-5 fw-bold text-center " id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
                 <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">••••••</h2>
             </div>
         </div>
@@ -82,13 +87,13 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
             </div>
             <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <button class="action-button bg-info">
+                    <a href="deposit.php" class="action-button bg-info">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 5v14" />
                             <path d="M5 12h14" />
                         </svg>
-                    </button>
-                    <span class="text-secondary mt-2">Add</span>
+                    </a>
+                    <span class="text-secondary mt-2">Deposit</span>
                 </div>
             </div>
             <div class="col-3">
@@ -138,74 +143,59 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
         </div>
 
         <!-- Transactions Section -->
-        <div class="card bg-dark-subtle p-0">
-            <div class="card-header">
-                <h3 class=" fs-4 fw-semibold mb-4">Recent Transactions</h3>
+        <div class="card bg-dark-subtle shadow-sm p-0">
+            <div class="card-header bg-primary text-white">
+                <h3 class="fs-5 fw-semibold mb-0">Recent Transactions</h3>
             </div>
             <div class="card-body">
                 <div class="transaction-list">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="transaction-icon bg-dark">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m22 4-10.5 7L22 18" />
-                                    <path d="M2 4v16" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="mb-0 ">Airtime Purchase</p>
-                                <p class="text-secondary small mb-0">Mar 15, 2024</p>
-                            </div>
-                        </div>
-                        <span class="text-danger fw-semibold">- $11.99</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="transaction-icon bg-dark">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M22 7H2" />
-                                    <circle cx="12" cy="12" r="3" />
-                                    <path d="M22 12H2" />
-                                    <path d="M22 17H2" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="mb-0 ">Electricity Bills</p>
-                                <p class="text-secondary small mb-0">Mar 14, 2024</p>
-                            </div>
-                        </div>
-                        <span class="text-danger fw-semibold">-$15.00</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="transaction-icon bg-dark">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 2v20" />
-                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="mb-0 ">Payment Deposit</p>
-                                <p class="text-secondary small mb-0">Mar 13, 2024</p>
-                            </div>
-                        </div>
-                        <span class="text-success fw-semibold">+$1,250.00</span>
-                    </div>
+                    <?php
+                    $transactions = getTransactions($pdo, $user_id);
+
+                    // var_dump($transactions);
+
+                    if (!$transactions) {
+                        echo '<p class="text-center text-muted">No transactions yet.</p>';
+                    } else {
+                        foreach ($transactions as $transaction) {
+                            $icon = getTransactionIcon($transaction['transaction_type']);
+                            $textColor = $transaction['transaction_type'] == 'Deposit' ? 'text-success' : 'text-danger';
+                            $formattedAmount = number_format($transaction['amount'], 2);
+                            $date = date("M d, Y", strtotime($transaction['created_at']));
+                            $prefix = ($transaction['transaction_type'] === 'Deposit') ? '+' : '-';
+
+                            if ($transactions) {
+                    ?>
+                                <div class='d-flex justify-content-between align-items-center mb-3 border-bottom pb-2'>
+                                    <div class='d-flex align-items-center gap-3'>
+                                        <div class='transaction-icon bg-dark rounded-circle p-2 text-white'><?= $icon ?></div>
+                                        <div>
+                                            <p class='mb-0 fw-medium'><?= $transaction['transaction_type'] ?></p>
+                                            <p class='text-secondary small mb-0'><?= $date ?></p>
+                                        </div>
+                                    </div>
+                                    <span class='<?= $textColor ?> fw-semibold'><?= $prefix . $formattedAmount ?></span>
+                                </div>
+                    <?php
+                            }
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>
+
         <!-- Bottom navigation -->
         <nav class="mobile-nav">
             <ul>
                 <li><a href="#" class="mobile-nav-link" id="home"><i class="fa fa-home"></i></a></li>
                 <li><a href="#" class="mobile-nav-link" id="wallet"><i class="fa fa-bell"></i></a></li>
                 <li><a href="#" class="mobile-nav-link" id="transactions"><i class="fa fa-list"></i></a></li>
-                <li><a href="#" class="mobile-nav-link" id="settings"><i class="fa fa-cog"></i></a></li>
+                <li><a href="logout.php" class="mobile-nav-link" id="settings"><i class="fa fa-cog"></i></a></li>
             </ul>
         </nav>
 
         <!-- FontAwesome CDN -->
-        <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
     </main>
 
     <script>
@@ -225,7 +215,6 @@ if (isset($_SESSION['user']) && isset($_SESSION['user']['first_name'])) {
             }
         });
     </script>
-    <script src="assets/js/auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

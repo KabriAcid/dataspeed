@@ -1,7 +1,7 @@
-<?php require __DIR__ . '/../../partials/header.php'; ?>
-
+<!-- REGISTER.PHP -->
 <?php
 session_start();
+require __DIR__ . '/../../partials/header.php';
 ?>
 <main class="container">
     <div class="form-container text-center">

@@ -1,30 +1,24 @@
 <?php
-require_once "config.php";
+session_start();
+require __DIR__ . '/../../../config/config.php';
+header('Content-Type: application/json');
 
-// Register a new user
-function registerUser($name, $email, $password)
-{
-    global $pdo;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $user = trim($_POST['user'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-    $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE (email = :user OR phone_number = :user) LIMIT 1");
+    $stmt->execute(['user' => $user]);
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    return $stmt->execute([$name, $email, $hashedPassword]);
-}
-
-// Login function
-function loginUser($email, $password)
-{
-    global $pdo;
-
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch();
-
-    if ($user && password_verify($password, $user['password'])) {
-        session_start();
-        $_SESSION['user_id'] = $user['id'];
-        return true;
+    if ($userData && password_verify($password, $userData['password'])) {
+        $_SESSION['user'] = $userData;
+        echo json_encode(['status' => 'success', 'message' => 'Login successful.']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid login credentials.']);
     }
-    return false;
+    exit;
 }
+
+echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
+exit;

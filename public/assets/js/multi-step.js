@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 sendAjaxRequest("send-otp.php", "POST", "email=" + encodeURIComponent(email) + "&registration_id=" + encodeURIComponent(registration_id), function (otpResponse) {
                     if (otpResponse.success) {
-                        emailContinueBtn.classList.remove('btn-primary');
+                        emailContinueBtn.classList.remove('primary-btn');
                         emailContinueBtn.classList.add('btn-secondary');
                         spinner.classList.add('d-none');
 
@@ -196,8 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const registration_id = sessionStorage.getItem('registration_id');
 
-        console.log("Registration ID for phone validation:", registration_id);
-
         // Validate phone number and update users table
         sendAjaxRequest("validate-phone.php", "POST", "phone=" + encodeURIComponent(phone) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (!response.success) {
@@ -205,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 spinner.classList.add('d-none');
                 phoneSubmit.style.cursor = 'pointer';
             } else {
-                phoneSubmit.classList.remove('btn-primary');
+                phoneSubmit.classList.remove('primary-btn');
                 phoneSubmit.classList.add('btn-secondary');
                 spinner.classList.add('d-none');
 
@@ -248,7 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Update user in the database with first name and last name
         const registration_id = sessionStorage.getItem('registration_id');
-        console.log("Registration ID for name validation:", registration_id);
 
         spinner.classList.remove('d-none');
         namesSubmit.style.cursor = 'not-allowed';
@@ -260,13 +257,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 spinner.classList.add('d-none');
                 namesSubmit.style.cursor = 'pointer';
             } else {
-                namesSubmit.classList.remove('btn-primary');
+                namesSubmit.classList.remove('primary-btn');
                 namesSubmit.classList.add('btn-secondary');
                 spinner.classList.add('d-none');
 
                 setTimeout(() => {
                     nextStep();
-                }, 500); // Delay before moving to the next step
+                }, 500); 
             }
         });
     });
@@ -279,11 +276,10 @@ document.addEventListener("DOMContentLoaded", function () {
     passwordSubmit.addEventListener("click", function () {
         const password = passwordInput.value.trim();
         const confirmPassword = confirmPasswordInput.value.trim();
-        passwordError.textContent = ""; // Clear previous errors
+        passwordError.textContent = "";
         passwordInput.classList.remove("error");
         confirmPasswordInput.classList.remove("error");
 
-        // Validate password and confirm password
         if (password === "" || confirmPassword === "") {
             showError(passwordError, "Both password and confirm password are required.");
             return;
@@ -299,31 +295,32 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Update user in the database with password
         const registration_id = sessionStorage.getItem('registration_id');
-        console.log("Registration ID for password validation:", registration_id);
-
         spinner.classList.remove('d-none');
         passwordSubmit.style.cursor = 'not-allowed';
 
-        // AJAX request to update password
+        // Final step: Update password and trigger virtual account creation
         sendAjaxRequest("validate-password.php", "POST", "password=" + encodeURIComponent(password) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (!response.success) {
                 showError(passwordError, response.message);
                 spinner.classList.add('d-none');
                 passwordSubmit.style.cursor = 'pointer';
             } else {
-                passwordSubmit.classList.remove('btn-primary');
-                passwordSubmit.classList.add('btn-secondary');
-                spinner.classList.add('d-none');
-
-                setTimeout(() => {
-                    // Redirect to login page
-                    window.location.href = "login.php";
-                }, 500); // Delay before redirecting to the login page
+                // Request to create virtual account after successful registration
+                sendAjaxRequest("create_virtual_account.php", "POST", "registration_id=" + encodeURIComponent(registration_id), function (vaResponse) {
+                    spinner.classList.add('d-none');
+                    if (vaResponse.success) {
+                        console.log("Registration completed! Virtual account created.");
+                        window.location.href = "dashboard.php"; // Redirect after completion
+                    } else {
+                        showError(passwordError, "Failed to create virtual account. Please try again.");
+                        passwordSubmit.style.cursor = 'pointer';
+                    }
+                });
             }
         });
     });
+
 
 
 });
