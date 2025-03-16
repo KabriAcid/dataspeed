@@ -1,7 +1,7 @@
 .btn {
     display: inline-block;
-    padding: 12px 28px;
-    font-size: var(--fs-4);
+    padding: 12px 22px;
+    font-size: 14px;
     font-weight: var(--fw-medium);
     border: none;
     border-radius: var(--radius-md);

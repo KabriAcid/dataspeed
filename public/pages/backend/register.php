@@ -25,7 +25,7 @@ require __DIR__ . '/../../partials/header.php';
             <div class="form-step">
                 <div class="form-step-header">
                     <h3>What's your email address?</h3>
-                    <p>You will receive a verification code, so make sure it is active.</p>
+                    <p class="text-sm">You will receive a verification code, so make sure it is active.</p>
                 </div>
                 <div class="form-field">
                     <input type="email" name="email" id="email" placeholder="Email address" class="input">
@@ -39,8 +39,8 @@ require __DIR__ . '/../../partials/header.php';
             <!-- OTP VERIFICATION -->
             <div class="form-step d-none">
                 <div class="form-step-header">
-                    <h3 class="form-step-header">Verify Your OTP Code</h3>
-                    <p class="form-step-para">Enter the 6-digit code sent to your email.</p>
+                    <h3>Verify Your OTP Code</h3>
+                    <p class="text-sm">Enter the 6-digit code sent to your email.</p>
                 </div>
                 <div class="form-field">
                     <div class="otp-container my-4">

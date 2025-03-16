@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $pdo->prepare("UPDATE users SET password = ?, registration_status = 'complete' WHERE registration_id = ?");
         $stmt->execute([$hashedPassword, $registration_id]);
         echo json_encode(["success" => true, "message" => "Password updated successfully. Registration complete."]);
-    } 
-    catch (Exception $e) {
+    } catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
+}

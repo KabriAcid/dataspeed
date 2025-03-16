@@ -31,7 +31,7 @@ session_start();
 
     <main>
         <section class="jumbotoron" id="sectionI">
-            <h1 id="main-header d-none">The cheapest and most <br>affordable <span class="primary">airtime</span> data <br>plug.</h1>
+            <h1>The cheapest and most <br>affordable <span class="primary">airtime</span> data <br>plug.</h1>
             <p id="header-para">Convert your airtime to cash, make & receive payments,<br> instant airtime and data
                 delivery, make bill payments <br> with DataSpeed. The all-in-one payments app.</p>
             <a href="" class="btn primary-btn">Get Started</a>

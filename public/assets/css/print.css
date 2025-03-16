@@ -1,5 +1,124 @@
-@media (max-width: 992px) {
-    .nav-buttons {
-        display: none;
+/* XS: Phones (Portrait) */
+@media screen and (max-width: 480px) {
+
+    .text-sm {
+        font-size: 12px;
+    }
+
+    .text-md {
+        font-size: 14px;
+    }
+
+    .text-lg {
+        font-size: 16px;
+    }
+
+    .text-xl {
+        font-size: 18px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* Adjust layout spacing */
+    section {
+        padding: 20px;
+    }
+
+    /* Adjust padding/margins */
+    .container {
+        padding: 10px;
+    }
+
+    ::placeholder {
+        font-size: 12px!important;
+    }
+
+}
+
+/* SM: Phones (Landscape) & Small Tablets */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 26px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    p {
+        font-size: 15px;
+    }
+
+    /* Ensure text doesn’t overflow */
+    .text-wrap {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    /* Reduce padding for smaller screens */
+    .container {
+        padding: 15px;
+    }
+}
+
+/* MD: Tablets & Small Laptops */
+@media screen and (max-width: 1024px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    h3 {
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    /* Adjust layout spacing */
+    section {
+        padding: 20px;
+    }
+}
+
+/* LG: Desktops */
+@media screen and (max-width: 1200px) {
+    h1 {
+        font-size: 36px;
+    }
+
+    h2 {
+        font-size: 30px;
+    }
+
+    h3 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 18px;
     }
 }

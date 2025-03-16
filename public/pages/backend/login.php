@@ -1,8 +1,7 @@
 <?php require __DIR__ . '/../../partials/header.php'; ?>
 
 <body>
-    <?php require __DIR__ . '/../../partials/navbar.php';
-    ?>
+    <?php #require __DIR__ . '/../../partials/navbar.php';?>
 
 </body>
 <main class="container">
@@ -14,10 +13,10 @@
                 </svg>
             </a>
         </div>
-        <form method="post" onsubmit="return false;">
+        <form method="post" onsubmit="return false;" class="mt-5">
             <div id="login-form">
                 <h3>Welcome Back!</h3>
-                <p>Enter your correct login details to continue.</p>
+                <p class="text-sm">Enter your correct login details to continue.</p>
                 <div class="form-field">
                     <div>
                         <input type="text" id="user" name="user" placeholder="Email address or Phone Number" class="input">
@@ -28,14 +27,14 @@
                     </div>
                     <label for="" class="error-label" id="email-error"></label>
 
-                    <p class="text-right"><a href="forgot-password.php" class="text-secondary">Forgot password?</a></p>
+                    <p class="text-right"><a href="forgot-password.php" class="text-secondary text-sm">Forgot password?</a></p>
                     <button type="submit" class="btn primary-btn mt-3" name="login" id="login">
                         <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Login
                     </button>
                 </div>
-                <p class="text-center">Don't have an account? <a href="register.php" class="link">Register</a></p>
-                <p class="copyright">Copyright @DreamCodes</p>
+                <p class="text-center text-sm">Don't have an account? <a href="register.php" class="link">Register</a></p>
+                <p class="copyright text-sm">Copyright @DreamCodes</p>
             </div>
         </form>
     </div>

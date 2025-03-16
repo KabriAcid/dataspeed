@@ -1,17 +1,17 @@
-@import url('bootstrap.min.css');
 @import url('variables.css');
 @import url('utilities.css');
 @import url('custom.css');
-@import url('reusables.css');
-@import url('print.css');
 @import url('bottom-nav.css');
 @import url('navbar.css');
+@import url('reusables.css');
 @import url('buttons.css');
+@import url('print.css');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
   padding: 0;
   margin: 0;
+  font-family: 'Montserrat';
   box-sizing: border-box;
 }
 
@@ -56,8 +56,8 @@ a {
 
 main section {
   /* margin-top: 30px; */
-  padding: 80px;
-  padding-top: calc(80px + 30px);
+  padding: 22px;
+  padding-top: calc(22px + 30px);
 }
 
 section:not(.jumbotoron) {
