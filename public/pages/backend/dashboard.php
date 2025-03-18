@@ -10,124 +10,104 @@ if (isset($_SESSION['user'])) {
     $user_id = $_SESSION['user']['user_id'];
     $username = $_SESSION['user']['first_name'];
 } else {
-    $username = "Unknown User"; // Fallback if session is not set
+    header('Location: login.php');
 }
 ?>
 
 <body>
 
     <main class="container-fluid py-4">
-        <!-- Header Section -->
-        <header class="d-flex justify-content-between align-items-start mb-4">
-            <div>
-                <h1 class=" fs-2 fw-bold mb-0">Welcome back,</h1>
-                <p class="text-secondary"><?= $username; ?></p>
-            </div>
-            <div>
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <!-- Left Content -->
+            <div class="d-flex align-items-center">
                 <a href="profile.php">
-                    <span>
-                        <img src="../<?= $_SESSION['user']['photo'] ?>" alt="photo" class="profile-avatar">
-                    </span>
+                    <img src="../<?= $_SESSION['user']['photo'] ?>" alt="photo" class="profile-avatar">
                 </a>
+                <div class="ms-3">
+                    <h4 class="fs-4 fw-bold mb-0"><?= $username; ?></h4>
+                    <p class="text-secondary text-sm m-0">Welcome back,</p>
+                </div>
+            </div>
+
+            <!-- Right Content: Notification -->
+            <div class="notification-icon">
+                <img src="../../assets/img/icons/bell.png" alt="">
+                <span class="notification-badge"></span> <!-- Notification indicator -->
             </div>
         </header>
 
         <!-- Balance Section -->
-        <div class="card mb-4">
-            <div class="card-body bg-none">
-                <div class="">
-                    <p class="text-secondary text-center mb-0">Total Balance</p>
-                    <!-- <button class="btn btn-link text-secondary p-0" id="toggleBalance">
+        <div class="mb-4">
+            <div class="">
+                <p class="text-secondary mb-0 text-sm">Total Balance</p>
+                <div class="d-flex align-items-end">
+                    <h2 class="display-5 fw-bold" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
+                    <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">••••••</h2>
+                    <button class="btn btn-link text-secondary p-0 mx-2" id="toggleBalance">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                             <circle cx="12" cy="12" r="3" />
                         </svg>
-                    </button> -->
+                    </button>
                 </div>
-                <h2 class="display-5 fw-bold text-center " id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
-                <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">••••••</h2>
             </div>
         </div>
 
         <!-- Action Buttons -->
         <div class="row g-4 mb-4">
-            <div class="col-4">
+            <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <a href="airtime.php" class="action-button bg-success">
+                    <a href="airtime.php" class="action-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m22 2-7 20-4-9-9-4Z" />
-                            <path d="M22 2 11 13" />
+                            <path d="M4 12h16M4 12l5 5M4 12l5-5" />
                         </svg>
                     </a>
                     <span class="text-secondary mt-2">Airtime</span>
                 </div>
             </div>
-            <!--  -->
-            <div class="col-4">
+
+            <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <a href="data.php" class="action-button bg-danger">
+                    <a href="data.php" class="action-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
-                            <path d="M12 12h.01" />
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M8 12h8M12 16V8" />
                         </svg>
                     </a>
                     <span class="text-secondary mt-2">Data</span>
                 </div>
             </div>
-            <!--  -->
-            <div class="col-4">
+
+            <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <a href="deposit.php" class="action-button bg-info">
+                    <a href="deposit.php" class="action-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 5v14" />
-                            <path d="M5 12h14" />
+                            <path d="M12 5v14M5 12h14" />
                         </svg>
                     </a>
                     <span class="text-secondary mt-2">Deposit</span>
                 </div>
             </div>
-            <div class="col-4">
+
+            <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <a href="deposit.php" class="action-button bg-info">
+                    <a href="bills.php" class="action-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 5v14" />
-                            <path d="M5 12h14" />
+                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                            <path d="M4 10h16M10 4v16" />
                         </svg>
                     </a>
-                    <span class="text-secondary mt-2">JAMB</span>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="d-flex flex-column align-items-center">
-                    <button class="action-button bg-warning">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 7h-9" />
-                            <path d="M14 17H5" />
-                            <circle cx="17" cy="17" r="3" />
-                            <circle cx="7" cy="7" r="3" />
-                        </svg>
-                    </button>
-                    <span class="text-secondary mt-2">Transfer</span>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="d-flex flex-column align-items-center">
-                    <button class="action-button bg-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-                        </svg>
-                    </button>
                     <span class="text-secondary mt-2">Bills</span>
                 </div>
             </div>
         </div>
 
         <!-- Transactions Section -->
-        <div class="card p-0">
-            <div class="card-header text-white">
-                <h4 class="fw-semibold mb-0">Recent Transactions</h4>
+        <div class="p-0 mt-5">
+            <div class="text-white">
+                <h6 class="mb-3">Recent Transactions</h6>
             </div>
-            <div class="card-body">
+            <div class="">
                 <div class="transaction-list">
                     <?php
                     $transactions = getTransactions($pdo, $user_id);
@@ -154,7 +134,7 @@ if (isset($_SESSION['user'])) {
                                             <p class='text-secondary small mb-0'><?= $date ?></p>
                                         </div>
                                     </div>
-                                    <span class='<?= $textColor ?> fw-semibold'><?= $prefix . $formattedAmount ?></span>
+                                    <span class='<?= $textColor ?> fw-semibold text-sm'><?= $prefix . $formattedAmount ?></span>
                                 </div>
                     <?php
                             }
