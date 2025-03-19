@@ -5,7 +5,7 @@
     font-weight: var(--fw-medium);
     border: none;
     border-radius: var(--radius-md);
-    font-family: 'Montserrat';
+    font-family: 'Quicksand';
     cursor: pointer;
     text-align: center;
     transition: background-color var(--transition-fast), transform var(--transition-fast);

@@ -14,7 +14,7 @@
 
     <style>
         body {
-            font-family: 'Montserrat';
+            font-family: 'Quicksand' !important;
         }
     </style>
 
