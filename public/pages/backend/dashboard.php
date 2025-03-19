@@ -14,7 +14,7 @@ if (isset($_SESSION['user'])) {
 }
 ?>
 
-<body class="bg-white">
+<body class="">
 
     <main class="container-fluid py-4 mb-5">
         <header class="d-flex justify-content-between align-items-center mb-4">
@@ -39,7 +39,7 @@ if (isset($_SESSION['user'])) {
         </header>
 
         <!-- Balance Section -->
-        <div class="shadow p-3 rounded">
+        <div class="">
             <div class="">
                 <p class="text-secondary mb-0 text-sm">Total Balance</p>
                 <div class="d-flex align-items-end">
@@ -136,8 +136,8 @@ if (isset($_SESSION['user'])) {
                                 <div class='d-flex align-items-center gap-3'>
                                     <div class='transaction-icon p-2 text-white'><?= $icon ?></div>
                                     <div>
-                                        <p class='mb-0 fw-medium'><?= $transaction['transaction_type'] ?></p>
-                                        <p class='text-secondary small mb-0'><?= $date ?></p>
+                                        <h6 class='mb-0'><?= $transaction['transaction_type'] ?></h6>
+                                        <p class='text-sm text-secondary mb-0'><?= $date ?></p>
                                     </div>
                                 </div>
                                 <span class='<?= $textColor ?> fw-semibold text-sm'><?= $prefix . $formattedAmount ?></span>
