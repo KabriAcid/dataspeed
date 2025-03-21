@@ -2,6 +2,8 @@
     --primary: #94241E;
     --primary-light: #FBF0F6;
 
+    --secondary: #e6e6e6;
+
     --success: #44C07E;
     --success-dark: #3A9A68;
     --success-light: #F3FCF7;
@@ -11,7 +13,7 @@
     --warning-light: #FFF3CD;
 
     --danger: #D9534F;
-    --danger-dark: #A52A2A;
+    --danger-dark: #6a0000;
     --danger-light: #FDECEA;
 
     --info: #3498db;

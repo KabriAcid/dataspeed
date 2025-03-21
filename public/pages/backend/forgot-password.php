@@ -21,7 +21,7 @@ session_start();
             <div class="form-step">
                 <div class="form-step-header">
                     <h3>Forgot password?</h3>
-                    <p>No worries, an authentication code will be sent to your email.</p>
+                    <p class="text-sm">No worries, an authentication code will be sent to your email.</p>
                 </div>
                 <div class="form-field">
                     <input type="email" name="email" id="email" placeholder="Email address" class="input">
@@ -88,7 +88,7 @@ session_start();
         if (countdown === 0) {
             timerDisplay.textContent = "OTP Expired! Request a new one.";
             verifyBtn.disabled = true;
-            verifyBtn.classList.add('secondary-btn');
+            verifyBtn.classList.add('inactive-btn');
             verifyBtn.style.cursor = 'not-allowed';
             clearInterval(timerInterval);
         }

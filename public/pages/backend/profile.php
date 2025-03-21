@@ -6,7 +6,7 @@ require __DIR__ . '/../../partials/header.php';
 // Check if user session exists
 if (isset($_SESSION['user'])) {
     $user_id = $_SESSION['user']['user_id'];
-    $username = $_SESSION['user']['first_name'];
+    $username = $_SESSION['user']['first_name'] . " " . $_SESSION['user']['last_name'];
     $user_location = $_SESSION['user']['city'] ?? 'Nigeria';
 } else {
     header('Location: login.php');
@@ -23,7 +23,7 @@ if (isset($_SESSION['user'])) {
         <!-- User Info -->
         <div class="text-center">
             <img src="../<?= $_SESSION['user']['photo'] ?>" alt="User Photo" class="profile-avatar">
-            <h4 class="fw-bold mt-2"><?= $username; ?> <i class="fa fa-check-circle text-primary"></i></h4>
+            <h4 class="fw-bold mt-2"><?= $username; ?></h4>
             <p class="text-muted"><?= $user_location; ?></p>
         </div>
 
@@ -92,23 +92,25 @@ if (isset($_SESSION['user'])) {
             </div>
 
             <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
+                <a href="change-password.php">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="icon-container">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 12H17.4C17.7314 12 18 12.2686 18 12.6V19.4C18 19.7314 17.7314 20 17.4 20H6.6C6.26863 20 6 19.7314 6 19.4V12.6C6 12.2686 6.26863 12 6.6 12H8M16 12V8C16 6.66667 15.2 4 12 4C8.8 4 8 6.66667 8 8V12M16 12H8" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="icon-container">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 12H17.4C17.7314 12 18 12.2686 18 12.6V19.4C18 19.7314 17.7314 20 17.4 20H6.6C6.26863 20 6 19.7314 6 19.4V12.6C6 12.2686 6.26863 12 6.6 12H8M16 12V8C16 6.66667 15.2 4 12 4C8.8 4 8 6.66667 8 8V12M16 12H8" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+
+                            </div>
+                            <p class="m-0 mx-3">Password & PIN</p>
+                        </div>
+                        <div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 6L15 12L9 18" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
 
                         </div>
-                        <p class="m-0 mx-3">Passowrd & Pin</p>
                     </div>
-                    <div>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 6L15 12L9 18" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-
-                    </div>
-                </div>
+                </a>
             </div>
 
             <div class="mb-3">

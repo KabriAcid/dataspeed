@@ -34,7 +34,7 @@
                     </button>
                 </div>
                 <p class="text-center text-sm">Don't have an account? <a href="register.php" class="link">Register</a></p>
-                <p class="copyright text-sm">Copyright @DreamCodes</p>
+                <p class="copyright text-xs">Copyright @DreamCodes</p>
             </div>
         </form>
     </div>

@@ -17,23 +17,23 @@ session_start();
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md bg-light">
-        <div class="container-fluid">
-            <!-- Navbar Brand -->
-            <a class="navbar-brand fw-bold" href="#">DataSpeed</a>
-            <!-- Right-aligned buttons -->
-            <div class="ms-auto d-flex gap-2">
-                <a href="public/pages/backend/login.php" class="btn btn-secondary ml-2">Login</a>
-                <a href="public/pages/backend/register.php" class="btn primary-btn ml-2">Create account</a>
+    <nav class="bg-light navbar fixed-top">
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <div>
+                <a href="index.php" class="d-block fw-bold">Dataspeed</a>
+            </div>
+            <div class="d-flex align-items-center">
+                <a href="public/pages/backend/login.php" class="secondary-btn m-0 me-2">LOGIN</a>
+                <a href="public/pages/backend/register.php" class="btn primary-btn m-0">CREATE ACCOUNT</a>
             </div>
         </div>
     </nav>
 
-    <main>
+    <main class="pt-5">
         <section class="jumbotoron" id="sectionI">
             <h1>The cheapest and most <br>affordable <span class="primary">airtime</span> data <br>plug.</h1>
-            <p id="header-para">Convert your airtime to cash, make & receive payments,<br> instant airtime and data
-                delivery, make bill payments <br> with DataSpeed. The all-in-one payments app.</p>
+            <p id="lead">Convert your airtime to cash, make & receive payments, instant airtime and data
+                delivery, <br> make bill payments with <span class="primary">DataSpeed</span>. <br> The all-in-one payments app.</p>
             <a href="" class="btn primary-btn">Get Started</a>
         </section>
         <!--  -->
@@ -45,7 +45,9 @@ session_start();
                 <!-- Card 1 -->
                 <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
-                        <img src="public/assets/img/icons/airtime-to-cash.png" alt="icon" class="card-icon">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="public/assets/img/icons/airtime-to-cash.png" alt="icon" class="card-icon">
+                        </div>
                         <h6 class="primary">Instant airtime to cash</h6>
                         <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.</p>
                     </div>
@@ -54,7 +56,9 @@ session_start();
                 <!-- Card 2 -->
                 <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
-                        <img src="public/assets/img/icons/airtime.png" alt="icon" class="card-icon">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="public/assets/img/icons/airtime.png" alt="icon" class="card-icon">
+                        </div>
                         <h6 class="primary">Airtime top up</h6>
                         <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
                     </div>
@@ -63,7 +67,9 @@ session_start();
                 <!-- Card 3 -->
                 <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
-                        <img src="public/assets/img/icons/data.png" alt="icon" class="card-icon">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="public/assets/img/icons/data.png" alt="icon" class="card-icon">
+                        </div>
                         <h6 class="primary">Data purchase</h6>
                         <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
                     </div>
@@ -71,7 +77,9 @@ session_start();
                 <!-- Card 1 -->
                 <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
                     <div class="card card-container text-md-start text-center">
-                        <img src="public/assets/img/icons/bills.png" alt="icon" class="card-icon">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="public/assets/img/icons/bills.png" alt="icon" class="card-icon">
+                        </div>
                         <h6 class="primary">Bill payments</h6>
                         <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.</p>
                     </div>
@@ -80,18 +88,11 @@ session_start();
                 <!-- Card 2 -->
                 <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
                     <div class="card card-container text-md-start text-center">
-                        <img src="public/assets/img/icons/nairapin.png" alt="icon" class="card-icon">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="public/assets/img/icons/nairapin.png" alt="icon" class="card-icon">
+                        </div>
                         <h6 class="primary">Airtime payments</h6>
                         <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="col-md-6 col-lg-4 col-12 mb-lg-0 mb-3">
-                    <div class="card card-container text-md-start text-center">
-                        <img src="public/assets/img/icons/send-receive.png" alt="icon" class="card-icon">
-                        <h6 class="primary">Send & Receive money</h6>
-                        <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
                     </div>
                 </div>
             </div>
@@ -160,7 +161,7 @@ session_start();
             </div>
             <div class="dataspeed-footer-content">
                 <div class="dataspeed-footer-section">
-                    <h1 class="dataspeed-footer-heading">dataspeed</h1>
+                    <h1 class="dataspeed-footer-heading">Dataspeed</h1>
                 </div>
                 <div class="dataspeed-footer-section">
                     <ul class="d-footer-ul">

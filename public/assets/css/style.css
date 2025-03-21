@@ -34,6 +34,18 @@ section:not(.jumbotoron) {
   background-color: white;
 }
 
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* BUTTONS STYLINGS */
 .primary-btn {
   border: none;
@@ -45,13 +57,40 @@ section:not(.jumbotoron) {
 
 .primary-btn:hover {
   transform: translateY(-2px);
-  background-color: var(--danger-dark);
+  background-color: var(--danger-dark)!important;
   color: white;
 }
 
 .secondary-btn {
+  border: 1px solid var(--primary);
+  box-shadow: var(--shadow-md);
+  background-color: transparent !important;
+  padding: 0.75rem 1.5rem;
+  text-transform: capitalize;
+
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--primary);
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 0.5rem;
+  transition: all .35s ease-in
+}
+
+
+.secondary-btn:hover {
+  background-color: var(--danger-dark)!important;
+  color: white;
+  transition: all .35s ease-in
+}
+
+.inactive-btn {
   background-color: transparent;
-  border: var(--primary);
+  border: var(--secondary);
   color: var(--gray-600);
   cursor: not-allowed;
   opacity: 0.6;
@@ -88,8 +127,12 @@ section:not(.jumbotoron) {
 
 #join-people {
   border-left: 6px solid var(--primary);
-  padding-left: calc(132px - 90px);
+  padding-left: calc(132px - 100px);
   margin-bottom: 80px;
+}
+
+#join-people>* {
+  line-height: 28px;
 }
 
 #sectionIII {
@@ -300,6 +343,7 @@ section:not(.jumbotoron) {
 
 #spinner-icon {
   color: white;
+  margin-right: 5px;
 }
 
 .icon-container {
@@ -319,8 +363,8 @@ section:not(.jumbotoron) {
 }
 
 .otp-input {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   text-align: center;
   font-weight: 600;
   font-size: 18px;
@@ -418,8 +462,22 @@ section:not(.jumbotoron) {
   border: 2px solid white;
 }
 
-/* MULTI-STEP */
+/* PASSWORD & PIN */
+.tabs-container {
+  background-color: var(--gray-300);
+}
 
+#password-tab {
+  box-shadow: 0px 2px 12px #fff inset;
+}
+
+.active-tab {
+  background-color: #fff!important;
+  border-right: 1px solid #ddd;
+}
+
+
+/* MULTI-STEP */
 .form-top-container {
   display: flex;
   justify-content: space-between;
@@ -531,8 +589,8 @@ section:not(.jumbotoron) {
   padding: 15px;
   border-radius: 8px;
   background: #ffffff;
-    box-shadow: 20px 20px 60px #bebebe,
-      -20px -20px 60px #ffffff;
+  box-shadow: 20px 20px 60px #bebebe,
+    -20px -20px 60px #ffffff;
 }
 
 /* footer */
