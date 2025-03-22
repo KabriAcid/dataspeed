@@ -121,7 +121,7 @@ if (isset($_SESSION['user'])) {
 
             <p class="text-muted fw-bold mt-4">Others</p>
             <div class="mb-3">
-                <a href="">
+                <a href="faq.php">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="icon-container">
@@ -136,7 +136,7 @@ if (isset($_SESSION['user'])) {
                                 </svg>
 
                             </div>
-                            <p class="m-0 mx-3 fw-semibold">Chat & Help</p>
+                            <p class="m-0 mx-3 fw-semibold">FAQ & Help</p>
                         </div>
                         <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
