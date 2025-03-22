@@ -31,10 +31,12 @@ if (isset($_SESSION['user'])) {
 
             <!-- Right Content: Notification -->
             <div class="notification-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.73 20C13.5542 20.3031 13.3019 20.5547 12.9982 20.7295C12.6946 20.9044 12.3504 20.9965 12 20.9965C11.6496 20.9965 11.3054 20.9044 11.0018 20.7295C10.6982 20.5547 10.4458 20.3031 10.27 20M17.3333 9C17.3333 7.4087 16.7714 5.88258 15.7712 4.75736C14.771 3.63214 13.4145 3 12 3C10.5855 3 9.22896 3.63214 8.22876 4.75736C7.22857 5.88258 6.66667 7.4087 6.66667 9C6.66667 16 4 17.5 4 17.5H20C20 17.5 17.3333 16 17.3333 9Z" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <span class="notification-badge"></span> <!-- Notification indicator -->
+                <a href="notifications.php">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.73 20C13.5542 20.3031 13.3019 20.5547 12.9982 20.7295C12.6946 20.9044 12.3504 20.9965 12 20.9965C11.6496 20.9965 11.3054 20.9044 11.0018 20.7295C10.6982 20.5547 10.4458 20.3031 10.27 20M17.3333 9C17.3333 7.4087 16.7714 5.88258 15.7712 4.75736C14.771 3.63214 13.4145 3 12 3C10.5855 3 9.22896 3.63214 8.22876 4.75736C7.22857 5.88258 6.66667 7.4087 6.66667 9C6.66667 16 4 17.5 4 17.5H20C20 17.5 17.3333 16 17.3333 9Z" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span class="notification-badge"></span>
+                </a>
             </div>
         </header>
 
@@ -44,7 +46,7 @@ if (isset($_SESSION['user'])) {
                 <p class="text-secondary mb-0 text-sm">Total Balance</p>
                 <div class="d-flex align-items-end">
                     <h2 class="display-5 fw-bold" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
-                    <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">••••••</h2>
+                    <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">********</h2>
                     <button class="btn btn-link text-secondary p-0 mx-1" id="toggleBalance">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3 13C6.6 5 17.4 5 21 13M9 14C9 15.6569 10.3431 17 12 17C13.6569 17 15 15.6569 15 14C15 12.3431 13.6569 11 12 11C10.3431 11 9 12.3431 9 14Z" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />

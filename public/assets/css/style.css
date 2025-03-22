@@ -574,18 +574,6 @@ section:not(.jumbotoron) {
   display: block;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #555;
-  display: block;
-  margin-bottom: 5px;
-}
-
 .input-wrapper {
   position: relative;
 }
