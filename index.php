@@ -31,15 +31,15 @@ session_start();
 
     <main class="pt-5">
         <section class="jumbotoron" id="sectionI">
-            <h1>The cheapest and most <br>affordable <span class="primary">airtime</span> data <br>plug.</h1>
+            <h1>The cheapest and most affordable <span class="primary">airtime</span> data plug.</h1>
             <p id="lead">Convert your airtime to cash, make & receive payments, instant airtime and data
-                delivery, <br> make bill payments with <span class="primary">DataSpeed</span>. <br> The all-in-one payments app.</p>
+                delivery,  make bill payments with <span class="primary">DataSpeed</span>.  The all-in-one payments app.</p>
             <a href="" class="btn primary-btn">Get Started</a>
         </section>
         <!--  -->
         <section id="sectionII">
             <div id="join-people">
-                <h3>Join over <span class="primary">500</span><br>people who use <span class="primary">DataSpeed.</span></h3>
+                <h3>Join over <span class="primary">500</span> <br> people who use <span class="primary">DataSpeed.</span></h3>
             </div>
             <div class="row">
                 <!-- Card 1 -->
