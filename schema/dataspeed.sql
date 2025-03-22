@@ -85,12 +85,13 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `phone_number` varchar(15) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `pin` int not null,
   `city` varchar(20) NOT NULL,
   `photo` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `registration_id` varchar(50) NOT NULL,
   `registration_status` enum('incomplete','complete') DEFAULT 'incomplete'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) 
 
 --
 -- Dumping data for table `users`
