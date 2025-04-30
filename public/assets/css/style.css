@@ -700,8 +700,8 @@ section:not(.jumbotoron) {
 
 .transaction-icon {
   border-radius: 8px;
-  min-width: 45px;
-  min-height: 45px;
+  max-width: 45px;
+  max-height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -853,4 +853,7 @@ section:not(.jumbotoron) {
     margin-left: -40px;
     text-align: center;
   }
+}
+.brand-name {
+  color: var(--primary);
 }

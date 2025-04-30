@@ -6,8 +6,8 @@ require __DIR__ . '/../../partials/header.php';
 <body>
     <main class="container-fluid py-4">
         <!-- Header Section -->
-        <header class="d-flex justify-content-between align-items-start mb-4">
-            <a href="dashboard.php">Back</a>
+        <header class="mb-5">
+            <h5 class="text-center fw-bold">Airtime</h5>
         </header>
         <div class="form-container container">
             <form action="" method="post">
@@ -26,19 +26,22 @@ require __DIR__ . '/../../partials/header.php';
                 <!-- Phone Number -->
                 <div class="mb-3">
                     <label for="phone_number">Phone Number</label>
-                    <input type="tel" name="phone_number" id="phone_number" class="input" placeholder="Phone Number" required maxlength="11">
+                    <input type="tel" name="phone_number" id="phone_number" class="input" placeholder="Phone Number"
+                        required maxlength="11">
                 </div>
 
                 <!-- Amount -->
                 <div class="mb-3">
                     <label for="amount">Amount</label>
-                    <input type="number" name="amount" id="amount" class="input" placeholder="Amount" required min="10" max="10000">
+                    <input type="number" name="amount" id="amount" class="input" placeholder="Amount" required min="10"
+                        max="10000">
                 </div>
 
                 <!-- Transaction Pin -->
                 <div class="mb-3">
                     <label for="txn_pin">Transaction Pin</label>
-                    <input type="number" name="txn_pin" id="txn_pin" class="input" placeholder="Transaction Pin" required min="1000" max="9999">
+                    <input type="number" name="txn_pin" id="txn_pin" class="input" placeholder="Transaction Pin"
+                        required min="1000" max="9999">
                 </div>
 
                 <!-- Submit Button -->

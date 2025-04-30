@@ -32,3 +32,15 @@ function getTransactionIcon($type)
 
     return $icons[$type] ?? $icons['Default'];
 }
+
+function getRefferals($pdo, $user_id)
+{
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE referral_code = ?");
+        $stmt->execute([$user_id]);
+        $referrals = $stmt->fetchAll();
+        return $referrals;
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
