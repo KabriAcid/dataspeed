@@ -11,16 +11,16 @@ require __DIR__ . '/../../partials/header.php';
         </header>
         <div class="form-container container">
             <h2 class="text-center mb-4">Buy data</h2>
-            <form id="dataPurchaseForm" action="" method="post">
+            <form id="dataPurchaseForm" action="purchase-data.php" method="post">
                 <!-- Network Selection -->
                 <div class="form-group">
                     <label for="network">Select Network</label>
                     <select name="network" id="network" class="input" required>
                         <option value="">-- Select Network --</option>
-                        <option value="MTN">MTN</option>
-                        <option value="Airtel">Airtel</option>
-                        <option value="9Mobile">9Mobile</option>
-                        <option value="Glo">Glo</option>
+                        <option value="1">MTN</option>
+                        <option value="2">Airtel</option>
+                        <option value="3">9Mobile</option>
+                        <option value="4">Glo</option>
                     </select>
                 </div>
 
@@ -35,132 +35,125 @@ require __DIR__ . '/../../partials/header.php';
                 <!-- Phone Number -->
                 <div class="form-group">
                     <label for="phone_number">Phone Number</label>
-                    <input type="tel" name="phone_number" id="phone_number" class="input" placeholder="Phone Number" required maxlength="11">
+                    <input type="tel" name="phone" id="phone_number" class="input" placeholder="Phone Number" required
+                        maxlength="11">
                 </div>
 
-                <!-- Amount -->
-                <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="number" name="amount" id="amount" class="input" placeholder="Amount" required min="50" max="50000">
-                </div>
-
-                <!-- Transaction Pin -->
-                <div class="form-group">
-                    <label for="txn_pin">Transaction Pin</label>
-                    <input type="number" name="txn_pin" id="txn_pin" class="input" placeholder="Transaction Pin" required min="1000" max="9999">
-                </div>
+                <!-- Hidden Ported Number -->
+                <input type="hidden" name="ported_number" value="true">
 
                 <!-- Submit Button -->
                 <div class="form-group">
                     <button type="submit" class="btn primary-btn w-100" name="submit">Purchase</button>
                 </div>
             </form>
+
         </div>
 
         <!-- Bottom navigation -->
         <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const networkSelect = document.getElementById("network");
-                const dataPlanSelect = document.getElementById("data_plan");
+        document.addEventListener("DOMContentLoaded", function() {
+            const networkSelect = document.getElementById("network");
+            const dataPlanSelect = document.getElementById("data_plan");
 
-                const dataPlans = {
-                    "MTN": [{
-                            name: "500MB - ₦100",
-                            value: "MTN_500MB"
-                        },
-                        {
-                            name: "1GB - ₦300",
-                            value: "MTN_1GB"
-                        },
-                        {
-                            name: "2GB - ₦500",
-                            value: "MTN_2GB"
-                        }
-                    ],
-                    "Airtel": [{
-                            name: "750MB - ₦200",
-                            value: "Airtel_750MB"
-                        },
-                        {
-                            name: "1.5GB - ₦500",
-                            value: "Airtel_1.5GB"
-                        },
-                        {
-                            name: "3GB - ₦1000",
-                            value: "Airtel_3GB"
-                        }
-                    ],
-                    "9Mobile": [{
-                            name: "500MB - ₦150",
-                            value: "9Mobile_500MB"
-                        },
-                        {
-                            name: "1GB - ₦500",
-                            value: "9Mobile_1GB"
-                        },
-                        {
-                            name: "2.5GB - ₦1200",
-                            value: "9Mobile_2.5GB"
-                        }
-                    ],
-                    "Glo": [{
-                            name: "1GB - ₦300",
-                            value: "Glo_1GB"
-                        },
-                        {
-                            name: "3GB - ₦1000",
-                            value: "Glo_3GB"
-                        },
-                        {
-                            name: "5GB - ₦1500",
-                            value: "Glo_5GB"
-                        }
-                    ]
-                };
-
-                networkSelect.addEventListener("change", function() {
-                    const selectedNetwork = this.value;
-                    dataPlanSelect.innerHTML = '<option value="">-- Select Data Plan --</option>';
-
-                    if (selectedNetwork && dataPlans[selectedNetwork]) {
-                        dataPlans[selectedNetwork].forEach(plan => {
-                            let option = document.createElement("option");
-                            option.value = plan.value;
-                            option.textContent = plan.name;
-                            dataPlanSelect.appendChild(option);
-                        });
-                        dataPlanSelect.disabled = false;
-                    } else {
-                        dataPlanSelect.disabled = true;
+            const dataPlans = {
+                "MTN": [{
+                        name: "500MB - ₦100",
+                        value: "MTN_500MB"
+                    },
+                    {
+                        name: "1GB - ₦300",
+                        value: "MTN_1GB"
+                    },
+                    {
+                        name: "2GB - ₦500",
+                        value: "MTN_2GB"
                     }
-                });
-
-                // Form validation
-                document.getElementById("dataPurchaseForm").addEventListener("submit", function(event) {
-                    const phone = document.getElementById("phone_number").value;
-                    const amount = document.getElementById("amount").value;
-                    const txnPin = document.getElementById("txn_pin").value;
-
-                    if (!/^\d{11}$/.test(phone)) {
-                        alert("Phone number must be 11 digits.");
-                        event.preventDefault();
-                        return;
+                ],
+                "Airtel": [{
+                        name: "750MB - ₦200",
+                        value: "Airtel_750MB"
+                    },
+                    {
+                        name: "1.5GB - ₦500",
+                        value: "Airtel_1.5GB"
+                    },
+                    {
+                        name: "3GB - ₦1000",
+                        value: "Airtel_3GB"
                     }
-
-                    if (amount < 50 || amount > 50000) {
-                        alert("Amount must be between ₦50 and ₦50,000.");
-                        event.preventDefault();
-                        return;
+                ],
+                "9Mobile": [{
+                        name: "500MB - ₦150",
+                        value: "9Mobile_500MB"
+                    },
+                    {
+                        name: "1GB - ₦500",
+                        value: "9Mobile_1GB"
+                    },
+                    {
+                        name: "2.5GB - ₦1200",
+                        value: "9Mobile_2.5GB"
                     }
-
-                    if (!/^\d{4}$/.test(txnPin)) {
-                        alert("Transaction Pin must be 4 digits.");
-                        event.preventDefault();
+                ],
+                "Glo": [{
+                        name: "1GB - ₦300",
+                        value: "Glo_1GB"
+                    },
+                    {
+                        name: "3GB - ₦1000",
+                        value: "Glo_3GB"
+                    },
+                    {
+                        name: "5GB - ₦1500",
+                        value: "Glo_5GB"
                     }
-                });
+                ]
+            };
+
+            networkSelect.addEventListener("change", function() {
+                const selectedNetwork = this.value;
+                dataPlanSelect.innerHTML = '<option value="">-- Select Data Plan --</option>';
+
+                if (selectedNetwork && dataPlans[selectedNetwork]) {
+                    dataPlans[selectedNetwork].forEach(plan => {
+                        let option = document.createElement("option");
+                        option.value = plan.value;
+                        option.textContent = plan.name;
+                        dataPlanSelect.appendChild(option);
+                    });
+                    dataPlanSelect.disabled = false;
+                } else {
+                    dataPlanSelect.disabled = true;
+                }
             });
+
+            // Form validation
+            document.getElementById("dataPurchaseForm").addEventListener("submit", function(event) {
+                const phone = document.getElementById("phone_number").value;
+                const amount = document.getElementById("amount").value;
+                const txnPin = document.getElementById("txn_pin").value;
+
+                if (!/^\d{11}$/.test(phone)) {
+                    alert("Phone number must be 11 digits.");
+                    event.preventDefault();
+                    return;
+                }
+
+                if (amount < 50 || amount > 50000) {
+                    alert("Amount must be between ₦50 and ₦50,000.");
+                    event.preventDefault();
+                    return;
+                }
+
+                if (!/^\d{4}$/.test(txnPin)) {
+                    alert("Transaction Pin must be 4 digits.");
+                    event.preventDefault();
+                }
+            });
+        });
         </script>
         <!-- FontAwesome CDN -->
     </main>
