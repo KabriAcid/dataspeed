@@ -8,11 +8,11 @@ $secretKey = $_ENV['BILLSTACK_SECRET_KEY'];
 
 // Prepare the data payload
 $data = [
-    "email" => "testuser@example.com",
-    "reference" => "testref123",
-    "firstName" => "Test",
-    "lastName" => "User",
-    "phone" => "09012345678",
+    "email" => "musa@example.com",
+    "reference" => "tx_ref_1236789",
+    "firstName" => "Musa",
+    "lastName" => "Abuakar",
+    "phone" => "09012345672",
     "bank" => "PALMPAY"
 ];
 

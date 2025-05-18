@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
 
     <style>
-        body {
-            font-family: 'Quicksand' !important;
-        }
+    body {
+        font-family: 'Quicksand' !important;
+    }
     </style>
 
 </head>

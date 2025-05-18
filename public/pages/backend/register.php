@@ -5,11 +5,12 @@ require __DIR__ . '/../../partials/header.php';
 
 // Check if user is being referred using GET METHOD
 if (isset($_GET['referral_code'])) {
-    $referral_code = $_GET['referral_code'];
+    $_SESSION['referral_code'] = $_GET['referral_code'];
+    $referral_code = $_SESSION['referral_code'] ? $_SESSION['referral_code'] : '';
 }
-
+var_dump($_SESSION['referral_code']) ?? NULL;
 ?>
-<a href="register.php?referral_code=N2YRM4XF1G">Click</a>
+<a href="register.php?referral_code=W5QiULfAj6">Generate</a>
 <main class="container">
     <div class="form-container text-center">
         <div class="form-top-container">
@@ -99,7 +100,7 @@ if (isset($_GET['referral_code'])) {
                         <span class="phone-prefix text-sm">
                             <img src="https://flagcdn.com/w40/ng.png" alt="Nigeria Flag"> +234
                         </span>
-                        <input type="tel" id="phone" name="phone_number" placeholder="Phone Number" class="input">
+                        <input type="text" id="phone" name="phone_number" placeholder="Phone Number" class="input">
                     </div>
                     <span for="" class="error-label" id="phone-error"></span>
                     <button type="button" class="btn primary-btn mt-3" id="phone-submit">

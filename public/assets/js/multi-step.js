@@ -122,6 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         emailContinueBtn.classList.add('btn-secondary');
                         spinner.classList.add('d-none');
 
+                        console.log(otpResponse.otpCode);
+
+
                         setTimeout(() => {
                             nextStep();
                         }, timeout); 
@@ -337,21 +340,25 @@ document.addEventListener("DOMContentLoaded", function () {
         passwordSubmit.style.cursor = 'not-allowed';
 
         // Final step: Update password and trigger virtual account creation
-        sendAjaxRequest("validate-password.php", "POST", "password=" + encodeURIComponent(password) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
-    if (!response.success) {
-        showError(passwordError, response.message);
-        spinner.classList.add('d-none');
-        passwordSubmit.style.cursor = 'pointer';
-    } else {
-        // 🔍 Log virtual account info for debugging
-        console.log("Virtual Account Number:", response.account_number);
-        console.log("Bank Name:", response.bank_name);
+        sendAjaxRequest("validate-password.php", "POST", "password=" + encodeURIComponent(password) + "&registration_id=" + encodeURIComponent(registration_id), 
+            function (response) {
+                if (!response.success) {
+                    showError(passwordError, JSON.stringify(response.api_response, null, 2));
+                    spinner.classList.add('d-none');
+                    passwordSubmit.style.cursor = 'pointer';
+                } else {
+                    console.log("Virtual Account Number:", response.account_number);
+                    console.log("Bank Name:", response.bank_name);
+                    console.log("API Raw Response:", response.api_response);
 
-        setTimeout(() => {
-            // window.location.href = "login.php";
-        }, timeout);
-    }
-});
+                    setTimeout(() => {
+                        window.location.href = "login.php";
+                    }, timeout);
+                }
+            }
+        );
+
+
 
     });
 
