@@ -44,6 +44,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Spinners
     const spinner = document.getElementById('spinner-icon');
+
+    // Referral Code
+    const referralInput = document.getElementById('referral-code');
+    const referralError = document.getElementById('referral-error');
+    const referralContinueBtn = document.getElementById('referral-submit');
+
+    referralContinueBtn.addEventListener("click", function () {
+        const referralCode = referralInput.value.trim();
+        referralError.textContent = ""; // Clear previous errors
+
+        spinner.classList.remove('d-none');
+        referralContinueBtn.style.cursor = 'not-allowed';
+
+        // Validate referral code
+        sendAjaxRequest("validate-referral.php", "POST", "referral_code=" + encodeURIComponent(referralCode), function (response) {
+            if (!response.success) {
+                showError(referralError, response.message);
+                spinner.classList.add('d-none');
+                referralContinueBtn.style.cursor = 'pointer';
+            } else {
+                // Save the referral code to sessionStorage for use in the next step
+                sessionStorage.setItem('referral_code', referralCode);
+                console.log("Referral code stored:", referralCode);
+
+                setTimeout(() => {
+                    nextStep();
+                }, timeout); 
+            }
+        });
+    });
+
+    // Email Verification
     const emailInput = document.getElementById('email');
     const emailError = document.getElementById('email-error');
     const emailContinueBtn = document.getElementById('email-submit');
@@ -306,16 +338,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Final step: Update password and trigger virtual account creation
         sendAjaxRequest("validate-password.php", "POST", "password=" + encodeURIComponent(password) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
-            if (!response.success) {
-                showError(passwordError, response.message);
-                spinner.classList.add('d-none');
-                passwordSubmit.style.cursor = 'pointer';
-            } else {
-                setTimeout(() => {
-                    window.location.href = "login.php";
-                }, timeout);
-            }
-        });
+    if (!response.success) {
+        showError(passwordError, response.message);
+        spinner.classList.add('d-none');
+        passwordSubmit.style.cursor = 'pointer';
+    } else {
+        // 🔍 Log virtual account info for debugging
+        console.log("Virtual Account Number:", response.account_number);
+        console.log("Bank Name:", response.bank_name);
+
+        setTimeout(() => {
+            // window.location.href = "login.php";
+        }, timeout);
+    }
+});
+
     });
 
 

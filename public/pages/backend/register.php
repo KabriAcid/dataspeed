@@ -2,13 +2,22 @@
 <?php
 session_start();
 require __DIR__ . '/../../partials/header.php';
+
+// Check if user is being referred using GET METHOD
+if (isset($_GET['referral_code'])) {
+    $referral_code = $_GET['referral_code'];
+}
+
 ?>
+<a href="register.php?referral_code=N2YRM4XF1G">Click</a>
 <main class="container">
     <div class="form-container text-center">
         <div class="form-top-container">
             <a href="../../../index.php">
                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.60564 1.65147L3.73182 6.5253H16V8.47483H3.73182L8.60564 13.3487L7.22712 14.7272L0 7.50006L7.22712 0.272949L8.60564 1.65147Z" fill="#722F37" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8.60564 1.65147L3.73182 6.5253H16V8.47483H3.73182L8.60564 13.3487L7.22712 14.7272L0 7.50006L7.22712 0.272949L8.60564 1.65147Z"
+                        fill="#722F37" />
                 </svg>
             </a>
             <div class="pagination">
@@ -17,12 +26,29 @@ require __DIR__ . '/../../partials/header.php';
                 <span class="page"></span>
                 <span class="page"></span>
                 <span class="page"></span>
+                <span class="page"></span>
             </div>
 
         </div>
         <form id="multi-step-form" method="post" onsubmit="return false;">
-            <!-- EMAIL VERIFICATION -->
+            <!-- REFERRAL CODE FIELD -->
             <div class="form-step">
+                <div class="form-step-header">
+                    <h4 class="">Do you have a referral code?</h4>
+                    <p class="text-sm">Leave empty if no referral code available.</p>
+                </div>
+                <div class="form-field">
+                    <input type="text" name="referral_code" id="referral-code" placeholder="Referral code (optional)"
+                        class="input" value="<?php echo isset($referral_code) ? $referral_code : ''; ?>">
+                    <span class="error-label" id="referral-error"></span>
+                    <button type="button" class="btn primary-btn mt-3" id="referral-submit">
+                        <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
+                        Continue
+                    </button>
+                </div>
+            </div>
+            <!-- EMAIL VERIFICATION -->
+            <div class="form-step d-none">
                 <div class="form-step-header">
                     <h4 class="">What's your email address?</h4>
                     <p class="text-sm">You will receive a verification code, so make sure it is active.</p>
@@ -40,7 +66,7 @@ require __DIR__ . '/../../partials/header.php';
             <div class="form-step d-none">
                 <div class="form-step-header">
                     <h4>Verify Your OTP Code</h3>
-                    <p class="text-sm">Enter the 6-digit code sent to your email.</p>
+                        <p class="text-sm">Enter the 6-digit code sent to your email.</p>
                 </div>
                 <div class="form-field">
                     <div class="otp-container my-4">
@@ -87,7 +113,7 @@ require __DIR__ . '/../../partials/header.php';
             <div class="form-step d-none">
                 <div class="form-step-header">
                     <h4>What's your full name?</h3>
-                    <p class="text-sm">Enter your correct name details.</p>
+                        <p class="text-sm">Enter your correct name details.</p>
                 </div>
                 <div class="form-field">
                     <input type="text" name="first_name" id="first_name" placeholder="First Name" class="input">
@@ -111,7 +137,8 @@ require __DIR__ . '/../../partials/header.php';
                     <input type="password" class="input" id="password" name="password" placeholder="Password">
                 </div>
                 <div class="form-field">
-                    <input type="password" class="input" id="confirm-password" name="confirm_password" placeholder="Password">
+                    <input type="password" class="input" id="confirm-password" name="confirm_password"
+                        placeholder="Password">
                 </div>
                 <span for="" class="error-label" id="password-error"></span>
                 <button type="button" class="btn primary-btn" id="password-submit">
@@ -125,29 +152,29 @@ require __DIR__ . '/../../partials/header.php';
     </div>
 </main>
 <script>
-    let countdown = 600; // 10 minutes in seconds
-    const timerDisplay = document.getElementById("otp-timer");
-    const verifyBtn = document.getElementById("verify-otp-btn");
+let countdown = 600; // 10 minutes in seconds
+const timerDisplay = document.getElementById("otp-timer");
+const verifyBtn = document.getElementById("verify-otp-btn");
 
-    function updateTimer() {
-        if (!timerDisplay) return; // Avoid errors if element is missing
+function updateTimer() {
+    if (!timerDisplay) return; // Avoid errors if element is missing
 
-        const minutes = Math.floor(countdown / 60);
-        const seconds = countdown % 60;
-        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    const minutes = Math.floor(countdown / 60);
+    const seconds = countdown % 60;
+    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-        if (countdown === 0) {
-            timerDisplay.textContent = "OTP Expired! Request a new one.";
-            verifyBtn.disabled = true;
-            verifyBtn.classList.add('inactive-btn');
-            verifyBtn.style.cursor = 'not-allowed';
-            clearInterval(timerInterval);
-        }
-
-        countdown--;
+    if (countdown === 0) {
+        timerDisplay.textContent = "OTP Expired! Request a new one.";
+        verifyBtn.disabled = true;
+        verifyBtn.classList.add('inactive-btn');
+        verifyBtn.style.cursor = 'not-allowed';
+        clearInterval(timerInterval);
     }
 
-    const timerInterval = setInterval(updateTimer, 1000);
+    countdown--;
+}
+
+const timerInterval = setInterval(updateTimer, 1000);
 </script>
 <script src="../../assets/js/multi-step.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

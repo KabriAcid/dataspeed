@@ -33,7 +33,7 @@ function getTransactionIcon($type)
     return $icons[$type] ?? $icons['Default'];
 }
 
-function getRefferals($pdo, $user_id)
+function getReferrals($pdo, $user_id)
 {
     try {
         $stmt = $pdo->prepare("SELECT * FROM users WHERE referral_code = ?");
@@ -44,3 +44,9 @@ function getRefferals($pdo, $user_id)
         echo $e->getMessage();
     }
 }
+
+function generateVirtualAccountNumber($pdo)
+{
+    return false;
+}
+    

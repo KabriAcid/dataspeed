@@ -1,53 +1,37 @@
 <?php
+
 require __DIR__ . '/../../../config/config.php';
+require __DIR__ . '/../../../functions/Model.php';
 
-$secretKey = $_ENV['FLW_SECRET_KEY'];
-$userEmail = $_SESSION['user_email'] ?? 'test@example.com'; // Assuming user is logged in
-$userId = $_SESSION['user_id'] ?? 1; // Replace with actual user ID logic
+// Set your secret key here or from .env
+$secretKey = $_ENV['BILLSTACK_SECRET_KEY'];
 
-// Flutterwave API endpoint
-$url = "https://api.flutterwave.com/v3/virtual-account-numbers";
-
+// Prepare the data payload
 $data = [
-    "email" => $userEmail,
-    "is_permanent" => true,
-    "tx_ref" => "DS-" . time(),
-    "bvn" => "", // Optional: Only if required
-    "phonenumber" => "",
-    "firstname" => "John",
-    "lastname" => "Doe",
+    "email" => "testuser@example.com",
+    "reference" => "testref123",
+    "firstName" => "Test",
+    "lastName" => "User",
+    "phone" => "09012345678",
+    "bank" => "PALMPAY"
 ];
 
-$curl = curl_init();
-curl_setopt_array($curl, [
-    CURLOPT_URL => $url,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_POST => true,
-    CURLOPT_HTTPHEADER => [
-        "Authorization: Bearer $secretKey",
-        "Content-Type: application/json"
-    ],
-    CURLOPT_POSTFIELDS => json_encode($data)
+// Initialize cURL
+$ch = curl_init('https://api.billstack.co/v2/thirdparty/generateVirtualAccount/');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer ' . $secretKey,
+    'Content-Type: application/json',
 ]);
 
-$response = curl_exec($curl);
-$err = curl_error($curl);
-curl_close($curl);
+// Execute the request
+$response = curl_exec($ch);
+$statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
 
-if ($err) {
-    die("cURL Error: " . $err);
-}
-
-$result = json_decode($response, true);
-if ($result['status'] === 'success') {
-    $accountNumber = $result['data']['account_number'];
-    $bankName = $result['data']['bank_name'];
-
-    // Save to DB (replace with your DB logic)
-    $stmt = $pdo->prepare("INSERT INTO virtual_accounts (user_id, account_number, bank_name) VALUES (?, ?, ?)");
-    $stmt->execute([$userId, $accountNumber, $bankName]);
-
-    echo "Virtual Account Created: $accountNumber at $bankName";
-} else {
-    echo "Failed to create virtual account: " . $result['message'];
-}
+// Output the results
+echo "<h2>Billstack API Test</h2>";
+echo "<strong>Status Code:</strong> $statusCode<br>";
+echo "<strong>Response:</strong><pre>" . json_encode(json_decode($response), JSON_PRETTY_PRINT) . "</pre>";
