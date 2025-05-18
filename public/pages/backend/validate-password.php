@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "firstName" => $firstName,
             "lastName" => $lastName,
             "phone" => $phone_number,
-            "bank" => "PALMPAY"
+            "bank" => "9PSB"
         ];
 
         $payload = json_encode($data);

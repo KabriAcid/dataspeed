@@ -8,12 +8,12 @@ $secretKey = $_ENV['BILLSTACK_SECRET_KEY'];
 
 // Prepare the data payload
 $data = [
-    "email" => "musa@example.com",
-    "reference" => "tx_ref_1236789",
+    "email" => "dadad@example.com",
+    "reference" => "tx_ref_21236892",
     "firstName" => "Musa",
     "lastName" => "Abuakar",
     "phone" => "09012345672",
-    "bank" => "PALMPAY"
+    "bank" => "9PSB"
 ];
 
 // Initialize cURL

@@ -82,15 +82,17 @@ $referrals = $stmt->fetch();
                                     <div class="text-center">
                                         <form action="" method="post" onsubmit="return false;">
                                             <?php
-                                            // Check if status is not pending then deactivate the button
-                                            if ($referrals['status'] == 'pending') {
-                                                echo '<button type="submit" class="btn btn-success btn-sm bold"  onclick="claimReward()">Claim</button>';
-                                            } else {
+                                            // Check if a referral exists
+                                            if ($referrals && isset($referrals['status']) && $referrals['status'] === 'pending') {
+                                                echo '<button type="submit" class="btn btn-success btn-sm bold" onclick="claimReward()">Claim</button>';
+                                            } elseif ($referrals) {
                                                 echo '<button type="submit" class="btn btn-secondary" disabled>Deactivated</button>';
+                                            } else {
+                                                echo '<button type="submit" class="btn btn-secondary" disabled>No Reward</button>';
                                             }
-
                                             ?>
                                         </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -134,8 +136,8 @@ $referrals = $stmt->fetch();
                 </div>
                 <div class="col-12 col-lg-6">
                     <div class="container py-0">
-                        <form action="" method="get">
-                            <!-- 2 forms fields, one for referrals code and a referral link-->
+                        <?php if ($referrals && is_array($referrals)): ?>
+                        <form action="" method="post">
                             <div class="form-group">
                                 <label for="referralCode">Referral Code</label>
                                 <input type="text" id="referralCode" class="form-control"
@@ -147,6 +149,12 @@ $referrals = $stmt->fetch();
                                     value="<?php echo $referrals['referral_link']; ?>" readonly />
                             </div>
                         </form>
+                        <?php else: ?>
+                        <div class="alert alert-warning">
+                            No referral data found for your account.
+                        </div>
+                        <?php endif; ?>
+
                     </div>
                 </div>
             </div>
