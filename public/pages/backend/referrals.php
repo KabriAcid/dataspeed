@@ -72,7 +72,8 @@ $referrals = $stmt->fetch();
 
                                             ?>
                                             <span>
-                                                <?php echo '&#8358;' . ($total_reward['total_reward'] ?? 0.00); ?>
+                                                <?php echo '&#8358;' . number_format($total_reward['total_reward'] ?? 0.00, 2); ?>
+
                                             </span>
                                         </h6>
                                     </div>

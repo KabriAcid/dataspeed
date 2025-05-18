@@ -8,7 +8,6 @@ if (isset($_GET['referral_code'])) {
     $_SESSION['referral_code'] = $_GET['referral_code'];
     $referral_code = $_SESSION['referral_code'] ? $_SESSION['referral_code'] : '';
 }
-var_dump($_SESSION['referral_code']) ?? NULL;
 ?>
 <a href="register.php?referral_code=W5QiULfAj6">Generate</a>
 <main class="container">
