@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dataspeed - Home</title>
+    <title>Dataspeed - Homepage</title>
     <link rel="shortcut icon" href="public/logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
@@ -33,13 +33,15 @@ session_start();
         <section class="jumbotoron" id="sectionI">
             <h1>The cheapest and most affordable <span class="primary">airtime</span> data plug.</h1>
             <p id="lead">Convert your airtime to cash, make & receive payments, instant airtime and data
-                delivery,  make bill payments with <span class="primary">DataSpeed</span>.  The all-in-one payments app.</p>
+                delivery, make bill payments with <span class="primary">DataSpeed</span>. The all-in-one payments app.
+            </p>
             <a href="" class="btn primary-btn">Get Started</a>
         </section>
         <!--  -->
         <section id="sectionII">
             <div id="join-people">
-                <h3>Join over <span class="primary">500</span> <br> people who use <span class="primary">DataSpeed.</span></h3>
+                <h3>Join over <span class="primary">500</span> <br> people who use <span
+                        class="primary">DataSpeed.</span></h3>
             </div>
             <div class="row">
                 <!-- Card 1 -->
@@ -49,7 +51,8 @@ session_start();
                             <img src="public/assets/img/icons/airtime-to-cash.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Instant airtime to cash</h6>
-                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.</p>
+                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.
+                        </p>
                     </div>
                 </div>
 
@@ -81,7 +84,8 @@ session_start();
                             <img src="public/assets/img/icons/bills.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Bill payments</h6>
-                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.</p>
+                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.
+                        </p>
                     </div>
                 </div>
 
@@ -108,7 +112,8 @@ session_start();
                         <div class="card-body">
                             <i class="icon">xxx</i>
                             <h6>Seamless Transcation</h6>
-                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using the DataSpeed app.</p>
+                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using
+                                the DataSpeed app.</p>
                         </div>
                     </div>
                 </div>
@@ -117,7 +122,8 @@ session_start();
                         <div class="card-body">
                             <i class="icon">xxx</i>
                             <h6>Seamless Transcation</h6>
-                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using the DataSpeed app.</p>
+                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using
+                                the DataSpeed app.</p>
                         </div>
                     </div>
                 </div>
@@ -126,7 +132,8 @@ session_start();
                         <div class="card-body">
                             <i class="icon">xxx</i>
                             <h6>Seamless Transcation</h6>
-                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using the DataSpeed app.</p>
+                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using
+                                the DataSpeed app.</p>
                         </div>
                     </div>
                 </div>
@@ -135,7 +142,8 @@ session_start();
                         <div class="card-body">
                             <i class="icon">xxx</i>
                             <h6>Seamless Transcation</h6>
-                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using the DataSpeed app.</p>
+                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using
+                                the DataSpeed app.</p>
                         </div>
                     </div>
                 </div>
@@ -145,7 +153,8 @@ session_start();
         <section id="sectionIV">
             <div class="text-center">
                 <h4>Newsletter</h4>
-                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. At aut neque consectetur nihil sint excepturi omnis adipisci possimus!</p>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. At aut neque consectetur nihil
+                    sint excepturi omnis adipisci possimus!</p>
                 <form action="" method="post" class="d-flex" style="width: 50%;margin: auto;">
                     <input type="email" name="email" class="input" placeholder="Your email">
                     <button type="submit" name="submit" class="btn primary-btn ml-3">SUBSCRIBE</button>
@@ -195,9 +204,13 @@ session_start();
                         <b>Follow me on</b>
                     </div>
                     <div class="logo">
-                        <a href="https://www.instagram.com/dark.soul.io/" target="_blank"><img width="30" height="30" src="https://img.icons8.com/ios-glyphs/100/instagram-new.png" alt="instagram-new" /></a>
-                        <a href="https://www.youtube.com/channel/UCooCOD2j8Q4Y9ysYZIFzI_w" target="_blank"><img width="30" height="30" src="https://img.icons8.com/ios-filled/100/youtube-squared.png" alt="youtube-squared" /></a>
-                        <a href="https://dribbble.com/dark-soul" target="_blank"><img width="25" height="25" src="https://img.icons8.com/offices/100/dribbble.png" alt="dribbble" /></a>
+                        <a href="https://www.instagram.com/dark.soul.io/" target="_blank"><img width="30" height="30"
+                                src="https://img.icons8.com/ios-glyphs/100/instagram-new.png" alt="instagram-new" /></a>
+                        <a href="https://www.youtube.com/channel/UCooCOD2j8Q4Y9ysYZIFzI_w" target="_blank"><img
+                                width="30" height="30" src="https://img.icons8.com/ios-filled/100/youtube-squared.png"
+                                alt="youtube-squared" /></a>
+                        <a href="https://dribbble.com/dark-soul" target="_blank"><img width="25" height="25"
+                                src="https://img.icons8.com/offices/100/dribbble.png" alt="dribbble" /></a>
                     </div>
                 </div>
             </div>
