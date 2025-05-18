@@ -55,4 +55,14 @@ function getUserReferralDetails($pdo, $user_id) {
         echo "Error: " . $e->getMessage();
     }
 }
-    
+ // A function for rerieving user bank accout details from the database
+ function getUserAccountDetails($pdo, $user_id) {
+    try {
+        $stmt = $pdo->prepare("SELECT virtual_account, account_name, bank_name FROM users WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return null;
+    }
+}

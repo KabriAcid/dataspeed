@@ -1,0 +1,55 @@
+Array
+(
+    [status] => 1
+    [message] => Account reserved
+    [data] => Array
+        (
+            [reference] => R-YCKLJSMOZS
+            [account] => Array
+                (
+                    [0] => Array
+                        (
+                            [account_number] => 5761209190
+                            [account_name] => VTU-Myles Sutton
+                            [bank_name] => 9PSB Bank
+                            [bank_id] => 9PSB
+                            [created_at] => 2025-05-18 08:21:55
+                        )
+
+                )
+
+            [meta] => Array
+                (
+                    [firstName] => Myles
+                    [lastName] => Sutton
+                    [email] => gopa@gmail.com
+                )
+
+        )
+
+)
+[2025-05-18 09:39:56] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-QDLENYTSRZ","account":[{"account_number":"5761209657","account_name":"VTU-Kane Callahan","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-18 08:39:35"}],"meta":{"firstName":"Kane","lastName":"Callahan","email":"cogelynyja@gmail.com"}}}
+[2025-05-18 09:51:54] User's existing virtual account: 0
+[2025-05-18 09:51:54] Generated reference: ref_1dfa6d99d2 for user musajidda1@gmail.com
+[2025-05-18 09:52:00] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-RUOTHLXBGN","account":[{"account_number":"5761209987","account_name":"VTU-musa jidda","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-18 08:51:39"}],"meta":{"firstName":"musa","lastName":"jidda","email":"musajidda1@gmail.com"}}}
+[2025-05-18 09:52:00] DB Update Successful for user musajidda1@gmail.com
+[2025-05-18 09:55:23] User's existing virtual account: None
+[2025-05-18 09:55:23] Generated reference: ref_df77e91102 for user walodyr@gmail.com
+[2025-05-18 09:55:29] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-PNYBNYUXFQ","account":[{"account_number":"5761210077","account_name":"VTU-Nichole Lloyd","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-18 08:55:09"}],"meta":{"firstName":"Nichole","lastName":"Lloyd","email":"walodyr@gmail.com"}}}
+[2025-05-18 09:55:29] DB Update Successful for user walodyr@gmail.com
+[2025-05-18 09:58:35] User's existing virtual account: None
+[2025-05-18 09:58:35] Generated reference: ref_536f903c-fadf-4e2e-9fdf-8fd791186b13 for user dygymecy@gmail.com
+[2025-05-18 09:58:41] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-GFHPUUYSEX","account":[{"account_number":"5761210228","account_name":"VTU-Veronica Quinn","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-18 08:58:21"}],"meta":{"firstName":"Veronica","lastName":"Quinn","email":"dygymecy@gmail.com"}}}
+[2025-05-18 09:58:41] DB Update Successful for user dygymecy@gmail.com
+[2025-05-18 10:15:08] User's existing virtual account: None
+[2025-05-18 10:15:08] Generated reference: ref_974eaa6d-4f4a-414e-9f80-bfacae9c5d16 for user xehemexa@gmail.com
+[2025-05-18 10:15:14] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-PRZTYEMAHS","account":[{"account_number":"5761210754","account_name":"VTU-Hiroko Mclaughlin","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-18 09:14:54"}],"meta":{"firstName":"Hiroko","lastName":"Mclaughlin","email":"xehemexa@gmail.com"}}}
+[2025-05-18 10:15:15] DB Update Successful for user xehemexa@gmail.com
+[2025-05-18 10:17:28] User's existing virtual account: None
+[2025-05-18 10:17:28] Generated reference: ref_bd8e3df8-69a0-45c9-a8c9-d29e1d74754c for user muhammadmjidder8@gmail.com
+[2025-05-18 10:17:33] Billstack response: {"status":true,"message":"9PSB already reserved","data":{"reference":"R-VTPXCKSJYV","account":[{"account_number":"5761207770","account_name":"VTU-Orson Head","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-18 07:29:33"}],"meta":{"firstName":"Rebecca","lastName":"Dickerson","email":"muhammadmjidder8@gmail.com"}}}
+[2025-05-18 10:17:34] DB Update Successful for user muhammadmjidder8@gmail.com
+[2025-05-18 11:30:37] User's existing virtual account: None
+[2025-05-18 11:30:37] Generated reference: ref_8a9545f0-2e5e-483a-87b6-65f4f0489e75 for user musajidder@gmail.com
+[2025-05-18 11:30:43] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-SDYNQCBSZV","account":[{"account_number":"5761212820","account_name":"VTU-Britanni Downs","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-18 10:30:24"}],"meta":{"firstName":"Britanni","lastName":"Downs","email":"musajidder@gmail.com"}}}
+[2025-05-18 11:30:44] DB Update Successful for user musajidder@gmail.com

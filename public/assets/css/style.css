@@ -857,3 +857,30 @@ section:not(.jumbotoron) {
 .brand-name {
   color: var(--primary);
 }
+
+        .account-banner {
+            transition: box-shadow 0.3s ease;
+            border-left: 6px solid #0d6efd;
+            /* Bootstrap primary color */
+        }
+
+        .account-banner:hover {
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+
+        #copy-button {
+          cursor: pointer;
+          
+        }

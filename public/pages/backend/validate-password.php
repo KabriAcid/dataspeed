@@ -6,18 +6,44 @@ require __DIR__ . '/../../../functions/Model.php';
 header("Content-Type: application/json");
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $password = $_POST['password'] ?? '';
-    $registration_id = $_POST['registration_id'] ?? '';
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    echo json_encode(["success" => false, "message" => "Invalid request method."]);
+    exit;
+}
 
-    if (empty($password) || empty($registration_id)) {
-        echo json_encode(["success" => false, "message" => "Password and Registration ID are required."]);
+$password = $_POST['password'] ?? '';
+$registration_id = $_POST['registration_id'] ?? '';
+
+if (empty($password) || empty($registration_id)) {
+    echo json_encode(["success" => false, "message" => "Password and Registration ID are required."]);
+    exit;
+}
+
+try {
+    // Fetch user info
+    $stmt = $pdo->prepare("SELECT email, first_name, last_name, phone_number, virtual_account FROM users WHERE registration_id = ?");
+    $stmt->execute([$registration_id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        echo json_encode(["success" => false, "message" => "User not found."]);
         exit;
     }
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Log user's existing virtual account (if any)
+    file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] User's existing virtual account: " . ($user['virtual_account'] ?? 'None') . PHP_EOL, FILE_APPEND);
 
-    // Generate referral code
+    // If virtual account already exists, return it without calling API again
+    if (!empty($user['virtual_account'])) {
+        echo json_encode([
+            "success" => true,
+            "message" => "User already has a virtual account.",
+            "account_number" => $user['virtual_account']
+        ]);
+        exit;
+    }
+
+    // Helper: generate referral code
     function generateReferralCode($pdo)
     {
         do {
@@ -29,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         return $referralCode;
     }
 
-    // Create virtual account via Billstack
+    // Helper: create virtual account from Billstack
     function createVirtualAccount($email, $reference, $firstName, $lastName, $phone_number)
     {
         $secretKey = $_ENV['BILLSTACK_SECRET_KEY'];
@@ -58,15 +84,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $curlError = curl_error($ch);
         curl_close($ch);
 
+        // Log API response for debugging
+        file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Billstack response: " . $response . PHP_EOL, FILE_APPEND);
+
         if ($curlError) {
-            return ["error" => true, "api_response" => "cURL Error: $curlError"];
+            return ["error" => true, "message" => "cURL Error: $curlError"];
         }
 
         $decoded = json_decode($response, true);
 
-        // Always return decoded response, even on failure
-        if (!$decoded || !isset($decoded['data']['account'][0]['account_number'])) {
-            return ["error" => true, "message" => "Invalid response from Billstack", "api_response" => $response];
+        if (!$decoded) {
+            return ["error" => true, "message" => "Failed to decode API response."];
+        }
+
+        if (!isset($decoded['data']['account'][0]['account_number'])) {
+            return ["error" => true, "message" => "Invalid response from Billstack API.", "api_response" => $decoded];
         }
 
         return [
@@ -78,91 +110,107 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ];
     }
 
-    try {
-        $stmt = $pdo->prepare("SELECT email, first_name, last_name, phone_number FROM users WHERE registration_id = ?");
-        $stmt->execute([$registration_id]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Prepare data for API call
+    $email = $user['email'];
+    $firstName = $user['first_name'];
+    $lastName = $user['last_name'];
 
-        if (!$user) {
-            echo json_encode(["success" => false, "message" => "User not found."]);
-            exit;
-        }
+    // Clean phone number to digits only
+    $phone_number = preg_replace('/\D/', '', $user['phone_number']);
 
-        $email = $user['email'];
-        $firstName = $user['first_name'];
-        $lastName = $user['last_name'];
+    // Normalize phone number for Nigeria if needed (e.g., add leading 0 if 10 digits)
+    if (strlen($phone_number) === 10 && $phone_number[0] !== '0') {
+        $phone_number = '0' . $phone_number;
+    }
 
-        // Format phone number (ensure it starts with 0 and is 11 digits)
-        $phone_number = preg_replace('/[^0-9]/', '', $user['phone_number']);
-        if (strlen($phone_number) === 10) {
-            $phone_number = '0' . $phone_number;
-        }
+    // Generate unique reference for Billstack - ensure uniqueness
+    function generateUUIDv4()
+    {
+        $data = random_bytes(16);
+        $data[6] = chr((ord($data[6]) & 0x0f) | 0x40); // version 4
+        $data[8] = chr((ord($data[8]) & 0x3f) | 0x80); // variant
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    }
 
-        $reference = uniqid('ref_');
-        $referralCode = generateReferralCode($pdo);
+    $reference = 'ref_' . generateUUIDv4();
+    file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Generated reference: $reference for user $email" . PHP_EOL, FILE_APPEND);
 
-        $virtualAccount = createVirtualAccount($email, $reference, $firstName, $lastName, $phone_number);
+    // Call API to create virtual account
+    $virtualAccount = createVirtualAccount($email, $reference, $firstName, $lastName, $phone_number);
 
-        if (isset($virtualAccount['error']) && $virtualAccount['error'] === true) {
-            echo json_encode([
-                "success" => false,
-                "api_response" => $virtualAccount['api_response']
-            ]);
-            exit;
-        }
-
-        // Hashed password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        // Update user with virtual account data
-        $stmt = $pdo->prepare("UPDATE users SET password = ?, referral_code = ?, registration_status = 'complete', 
-        virtual_account = ?, bank_name = ?, account_name = ?, billstack_ref = ? WHERE registration_id = ?");
-        $stmt->execute([
-            $hashedPassword,
-            $referralCode,
-            $virtualAccount['account_number'],
-            $virtualAccount['bank_name'],
-            $virtualAccount['account_name'],
-            $virtualAccount['billstack_ref'],
-            $registration_id
-        ]);
-
-        echo json_encode([
-            "success" => true,
-            "message" => "Registration complete. Virtual account created.",
-            "account_number" => $virtualAccount['account_number'],
-            "bank_name" => $virtualAccount['bank_name'],
-            "api_response" => $virtualAccount['api_response']
-        ]);
-
-        // After successful registration and you have $userId (new user ID)
-        if (isset($_SESSION['referral_code']) && !empty($_SESSION['referral_code'])) {
-            // Get referrer user_id using referral_code from session
-            $stmt = $pdo->prepare("SELECT user_id FROM users WHERE referral_code = ?");
-            $stmt->execute([$_SESSION['referral_code']]);
-            $userId = $stmt->fetchColumn();
-
-            if ($userId) {
-                $insertReferral = $pdo->prepare("INSERT INTO referrals (user_id, referral_code, referral_link, reward, status, created_at) 
-            VALUES (?, ?, ?, ?, ?, NOW())");
-
-                $referralLink = "https://dataspeed.com/public/pages/backend/register?referral_code=" . $_SESSION['referral_code'];
-
-                $insertReferral->execute([
-                    $userId,
-                    $_SESSION['referral_code'],
-                    $referralLink,
-                    100,
-                    'pending'
-                ]);
-            }
-            // Optionally clear the referral_code session after use
-            unset($_SESSION['referral_code']);
-        }
-    } catch (Exception $e) {
+    if (isset($virtualAccount['error']) && $virtualAccount['error'] === true) {
         echo json_encode([
             "success" => false,
-            "message" => "Server error: " . $e->getMessage()
+            "message" => $virtualAccount['message'] ?? 'Error creating virtual account',
+            "api_response" => $virtualAccount['api_response'] ?? null
         ]);
+        exit;
     }
+
+    // Generate referral code for user
+    $referralCode = generateReferralCode($pdo);
+
+    // Hash the password
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Update user with virtual account details and password
+    $stmt = $pdo->prepare("UPDATE users SET password = ?, referral_code = ?, registration_status = 'complete', 
+        virtual_account = ?, bank_name = ?, account_name = ?, billstack_ref = ? WHERE registration_id = ?");
+
+    $updateSuccess = $stmt->execute([
+        $hashedPassword,
+        $referralCode,
+        $virtualAccount['account_number'],
+        $virtualAccount['bank_name'],
+        $virtualAccount['account_name'],
+        $virtualAccount['billstack_ref'],
+        $registration_id
+    ]);
+
+    if (!$updateSuccess) {
+        $errorInfo = $stmt->errorInfo();
+        file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] DB Update Error: " . print_r($errorInfo, true) . PHP_EOL, FILE_APPEND);
+        echo json_encode(["success" => false, "message" => "Failed to update user data."]);
+        exit;
+    } else {
+        file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] DB Update Successful for user $email" . PHP_EOL, FILE_APPEND);
+    }
+
+    echo json_encode([
+        "success" => true,
+        "message" => "Registration complete. Virtual account created.",
+        "account_number" => $virtualAccount['account_number'],
+        "bank_name" => $virtualAccount['bank_name'],
+        "api_response" => $virtualAccount['api_response']
+    ]);
+
+    // Handle referral logic (optional)
+    if (isset($_SESSION['referral_code']) && !empty($_SESSION['referral_code'])) {
+        $stmt = $pdo->prepare("SELECT user_id FROM users WHERE referral_code = ?");
+        $stmt->execute([$_SESSION['referral_code']]);
+        $referrerId = $stmt->fetchColumn();
+
+        if ($referrerId) {
+            $insertReferral = $pdo->prepare("INSERT INTO referrals (user_id, referral_code, referral_link, reward, status, created_at) 
+                VALUES (?, ?, ?, ?, ?, NOW())");
+
+            $referralLink = "https://dataspeed.com/public/pages/backend/register?referral_code=" . $_SESSION['referral_code'];
+
+            $insertReferral->execute([
+                $referrerId,
+                $_SESSION['referral_code'],
+                $referralLink,
+                100,
+                'pending'
+            ]);
+        }
+
+        unset($_SESSION['referral_code']);
+    }
+} catch (Exception $e) {
+    file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Exception: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
+    echo json_encode([
+        "success" => false,
+        "message" => "Server error: " . $e->getMessage()
+    ]);
 }
