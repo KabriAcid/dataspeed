@@ -46,7 +46,8 @@ function getReferrals($pdo, $user_id)
 }
 
 // A function for retrieving user referral details from the database
-function getUserReferralDetails($pdo, $user_id) {
+function getUserReferralDetails($pdo, $user_id)
+{
     try {
         $stmt = $pdo->prepare("SELECT * FROM referrals WHERE user_id = ?");
         $stmt->execute([$user_id]);
@@ -55,8 +56,9 @@ function getUserReferralDetails($pdo, $user_id) {
         echo "Error: " . $e->getMessage();
     }
 }
- // A function for rerieving user bank accout details from the database
- function getUserAccountDetails($pdo, $user_id) {
+// A function for rerieving user bank accout details from the database
+function getUserAccountDetails($pdo, $user_id)
+{
     try {
         $stmt = $pdo->prepare("SELECT virtual_account, account_name, bank_name FROM users WHERE user_id = ?");
         $stmt->execute([$user_id]);
@@ -65,4 +67,62 @@ function getUserReferralDetails($pdo, $user_id) {
         echo "Error: " . $e->getMessage();
         return null;
     }
+}
+
+// A funtion for pushing notifications to the database
+
+/**
+ * Push a notification to a user
+ *
+ * @param PDO $pdo Database connection
+ * @param int $userId The ID of the user
+ * @param string $title Notification title
+ * @param string $message Notification body
+ * @return bool Success status
+ */
+function pushNotification(PDO $pdo, int $user_id, string $title, string $message = '', string $type = "default", string $icon = 'default', string $is_read = '0'): bool
+{
+    try {
+        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, title, message, type, icon, is_read) VALUES (?, ?, ?, ?, ?, ?)");
+        return $stmt->execute([$user_id, $title, $message, $type, $icon, $is_read]);
+    } catch (Exception $e) {
+        error_log("Notification Error: " . $e->getMessage());
+        return false;
+    }
+}
+
+
+function getUserNotifications(PDO $pdo, int $user_id, int $limit = 10): array
+{
+    $limit = (int)$limit;
+
+    $sql = "SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT $limit";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$user_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+function groupNotificationsByDate(array $notifications): array
+{
+    $grouped = [];
+
+    foreach ($notifications as $notification) {
+        $created = new DateTime($notification['created_at']);
+        $today = new DateTime();
+        $yesterday = (clone $today)->modify('-1 day');
+
+        if ($created->format('Y-m-d') === $today->format('Y-m-d')) {
+            $group = 'Today';
+        } elseif ($created->format('Y-m-d') === $yesterday->format('Y-m-d')) {
+            $group = 'Yesterday';
+        } else {
+            $group = $created->format('F j, Y');
+        }
+
+        $grouped[$group][] = $notification;
+    }
+
+    return $grouped;
 }

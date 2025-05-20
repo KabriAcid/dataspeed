@@ -184,6 +184,17 @@ try {
         "api_response" => $virtualAccount['api_response']
     ]);
 
+    // Get user ID from registration ID in the users table
+    $stmt = $pdo->prepare("SELECT user_id FROM users WHERE registration_id = ?");
+    $stmt->execute([$registration_id]);
+    $user_id = $stmt->fetchColumn();
+    
+
+    // Insert notification for user in the db
+    $title = 'Virtual Account Created';
+    $message = 'Congratulations! Your virtual account has been created successfully.';
+    pushNotification($pdo, $user_id, $title, $message, 'virtual_account', 'fa-home', false);
+    
     // Handle referral logic (optional)
     if (isset($_SESSION['referral_code']) && !empty($_SESSION['referral_code'])) {
         $stmt = $pdo->prepare("SELECT user_id FROM users WHERE referral_code = ?");

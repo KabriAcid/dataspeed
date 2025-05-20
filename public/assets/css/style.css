@@ -330,9 +330,10 @@ section:not(.jumbotoron) {
 }
 
 .error-label {
-  color: red;
+  color: #ff4040;
   display: block;
   margin: 10px 0;
+  font-weight: 600;
   font-size: 14px;
 }
 
@@ -345,9 +346,9 @@ section:not(.jumbotoron) {
 
 }
 
-#spinner-icon {
+.spinner-icon {
   color: white;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .icon-container {
@@ -858,29 +859,241 @@ section:not(.jumbotoron) {
   color: var(--primary);
 }
 
-        .account-banner {
-            transition: box-shadow 0.3s ease;
-            border-left: 6px solid #0d6efd;
-            /* Bootstrap primary color */
-        }
+.account-banner {
+    transition: box-shadow 0.3s ease;
+    border-left: 6px solid #0d6efd;
+    /* Bootstrap primary color */
+}
 
-        .account-banner:hover {
-            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
-        }
+.account-banner:hover {
+    box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
+}
 
-        .animate-fade-in {
-            animation: fadeIn 1s ease forwards;
-            opacity: 0;
-        }
+.animate-fade-in {
+    animation: fadeIn 1s ease forwards;
+    opacity: 0;
+}
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
 
 
-        #copy-button {
-          cursor: pointer;
-          
-        }
+#copy-button {
+  cursor: pointer;
+
+}
+
+/* OVERLAY FROM W3SCHOOLS.COM */
+#overlay {
+  position: fixed;
+  /* Sit on top of the page content */
+  display: none;
+  /* Hidden by default */
+  width: 100%;
+  /* Full width (cover the whole page) */
+  height: 100%;
+  /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Black background with opacity */
+  z-index: 2;
+  /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer;
+  /* Add a pointer on hover */
+}
+
+/* LOADER FROM CODEPEN BY LEWIS LANE */
+.loader {
+  position: absolute;
+  top: 50%;
+  --size: 3em;
+  --color: currentcolor;
+  --ghost-opacity: 0.1;
+  --ghost-color: color-mix(in srgb,
+      currentcolor calc(var(--ghost-opacity) * 100%),
+      transparent);
+  animation: loader var(--speed, 0.5s) infinite linear;
+
+  --_border-width: calc(var(--size) * 0.172);
+  position: relative;
+  display: inline-block;
+  width: var(--size);
+  aspect-ratio: 1;
+  border: var(--_border-width) solid;
+  border-color: var(--color) var(--ghost-color) var(--ghost-color) var(--color);
+  border-radius: 100%;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background: var(--color);
+    width: var(--_border-width);
+    aspect-ratio: 1;
+    border-radius: 100%;
+  }
+
+  &::before {
+    top: 0;
+    right: 0;
+  }
+
+  &::after {
+    bottom: 0;
+    left: 0;
+  }
+}
+
+@keyframes loader {
+  0% {
+    rotate: 0deg;
+  }
+
+  100% {
+    rotate: 360deg;
+  }
+}
+
+/* NOTIFICATIONS */
+
+.bell-icon {
+  color: rgb(75, 85, 99);
+}
+
+/* Notifications container */
+.notifications {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+/* Date group styles */
+.date-group {
+  margin-bottom: 1.5rem;
+}
+
+.date-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.clock-icon {
+  color: rgb(156, 163, 175);
+  margin-right: 0.5rem;
+}
+
+.date-header span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(107, 114, 128);
+}
+
+/* Notification card styles */
+.notification-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.notification-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.notification-content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.icon-wrapper {
+  flex-shrink: 0;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  background-color: rgb(249, 250, 251);
+}
+
+.notification-details {
+  margin-left: 1rem;
+  flex: 1;
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification-header h2 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(17, 24, 39);
+}
+
+.time {
+  font-size: 0.75rem;
+  color: rgb(107, 114, 128);
+}
+
+.notification-details p {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: rgb(75, 85, 99);
+}
+
+.unread {
+  font-weight: bold;
+  background: #f8f9fa;
+}
+
+/* Default styling for icon wrapper */
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 18px;
+  color: white;
+  background-color: #ccc;
+}
+
+/* Specific styles for different notification types */
+.icon-wrapper.default {
+  background-color: #ff67c5;
+  /* Blue */
+}
+
+.icon-wrapper.virtual_account {
+  background-color: #007bff;
+  /* Blue */
+}
+
+.icon-wrapper.password_changed {
+  background-color: #28a745;
+  /* Green */
+}
+
+.icon-wrapper.transaction_failed {
+  background-color: #dc3545;
+  /* Red */
+}
+
+.icon-wrapper.referral_bonus {
+  background-color: #17a2b8;
+  /* Teal */
+}
+
+.icon-wrapper.system_notice {
+  background-color: #ffc107;
+  /* Amber */
+}

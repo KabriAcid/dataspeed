@@ -8,6 +8,7 @@ if (isset($_GET['referral_code'])) {
     $_SESSION['referral_code'] = $_GET['referral_code'];
     $referral_code = $_SESSION['referral_code'] ? $_SESSION['referral_code'] : '';
 }
+// var_dump($_SESSION['referral_code']) ?? NULL;
 ?>
 <a href="register.php?referral_code=W5QiULfAj6">Generate</a>
 <main class="container">
@@ -141,17 +142,29 @@ if (isset($_GET['referral_code'])) {
                         placeholder="Password">
                 </div>
                 <span for="" class="error-label" id="password-error"></span>
-                <button type="button" class="btn primary-btn" id="password-submit">
+                <button type="button" class="btn primary-btn" id="password-submit" onclick="showOverlay()">
                     <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                     Finish
                 </button>
             </div>
 
+            <div id="overlay">
+                <div class="loader"></div>
+            </div>
         </form>
 
     </div>
 </main>
 <script>
+function showOverlay() {
+    document.getElementById("overlay").style.display = "block";
+    const timeout = 10000;
+    setTimeout(() => {
+        document.getElementById("overlay").style.display = "none";
+    }, timeout);
+}
+
+
 let countdown = 600; // 10 minutes in seconds
 const timerDisplay = document.getElementById("otp-timer");
 const verifyBtn = document.getElementById("verify-otp-btn");

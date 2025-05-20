@@ -1,15 +1,8 @@
 <?php
 session_start();
 require __DIR__ . '/../../../config/config.php';
-require __DIR__ . '/../../partials/header.php';
 require __DIR__ . '/../../../functions/Model.php';
-
-// Check if user session exists
-if (isset($_SESSION['user'])) {
-    $user_id = $_SESSION['user']['user_id'];
-} else {
-    header('Location: login.php');
-}
+require __DIR__ . '/../../partials/header.php';
 ?>
 
 <body>
@@ -19,7 +12,9 @@ if (isset($_SESSION['user'])) {
             <span></span>
             <h6 class="text-center fw-bold">Transactions</h6>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.0049 5.99512L12.0049 6.00512M12.0049 17.9951L12.0049 18.0051M12.0049 11.9951L12.0049 12.0051" stroke="#141C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                    d="M12.0049 5.99512L12.0049 6.00512M12.0049 17.9951L12.0049 18.0051M12.0049 11.9951L12.0049 12.0051"
+                    stroke="#141C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
 
         </header>
@@ -45,16 +40,16 @@ if (isset($_SESSION['user'])) {
 
                         if ($transactions) {
                 ?>
-                            <div class='d-flex justify-content-between align-items-start mb-3 pb-2'>
-                                <div class='d-flex align-items-center gap-3'>
-                                    <div class='transaction-icon p-2 text-white'><?= $icon ?></div>
-                                    <div>
-                                        <h6 class='mb-0'><?= $transaction['transaction_type'] ?></h6>
-                                        <p class='text-sm text-secondary mb-0'><?= $date ?></p>
-                                    </div>
-                                </div>
-                                <span class='<?= $textColor ?> fw-semibold text-sm'><?= $prefix . $formattedAmount ?></span>
-                            </div>
+                <div class='d-flex justify-content-between align-items-start mb-3 pb-2'>
+                    <div class='d-flex align-items-center gap-3'>
+                        <div class='transaction-icon p-2 text-white'><?= $icon ?></div>
+                        <div>
+                            <h6 class='mb-0'><?= $transaction['transaction_type'] ?></h6>
+                            <p class='text-sm text-secondary mb-0'><?= $date ?></p>
+                        </div>
+                    </div>
+                    <span class='<?= $textColor ?> fw-semibold text-sm'><?= $prefix . $formattedAmount ?></span>
+                </div>
                 <?php
                         }
                     }

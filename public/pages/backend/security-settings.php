@@ -2,11 +2,6 @@
 session_start();
 require __DIR__ . '/../../../config/config.php';
 require __DIR__ . '/../../partials/header.php';
-
-if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
-    exit;
-}
 ?>
 
 <body>

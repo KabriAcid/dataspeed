@@ -1,3 +1,10 @@
+<?php
+if (isset($_SESSION['user'])) {
+    $user_id = $_SESSION['user']['user_id'];
+} else {
+    header('Location: login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,9 +20,9 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
 
     <style>
-    body {
-        font-family: 'Quicksand' !important;
-    }
+        body {
+            font-family: 'Quicksand' !important;
+        }
     </style>
 
 </head>
