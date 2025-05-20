@@ -1,7 +1,14 @@
 <?php
+function getUserInfo(PDO $pdo, int $userId): array|false
+{
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
+    $stmt->execute([$userId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+}
+
 function showBalance($pdo, $user_id)
 {
-    $stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE user_id = ?");
+    $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ?");
     $stmt->execute([$user_id]);
     $balance = $stmt->fetch();
 
@@ -33,25 +40,13 @@ function getTransactionIcon($type)
     return $icons[$type] ?? $icons['Default'];
 }
 
-function getReferrals($pdo, $user_id)
-{
-    try {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE referral_code = ?");
-        $stmt->execute([$user_id]);
-        $referrals = $stmt->fetchAll();
-        return $referrals;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-
 // A function for retrieving user referral details from the database
 function getUserReferralDetails($pdo, $user_id)
 {
     try {
         $stmt = $pdo->prepare("SELECT * FROM referrals WHERE user_id = ?");
         $stmt->execute([$user_id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -125,4 +120,52 @@ function groupNotificationsByDate(array $notifications): array
     }
 
     return $grouped;
+}
+
+function updateWalletBalance(PDO $pdo, int $user_id, float $amount, string $type, string $description = ''): bool
+{
+    try {
+        // Start the transaction
+        $pdo->beginTransaction();
+
+        // Lock the user's wallet balance row for update (to prevent race conditions)
+        $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ? FOR UPDATE");
+        $stmt->execute([$user_id]);
+        $wallet = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$wallet) {
+            throw new Exception("Wallet not found");
+        }
+
+        $currentBalance = (float)$wallet['wallet_balance'];
+
+        if ($type === 'debit' && $currentBalance < $amount) {
+            throw new Exception("Insufficient balance");
+        }
+
+        // Calculate new balance
+        $newBalance = ($type === 'credit')
+            ? $currentBalance + $amount
+            : $currentBalance - $amount;
+
+        // Update wallet balance
+        $updateStmt = $pdo->prepare("UPDATE account_balance SET wallet_balance = ? WHERE user_id = ?");
+        $updateStmt->execute([$newBalance, $user_id]);
+
+        // Insert transaction record
+        $insertTxn = $pdo->prepare("
+            INSERT INTO transactions (user_id, amount, type, description) VALUES (?, ?, ?, ?)
+        ");
+        $insertTxn->execute([$user_id, $amount, $type, $description]);
+
+        // Commit all changes
+        $pdo->commit();
+
+        return true;
+    } catch (Exception $e) {
+        // Rollback in case of error
+        $pdo->rollBack();
+        error_log("Balance update failed: " . $e->getMessage());
+        return false;
+    }
 }

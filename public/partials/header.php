@@ -1,6 +1,8 @@
 <?php
+// Check if user session exists
 if (isset($_SESSION['user'])) {
     $user_id = $_SESSION['user']['user_id'];
+    $user = getUserInfo($pdo, $user_id);
 } else {
     header('Location: login.php');
 }

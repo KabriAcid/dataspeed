@@ -1,23 +1,9 @@
 <?php
 session_start();
-require __DIR__ . '/../../partials/header.php';
 require __DIR__ . '/../../../config/config.php';
 require __DIR__ . '/../../../functions/Model.php';
-// var_dump($_SESSION['user']);
+require __DIR__ . '/../../partials/header.php';
 
-// Check if user session exists
-if (isset($_SESSION['user'])) {
-    $user_id = $_SESSION['user']['user_id'];
-    $username = $_SESSION['user']['first_name'];
-} else {
-    header('Location: login.php');
-}
-
-if ($user_id) {
-    $userAccount = getUserAccountDetails($pdo, $user_id);
-} else {
-    $userAccount = null;
-}
 ?>
 
 <body class="">
@@ -27,10 +13,10 @@ if ($user_id) {
             <!-- Left Content -->
             <div class="d-flex align-items-center">
                 <a href="profile.php">
-                    <img src="../<?= $_SESSION['user']['photo'] ?>" alt="photo" class="profile-avatar">
+                    <img src="../<?= $user['photo'] ?>" alt="photo" class="profile-avatar">
                 </a>
                 <div class="ms-3">
-                    <h4 class="fs-4 fw-bold mb-0"><?= $username; ?></h4>
+                    <h4 class="fs-4 fw-bold mb-0"><?= $user['first_name']; ?></h4>
                     <p class="text-secondary text-sm m-0">Welcome back,</p>
                 </div>
             </div>
@@ -67,24 +53,24 @@ if ($user_id) {
         </div>
 
         <!-- ✅ Account Details Banner -->
-        <?php if ($userAccount): ?>
+        <?php if ($user): ?>
         <div class="account-banner bg-white border rounded shadow-sm p-4 my-4 animate-fade-in">
             <h4 class="mb-4 text-dark fw-bold border-start border-4 border-primary ps-3">Bank Account Details</h4>
             <div class="row text-dark">
                 <div class="col-md-4 mb-3">
                     <h6 class="text-uppercase text-muted mb-1">Account Number</h6>
                     <p class="fs-5 fw-semibold d-inline" id="account-number">
-                        <?= htmlspecialchars($userAccount['virtual_account']) ?>
+                        <?= htmlspecialchars($user['virtual_account']) ?>
                     </p>
                     <i class="fa fa-copy ms-2 text-primary" id="copy-button" style="cursor: pointer;"></i>
                 </div>
                 <div class="col-md-4 mb-3">
                     <h6 class="text-uppercase text-muted mb-1">Account Name</h6>
-                    <p class="fs-5 fw-semibold"><?= htmlspecialchars($userAccount['account_name']) ?></p>
+                    <p class="fs-5 fw-semibold"><?= htmlspecialchars($user['account_name']) ?></p>
                 </div>
                 <div class="col-md-4 mb-3">
                     <h6 class="text-uppercase text-muted mb-1">Bank Name</h6>
-                    <p class="fs-5 fw-semibold"><?= htmlspecialchars($userAccount['bank_name']) ?></p>
+                    <p class="fs-5 fw-semibold"><?= htmlspecialchars($user['bank_name']) ?></p>
                 </div>
             </div>
         </div>

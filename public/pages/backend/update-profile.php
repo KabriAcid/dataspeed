@@ -1,19 +1,9 @@
 <?php
 session_start();
 require __DIR__ . '/../../../config/config.php';
+require __DIR__ . '/../../../functions/Model.php';
 require __DIR__ . '/../../partials/header.php';
 
-try {
-    // Establish database connection and fetch user data using PDO
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
-    $stmt->execute([':user_id' => $_SESSION['user']['user_id']]);
-    $user = $stmt->fetch();
-    if (!$user) {
-        throw new Exception("User not found.");
-    }
-} catch (Exception $e) {
-    die("Error fetching user data: " . $e->getMessage());
-}
 ?>
 
 <body>
@@ -25,7 +15,8 @@ try {
 
         <!-- Profile Photo -->
         <div class="photo-container mb-4">
-            <img src="../<?= htmlspecialchars($user['photo']); ?>" alt="Profile Photo" class="avatar avatar-xl border-0">
+            <img src="../<?= htmlspecialchars($user['photo']); ?>" alt="Profile Photo"
+                class="avatar avatar-xl border-0">
             <input type="file" id="photo-input" accept="image/*">
             <!-- <div class="upload-icon">+</div> -->
         </div>
@@ -39,31 +30,36 @@ try {
 
                 <div class="mb-3 col-lg-6">
                     <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="first_name" class="form-control input" value="<?= htmlspecialchars($user['first_name']); ?>" disabled>
+                    <input type="text" id="firstName" name="first_name" class="form-control input"
+                        value="<?= htmlspecialchars($user['first_name']); ?>" disabled>
                 </div>
 
                 <!-- Last Name -->
                 <div class="mb-3 col-lg-6">
                     <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="last_name" class="form-control input" value="<?= htmlspecialchars($user['last_name']); ?>" disabled>
+                    <input type="text" id="lastName" name="last_name" class="form-control input"
+                        value="<?= htmlspecialchars($user['last_name']); ?>" disabled>
                 </div>
 
                 <!-- Email -->
                 <div class="mb-3 col-lg-6">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form-control input" value="<?= htmlspecialchars($user['email']); ?>" disabled>
+                    <input type="email" id="email" name="email" class="form-control input"
+                        value="<?= htmlspecialchars($user['email']); ?>" disabled>
                 </div>
 
                 <!-- Phone Number -->
                 <div class="mb-3 col-lg-6">
                     <label for="phoneNumber">Phone Number</label>
-                    <input type="tel" id="phoneNumber" name="phone_number" class="form-control input" value="<?= htmlspecialchars($user['phone_number']); ?>" disabled>
+                    <input type="tel" id="phoneNumber" name="phone_number" class="form-control input"
+                        value="<?= htmlspecialchars($user['phone_number']); ?>" disabled>
                 </div>
 
                 <!-- City -->
                 <div class="mb-3 col-lg-6">
                     <label for="city">City</label>
-                    <input type="text" id="city" name="city" class="form-control input" value="<?= htmlspecialchars($user['city']); ?>" disabled>
+                    <input type="text" id="city" name="city" class="form-control input"
+                        value="<?= htmlspecialchars($user['city'] ?? 'Nigeria'); ?>" disabled>
                 </div>
             </div>
 
@@ -80,43 +76,43 @@ try {
     </footer>
 
     <script>
-        // Handle Profile Photo Upload
-        document.querySelector('.photo-container').addEventListener('click', () => {
-            document.getElementById('photo-input').click();
-        });
+    // Handle Profile Photo Upload
+    document.querySelector('.photo-container').addEventListener('click', () => {
+        document.getElementById('photo-input').click();
+    });
 
-        document.getElementById('photo-input').addEventListener('change', function() {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('profile-photo').src = e.target.result;
-            };
-            reader.readAsDataURL(this.files[0]);
-        });
+    document.getElementById('photo-input').addEventListener('change', function() {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profile-photo').src = e.target.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
 
-        // Handle Form Submission Using AJAX
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+    // Handle Form Submission Using AJAX
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            const formData = new FormData();
-            const photoInput = document.getElementById('photo-input');
-            if (photoInput.files[0]) {
-                formData.append('photo', photoInput.files[0]);
-            }
+        const formData = new FormData();
+        const photoInput = document.getElementById('photo-input');
+        if (photoInput.files[0]) {
+            formData.append('photo', photoInput.files[0]);
+        }
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'update-profile.php', true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    try {
-                        const response = JSON.parse(xhr.responseText);
-                        alert(response.message || 'Profile updated successfully!');
-                    } catch (error) {
-                        alert('An error occurred while updating your profile.');
-                    }
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'update-profile.php', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    alert(response.message || 'Profile updated successfully!');
+                } catch (error) {
+                    alert('An error occurred while updating your profile.');
                 }
-            };
-            xhr.send(formData);
-        });
+            }
+        };
+        xhr.send(formData);
+    });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

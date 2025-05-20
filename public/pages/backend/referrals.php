@@ -1,20 +1,10 @@
 <?php
 session_start();
 require __DIR__ . '/../../../config/config.php';
-require __DIR__ . '/../../partials/header.php';
 require __DIR__ . '/../../../functions/Model.php';
+require __DIR__ . '/../../partials/header.php';
 
-// Check if user session exists
-if (isset($_SESSION['user'])) {
-    $user_id = $_SESSION['user']['user_id'];
-    $username = $_SESSION['user']['first_name'] . " " . $_SESSION['user']['last_name'];
-} else {
-    header('Location: login.php');
-}
-
-$stmt = $pdo->prepare("SELECT * FROM referrals WHERE user_id = ?");
-$stmt->execute([$user_id]);
-$referrals = $stmt->fetch();
+$referrals = getUserReferralDetails($pdo, $user_id);
 
 ?>
 

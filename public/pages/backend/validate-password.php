@@ -205,7 +205,7 @@ try {
             $insertReferral = $pdo->prepare("INSERT INTO referrals (user_id, referral_code, referral_link, reward, status, created_at) 
                 VALUES (?, ?, ?, ?, ?, NOW())");
 
-            $referralLink = "https://dataspeed.com/public/pages/backend/register?referral_code=" . $_SESSION['referral_code'];
+            $referralLink = "https://dataspeed.com.ng/public/pages/backend/register.php?referral_code=" . $_SESSION['referral_code'];
 
             $insertReferral->execute([
                 $referrerId,

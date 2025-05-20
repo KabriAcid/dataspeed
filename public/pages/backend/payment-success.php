@@ -7,7 +7,7 @@ if (!isset($_GET['transaction_id'])) {
     exit;
 }
 
-if(isset($_SESSION['user'])){
+if (isset($_SESSION['user'])) {
     $user_id = $_SESSION['user']['user_id'];
 }
 
@@ -50,18 +50,23 @@ if ($transaction['status'] == "success" && $transaction['data']['status'] == "su
 
     // Insert transaction details into the database
     try {
-        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, transaction_id, transaction_type, customer_email, amount, status) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$user_id, $transaction_id, $transaction_type, $user_email, $amount, $payment_status]);
+        $pdo->beginTransaction();
 
-        $stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE user_id = ?");
+        $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ? FOR UPDATE");
         $stmt->execute([$user_id]);
-        $userRow = $stmt->fetch();
+        $accountRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $wallet_balance = $userRow['wallet_balance'];
-        $current_balance = $wallet_balance + $amount;
+        if (!$accountRow) {
+            $stmt = $pdo->prepare("INSERT INTO account_balance (user_id, wallet_balance) VALUES (?, ?)");
+            $stmt->execute([$user_id, $amount]);
+        } else {
+            $current_balance = $accountRow['wallet_balance'] + $amount;
+            $stmt = $pdo->prepare("UPDATE account_balance SET wallet_balance = ?, updated_at = NOW() WHERE user_id = ?");
+            $stmt->execute([$current_balance, $user_id]);
+        }
 
-        $stmt = $pdo->prepare("UPDATE users SET wallet_balance = ? WHERE user_id = ?");
-        $stmt->execute([$current_balance, $user_id]);
+        $pdo->commit();
+
 
         echo "<script>
             setTimeout(function() {
@@ -69,6 +74,7 @@ if ($transaction['status'] == "success" && $transaction['data']['status'] == "su
             }, 1000);
         </script>";
     } catch (Exception $e) {
+        $pdo->rollBack();
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
 } else {
