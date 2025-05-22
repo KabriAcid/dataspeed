@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Africa/Lagos');
+
 require __DIR__ . '/../vendor/autoload.php';
 use Dotenv\Dotenv;
 
