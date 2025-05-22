@@ -3,14 +3,36 @@ function getUserInfo(PDO $pdo, int $userId): array|false
 {
     $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
     $stmt->execute([$userId]);
-    return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+
+    if ($stmt->rowCount() === 0) {
+        return false;
+    }
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($user['account_status'] != 'Active') {
+        return false;
+    }
+
+    return $user;
 }
+
 
 function showBalance($pdo, $user_id)
 {
     $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ?");
     $stmt->execute([$user_id]);
     $balance = $stmt->fetch();
+
+    // Check if the balance is null
+    if ($balance === null) {
+        return "0.00";
+    } else {
+        // Check if the balance is empty
+        if (empty($balance['wallet_balance'])) {
+            return "0.00";
+        }
+    }
+    
 
     return number_format($balance['wallet_balance'], 2);
 }
@@ -21,6 +43,16 @@ function getTransactions($pdo, $user_id)
         $stmt = $pdo->prepare("SELECT * FROM transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT 5");
         $stmt->execute([$user_id]);
         $transactions = $stmt->fetchAll();
+
+        // Check if the transactions are empty
+        if (empty($transactions)) {
+            return [];
+        } else {
+            // Check if the transactions are null
+            if ($transactions === null) {
+                return [];
+            }
+        }
         return $transactions;
     } catch (PDOException $e) {
         echo $e->getMessage();
@@ -46,6 +78,12 @@ function getUserReferralDetails($pdo, $user_id)
     try {
         $stmt = $pdo->prepare("SELECT * FROM referrals WHERE user_id = ?");
         $stmt->execute([$user_id]);
+
+        // Check if the referral details are empty
+        if ($stmt->rowCount() === 0) {
+            return [];
+        }
+        
         return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -57,6 +95,11 @@ function getUserAccountDetails($pdo, $user_id)
     try {
         $stmt = $pdo->prepare("SELECT virtual_account, account_name, bank_name FROM users WHERE user_id = ?");
         $stmt->execute([$user_id]);
+
+        // Check if the account details are empty
+        if ($stmt->rowCount() === 0) {
+            return [];
+        }
         return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -153,9 +196,7 @@ function updateWalletBalance(PDO $pdo, int $user_id, float $amount, string $type
         $updateStmt->execute([$newBalance, $user_id]);
 
         // Insert transaction record
-        $insertTxn = $pdo->prepare("
-            INSERT INTO transactions (user_id, amount, type, description) VALUES (?, ?, ?, ?)
-        ");
+        $insertTxn = $pdo->prepare("INSERT INTO transactions (user_id, amount, type, description) VALUES (?, ?, ?, ?)        ");
         $insertTxn->execute([$user_id, $amount, $type, $description]);
 
         // Commit all changes

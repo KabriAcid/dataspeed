@@ -6,6 +6,8 @@ require __DIR__ . '/../../partials/header.php';
 
 $referrals = getUserReferralDetails($pdo, $user_id);
 
+var_dump($_SESSION['user']);
+
 ?>
 
 <body>
@@ -15,155 +17,101 @@ $referrals = getUserReferralDetails($pdo, $user_id);
             <h5 class="text-center fw-bold">Referrrals</h5>
         </header>
 
-        <div class="container-fluid">
-            <div class="row removable mb-5">
-                <div class="col-xl-4 col-sm-6">
-                    <div class="card mb-3 mb-xl-0">
-                        <div class="card-body p-3">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Referrals</p>
-                                        <h6 class="font-weight-bolder mb-0">
-                                            <?php
-                                            $stmt = $pdo->prepare("SELECT COUNT(*) as total_referrals FROM referrals WHERE user_id = ?");
-                                            $stmt->execute([$user_id]);
-                                            $total_referrals = $stmt->fetch();
-                                            ?>
-                                            <span>
-                                                <?php echo $total_referrals['total_referrals']; ?>
-                                            </span>
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div class="col-4 text-end">
-                                    <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
-                                        <i class="fa fa-single-02 text-lg opacity-10" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
+        <div>
+            <div class="row mb-5">
+                <!-- Pending Reward -->
+                <div class="col-6">
+                    <div class="card px-3 py-2">
+                        <div class="card-header mb-0 p-0">
+                            <p class="text-sm mb-0 font-weight-bold text-secondary">Pending Reward</p>
+                        </div>
+                        <div class="card-body p-0">
+                            <h4 class="amount mb-0 text-dark font-weight-bolder">&#8358; 0.00</h4>
                         </div>
                     </div>
                 </div>
-
-                <!-- Current reward  -->
-                <div class="col-xl-4 col-sm-6">
-                    <div class="card">
-                        <div class="card-body p-3">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Reward</p>
-                                        <h6 class="font-weight-bolder mb-0">
-                                            <?php
-                                            $stmt = $pdo->prepare("SELECT SUM(reward) as total_reward FROM referrals WHERE user_id = ? AND status = 'pending'");
-                                            $stmt->execute([$user_id]);
-                                            $total_reward = $stmt->fetch();
-
-                                            ?>
-                                            <span>
-                                                <?php echo '&#8358;' . number_format($total_reward['total_reward'] ?? 0.00, 2); ?>
-
-                                            </span>
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div class="col-4 text-end">
-                                    <div class="text-center">
-                                        <form action="" method="post" onsubmit="return false;">
-                                            <?php
-                                            // Check if a referral exists
-                                            if ($referrals && isset($referrals['status']) && $referrals['status'] === 'pending') {
-                                                echo '<button type="submit" class="btn btn-success btn-sm bold" onclick="claimReward()">Claim</button>';
-                                            } elseif ($referrals) {
-                                                echo '<button type="submit" class="btn btn-secondary" disabled>Deactivated</button>';
-                                            } else {
-                                                echo '<button type="submit" class="btn btn-secondary" disabled>No Reward</button>';
-                                            }
-                                            ?>
-                                        </form>
-
-                                    </div>
-                                </div>
-                            </div>
+                <!-- Claimed reward -->
+                <div class="col-6">
+                    <div class="card px-3 py-2">
+                        <div class="card-header mb-0 p-0">
+                            <p class="text-sm mb-0 font-weight-bold text-secondary">Claimed Reward</p>
                         </div>
-                    </div>
-                </div>
-                <!-- Current Session  -->
-                <div class="col-xl-4 col-sm-6">
-                    <div class="card">
-                        <div class="card-body p-3">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Reward Status</p>
-                                        <h6 class="font-weight-bolder mb-0">
-                                            <span class="text-capitalize">
-                                                <?php echo $referrals['status'] ?? 'Unavailable'; ?>
-                                            </span>
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div class="col-4 text-end">
-                                    <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
-                                        <i class="fa fa-calendar-grid-58 text-lg opacity-10" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card-body p-0">
+                            <h4 class="amount mb-0 text-dark font-weight-bolder">&#8358; 0.00</h4>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class=" row">
-                <div class="col-lg-6 d-lg-block mb-5">
-                    <h3>Refer friends and <br><span>earn</span> rewards</h3>
-                    <p class="text-sm">Invite your friends to <span class="brand-name">Dataspeed</span> and earn
-                        instant
-                        <b>&#8358;100</b>
-                        airtime
-                        rewards.
-                    </p>
-                </div>
-                <div class="col-12 col-lg-6">
-                    <div class="container py-0">
-                        <?php if ($referrals && is_array($referrals)): ?>
-                        <form action="" method="post">
-                            <div class="form-group">
-                                <label for="referralCode">Referral Code</label>
-                                <input type="text" id="referralCode" class="form-control"
-                                    value="<?php echo $referrals['referral_code']; ?>" readonly />
-                            </div>
-                            <div class="form-group">
-                                <label for="referralLink">Referral Link</label>
-                                <input type="text" id="referralLink" class="form-control"
-                                    value="<?php echo $referrals['referral_link']; ?>" readonly />
-                            </div>
-                        </form>
-                        <?php else: ?>
-                        <div class="alert alert-warning">
-                            No referral data found for your account.
-                        </div>
-                        <?php endif; ?>
 
+            <!-- TABS -->
+            <div class="tabs" style="margin-bottom: 250px;">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="pending" onclick="showTab(event)">Pending</button>
+                    <button class="tab-btn" data-tab="completed" onclick="showTab(event)">Completed</button>
+                </div>
+
+                <div class="tab-content" id="pending">
+                    <p>This is the <strong>Pending</strong> content.</p>
+                </div>
+
+                <div class="tab-content hidden" id="completed">
+                    <p>This is the <strong>Completed</strong> content.</p>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-lg-6 col-xl-4">
+                    <div class="d-flex justify-content-start align-items-center">
+                        <!-- Copy Code -->
+                        <div class="referral-code shadow-sm px-3 py-2 rounded bg-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="">
+                                    <p class="text-sm mb-0 text-secondary font-weight-bold no-wrap">Referral Code</p>
+                                    <h4 class="font-weight-bolder primary mb-1 letter-normal fs-6">KD8d03x4k</h4>
+                                </div>
+                                <div class="shadow bg-white h-100 w-100 rounded ms-5">
+                                    <i class="fa fa-copy px-2 px-1 cursor-pointer fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Copy link -->
+                        <div class="referral-link rounded mx-3">
+                            <button type="button" id="copyText" class="btn mb-0 primary-btn py-4 px-4">Copy
+                                Link</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="container">
-                <div class="d-flex justify-content-center">
-
-                </div>
-            </div>
-        </div>
 
 
 
-        <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
+            <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
     </main>
     <footer class=" my-4">
         <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All
             rights reserved.</p>
     </footer>
     <script>
+    function showTab(event) {
+        const tabId = event.target.getAttribute("data-tab");
+
+        // Hide all contents
+        document.querySelectorAll(".tab-content").forEach(content => {
+            content.classList.add("hidden");
+        });
+
+        // Remove 'active' from all buttons
+        document.querySelectorAll(".tab-btn").forEach(button => {
+            button.classList.remove("active");
+        });
+
+        // Show the selected tab
+        document.getElementById(tabId).classList.remove("hidden");
+
+        // Add 'active' to the clicked button
+        event.target.classList.add("active");
+    }
+
     function sendAjaxRequest(url, method, data, callback) {
         const xhr = new XMLHttpRequest();
         xhr.open(method, url, true);
@@ -187,7 +135,7 @@ $referrals = getUserReferralDetails($pdo, $user_id);
     function claimReward() {
         sendAjaxRequest('claim_reward.php', 'POST', '', function(response) {
             if (response.success) {
-                alert(response.message);
+                window.location.reload(); // Refresh the page to show updated data
                 // Optionally refresh UI or update reward display
             } else {
                 console.log('Error: ' + response.message);

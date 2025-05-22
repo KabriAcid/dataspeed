@@ -31,28 +31,28 @@ require __DIR__ . '/../../partials/header.php';
                 <div class="mb-3 col-lg-6">
                     <label for="firstName">First Name</label>
                     <input type="text" id="firstName" name="first_name" class="form-control input"
-                        value="<?= htmlspecialchars($user['first_name']); ?>" disabled>
+                        value="<?= htmlspecialchars($user['first_name'] ?? ''); ?>" disabled>
                 </div>
 
                 <!-- Last Name -->
                 <div class="mb-3 col-lg-6">
                     <label for="lastName">Last Name</label>
                     <input type="text" id="lastName" name="last_name" class="form-control input"
-                        value="<?= htmlspecialchars($user['last_name']); ?>" disabled>
+                        value="<?= htmlspecialchars($user['last_name'] ?? ''); ?>" disabled>
                 </div>
 
                 <!-- Email -->
                 <div class="mb-3 col-lg-6">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" class="form-control input"
-                        value="<?= htmlspecialchars($user['email']); ?>" disabled>
+                        value="<?= htmlspecialchars($user['email'] ?? ''); ?>" disabled>
                 </div>
 
                 <!-- Phone Number -->
                 <div class="mb-3 col-lg-6">
                     <label for="phoneNumber">Phone Number</label>
                     <input type="tel" id="phoneNumber" name="phone_number" class="form-control input"
-                        value="<?= htmlspecialchars($user['phone_number']); ?>" disabled>
+                        value="<?= htmlspecialchars($user['phone_number'] ?? ''); ?>" disabled>
                 </div>
 
                 <!-- City -->

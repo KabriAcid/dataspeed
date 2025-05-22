@@ -4,6 +4,7 @@ require __DIR__ . '/../../../config/config.php';
 require __DIR__ . '/../../../functions/Model.php';
 require __DIR__ . '/../../partials/header.php';
 
+// var_dump($_SESSION);
 ?>
 
 <body class="">
@@ -16,7 +17,7 @@ require __DIR__ . '/../../partials/header.php';
                     <img src="../<?= $user['photo'] ?>" alt="photo" class="profile-avatar">
                 </a>
                 <div class="ms-3">
-                    <h4 class="fs-4 fw-bold mb-0"><?= $user['first_name']; ?></h4>
+                    <h4 class="fs-4 fw-bold mb-0"><?= $user['first_name'] ?? 'Guest'; ?></h4>
                     <p class="text-secondary text-sm m-0">Welcome back,</p>
                 </div>
             </div>

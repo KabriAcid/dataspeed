@@ -16,7 +16,7 @@ require __DIR__ . '/../../partials/header.php';
         <!-- User Info -->
         <div class="text-center">
             <img src="../<?= $user['photo'] ?>" alt="User Photo" class="avatar border-0 avatar-xl shadow">
-            <h4 class="fw-bold mt-2"><?= $user['first_name']; ?></h4>
+            <h4 class="fw-bold mt-2"><?= $user['first_name'] ?? 'Guest'; ?></h4>
             <p class="text-muted"><?= $user['city'] ?? 'Nigeria'; ?></p>
         </div>
 

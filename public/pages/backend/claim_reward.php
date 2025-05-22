@@ -10,7 +10,7 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-$user_id = $_SESSION['user']['user_id'];
+$user_id = $_SESSION['user'];
 
 try {
     // Update all pending referrals to claimed

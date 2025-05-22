@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/../../../config/config.php';
+require __DIR__ . '/../../../functions/Model.php';
 require __DIR__ . '/../../partials/header.php';
 ?>
 
@@ -44,7 +45,8 @@ require __DIR__ . '/../../partials/header.php';
 
                 <!-- Submit Button -->
                 <div class="form-group">
-                    <button type="submit" class="btn primary-btn w-100" name="submit">Purchase</button>
+                    <button type="submit" class="btn primary-btn w-100" name="submit"
+                        onclick="openModal()">Purchase</button>
                 </div>
             </form>
 
