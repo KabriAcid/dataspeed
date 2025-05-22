@@ -1,13 +1,13 @@
 <?php
 session_start();
 require __DIR__ . '/../../../config/config.php';
+require __DIR__ . '/../../../functions/Model.php';
 require __DIR__ . '/../../partials/header.php';
 
-$user_id = $_SESSION['user']['user_id'];
 
+header('Content-Type: application/json');
 // Handle POST requests for updating password or PIN
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    header('Content-Type: application/json');
 
     // Trim inputs
     $newPassword = trim($_POST['newPassword'] ?? '');

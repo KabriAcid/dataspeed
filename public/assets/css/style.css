@@ -1310,3 +1310,21 @@ section:not(.jumbotoron) {
 .faq-item.active .faq-answer {
   display: block;
 }
+
+/* STEPS FOR UPDATE PROFILE*/
+.step-indicator {
+  position: relative;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  line-height: 40px;
+  font-weight: bold;
+}
+
+.step-label {
+  margin-top: 5px;
+  display: block;
+}
