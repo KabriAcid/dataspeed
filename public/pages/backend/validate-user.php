@@ -19,11 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Check if user is email or phone number
         if (filter_var($user, FILTER_VALIDATE_EMAIL)) {
             // User is email
-            $stmt = $pdo->prepare("SELECT email, password FROM users WHERE email = ?");
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         } else {
             // Sanitize and format phone number
             $user = preg_replace('/^(\+234|234|0)/', '', $user);
-            $stmt = $pdo->prepare("SELECT phone_number, password FROM users WHERE phone_number = ?");
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE phone_number = ?");
         }
 
         $stmt->execute([$user]);
