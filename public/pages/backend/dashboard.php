@@ -17,7 +17,7 @@ require __DIR__ . '/../../partials/header.php';
                     <img src="../<?= $user['photo'] ?>" alt="photo" class="profile-avatar">
                 </a>
                 <div class="ms-3">
-                    <h4 class="fs-4 fw-bold mb-0"><?= $user['first_name'] ?? 'Guest'; ?></h4>
+                    <h4 class="fs-4 fw-bold mb-0 text-capitalize"><?= $user['first_name'] ?? 'Guest'; ?></h4>
                     <p class="text-secondary text-sm m-0">Welcome back,</p>
                 </div>
             </div>
@@ -36,20 +36,18 @@ require __DIR__ . '/../../partials/header.php';
         </header>
 
         <!-- Balance Section -->
-        <div class="">
-            <div class="">
-                <p class="text-secondary mb-0 text-sm">Total Balance</p>
-                <div class="d-flex align-items-end">
-                    <h2 class="display-5 fw-bold" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
-                    <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">********</h2>
-                    <button class="btn btn-link text-secondary p-0 mx-1" id="toggleBalance">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M3 13C6.6 5 17.4 5 21 13M9 14C9 15.6569 10.3431 17 12 17C13.6569 17 15 15.6569 15 14C15 12.3431 13.6569 11 12 11C10.3431 11 9 12.3431 9 14Z"
-                                stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                </div>
+        <div>
+            <p class="text-secondary mb-0 text-sm">Total Balance</p>
+            <div class="d-flex align-items-end">
+                <h2 class="display-5 fw-bold" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
+                <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">********</h2>
+                <button class="btn btn-link text-secondary p-0 mx-1" id="toggleBalance">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M3 13C6.6 5 17.4 5 21 13M9 14C9 15.6569 10.3431 17 12 17C13.6569 17 15 15.6569 15 14C15 12.3431 13.6569 11 12 11C10.3431 11 9 12.3431 9 14Z"
+                            stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
             </div>
         </div>
 
