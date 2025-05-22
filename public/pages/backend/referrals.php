@@ -5,8 +5,9 @@ require __DIR__ . '/../../../functions/Model.php';
 require __DIR__ . '/../../partials/header.php';
 
 $referrals = getUserReferralDetails($pdo, $user_id);
-
-var_dump($_SESSION['user']);
+$rewards = getReferralRewards($pdo, $user_id);
+$pendingReferrals = getReferralsByStatus($pdo, $user_id, 'pending');
+$completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 
 ?>
 
@@ -26,7 +27,8 @@ var_dump($_SESSION['user']);
                             <p class="text-sm mb-0 font-weight-bold text-secondary">Pending Reward</p>
                         </div>
                         <div class="card-body p-0">
-                            <h4 class="amount mb-0 text-dark font-weight-bolder">&#8358; 0.00</h4>
+                            <h4 class="amount mb-0 text-success font-weight-bolder">&#8358;
+                                <?= number_format($rewards['pending'], 2) ?></h4>
                         </div>
                     </div>
                 </div>
@@ -37,7 +39,8 @@ var_dump($_SESSION['user']);
                             <p class="text-sm mb-0 font-weight-bold text-secondary">Claimed Reward</p>
                         </div>
                         <div class="card-body p-0">
-                            <h4 class="amount mb-0 text-dark font-weight-bolder">&#8358; 0.00</h4>
+                            <h4 class="amount mb-0 text-dark font-weight-bolder">&#8358;
+                                <?= number_format($rewards['claimed'], 2) ?></h4>
                         </div>
                     </div>
                 </div>
@@ -67,23 +70,28 @@ var_dump($_SESSION['user']);
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="">
                                     <p class="text-sm mb-0 text-secondary font-weight-bold no-wrap">Referral Code</p>
-                                    <h4 class="font-weight-bolder primary mb-1 letter-normal fs-6">KD8d03x4k</h4>
+                                    <h4 class="font-weight-bolder primary mb-1 letter-normal fs-6" id="referral_code">
+                                        <?= $referrals['referral_code'] ?></h4>
                                 </div>
                                 <div class="shadow bg-white h-100 w-100 rounded ms-5">
-                                    <i class="fa fa-copy px-2 px-1 cursor-pointer fs-5"></i>
+                                    <i class="fa fa-copy px-2 px-1 cursor-pointer fs-5" id="copy-icon"></i>
                                 </div>
                             </div>
                         </div>
                         <!-- Copy link -->
-                        <div class="referral-link rounded mx-3">
-                            <button type="button" id="copyText" class="btn mb-0 primary-btn py-4 px-4">Copy
+                        <?php
+                        $referralLink = $referrals['referral_link'] ?? ''; // from your PHP logic
+                        ?>
+                        <div class="referral-link rounded mx-3 d-block">
+                            <input type="text" id="referralLinkInput" value="<?= htmlspecialchars($referralLink) ?>"
+                                readonly hidden>
+                            <button type="button" id="copyText" class="btn mb-0 primary-btn no-wrap">Copy
                                 Link</button>
                         </div>
+
                     </div>
                 </div>
             </div>
-
-
 
             <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
     </main>
@@ -92,6 +100,36 @@ var_dump($_SESSION['user']);
             rights reserved.</p>
     </footer>
     <script>
+    document.getElementById("copyText").addEventListener("click", function() {
+        const linkInput = document.getElementById("referralLinkInput").value;
+        // Copy to clipboard after clicking the button
+        navigator.clipboard.writeText(linkInput).then(function() {
+            console.log(linkInput)
+        }, function(err) {
+            console.error("Could not copy text: ", err);
+        });
+    });
+    document.getElementById('copy-icon').addEventListener('click', function() {
+        const referralCode = document.getElementById('referral_code').innerText.trim();
+
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(referralCode).then(() => {
+            const copyBtn = document.getElementById('copy-icon');
+            // Change icon to checkmark and color to green
+            copyBtn.classList.remove('fa-copy');
+            copyBtn.classList.add('fa-check', 'text-success');
+
+            // Revert back after 2 seconds
+            setTimeout(() => {
+                copyBtn.classList.remove('fa-check', 'text-success');
+                copyBtn.classList.add('fa-copy', 'text-primary');
+            }, 3000);
+        }).catch(err => {
+            console.error('Copy failed: ', err);
+        });
+    });
+
     function showTab(event) {
         const tabId = event.target.getAttribute("data-tab");
 

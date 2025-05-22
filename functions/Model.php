@@ -1,8 +1,8 @@
 <?php
-function getUserInfo(PDO $pdo, int $userId): array|false
+function getUserInfo(PDO $pdo, int $userd): array|false
 {
     $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
-    $stmt->execute([$userId]);
+    $stmt->execute([$userd]);
 
     if ($stmt->rowCount() === 0) {
         return false;
@@ -89,6 +89,27 @@ function getUserReferralDetails($pdo, $user_id)
         echo "Error: " . $e->getMessage();
     }
 }
+
+function getReferralRewards(PDO $pdo, int $userd): array
+{
+    $pendingStmt = $pdo->prepare("SELECT SUM(reward) AS total FROM referrals WHERE user_id = ? AND status = 'pending'");
+    $pendingStmt->execute([$userd]);
+    $pending = $pendingStmt->fetchColumn() ?? 0;
+
+    $claimedStmt = $pdo->prepare("SELECT SUM(reward) AS total FROM referrals WHERE user_id = ? AND status = 'claimed'");
+    $claimedStmt->execute([$userd]);
+    $claimed = $claimedStmt->fetchColumn() ?? 0;
+
+    return ['pending' => $pending, 'claimed' => $claimed];
+}
+
+function getReferralsByStatus(PDO $pdo, int $user_id, string $status): array
+{
+    $stmt = $pdo->prepare("SELECT * FROM referrals WHERE user_id = ? AND status = ? ORDER BY created_at DESC");
+    $stmt->execute([$user_id, $status]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // A function for rerieving user bank accout details from the database
 function getUserAccountDetails($pdo, $user_id)
 {
@@ -113,7 +134,7 @@ function getUserAccountDetails($pdo, $user_id)
  * Push a notification to a user
  *
  * @param PDO $pdo Database connection
- * @param int $userId The ID of the user
+ * @param int $userd The ID of the user
  * @param string $title Notification title
  * @param string $message Notification body
  * @return bool Success status

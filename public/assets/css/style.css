@@ -1198,6 +1198,7 @@ section:not(.jumbotoron) {
 
 
 /* TABS */
+
 .tabs {
   width: 100%;
   max-width: 600px;
@@ -1205,23 +1206,27 @@ section:not(.jumbotoron) {
   margin: 20px auto;
 }
 
+.tab-btn {
+  padding: 10px;
+  border: none;
+  background-color: #fcfcfc;
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab-btn.active {
+  background-color: var(--primary);
+  color: #fff;
+  font-weight: bold;
+}
+
 .tab-buttons {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-}
-
-.tab-btn {
-  padding: 12px;
-  border: none;
-  background-color: #fafafa;
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.6s;
 }
 
 .tab-btn.active {
@@ -1233,9 +1238,8 @@ section:not(.jumbotoron) {
 
 .tab-content {
   padding: 20px;
-  border: 1px solid #ddd;
   background-color: #fff;
-  border-radius: 4px;
+  margin-top: 20px;
 }
 
 .hidden {
@@ -1243,4 +1247,66 @@ section:not(.jumbotoron) {
 }
 .no-wrap {
   white-space: nowrap;
+}
+
+/* FAQ */
+/* Description */
+.description {
+  padding: 16px;
+  color: #6E6E73;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* FAQ List */
+.faq-list {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  margin: 16px;
+  overflow: hidden;
+}
+
+.faq-item {
+  border-bottom: 1px solid #E5E5EA;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-question {
+  width: 100%;
+  padding: 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1C1C1E;
+}
+
+.arrow {
+  color: #C7C7CC;
+  font-size: 24px;
+  transition: transform 0.3s ease;
+}
+
+.faq-item.active .arrow {
+  transform: rotate(90deg);
+}
+
+.faq-answer {
+  display: none;
+  padding: 0 16px 16px;
+  color: #6E6E73;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.faq-item.active .faq-answer {
+  display: block;
 }

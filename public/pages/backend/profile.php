@@ -53,7 +53,7 @@ require __DIR__ . '/../../partials/header.php';
 
 
             <div class="mb-3">
-                <a href="">
+                <a href="transactions.php">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="icon-container">
