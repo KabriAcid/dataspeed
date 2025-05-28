@@ -14,6 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(["success" => false, "message" => "Email is required."]);
         exit;
     }
+    
+    if (strlen($email) <= 7) {
+        echo json_encode(["success" => false, "message" => "Invalid email address."]);
+        return;
+    }
 
     // Generate token
     $token = md5(uniqid());
@@ -36,8 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         // Insert token into forgot_password table or update if it already exists
-        
-        
+
+
         $stmt = $pdo->prepare("INSERT INTO forgot_password (email, token, expires_at)
         VALUES (?, ?, ?)ON DUPLICATE KEY UPDATE token = VALUES(token), expires_at = VALUES(expires_at)");
         $stmt->execute([$email, $token, $tokenExpiry]);
@@ -46,11 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $subject = "Password Reset Token";
         $body = "<p>Your password reset token is:</p> <br><div style='background-color:#eee;padding:12px;border-radius:8px;'><h3 style='text-align:center'>$token</h3></div>";
 
-        
+
         // Use the custom sendMail() function to send the email
         if (sendMail($email, $subject, $body)) {
             echo json_encode(["success" => true, "message" => "Token sent to your email."]);
-
         } else {
             echo json_encode(["success" => false, "message" => "Failed to send email."]);
         }

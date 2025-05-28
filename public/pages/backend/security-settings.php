@@ -3,7 +3,6 @@ session_start();
 require __DIR__ . '/../../../config/config.php';
 require __DIR__ . '/../../../functions/Model.php';
 require __DIR__ . '/../../partials/header.php';
-
 ?>
 
 <body>
@@ -67,79 +66,119 @@ require __DIR__ . '/../../partials/header.php';
     </footer>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const tabs = document.querySelectorAll('.tab-btn');
-        const contents = document.querySelectorAll('.tab-content');
-        const submitBtn = document.querySelector('button[type="submit"]');
-        const buttonText = submitBtn.querySelector('.button-text');
-        const form = document.getElementById('securityForm');
+    function sendAjaxRequest(url, method, data, callback) {
+        if (!navigator.onLine) {
+            callback({
+                success: false,
+                message: "You are offline. Please check your internet connection."
+            });
+            return;
+        }
 
-        // Initialize: show first tab
-        setActiveTab(tabs[0]);
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                setActiveTab(tab);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 0) {
+                    callback({
+                        success: false,
+                        message: "Request failed. You may be offline or the server is unreachable."
+                    });
+                } else {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        callback(response);
+                    } catch (error) {
+                        callback({
+                            success: false,
+                            message: "Invalid JSON response"
+                        });
+                    }
+                }
+            }
+        };
+
+        xhr.onload = () => {
+            try {
+                const json = JSON.parse(xhr.responseText);
+                callback(json);
+            } catch (err) {
+                console.error("Invalid JSON:", xhr.responseText);
+                alert("Invalid JSON response from server.");
+            }
+        };
+
+        xhr.onerror = function() {
+            callback({
+                success: false,
+                message: "An error occurred during the request. Please check your internet connection."
+            });
+        };
+
+        xhr.ontimeout = function() {
+            callback({
+                success: false,
+                message: "Request timed out. Please check your internet connection and try again."
+            });
+        };
+
+        xhr.timeout = 10000; // Optional: set timeout to 10 seconds
+        xhr.send(data);
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        const tabsContainer = document.querySelector(".tabs");
+        const tabButtons = tabsContainer.querySelectorAll(".tab-btn");
+        const contents = document.querySelectorAll(".tab-content");
+        const form = document.getElementById("securityForm");
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const buttonText = submitBtn.querySelector(".button-text");
+
+        // Activate first tab
+        let activeTab = document.querySelector(".tab-btn.active")?.dataset.tab || tabButtons[0].dataset.tab;
+        activateTab(activeTab);
+
+        tabButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                activeTab = button.dataset.tab;
+                activateTab(activeTab);
+                buttonText.textContent = `Update ${capitalize(activeTab)}`;
             });
         });
 
-        function setActiveTab(tab) {
-            // Activate tab button
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            // Show correct content
-            contents.forEach(c => c.classList.remove('active'));
-            document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
-
-            // Update button text
-            buttonText.textContent = `Update ${capitalize(tab.dataset.tab)}`;
-        }
-
-        form.addEventListener('submit', function(e) {
+        form.addEventListener("submit", function(e) {
             e.preventDefault();
 
-            const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
-            const inputs = document.querySelectorAll(`#${activeTab}-tab input`);
-
-            for (const input of inputs) {
+            const activeInputs = document.querySelectorAll(`#${activeTab}-tab input`);
+            for (const input of activeInputs) {
                 if (!input.checkValidity()) {
-                    alert(`Please fill the ${input.name} field correctly.`);
+                    showToasted(`Please fill the ${input.placeholder} field correctly.`, "error");
                     input.focus();
                     return;
                 }
             }
 
-            const data = Array.from(inputs).map(input =>
+            const data = Array.from(activeInputs).map(input =>
                 `${encodeURIComponent(input.name)}=${encodeURIComponent(input.value)}`
-            ).join('&');
+            ).join("&");
 
-            sendAjaxRequest('update-passcodes.php', 'POST', data, function(response) {
-                alert(response.message);
-                if (response.success) {
-                    form.reset();
-                }
+            sendAjaxRequest("update-passcodes.php", "POST", data, (res) => {
+                showToasted(res.message, res.success ? "success" : "error");
+                if (res.success) form.reset();
             });
         });
 
-        function sendAjaxRequest(url, method, data, callback) {
-            const xhr = new XMLHttpRequest();
-            xhr.open(method, url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    try {
-                        const response = JSON.parse(xhr.responseText);
-                        callback(response);
-                    } catch (err) {
-                        callback({
-                            success: false,
-                            message: 'Server error. Please try again.'
-                        });
-                    }
-                }
-            };
-            xhr.send(data);
+        function activateTab(tabId) {
+            tabButtons.forEach(btn =>
+                btn.classList.toggle("active", btn.dataset.tab === tabId)
+            );
+
+            contents.forEach(content =>
+                content.classList.toggle("active", content.id === `${tabId}-tab`)
+            );
+
+            buttonText.textContent = `Update ${capitalize(tabId)}`;
         }
 
         function capitalize(str) {
@@ -147,8 +186,6 @@ require __DIR__ . '/../../partials/header.php';
         }
     });
     </script>
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

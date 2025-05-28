@@ -57,7 +57,7 @@ section:not(.jumbotoron) {
   box-shadow: var(--shadow-md);
   background-color: var(--primary);
   color: white !important;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .primary-btn:hover {
@@ -71,7 +71,32 @@ section:not(.jumbotoron) {
   box-shadow: var(--shadow-md);
   background-color: transparent !important;
   padding: 0.75rem 1.5rem;
-  text-transform: capitalize;
+  text-transform: uppercase;
+
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--primary);
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 0.5rem;
+  transition: all .35s ease-in
+}
+
+.secondary-btn:hover {
+  background-color: var(--danger-dark) !important;
+  color: white;
+  transition: all .35s ease-in
+}
+
+.disabled-btn {
+  box-shadow: var(--shadow-md);
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 1.5rem;
+  text-transform: uppercase;
 
   display: inline-block;
   font-size: 0.75rem;
@@ -87,10 +112,8 @@ section:not(.jumbotoron) {
 }
 
 
-.secondary-btn:hover {
-  background-color: var(--danger-dark) !important;
-  color: white;
-  transition: all .35s ease-in
+.disabled-btn:hover {
+  cursor: not-allowed;
 }
 
 .inactive-btn {
@@ -276,9 +299,10 @@ section:not(.jumbotoron) {
 /* MULTI-STEP FORM */
 .form-container {
   max-width: 600px;
+  width: 100%;
   margin: 15px auto;
-  background: white;
-  padding: 30px;
+  background: #ffffff;
+  padding: 20px 30px;
   border-radius: 8px;
   box-shadow: var(--shadow);
   position: relative;
@@ -1165,6 +1189,14 @@ section:not(.jumbotoron) {
   margin: 20px auto;
   overflow: hidden;
 }
+/* On large screens tabs should have max-width */
+@media (min-width: 775px) {
+  .tabs {
+    width: 100%;
+    max-width: 800px;
+  }
+}
+
 
 .tab-buttons {
   display: flex;
@@ -1287,7 +1319,14 @@ section:not(.jumbotoron) {
   position: relative;
 }
 
+.step-indicator::after {
+  width: 10px;
+  height: 2px;
+  background-color: #fccde2;
+}
+
 .step-circle {
+  cursor: pointer;
   width: 40px;
   height: 40px;
   border-radius: 50%;

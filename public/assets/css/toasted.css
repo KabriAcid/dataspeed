@@ -28,6 +28,7 @@
     min-width: 260px;
     max-width: 94vw;
     font-size: 1rem;
+    text-align: center!important;
     font-weight: 500;
     opacity: 0;
     transform: translateY(-30px) scale(0.98);

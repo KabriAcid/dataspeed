@@ -408,7 +408,7 @@ document.addEventListener('keyup', function(e) {
                     console.log("API Raw Response:", response.api_response);
 
                     setTimeout(() => {
-                        window.location.href = "login.php";
+                        window.location.href = "login.php?success=1";
                     }, timeout);
                 }
             }

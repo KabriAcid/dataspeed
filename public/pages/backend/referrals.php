@@ -182,7 +182,8 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
         const linkInput = document.getElementById("referralLinkInput").value;
         // Copy to clipboard after clicking the button
         navigator.clipboard.writeText(linkInput).then(function() {
-            console.log(linkInput)
+
+            showToasted('Copied', 'success');
         }, function(err) {
             console.error("Could not copy text: ", err);
         });
