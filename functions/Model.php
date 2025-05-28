@@ -110,6 +110,14 @@ function getReferralsByStatus(PDO $pdo, int $user_id, string $status): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getReferralById(PDO $pdo, $id)
+{
+    $stmt = $pdo->prepare("SELECT * FROM referrals WHERE referral_id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
 // A function for rerieving user bank accout details from the database
 function getUserAccountDetails($pdo, $user_id)
 {

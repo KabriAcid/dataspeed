@@ -53,8 +53,8 @@ require __DIR__ . '/../../partials/header.php';
 
         <!-- ✅ Account Details Banner -->
         <?php if ($user): ?>
-        <div class="account-banner bg-white border rounded shadow-sm p-4 my-4 animate-fade-in">
-            <h4 class="mb-4 text-dark fw-bold border-start border-4 border-primary ps-3">Bank Account Details</h4>
+        <div class="account-banner bg-white border-0 rounded shadow-xl p-4 my-4 animate-fade-in">
+            <h4 class="mb-4 text-dark fw-bold border-start border-4 border-danger ps-3">Bank Account Details</h4>
             <div class="row text-dark">
                 <div class="col-md-4 mb-3">
                     <h6 class="text-uppercase text-muted mb-1">Account Number</h6>

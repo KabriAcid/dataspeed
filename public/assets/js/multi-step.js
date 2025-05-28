@@ -59,6 +59,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
+    xhr.onload = () => {
+        try {
+            const json = JSON.parse(xhr.responseText);
+            callback(json);
+        } catch (err) {
+            console.error("Invalid JSON:", xhr.responseText);
+            alert("Invalid JSON response from server.");
+        }
+    };
+
     xhr.onerror = function () {
         callback({
             success: false,
@@ -76,6 +86,16 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.timeout = 10000; // Optional: set timeout to 10 seconds
     xhr.send(data);
 }
+
+// Also move to the nextStep() when the enter key is pressed
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        e.preventDefault(); // prevent accidental form submission
+        nextStep();
+    }
+});
+
 
 
     // Spinners

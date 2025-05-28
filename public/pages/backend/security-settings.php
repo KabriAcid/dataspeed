@@ -12,44 +12,50 @@ require __DIR__ . '/../../partials/header.php';
             <h5 class="fw-bold">Security Settings</h5>
         </header>
 
-        <div class="tabs mb-4 d-flex justify-content-center gap-3">
-            <button class="tab-button btn btn-outline-primary active" data-tab="password">Password</button>
-            <button class="tab-button btn btn-outline-primary" data-tab="pin">PIN</button>
-        </div>
+        <div class="tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="password">Password</button>
+                <button class="tab-btn" data-tab="pin">PIN</button>
+            </div>
 
-        <div class="form-container mx-auto" style="max-width: 400px;">
+        </div>
+        <!--  -->
+
+        <div class="form-container mx-auto">
             <form id="securityForm" method="post" novalidate>
                 <!-- Password Tab -->
                 <div class="tab-content active" id="password-tab">
                     <div class="mb-3">
                         <label for="newPassword" class="form-label">New Password</label>
-                        <input type="password" id="newPassword" name="newPassword" class="form-control" minlength="6"
-                            required>
+                        <input type="password" placeholder="Password" id="newPassword" name="newPassword"
+                            class="form-control" minlength="6" required>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
-                            minlength="6" required>
+                        <input type="password" placeholder="Re-Password" id="confirmPassword" name="confirmPassword"
+                            class="form-control" minlength="6" required>
                     </div>
                 </div>
 
                 <!-- PIN Tab -->
-                <div class="tab-content" id="pin-tab" style="display:none;">
+                <div class="tab-content" id="pin-tab">
                     <div class="mb-3">
                         <label for="newPin" class="form-label">New PIN</label>
-                        <input type="password" id="newPin" name="newPin" class="form-control" pattern="\d{4}"
-                            maxlength="4" inputmode="numeric" required>
+                        <input type="password" placeholder="PIN" id="newPin" name="newPin" class="form-control"
+                            pattern="\d{4}" maxlength="4" inputmode="numeric" required>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPin" class="form-label">Confirm PIN</label>
-                        <input type="password" id="confirmPin" name="confirmPin" class="form-control" pattern="\d{4}"
-                            maxlength="4" inputmode="numeric" required>
+                        <input type="password" placeholder="Re-PIN" id="confirmPin" name="confirmPin"
+                            class="form-control" pattern="\d{4}" maxlength="4" inputmode="numeric" required>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">
-                    <span class="button-text">Update Password</span>
-                </button>
+                <div>
+                    <button type="submit" class="btn primary-btn w-100">
+                        <span class="button-text text-uppercase">Update Password</span>
+                    </button>
+                </div>
             </form>
         </div>
 
@@ -61,77 +67,88 @@ require __DIR__ . '/../../partials/header.php';
     </footer>
 
     <script>
-    function sendAjaxRequest(url, method, data, callback) {
-        const xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                try {
-                    const response = JSON.parse(xhr.responseText);
-                    callback(response);
-                } catch (error) {
-                    callback({
-                        success: false,
-                        message: "Invalid JSON response"
-                    });
-                }
-            }
-        };
-        xhr.send(data);
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const buttonText = submitBtn.querySelector('.button-text');
+        const form = document.getElementById('securityForm');
 
-    // Tabs switching
-    const tabs = document.querySelectorAll('.tab-button');
-    const contents = document.querySelectorAll('.tab-content');
-    const submitBtn = document.querySelector('button[type="submit"]');
-    const buttonText = submitBtn.querySelector('.button-text');
+        // Initialize: show first tab
+        setActiveTab(tabs[0]);
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                setActiveTab(tab);
+            });
+        });
+
+        function setActiveTab(tab) {
+            // Activate tab button
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            contents.forEach(content => content.style.display = 'none');
-            const activeContent = document.getElementById(`${tab.dataset.tab}-tab`);
-            activeContent.style.display = 'block';
+            // Show correct content
+            contents.forEach(c => c.classList.remove('active'));
+            document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
 
-            // Update submit button text
-            buttonText.textContent =
-                `Update ${tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1)}`;
-        });
-    });
-
-    document.getElementById('securityForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const activeTab = document.querySelector('.tab-button.active').dataset.tab;
-        const inputs = document.querySelectorAll(`#${activeTab}-tab input`);
-
-        // Client-side validation
-        for (const input of inputs) {
-            if (!input.checkValidity()) {
-                alert(`Please fill the ${input.name} field correctly.`);
-                input.focus();
-                return;
-            }
+            // Update button text
+            buttonText.textContent = `Update ${capitalize(tab.dataset.tab)}`;
         }
 
-        // Serialize data from active tab inputs
-        const params = [];
-        inputs.forEach(input => {
-            params.push(encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value));
-        });
-        const dataString = params.join('&');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        sendAjaxRequest('update-passcodes.php', 'POST', dataString, function(response) {
-            alert(response.message);
-            if (response.success) {
-                e.target.reset();
+            const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
+            const inputs = document.querySelectorAll(`#${activeTab}-tab input`);
+
+            for (const input of inputs) {
+                if (!input.checkValidity()) {
+                    alert(`Please fill the ${input.name} field correctly.`);
+                    input.focus();
+                    return;
+                }
             }
+
+            const data = Array.from(inputs).map(input =>
+                `${encodeURIComponent(input.name)}=${encodeURIComponent(input.value)}`
+            ).join('&');
+
+            sendAjaxRequest('update-passcodes.php', 'POST', data, function(response) {
+                alert(response.message);
+                if (response.success) {
+                    form.reset();
+                }
+            });
         });
+
+        function sendAjaxRequest(url, method, data, callback) {
+            const xhr = new XMLHttpRequest();
+            xhr.open(method, url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        callback(response);
+                    } catch (err) {
+                        callback({
+                            success: false,
+                            message: 'Server error. Please try again.'
+                        });
+                    }
+                }
+            };
+            xhr.send(data);
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
     });
     </script>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

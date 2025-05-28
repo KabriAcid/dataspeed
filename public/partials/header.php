@@ -18,13 +18,17 @@ if (isset($_SESSION['user'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
     <!-- Add font awesome icons to buttons (note that the fa-spin class rotates the icon) -->
+
+    <!-- Toasted JS -->
+    <link rel="stylesheet" href="../../assets/css/toasted.css" />
+    <script type="module" src="../../assets/js/toasted.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
-
     <style>
-        body {
-            font-family: 'Quicksand' !important;
-        }
+    body {
+        font-family: 'Quicksand' !important;
+    }
     </style>
 
 </head>
