@@ -182,15 +182,14 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
         const linkInput = document.getElementById("referralLinkInput").value;
         // Copy to clipboard after clicking the button
         navigator.clipboard.writeText(linkInput).then(function() {
-
-            showToasted('Copied', 'success');
+            showToasted('Copied successfully', 'success');
         }, function(err) {
-            console.error("Could not copy text: ", err);
+            showToasted('Could not copy code', 'error');
+            console.error(err);
         });
     });
     document.getElementById('copy-icon').addEventListener('click', function() {
         const referralCode = document.getElementById('referral_code').innerText.trim();
-
 
         // Copy to clipboard
         navigator.clipboard.writeText(referralCode).then(() => {
@@ -199,12 +198,15 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
             copyBtn.classList.remove('fa-copy');
             copyBtn.classList.add('fa-check', 'text-success');
 
+            showToasted('Copied successfully', 'success');
+
             // Revert back after 2 seconds
             setTimeout(() => {
                 copyBtn.classList.remove('fa-check', 'text-success');
                 copyBtn.classList.add('fa-copy', 'text-primary');
             }, 3000);
         }).catch(err => {
+            showToasted('Could not copy code', 'error');
             console.error('Copy failed: ', err);
         });
     });

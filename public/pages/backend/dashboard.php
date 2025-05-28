@@ -227,6 +227,8 @@ require __DIR__ . '/../../partials/header.php';
             copyBtn.classList.remove('fa-copy');
             copyBtn.classList.add('fa-check', 'text-success');
 
+            showToasted('Copied successfully', 'success');
+
             // Revert back after 2 seconds
             setTimeout(() => {
                 copyBtn.classList.remove('fa-check', 'text-success');

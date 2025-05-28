@@ -3,6 +3,10 @@ session_start();
 require __DIR__ . '/../../../config/config.php';
 require __DIR__ . '/../../../functions/Model.php';
 require __DIR__ . '/../../partials/header.php';
+
+$selectedState = $user['state'] ?? '';
+$selectedLGA = $user['city'] ?? '';
+
 ?>
 
 <body>
@@ -25,7 +29,7 @@ require __DIR__ . '/../../partials/header.php';
 
         <div class="form-container">
             <!-- Step Tracker -->
-            <div class="d-flex justify-content-between mb-4">
+            <div class="d-flex justify-content-between py-4 px-0">
                 <div class="step-indicator text-center flex-fill" onclick="goToStep(0)">
                     <div class="step-circle bg-gradient-dark text-white mx-auto">1</div>
                     <small class="step-label">Biodata</small>
@@ -40,30 +44,30 @@ require __DIR__ . '/../../partials/header.php';
                 </div>
             </div>
 
-            <!-- Step 1: About -->
-            <form class="wizard-step" id="step-about">
-                <div class="row">
-                    <div class="col-md-6">
+            <!-- Step 1: biodata -->
+            <form class="wizard-step" id="step-biodata">
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
                         <label>First Name</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($user['first_name']) ?>"
-                            readonly>
+                            disabled>
                     </div>
                     <div class="col-md-6">
                         <label>Last Name</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($user['last_name']) ?>"
-                            readonly>
+                            disabled>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <label>Email</label>
                         <input type="email" class="form-control" value="<?= htmlspecialchars($user['email']) ?>"
-                            readonly>
+                            disabled>
                     </div>
                     <div class="col-md-6">
                         <label>Phone Number</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($user['phone_number']) ?>"
-                            readonly>
+                            disabled>
                     </div>
                 </div>
                 <div class="text-end mt-3">
@@ -73,8 +77,8 @@ require __DIR__ . '/../../partials/header.php';
 
             <!-- Step 2: Account -->
             <form class="wizard-step d-none" id="step-account">
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
                         <label>Bank Name</label>
                         <input type="text" name="bank_name" class="form-control"
                             value="<?= htmlspecialchars($user['w_bank_name']) ?>">
@@ -92,28 +96,70 @@ require __DIR__ . '/../../partials/header.php';
 
             <!-- Step 3: Address -->
             <form class="wizard-step d-none" id="step-address">
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label>State</label>
+                        <select name="state" id="state" class="select-state form-control" required
+                            data-selected="<?= $selectedState ?>">
+                            <option value="">-- State --</option>
+                            <option value="Abia">Abia</option>
+                            <option value="Adamawa">Adamawa</option>
+                            <option value="AkwaIbom">Akwa Ibom</option>
+                            <option value="Anambra">Anambra</option>
+                            <option value="Bauchi">Bauchi</option>
+                            <option value="Bayelsa">Bayelsa</option>
+                            <option value="Benue">Benue</option>
+                            <option value="Borno">Borno</option>
+                            <option value="Cross River">Cross River</option>
+                            <option value="Delta">Delta</option>
+                            <option value="Ebonyi">Ebonyi</option>
+                            <option value="Edo">Edo</option>
+                            <option value="Ekiti">Ekiti</option>
+                            <option value="Enugu">Enugu</option>
+                            <option value="Gombe">Gombe</option>
+                            <option value="Imo">Imo</option>
+                            <option value="Jigawa">Jigawa</option>
+                            <option value="Kaduna">Kaduna</option>
+                            <option value="Kano">Kano</option>
+                            <option value="Katsina">Katsina</option>
+                            <option value="Kebbi">Kebbi</option>
+                            <option value="Kogi">Kogi</option>
+                            <option value="Kwara">Kwara</option>
+                            <option value="Lagos">Lagos</option>
+                            <option value="Nasarawa">Nasarawa</option>
+                            <option value="Niger">Niger</option>
+                            <option value="Ogun">Ogun</option>
+                            <option value="Ondo">Ondo</option>
+                            <option value="Osun">Osun</option>
+                            <option value="Oyo">Oyo</option>
+                            <option value="Plateau">Plateau</option>
+                            <option value="Rivers">Rivers</option>
+                            <option value="Sokoto">Sokoto</option>
+                            <option value="Taraba">Taraba</option>
+                            <option value="Yobe">Yobe</option>
+                            <option value="Zamfara">Zamfara</option>
+                            <option value="FCT">FCT</option>
+                        </select>
+
+
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>City</label>
+                        <select name="lga" id="lga" class="select-lga form-control" required
+                            data-selected="<?= $selectedLGA ?>">
+                            <option value="">-- LGA --</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <label>Address</label>
                         <input type="text" name="address" class="form-control"
                             value="<?= htmlspecialchars($user['address']) ?>">
                     </div>
-                    <div class="col-md-6">
-                        <label>City</label>
-                        <input type="text" name="city" class="form-control"
-                            value="<?= htmlspecialchars($user['city']) ?>">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>State</label>
-                        <input type="text" name="state" class="form-control"
-                            value="<?= htmlspecialchars($user['state']) ?>">
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <label>Country</label>
-                        <input type="text" name="country" class="form-control"
-                            value="<?= htmlspecialchars($user['country']) ?? 'Nigeria' ?>">
+                        <input type="text" name="country" class="form-control" value="Nigeria" disabled>
                     </div>
                 </div>
                 <div class="text-end mt-3">
@@ -133,7 +179,7 @@ require __DIR__ . '/../../partials/header.php';
     document.addEventListener('DOMContentLoaded', function() {
         const stepForms = document.querySelectorAll('.wizard-step');
         const stepCircles = document.querySelectorAll('.step-circle');
-        const stepIds = ['about', 'account', 'address'];
+        const stepIds = ['biodata', 'account', 'address'];
         let currentStep = 0;
 
         function updateStepUI(index) {
@@ -164,7 +210,7 @@ require __DIR__ . '/../../partials/header.php';
                 formData.append('step', step);
 
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'update-profile.php', true);
+                xhr.open('POST', 'update-address.php', true);
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
                 xhr.onload = function() {
@@ -187,6 +233,7 @@ require __DIR__ . '/../../partials/header.php';
 
     });
     </script>
+    <script src="../../assets/js/state-capital.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
