@@ -21,10 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function showError(element, message) {
-        element.textContent = message;
-    }
-
     function sendAjaxRequest(url, method, data, callback) {
     if (!navigator.onLine) {
         callback({
@@ -89,17 +85,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Also move to the nextStep() when the enter key is pressed
 
-document.addEventListener('keyup', function(e) {
-    if (e.key === 'Enter' || e.keyCode === 13) {
-        e.preventDefault(); // prevent accidental form submission
-        nextStep();
-    }
-});
+    document.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            e.preventDefault(); // prevent accidental form submission
+            nextStep();
+        }
+    });
 
-
-
-    // Spinners
-    const spinner = document.getElementById('spinner-icon');
 
     // Referral Code
     const referralInput = document.getElementById('referral-code');
@@ -110,14 +102,12 @@ document.addEventListener('keyup', function(e) {
         const referralCode = referralInput.value.trim();
         referralError.textContent = ""; // Clear previous errors
 
-        spinner.classList.remove('d-none');
         referralContinueBtn.style.cursor = 'not-allowed';
 
         // Validate referral code
         sendAjaxRequest("validate-referral.php", "POST", "referral_code=" + encodeURIComponent(referralCode), function (response) {
             if (!response.success) {
-                showError(referralError, response.message);
-                spinner.classList.add('d-none');
+                showToast(referralError, response.message);
                 referralContinueBtn.style.cursor = 'pointer';
             } else {
                 // Save the referral code to sessionStorage for use in the next step
@@ -133,35 +123,31 @@ document.addEventListener('keyup', function(e) {
 
     // Email Verification
     const emailInput = document.getElementById('email');
-    const emailError = document.getElementById('email-error');
     const emailContinueBtn = document.getElementById('email-submit');
 
     emailContinueBtn.addEventListener("click", function () {
         const email = emailInput.value.trim();
-        emailError.textContent = ""; // Clear previous errors
 
         if (email === "") {
-            showError(emailError, "Email address is required.");
+            showToast("Email address is required.", 'error');
             emailInput.classList.add("error-input");
             return;
         } else if (email.length <= 6) {
-            showError(emailError, "Please enter a valid email address");
+            showToast("Please enter a valid email address", 'error');
             emailInput.classList.add("error-input");
             return;
-        } else if (email.includes("xxxx")) {
-            showError(emailError, "Email format not supported.");
+        } else if (email.includes("mailinator")) {
+            showToast("Email format not supported.", 'error');
             emailInput.classList.add("error-input");
             return;
         }
 
-        spinner.classList.remove('d-none');
         emailContinueBtn.style.cursor = 'not-allowed';
 
         // Validate email and send OTP
         sendAjaxRequest("validate-email.php", "POST", "email=" + encodeURIComponent(email), function (response) {
             if (!response.success) {
-                showError(emailError, response.message);
-                spinner.classList.add('d-none');
+                showToast(response.message, 'error');
                 emailContinueBtn.style.cursor = 'pointer';
             } else {
                 // Save the email and registration_id to sessionStorage for use in the OTP page
@@ -176,7 +162,6 @@ document.addEventListener('keyup', function(e) {
                     if (otpResponse.success) {
                         emailContinueBtn.classList.remove('primary-btn');
                         emailContinueBtn.classList.add('btn-secondary');
-                        spinner.classList.add('d-none');
 
                         console.log(otpResponse.otpCode);
 
@@ -186,8 +171,7 @@ document.addEventListener('keyup', function(e) {
                         }, timeout); 
                     } else {
                         setTimeout(() => {
-                            showError(emailError, otpResponse.message);
-                            spinner.classList.add('d-none');
+                            showToast(otpResponse.message, 'error');
                             emailContinueBtn.style.cursor = 'pointer';
                         }, timeout);
                     }
@@ -199,14 +183,13 @@ document.addEventListener('keyup', function(e) {
     // OTP Verification
     const otpInputs = document.querySelectorAll(".otp-input");
     const verifyOtpBtn = document.getElementById("verify-otp-btn");
-    const otpError = document.getElementById("otp-error");
 
     verifyOtpBtn.addEventListener("click", function () {
         let otp = "";
         otpInputs.forEach(input => otp += input.value.trim());
 
         if (otp.length !== 6 || isNaN(otp)) {
-            showError(otpError, "Enter a valid 6-digit OTP.");
+            showToast("Enter a valid 6-digit OTP.", 'error');
             return;
         }
 
@@ -216,21 +199,18 @@ document.addEventListener('keyup', function(e) {
         console.log("Email retrieved:", email);
         console.log("Registration ID retrieved:", registration_id);
 
-        spinner.classList.remove('d-none');
         verifyOtpBtn.style.cursor = 'not-allowed';
 
         // Verify OTP
         sendAjaxRequest("verify-otp.php", "POST", "email=" + encodeURIComponent(email) + "&otp=" + encodeURIComponent(otp) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (response.success) {
                 verifyOtpBtn.style.cursor = 'pointer';
-                spinner.classList.add('d-none');
                 setTimeout(() => {
                     nextStep();
                 }, timeout); 
             } else {
                 setTimeout(() => {
-                    showError(otpError, response.message);
-                    spinner.classList.add('d-none');
+                    showToast(response.message, 'error');
                     verifyOtpBtn.style.cursor = 'pointer'; 
                 }, timeout);
             }
@@ -260,17 +240,15 @@ document.addEventListener('keyup', function(e) {
 
     // Phone Number Verification
     const phoneInput = document.getElementById("phone");
-    const phoneError = document.getElementById("phone-error");
     const phoneSubmit = document.getElementById("phone-submit");
 
     phoneSubmit.addEventListener("click", function () {
         let phone = phoneInput.value.trim();
-        phoneError.textContent = ""; // Clear previous errors
         phoneInput.classList.remove("error");
 
         // Check if country code is present
         if (/^(\+234|234)/.test(phone)) {
-            showError(phoneError, "Remove the country code.");
+            showToast("Remove the country code.", 'error');
             return;
         }
 
@@ -283,11 +261,10 @@ document.addEventListener('keyup', function(e) {
         const phonePattern = /^\d{10}$/;
 
         if (!phonePattern.test(phone)) {
-            showError(phoneError, "Enter a valid Nigerian phone number.");
+            showToast("Enter a valid Nigerian phone number.", 'error');
             return;
         }
 
-        spinner.classList.remove('d-none');
         phoneSubmit.style.cursor = 'not-allowed';
 
         const registration_id = sessionStorage.getItem('registration_id');
@@ -295,13 +272,11 @@ document.addEventListener('keyup', function(e) {
         // Validate phone number and update users table
         sendAjaxRequest("validate-phone.php", "POST", "phone=" + encodeURIComponent(phone) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (!response.success) {
-                showError(phoneError, response.message);
-                spinner.classList.add('d-none');
+                showToast(response.message, 'error');
                 phoneSubmit.style.cursor = 'pointer';
             } else {
                 phoneSubmit.classList.remove('primary-btn');
                 phoneSubmit.classList.add('btn-secondary');
-                spinner.classList.add('d-none');
 
                 setTimeout(() => {
                     nextStep();
@@ -312,50 +287,45 @@ document.addEventListener('keyup', function(e) {
 
     const firstNameInput = document.getElementById("first_name");
     const lastNameInput = document.getElementById("last_name");
-    const namesError = document.getElementById("names-error");
     const namesSubmit = document.getElementById("names-submit");
 
     namesSubmit.addEventListener("click", function () {
         const firstName = firstNameInput.value.trim();
         const lastName = lastNameInput.value.trim();
-        namesError.textContent = ""; // Clear previous errors
         firstNameInput.classList.remove("error");
         lastNameInput.classList.remove("error");
 
         // Validate first name and last name
         if (!firstName || !lastName) {
-            showError(namesError, "Both first name and last name are required.");
+            showToast("Both first name and last name are required.", 'error');
             return;
         }
 
         const namePattern = /^[A-Za-z\s'-]+$/;
 
         if (!namePattern.test(firstName)) {
-            showError(namesError, "Enter a valid first name.");
+            showToast("Enter a valid first name.", 'error');
             return;
         }
 
         if (!namePattern.test(lastName)) {
-            showError(namesError, "Enter a valid last name.");
+            showToast("Enter a valid last name.", 'error');
             return;
         }
 
         // Update user in the database with first name and last name
         const registration_id = sessionStorage.getItem('registration_id');
 
-        spinner.classList.remove('d-none');
         namesSubmit.style.cursor = 'not-allowed';
 
         // AJAX request to update names
         sendAjaxRequest("validate-names.php", "POST", "first_name=" + encodeURIComponent(firstName) + "&last_name=" + encodeURIComponent(lastName) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (!response.success) {
-                showError(namesError, response.message);
-                spinner.classList.add('d-none');
+                showToast(response.message, 'error');
                 namesSubmit.style.cursor = 'pointer';
             } else {
                 namesSubmit.classList.remove('primary-btn');
                 namesSubmit.classList.add('btn-secondary');
-                spinner.classList.add('d-none');
 
                 setTimeout(() => {
                     nextStep();
@@ -366,41 +336,37 @@ document.addEventListener('keyup', function(e) {
 
     const passwordInput = document.getElementById("password");
     const confirmPasswordInput = document.getElementById("confirm-password");
-    const passwordError = document.getElementById("password-error");
     const passwordSubmit = document.getElementById("password-submit");
 
     passwordSubmit.addEventListener("click", function () {
         const password = passwordInput.value.trim();
         const confirmPassword = confirmPasswordInput.value.trim();
-        passwordError.textContent = "";
         passwordInput.classList.remove("error");
         confirmPasswordInput.classList.remove("error");
 
         if (password === "" || confirmPassword === "") {
-            showError(passwordError, "Both password and confirm password are required.");
+            showToast("Both password and confirm password are required.", 'error');
             return;
         }
 
         if (password.length < 8) {
-            showError(passwordError, "Password must be at least 8 characters long.");
+            showToast("Password must be at least 8 characters long.", 'error');
             return;
         }
 
         if (password !== confirmPassword) {
-            showError(passwordError, "Passwords do not match.");
+            showToast("Passwords do not match.", 'error');
             return;
         }
 
         const registration_id = sessionStorage.getItem('registration_id');
-        spinner.classList.remove('d-none');
         passwordSubmit.style.cursor = 'not-allowed';
 
         // Final step: Update password and trigger virtual account creation
         sendAjaxRequest("validate-password.php", "POST", "password=" + encodeURIComponent(password) + "&registration_id=" + encodeURIComponent(registration_id), 
             function (response) {
                 if (!response.success) {
-                    showError(passwordError, JSON.stringify(response.api_response, null, 2));
-                    spinner.classList.add('d-none');
+                    showToast(JSON.stringify(response.api_response, null, 2), 'error');
                     passwordSubmit.style.cursor = 'pointer';
                 } else {
                     console.log("Virtual Account Number:", response.account_number);
@@ -414,10 +380,6 @@ document.addEventListener('keyup', function(e) {
             }
         );
 
-
-
     });
-
-
 
 });

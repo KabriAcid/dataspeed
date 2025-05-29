@@ -24,9 +24,9 @@ if (isset($_GET['referral_code'])) {
     <link rel="stylesheet" href="../../assets/css/style.css">
 
     <style>
-        body {
-            font-family: 'Quicksand' !important;
-        }
+    body {
+        font-family: 'Quicksand' !important;
+    }
     </style>
 
 </head>
@@ -63,9 +63,7 @@ if (isset($_GET['referral_code'])) {
                         <input type="text" name="referral_code" id="referral-code"
                             placeholder="Referral code (optional)" class="input"
                             value="<?php echo isset($referral_code) ? $referral_code : ''; ?>">
-                        <span class="error-label" id="referral-error"></span>
                         <button type="button" class="btn primary-btn mt-3" id="referral-submit">
-                            <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                             Continue
                         </button>
                     </div>
@@ -78,9 +76,7 @@ if (isset($_GET['referral_code'])) {
                     </div>
                     <div class="form-field">
                         <input type="email" name="email" id="email" placeholder="Email address" class="input">
-                        <span class="error-label" id="email-error"></span>
                         <button type="button" class="btn primary-btn mt-3" id="email-submit">
-                            <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                             Continue
                         </button>
                     </div>
@@ -100,9 +96,7 @@ if (isset($_GET['referral_code'])) {
                             <input type="text" maxlength="1" class="otp-input">
                             <input type="text" maxlength="1" class="otp-input">
                         </div>
-                        <span id="otp-error" class="error-label"></span>
                         <button type="button" id="verify-otp-btn" class="btn primary-btn mt-3">
-                            <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                             Verify OTP
                         </button>
                     </div>
@@ -124,9 +118,7 @@ if (isset($_GET['referral_code'])) {
                             </span>
                             <input type="text" id="phone" name="phone_number" placeholder="Phone Number" class="input">
                         </div>
-                        <span for="" class="error-label" id="phone-error"></span>
                         <button type="button" class="btn primary-btn mt-3" id="phone-submit">
-                            <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                             Continue
                         </button>
                     </div>
@@ -142,9 +134,7 @@ if (isset($_GET['referral_code'])) {
                         <input type="text" name="first_name" id="first_name" placeholder="First Name" class="input">
                         <div class="my-3"></div>
                         <input type="text" name="last_name" id="last_name" placeholder="Last Name" class="input">
-                        <span for="" class="error-label" id="names-error"></span>
                         <button type="button" class="btn primary-btn mt-3" id="names-submit">
-                            <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                             Continue
                         </button>
                     </div>
@@ -163,9 +153,7 @@ if (isset($_GET['referral_code'])) {
                         <input type="password" class="input" id="confirm-password" name="confirm_password"
                             placeholder="Password">
                     </div>
-                    <span for="" class="error-label" id="password-error"></span>
                     <button type="button" class="btn primary-btn" id="password-submit" onclick="showOverlay()">
-                        <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Finish
                     </button>
                 </div>
@@ -179,38 +167,38 @@ if (isset($_GET['referral_code'])) {
     </main>
 </body>
 <script>
-    function showOverlay() {
-        document.getElementById("overlay").style.display = "block";
-        const timeout = 10000;
-        setTimeout(() => {
-            document.getElementById("overlay").style.display = "none";
-        }, timeout);
+function showOverlay() {
+    document.getElementById("overlay").style.display = "block";
+    const timeout = 10000;
+    setTimeout(() => {
+        document.getElementById("overlay").style.display = "none";
+    }, timeout);
+}
+
+
+let countdown = 600; // 10 minutes in seconds
+const timerDisplay = document.getElementById("otp-timer");
+const verifyBtn = document.getElementById("verify-otp-btn");
+
+function updateTimer() {
+    if (!timerDisplay) return;
+
+    const minutes = Math.floor(countdown / 60);
+    const seconds = countdown % 60;
+    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+    if (countdown === 0) {
+        timerDisplay.textContent = "OTP Expired! Request a new one.";
+        verifyBtn.disabled = true;
+        verifyBtn.classList.add('inactive-btn');
+        verifyBtn.style.cursor = 'not-allowed';
+        clearInterval(timerInterval);
     }
 
+    countdown--;
+}
 
-    let countdown = 600; // 10 minutes in seconds
-    const timerDisplay = document.getElementById("otp-timer");
-    const verifyBtn = document.getElementById("verify-otp-btn");
-
-    function updateTimer() {
-        if (!timerDisplay) return; // Avoid errors if element is missing
-
-        const minutes = Math.floor(countdown / 60);
-        const seconds = countdown % 60;
-        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-        if (countdown === 0) {
-            timerDisplay.textContent = "OTP Expired! Request a new one.";
-            verifyBtn.disabled = true;
-            verifyBtn.classList.add('inactive-btn');
-            verifyBtn.style.cursor = 'not-allowed';
-            clearInterval(timerInterval);
-        }
-
-        countdown--;
-    }
-
-    const timerInterval = setInterval(updateTimer, 1000);
+const timerInterval = setInterval(updateTimer, 1000);
 </script>
 <script src="../../assets/js/multi-step.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -12,6 +12,11 @@ session_start();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
     <!-- Add font awesome icons to buttons (note that the fa-spin class rotates the icon) -->
+
+    <!-- Toasted JS -->
+    <link rel="stylesheet" href="../../assets/css/toasted.css" />
+    <script type="module" src="../../assets/js/toasted.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
 
@@ -50,9 +55,7 @@ session_start();
                     </div>
                     <div class="form-field">
                         <input type="email" name="email" id="email" placeholder="Email address" class="input">
-                        <label for="" class="error-label" id="email-error"></label>
                         <button type="button" class="btn primary-btn mt-3" id="email-submit">
-                            <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                             Continue
                         </button>
                     </div>
@@ -65,9 +68,7 @@ session_start();
                     </div>
                     <div class="form-field">
                         <input type="text" name="token" id="token" placeholder="Insert your token" class="input">
-                        <label for="" class="error-label" id="token-error"></label>
                         <button type="button" class="btn primary-btn mt-3" id="token-submit">
-                            <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                             Submit
                         </button>
                     </div>
@@ -90,7 +91,6 @@ session_start();
                     </div>
                     <label for="" class="error-label" id="password-error"></label>
                     <button type="button" class="btn primary-btn" id="password-submit">
-                        <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Finish
                     </button>
                 </div>

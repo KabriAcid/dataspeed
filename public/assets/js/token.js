@@ -20,11 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function showError(element, message) {
-        element.textContent = message;
-        element.classList.add("error");
-    }
-
     function sendAjaxRequest(url, method, data, callback) {
         if (!navigator.onLine) {
             callback({
@@ -65,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 callback(json);
             } catch (err) {
                 console.error("Invalid JSON:", xhr.responseText);
-                alert("Invalid JSON response from server.");
+                showToasted("Invalid JSON response from server.", 'error');
             }
         };
     
@@ -89,21 +84,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const emailInput = document.getElementById("email");
     const emailSubmit = document.getElementById("email-submit");
-    const emailError = document.getElementById("email-error");
     const spinner = document.getElementById('spinner-icon');
 
     emailSubmit.addEventListener("click", function () {
         const email = emailInput.value.trim();
-        emailError.textContent = ""; // Clear previous errors
-        emailInput.classList.remove("error");
 
         if (email === "") {
-            showError(emailError, "Email address is required.");
+            showToasted("Email address is required.", 'error')
             return;
         }
         
         if (email.length <= 7) {
-            showError(emailError, "Invalid email address.");
+            showToasted("Invalid email address.", 'error')
             return;
         }
 
@@ -112,12 +104,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // AJAX request to send token to user's email
         sendAjaxRequest("send-token.php", "POST", "email=" + encodeURIComponent(email), function (response) {
             if (!response.success) {
-                showError(emailError, response.message);
+                showToasted(response.message, 'error')
                 emailInput.classList.add('error-input');
                 spinner.classList.add('d-none');
             } else {
                 // Create and store the reset email.
                 sessionStorage.setItem('reset_email', email);
+                showToasted(response.message, 'success')
                 setTimeout(() => {
                     spinner.classList.add('d-none');
                     nextStep(); // Move to the next step
@@ -129,15 +122,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // VERIFYING TOKEN
     const tokenInput = document.getElementById("token");
     const tokenSubmit = document.getElementById("token-submit");
-    const tokenError = document.getElementById("token-error");
 
     tokenSubmit.addEventListener("click", function () {
         const token = tokenInput.value.trim();
-        tokenError.textContent = ""; // Clear previous errors
-        tokenInput.classList.remove("error");
 
         if (token === "") {
-            showError(tokenError, "Token is required.");
+            showToasted('Token is required', 'error');
             return;
         }
 
@@ -146,11 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // AJAX request to verify token
         sendAjaxRequest("verify-token.php", "POST", "token=" + encodeURIComponent(token), function (response) {
             if (!response.success) {
-                showError(tokenError, response.message);
+                showToasted(response.message, 'error');
                 spinner.classList.add('d-none');
                 console.log(sessionStorage.getItem('reset_email'));
             } else {
                 setTimeout(() => {
+                    showToasted(response.message, 'success');
                     spinner.classList.add('d-none');
                     nextStep(); // Move to the password step
                 }, 1000); // 1-second delay
@@ -166,24 +157,21 @@ document.addEventListener("DOMContentLoaded", function () {
     passwordSubmit.addEventListener("click", function () {
         const password = passwordInput.value.trim();
         const confirmPassword = confirmPasswordInput.value.trim();
-        passwordError.textContent = ""; // Clear previous errors
-        passwordInput.classList.remove("error");
-        confirmPasswordInput.classList.remove("error");
 
         const reset_email = sessionStorage.getItem('reset_email');
 
         if (password === "" || confirmPassword === "") {
-            showError(passwordError, "Both fields are required.");
+            showToasted("Both fields are required.", 'error');
             return;
         }
 
         if (password.length < 8) {
-            showError(passwordError, "Password must be at least 8 characters long.");
+            showToasted("Password must be at least 8 characters long.", 'error');
             return;
         }
 
         if (password !== confirmPassword) {
-            showError(passwordError, "Passwords do not match.");
+            showToasted("Passwords do not match.", 'error');
             return;
         }
 
@@ -192,12 +180,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // AJAX request to reset password
         sendAjaxRequest("reset-password.php", "POST", "password=" + encodeURIComponent(password) + "&reset_email=" + encodeURIComponent(reset_email), function (response) {
             if (!response.success) {
-                showError(passwordError, response.message);
+                showToasted(response.message, 'error');
                 spinner.classList.add('d-none');
             } else {
                 setTimeout(() => {
-                    spinner.classList.add('d-none');
-                    window.location.href = "login.php"; // Redirect to login page
+                    showToasted(response.message, 'success');
+                    window.location.href = "login.php?success=1"; // Redirect to login page
                 }, 1000); // 1-second delay
             }
         });
