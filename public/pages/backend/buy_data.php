@@ -34,7 +34,20 @@ require __DIR__ . '/../../partials/header.php';
         </div>
 
         <div class="plans-section">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex" style="justify-content: space-around; align-items: center;">
+                <!-- Card  -->
+                <div>
+                    <div class="card p-0 plan-card border-0 mb-3 shadow">
+                        <div class="card-body px-3 py-2 text-dark rounded-3">
+                            <div class="text-center">
+                                <p id="data-amount">&#8358;800</p>
+                                <h5 id="data-volume">1.2GB</h5>
+                                <p id="data-duration">7 DAYS</p>
+                            </div>
+                            <!-- <span class="badge bg-dark-subtle text-dark fw-semibold">AWOOF</span> -->
+                        </div>
+                    </div>
+                </div>
                 <!-- Card  -->
                 <div>
                     <div class="card p-0 plan-card border-0 mb-3 shadow">
@@ -154,12 +167,6 @@ require __DIR__ . '/../../partials/header.php';
         this.classList.add('active');
         const brandColor = this.style.getPropertyValue('--brand-color');
         this.style.backgroundColor = brandColor;
-
-        // if active tab is airtel then change the svg icon to airtel
-        if (this.id === 'airtel-tab') {
-            // Change only the image source for Airtel
-            document.querySelector('.network-tabs img').src = '../../assets/icons/airtel-logo-2.svg';
-        }
     });
 });
 

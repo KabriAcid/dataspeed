@@ -6,7 +6,6 @@ require __DIR__ . '/../../partials/header.php';
 
 $selectedState = $user['state'] ?? '';
 $selectedLGA = $user['city'] ?? '';
-
 ?>
 
 <body>
@@ -29,45 +28,41 @@ $selectedLGA = $user['city'] ?? '';
 
         <div class="form-container">
             <!-- Step Tracker -->
-            <div class="d-flex justify-content-between py-4 px-0">
-                <div class="step-indicator text-center flex-fill" onclick="goToStep(0)">
+            <div class="d-flex justify-content-between py-4 px-0 step-tracker">
+                <div class="step-indicator text-center flex-fill" data-step="0">
                     <div class="step-circle bg-gradient-dark text-white mx-auto">1</div>
                     <small class="step-label">Biodata</small>
                 </div>
-                <div class="step-indicator text-center flex-fill" onclick="goToStep(1)">
+                <div class="step-indicator text-center flex-fill" data-step="1">
                     <div class="step-circle bg-gradient-light text-dark mx-auto">2</div>
                     <small class="step-label">Account</small>
                 </div>
-                <div class="step-indicator text-center flex-fill" onclick="goToStep(2)">
+                <div class="step-indicator text-center flex-fill" data-step="2">
                     <div class="step-circle bg-gradient-light text-dark mx-auto">3</div>
                     <small class="step-label">Address</small>
                 </div>
             </div>
 
-            <!-- Step 1: biodata -->
+            <!-- Step 1: Biodata -->
             <form class="wizard-step" id="step-biodata">
                 <div class="row mb-3">
                     <div class="col-md-6 mb-3">
                         <label>First Name</label>
-                        <input type="text" class="form-control" value="<?= htmlspecialchars($user['first_name']) ?>"
-                            disabled>
+                        <input type="text" class="form-control" value="<?= htmlspecialchars($user['first_name']) ?>" disabled>
                     </div>
                     <div class="col-md-6">
                         <label>Last Name</label>
-                        <input type="text" class="form-control" value="<?= htmlspecialchars($user['last_name']) ?>"
-                            disabled>
+                        <input type="text" class="form-control" value="<?= htmlspecialchars($user['last_name']) ?>" disabled>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label>Email</label>
-                        <input type="email" class="form-control" value="<?= htmlspecialchars($user['email']) ?>"
-                            disabled>
+                        <input type="email" class="form-control" value="<?= htmlspecialchars($user['email']) ?>" disabled>
                     </div>
                     <div class="col-md-6">
                         <label>Phone Number</label>
-                        <input type="text" class="form-control" value="<?= htmlspecialchars($user['phone_number']) ?>"
-                            disabled>
+                        <input type="text" class="form-control" value="<?= htmlspecialchars($user['phone_number']) ?>" disabled>
                     </div>
                 </div>
                 <div class="text-end mt-3">
@@ -80,13 +75,11 @@ $selectedLGA = $user['city'] ?? '';
                 <div class="row mb-3">
                     <div class="col-md-6 mb-3">
                         <label>Bank Name</label>
-                        <input type="text" name="bank_name" class="form-control"
-                            value="<?= htmlspecialchars($user['w_bank_name']) ?>">
+                        <input type="text" name="bank_name" class="form-control" value="<?= htmlspecialchars($user['w_bank_name']) ?>">
                     </div>
                     <div class="col-md-6">
                         <label>Account Number</label>
-                        <input type="number" name="account_number" maxlength="11" class="form-control"
-                            placeholder="10-digit NUBAN" value="<?= htmlspecialchars($user['w_account_number']) ?>">
+                        <input type="number" name="account_number" maxlength="11" class="form-control" placeholder="10-digit NUBAN" value="<?= htmlspecialchars($user['w_account_number']) ?>">
                     </div>
                 </div>
                 <div class="text-end mt-3">
@@ -99,8 +92,7 @@ $selectedLGA = $user['city'] ?? '';
                 <div class="row mb-3">
                     <div class="col-md-6 mb-3">
                         <label>State</label>
-                        <select name="state" id="state" class="select-state form-control" required
-                            data-selected="<?= $selectedState ?>">
+                        <select name="state" id="state" class="select-state form-control" required data-selected="<?= $selectedState ?>">
                             <option value="">-- State --</option>
                             <option value="Abia">Abia</option>
                             <option value="Adamawa">Adamawa</option>
@@ -140,13 +132,10 @@ $selectedLGA = $user['city'] ?? '';
                             <option value="Zamfara">Zamfara</option>
                             <option value="FCT">FCT</option>
                         </select>
-
-
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>City</label>
-                        <select name="lga" id="lga" class="select-lga form-control" required
-                            data-selected="<?= $selectedLGA ?>">
+                        <select name="lga" id="lga" class="select-lga form-control" required data-selected="<?= $selectedLGA ?>">
                             <option value="">-- LGA --</option>
                         </select>
                     </div>
@@ -154,8 +143,7 @@ $selectedLGA = $user['city'] ?? '';
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label>Address</label>
-                        <input type="text" name="address" class="form-control"
-                            value="<?= htmlspecialchars($user['address']) ?>">
+                        <input type="text" name="address" class="form-control" value="<?= htmlspecialchars($user['address']) ?>">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>Country</label>
@@ -166,8 +154,8 @@ $selectedLGA = $user['city'] ?? '';
                     <button type="submit" class="btn primary-btn">Update</button>
                 </div>
             </form>
-
         </div>
+
         <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
     </main>
 
@@ -175,69 +163,67 @@ $selectedLGA = $user['city'] ?? '';
         <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All rights reserved.</p>
     </footer>
 
-    <script>
-    <?php require __DIR__ . '/public/assets/js/ajax.js';  ?>
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    <script src="../../assets/js/state-capital.js"></script>
+    <script src="../../assets/js/ajax.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
         const stepForms = document.querySelectorAll('.wizard-step');
-        const stepCircles = document.querySelectorAll('.step-circle');
+        const stepCircles = document.querySelectorAll('.step-indicator');
         const stepIds = ['biodata', 'account', 'address'];
+
         let currentStep = 0;
 
         function updateStepUI(index) {
             stepForms.forEach((form, i) => {
                 form.classList.toggle('d-none', i !== index);
-                stepCircles[i].classList.toggle('bg-gradient-dark', i === index);
-                stepCircles[i].classList.toggle('text-white', i === index);
-                stepCircles[i].classList.toggle('bg-gradient-light', i !== index);
-                stepCircles[i].classList.toggle('text-dark', i !== index);
             });
+
+            stepCircles.forEach((circle, i) => {
+                const stepCircle = circle.querySelector('.step-circle');
+                stepCircle.classList.toggle('bg-gradient-dark', i === index);
+                stepCircle.classList.toggle('text-white', i === index);
+                stepCircle.classList.toggle('bg-gradient-light', i !== index);
+                stepCircle.classList.toggle('text-dark', i !== index);
+            });
+
             currentStep = index;
         }
 
-        window.goToStep = function(index) {
+        window.goToStep = function (index) {
+            console.log(`Navigating to step ${index}`);
             updateStepUI(index);
         };
 
-        // Initial step
+        // Initialize first step
         updateStepUI(0);
 
-        // AJAX form submission
-        document.querySelectorAll('.wizard-step form, .wizard-step').forEach((form, index) => {
-            form.addEventListener('submit', function(e) {
+        // AJAX submission using your custom sendAjaxRequest
+        document.querySelectorAll('form.wizard-step').forEach((form, index) => {
+            form.addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 const step = stepIds[index];
                 const formData = new FormData(form);
                 formData.append('step', step);
 
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'update-address.php', true);
-                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                const params = new URLSearchParams();
+                for (let pair of formData.entries()) {
+                    params.append(pair[0], pair[1]);
+                }
 
-                xhr.onload = function() {
-                    try {
-                        const res = JSON.parse(xhr.responseText);
-                        showToasted(res.message || 'Update complete.', res.success ?
-                            'success' : 'error');
-                    } catch (e) {
-                        showToasted('Invalid server response.', 'error');
+                sendAjaxRequest('update-address.php', 'POST', params.toString(), function (res) {
+                    if (res.success) {
+                        showToasted(res.message || 'Update successful', 'success');
+                    } else {
+                        showToasted(res.message || 'Update failed', 'error');
                     }
-                };
-
-                xhr.onerror = function() {
-                    showToasted('Network error occurred.', 'error');
-                };
-
-                xhr.send(formData);
+                });
             });
         });
-
     });
-    </script>
-    <script src="../../assets/js/state-capital.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+</script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>

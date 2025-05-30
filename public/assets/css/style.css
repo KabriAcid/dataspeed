@@ -544,6 +544,18 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.wizard-step {
+    transition: opacity 0.4s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.wizard-step.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+
 
 /* SECURITY SETTINGS */
 
