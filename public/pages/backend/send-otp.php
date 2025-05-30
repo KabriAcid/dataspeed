@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         sendMail($email, $subject, $body);
 
-        echo json_encode(["success" => true, "message" => "OTP sent successfully.", "otpCode" => $otp]);
+        echo json_encode(["success" => true, "message" => "OTP sent successfully.", "otpCode" => $otp, "email" => email]);
     } catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }

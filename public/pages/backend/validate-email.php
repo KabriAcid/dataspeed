@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             echo json_encode([
                 "success" => true,
-                "message" => "Email validated and saved.",
+                "message" => "OTP has been sent to your email.",
                 "registration_id" => $registration_id
             ]);
         }

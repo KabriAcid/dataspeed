@@ -41,13 +41,11 @@ if (isset($_GET['referral_code'])) {
     <main class="container">
         <div class="form-container text-center">
             <div class="form-top-container">
-                <a href="../../../index.php">
-                    <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M8.60564 1.65147L3.73182 6.5253H16V8.47483H3.73182L8.60564 13.3487L7.22712 14.7272L0 7.50006L7.22712 0.272949L8.60564 1.65147Z"
-                            fill="#722F37" />
-                    </svg>
-                </a>
+                <svg id="registration_reset" class="cursor-pointer" width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8.60564 1.65147L3.73182 6.5253H16V8.47483H3.73182L8.60564 13.3487L7.22712 14.7272L0 7.50006L7.22712 0.272949L8.60564 1.65147Z"
+                        fill="#722F37" />
+                </svg>
                 <div class="pagination">
                     <span class="page active"></span>
                     <span class="page"></span>
@@ -91,7 +89,7 @@ if (isset($_GET['referral_code'])) {
                 <div class="form-step d-none">
                     <div class="form-step-header">
                         <h4>Verify Your OTP Code</h3>
-                            <p class="text-sm" id="email-msg">Enter the 6-digit code sent to your email.</p>
+                            <p class="text-sm" id="user_email">Enter the 6-digit code sent to your email.</p>
                     </div>
                     <div class="form-field">
                         <div class="otp-container my-4">
@@ -206,6 +204,11 @@ function updateTimer() {
 }
 
 const timerInterval = setInterval(updateTimer, 1000);
+
+document.getElementById('registration_reset').addEventListener('click', function(){
+    sessionStorage.clear();
+    window.location.href = 'register.php';
+});
 </script>
 <script src="../../assets/js/ajax.js"></script>
 <script src="../../assets/js/multi-step.js"></script>

@@ -2,12 +2,6 @@
 const TIMEOUT_DURATION = 10000;
 
 function sendAjaxRequest(url, method, data, callback) {
-    if (!navigator.onLine) {
-        return callback({
-            success: false,
-            message: "You are offline. Please check your internet connection."
-        });
-    }
 
     const xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
@@ -28,7 +22,7 @@ function sendAjaxRequest(url, method, data, callback) {
             } catch (error) {
                 callback({
                     success: false,
-                    message: "Invalid JSON response"
+                    message: "Invalid JSON response."
                 });
             }
         }

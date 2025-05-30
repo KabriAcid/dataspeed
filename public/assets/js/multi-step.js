@@ -30,6 +30,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Generic handler wrapper to disable button
     function handleButtonClick(btn, handler) {
+        // if (!navigator.onLine) {
+        //     showToasted('You are offline. Please check your internet connection.', 'error');
+        //     return;
+        // }
         btn.disabled = true;
         btn.style.cursor = "not-allowed";
         handler(() => {
@@ -86,7 +90,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     sendAjaxRequest("send-otp.php", "POST", `email=${encodeURIComponent(email)}&registration_id=${encodeURIComponent(registration_id)}`, (otpResponse) => {
                         if (otpResponse.success) {
                             completedSteps.add(1);
-                            setTimeout(() => { goToStep(2); done(); }, TIMEOUT);
+                            setTimeout(() => {
+                                goToStep(2);
+                                done();
+                                document.getElementById('user_email').textContent = 'Enter the 6-digit code sent to ' + response.email;
+                                showToasted(response.message, 'success')
+                            }, TIMEOUT);
                         } else {
                             showToasted(otpResponse.message, 'error');
                             done();
@@ -115,6 +124,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const email = sessionStorage.getItem('email');
             const registration_id = sessionStorage.getItem('registration_id');
 
+            if (!registration_id) {
+                showToasted('Registration ID not set', 'error');
+                return;
+            }
+
             sendAjaxRequest("verify-otp.php", "POST", `email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}&registration_id=${encodeURIComponent(registration_id)}`, (response) => {
                 if (response.success) {
                     document.getElementById('email-msg').textContent = `Enter the 6-digit code sent to ${email}`;
@@ -125,6 +139,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     done();
                 }
             });
+        });
+    });
+
+     // OTP INPUT HANDLING
+    otpInputs.forEach((input, index) => {
+        input.addEventListener("input", (e) => {
+            if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            }
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && !input.value && index > 0) {
+                otpInputs[index - 1].focus();
+            }
+        });
+
+        input.addEventListener("paste", (e) => {
+            e.preventDefault();
+            let pastedData = e.clipboardData.getData("text").replace(/\D/g, '').slice(0, otpInputs.length);
+            otpInputs.forEach((inp, i) => inp.value = pastedData[i] || "");
         });
     });
 

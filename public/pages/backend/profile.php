@@ -176,7 +176,7 @@ $selectedLGA = $user['city'] ?? '';
     </footer>
 
     <script>
-    <?php require __DIR__ . '/public/assets/js/custom.js';  ?>
+    <?php require __DIR__ . '/public/assets/js/ajax.js';  ?>
     </script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {

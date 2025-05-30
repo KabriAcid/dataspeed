@@ -1346,7 +1346,7 @@ button:disabled {
 }
 
 .network-tab {
-  padding: 10px 20px;
+  padding: 5px 10px;
   border-radius: 4px 12px 4px 4px;
   box-shadow: 3px 4px 11px #eee;
   margin-right: 10px;
@@ -1354,18 +1354,18 @@ button:disabled {
   min-width: 50px;
   cursor: pointer;
   background-color: #fff;
-  transition: 0.3s;
-}
+  transition: background-color 0.3s ease;
 
-.network-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+
 .network-tab span {
   margin-top: 5px;
   font-weight: 600;
+  text-transform: uppercase;
   font-size: 0.75rem;
 }
 .network-tab img {
@@ -1375,13 +1375,12 @@ button:disabled {
   min-width: none;
   min-height: 40px;
 }
-.network-tab .active {
+.network-tab.active {
   background-color: var(--brand-color);
   color: white;
+  font-weight: 600;
 }
-#mtn-tab {
-  background-color: var(--mtn-color);
-}
+
 #data-amount {
   letter-spacing: .05em;
   font-weight: 500;
@@ -1432,4 +1431,191 @@ button:disabled {
   background-color: var(--primary);
   color: #fff;
   border-color: #000;
+}
+
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Slide-up content */
+.modal-content {
+  background: #fff;
+  width: 100%;
+  max-height: 100%;
+  border-radius: 20px 20px 0 0;
+  overflow-y: auto;
+  animation: slideUp 0.4s ease-out;
+  padding: 16px 20px;
+}
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding-bottom: 10px;
+}
+
+/* Title and Close Button */
+.modal-title {
+  flex: 1;
+  text-align: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Body Content */
+.modal-body {
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.phone-number {
+  font-size: 1.5rem;
+  color: var(--primary);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Info Rows */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.icon {
+  margin-right: 4px;
+}
+
+.icon-img {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+/* Footer */
+.modal-footer {
+  padding-top: 16px;
+}
+
+.pay-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* PINPAD MODAL */
+
+.pin-modal-content {
+  background: white;
+  width: 100%;
+  padding: 16px;
+  border-radius: 20px 20px 0 0;
+  animation: slideUp 0.4s ease;
+}
+
+.pin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.pin-title {
+  flex: 1;
+  text-align: center;
+}
+.pin-close-btn {
+  font-size: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.pin-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px 0;
+}
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+.dot.filled {
+  background-color: #007bff;
+}
+
+.forgot-pin {
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.key {
+  padding: 18px;
+  font-size: 20px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
