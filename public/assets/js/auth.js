@@ -52,14 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.send(data);
     }
 
-    function showError(element, message) {
+    function showToasted(element, message) {
         element.textContent = message;
     }
 
     const userInput = document.getElementById('user');
     const passwordInput = document.getElementById('password');
-    const spinner = document.getElementById('spinner-icon');
-    const errorLabel = document.getElementById('email-error');
     const login = document.getElementById('login');
 
     login.addEventListener('click', function () {
@@ -67,33 +65,28 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = passwordInput.value.trim();
 
         if (user == "" && password == "") {
-            showError(errorLabel, "Phone number and password is required.");
+            showToasted("Phone number and password is required.", 'error');
             userInput.classList.add("error-input");
             passwordInput.classList.add("error-input");
             return;
         }
         else if (user == "") {
-            showError(errorLabel, "Phone number or email is required.");
+            showToasted("Phone number or email is required.", 'error');
             userInput.classList.add("error-input");
             return;
         }
         else if (password == "") {
-            showError(errorLabel, "Password is required.");
+            showToasted("Password is required.", 'error');
             passwordInput.classList.add("error-input");
             return;
         }
 
-        // Spin
-        spinner.classList.remove('d-none')
-        login.style.cursor = 'not-allowed';
 
         sendAjaxRequest("validate-user.php", "POST", "user=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(password), function (response) {
             if (!response.success) {
-                showError(errorLabel, response.message);
-                spinner.classList.add('d-none');
+                showToasted(response.message, 'error');
             } else {
-                // Save the email and registration_id to sessionStorage for use in the OTP page
-                window.location.href = 'dashboard.php';
+                window.location.href = 'dashboard.php?success=1';
             }
         });
     });

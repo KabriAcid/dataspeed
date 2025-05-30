@@ -15,15 +15,15 @@ session_start();
 
     <!-- Toasted JS -->
     <link rel="stylesheet" href="../../assets/css/toasted.css" />
-    <script type="module" src="../../assets/js/toasted.js"></script>
+    <script src="../../assets/js/toasted.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
 
     <style>
-    body {
-        font-family: 'Quicksand' !important;
-    }
+        body {
+            font-family: 'Quicksand' !important;
+        }
     </style>
 
 </head>
@@ -101,29 +101,29 @@ session_start();
     </main>
 </body>
 <script>
-let countdown = 600; // 10 minutes in seconds
-const timerDisplay = document.getElementById("otp-timer");
-const verifyBtn = document.getElementById("verify-otp-btn");
+    let countdown = 600; // 10 minutes in seconds
+    const timerDisplay = document.getElementById("otp-timer");
+    const verifyBtn = document.getElementById("verify-otp-btn");
 
-function updateTimer() {
-    if (!timerDisplay) return; // Avoid errors if element is missing
+    function updateTimer() {
+        if (!timerDisplay) return; // Avoid errors if element is missing
 
-    const minutes = Math.floor(countdown / 60);
-    const seconds = countdown % 60;
-    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        const minutes = Math.floor(countdown / 60);
+        const seconds = countdown % 60;
+        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-    if (countdown === 0) {
-        timerDisplay.textContent = "OTP Expired! Request a new one.";
-        verifyBtn.disabled = true;
-        verifyBtn.classList.add('inactive-btn');
-        verifyBtn.style.cursor = 'not-allowed';
-        clearInterval(timerInterval);
+        if (countdown === 0) {
+            timerDisplay.textContent = "OTP Expired! Request a new one.";
+            verifyBtn.disabled = true;
+            verifyBtn.classList.add('inactive-btn');
+            verifyBtn.style.cursor = 'not-allowed';
+            clearInterval(timerInterval);
+        }
+
+        countdown--;
     }
 
-    countdown--;
-}
-
-const timerInterval = setInterval(updateTimer, 1000);
+    const timerInterval = setInterval(updateTimer, 1000);
 </script>
 <script src="../../assets/js/token.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

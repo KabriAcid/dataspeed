@@ -100,15 +100,6 @@ require __DIR__ . '/../../partials/header.php';
             }
         };
 
-        xhr.onload = () => {
-            try {
-                const json = JSON.parse(xhr.responseText);
-                callback(json);
-            } catch (err) {
-                console.error("Invalid JSON:", xhr.responseText);
-                alert("Invalid JSON response from server.");
-            }
-        };
 
         xhr.onerror = function() {
             callback({

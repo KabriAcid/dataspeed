@@ -36,5 +36,4 @@ const toastedIcons = {
   }
   
   window.showToasted = showToasted;
-  export { showToasted };
   

@@ -23,7 +23,7 @@ if (isset($_SESSION['user'])) {
 
     <!-- Toasted JS -->
     <link rel="stylesheet" href="../../assets/css/toasted.css" />
-    <script type="module" src="../../assets/js/toasted.js"></script>
+    <script src="../../assets/js/toasted.js"></script>
 
     <link rel="stylesheet" href="../../assets/css/style.css">
     <style>

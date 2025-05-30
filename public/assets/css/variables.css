@@ -43,6 +43,12 @@
     --dark: #110009;
     /* Darkest text */
 
+    /* NETWORK BRAND COLORS */
+    --mtn-color: #FFCC00;
+    --airtel-color: #EB1922;
+    --glo-color: #50B651;
+    --9mobile-color: #D6E806;
+
     /* Font Weights */
     --fw-light: 300;
     --fw-regular: 400;

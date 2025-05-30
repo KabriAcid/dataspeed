@@ -54,15 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         };
     
-        xhr.onload = () => {
-            try {
-                const json = JSON.parse(xhr.responseText);
-                callback(json);
-            } catch (err) {
-                console.error("Invalid JSON:", xhr.responseText);
-                showToasted("Invalid JSON response from server.", 'error');
-            }
-        };
     
         xhr.onerror = function () {
             callback({
@@ -84,7 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const emailInput = document.getElementById("email");
     const emailSubmit = document.getElementById("email-submit");
-    const spinner = document.getElementById('spinner-icon');
 
     emailSubmit.addEventListener("click", function () {
         const email = emailInput.value.trim();
@@ -99,20 +89,16 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        spinner.classList.remove('d-none');
-
         // AJAX request to send token to user's email
         sendAjaxRequest("send-token.php", "POST", "email=" + encodeURIComponent(email), function (response) {
             if (!response.success) {
                 showToasted(response.message, 'error')
                 emailInput.classList.add('error-input');
-                spinner.classList.add('d-none');
             } else {
                 // Create and store the reset email.
                 sessionStorage.setItem('reset_email', email);
                 showToasted(response.message, 'success')
                 setTimeout(() => {
-                    spinner.classList.add('d-none');
                     nextStep(); // Move to the next step
                 }, 10); // 1-second delay
             }
@@ -131,18 +117,15 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        spinner.classList.remove('d-none');
 
         // AJAX request to verify token
         sendAjaxRequest("verify-token.php", "POST", "token=" + encodeURIComponent(token), function (response) {
             if (!response.success) {
                 showToasted(response.message, 'error');
-                spinner.classList.add('d-none');
                 console.log(sessionStorage.getItem('reset_email'));
             } else {
                 setTimeout(() => {
                     showToasted(response.message, 'success');
-                    spinner.classList.add('d-none');
                     nextStep(); // Move to the password step
                 }, 1000); // 1-second delay
             }
@@ -175,13 +158,11 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        spinner.classList.remove('d-none');
 
         // AJAX request to reset password
         sendAjaxRequest("reset-password.php", "POST", "password=" + encodeURIComponent(password) + "&reset_email=" + encodeURIComponent(reset_email), function (response) {
             if (!response.success) {
                 showToasted(response.message, 'error');
-                spinner.classList.add('d-none');
             } else {
                 setTimeout(() => {
                     showToasted(response.message, 'success');

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const timeout = 500;
+    const timeout = 1000;
     const steps = document.querySelectorAll(".form-step");
     const indicators = document.querySelectorAll(".pagination .page");
     let currentStep = 0;
@@ -55,15 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    xhr.onload = () => {
-        try {
-            const json = JSON.parse(xhr.responseText);
-            callback(json);
-        } catch (err) {
-            console.error("Invalid JSON:", xhr.responseText);
-            alert("Invalid JSON response from server.");
-        }
-    };
 
     xhr.onerror = function () {
         callback({
@@ -83,41 +74,28 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.send(data);
 }
 
-// Also move to the nextStep() when the enter key is pressed
-
-    document.addEventListener('keyup', function(e) {
-        if (e.key === 'Enter' || e.keyCode === 13) {
-            e.preventDefault(); // prevent accidental form submission
-            nextStep();
-        }
-    });
-
-
     // Referral Code
     const referralInput = document.getElementById('referral-code');
-    const referralError = document.getElementById('referral-error');
     const referralContinueBtn = document.getElementById('referral-submit');
 
     referralContinueBtn.addEventListener("click", function () {
         const referralCode = referralInput.value.trim();
-        referralError.textContent = ""; // Clear previous errors
 
         referralContinueBtn.style.cursor = 'not-allowed';
 
         // Validate referral code
         sendAjaxRequest("validate-referral.php", "POST", "referral_code=" + encodeURIComponent(referralCode), function (response) {
-            if (!response.success) {
-                showToast(referralError, response.message);
-                referralContinueBtn.style.cursor = 'pointer';
-            } else {
-                // Save the referral code to sessionStorage for use in the next step
+            if (response.success) {
                 sessionStorage.setItem('referral_code', referralCode);
-                console.log("Referral code stored:", referralCode);
-
+                showToasted(response.message, 'success');
                 setTimeout(() => {
-                    nextStep();
-                }, timeout); 
+                    currentStep = 1; // force going to email step
+                    showStep(currentStep);
+                }, 3000);
+            } else {
+                showToasted(response.message, 'error');
             }
+            
         });
     });
 
@@ -129,15 +107,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const email = emailInput.value.trim();
 
         if (email === "") {
-            showToast("Email address is required.", 'error');
+            showToasted("Email address is required.", 'error');
             emailInput.classList.add("error-input");
             return;
         } else if (email.length <= 6) {
-            showToast("Please enter a valid email address", 'error');
+            showToasted("Please enter a valid email address", 'error');
             emailInput.classList.add("error-input");
             return;
         } else if (email.includes("mailinator")) {
-            showToast("Email format not supported.", 'error');
+            showToasted("Email format not supported.", 'error');
             emailInput.classList.add("error-input");
             return;
         }
@@ -147,16 +125,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // Validate email and send OTP
         sendAjaxRequest("validate-email.php", "POST", "email=" + encodeURIComponent(email), function (response) {
             if (!response.success) {
-                showToast(response.message, 'error');
+                showToasted(response.message, 'error');
                 emailContinueBtn.style.cursor = 'pointer';
             } else {
                 // Save the email and registration_id to sessionStorage for use in the OTP page
                 sessionStorage.setItem('email', email);
                 const registration_id = response.registration_id;
                 sessionStorage.setItem('registration_id', registration_id);
-
-                console.log("Email stored:", email);
-                console.log("Registration ID stored:", registration_id);
 
                 sendAjaxRequest("send-otp.php", "POST", "email=" + encodeURIComponent(email) + "&registration_id=" + encodeURIComponent(registration_id), function (otpResponse) {
                     if (otpResponse.success) {
@@ -165,13 +140,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         console.log(otpResponse.otpCode);
 
-
                         setTimeout(() => {
                             nextStep();
                         }, timeout); 
                     } else {
                         setTimeout(() => {
-                            showToast(otpResponse.message, 'error');
+                            showToasted(otpResponse.message, 'error');
                             emailContinueBtn.style.cursor = 'pointer';
                         }, timeout);
                     }
@@ -188,16 +162,11 @@ document.addEventListener("DOMContentLoaded", function () {
         let otp = "";
         otpInputs.forEach(input => otp += input.value.trim());
 
-        if (otp.length !== 6 || isNaN(otp)) {
-            showToast("Enter a valid 6-digit OTP.", 'error');
-            return;
-        }
+        if (otp.length !== 6) {showToasted("Enter a valid 6-digit OTP.", 'error'); return;}
+        if(isNaN(otp)) {showToasted('Enter a valid OTP.', 'error'); return;}
 
         const email = sessionStorage.getItem('email');
         const registration_id = sessionStorage.getItem('registration_id');
-
-        console.log("Email retrieved:", email);
-        console.log("Registration ID retrieved:", registration_id);
 
         verifyOtpBtn.style.cursor = 'not-allowed';
 
@@ -210,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, timeout); 
             } else {
                 setTimeout(() => {
-                    showToast(response.message, 'error');
+                    showToasted(response.message, 'error');
                     verifyOtpBtn.style.cursor = 'pointer'; 
                 }, timeout);
             }
@@ -248,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Check if country code is present
         if (/^(\+234|234)/.test(phone)) {
-            showToast("Remove the country code.", 'error');
+            showToasted("Remove the country code.", 'error');
             return;
         }
 
@@ -261,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const phonePattern = /^\d{10}$/;
 
         if (!phonePattern.test(phone)) {
-            showToast("Enter a valid Nigerian phone number.", 'error');
+            showToasted("Enter a valid Nigerian phone number.", 'error');
             return;
         }
 
@@ -272,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Validate phone number and update users table
         sendAjaxRequest("validate-phone.php", "POST", "phone=" + encodeURIComponent(phone) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (!response.success) {
-                showToast(response.message, 'error');
+                showToasted(response.message, 'error');
                 phoneSubmit.style.cursor = 'pointer';
             } else {
                 phoneSubmit.classList.remove('primary-btn');
@@ -297,19 +266,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Validate first name and last name
         if (!firstName || !lastName) {
-            showToast("Both first name and last name are required.", 'error');
+            showToasted("Both first name and last name are required.", 'error');
             return;
         }
 
         const namePattern = /^[A-Za-z\s'-]+$/;
 
         if (!namePattern.test(firstName)) {
-            showToast("Enter a valid first name.", 'error');
+            showToasted("Enter a valid first name.", 'error');
             return;
         }
 
         if (!namePattern.test(lastName)) {
-            showToast("Enter a valid last name.", 'error');
+            showToasted("Enter a valid last name.", 'error');
+            return;
+        }
+        
+        if(firstName.length <= 1){
+            showToasted("First name length is too short.", 'error');
+            return;
+        }
+        if(lastName.length <= 1){
+            showToasted("Last name length is too short.", 'error');
             return;
         }
 
@@ -321,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // AJAX request to update names
         sendAjaxRequest("validate-names.php", "POST", "first_name=" + encodeURIComponent(firstName) + "&last_name=" + encodeURIComponent(lastName) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (!response.success) {
-                showToast(response.message, 'error');
+                showToasted(response.message, 'error');
                 namesSubmit.style.cursor = 'pointer';
             } else {
                 namesSubmit.classList.remove('primary-btn');
@@ -345,17 +323,17 @@ document.addEventListener("DOMContentLoaded", function () {
         confirmPasswordInput.classList.remove("error");
 
         if (password === "" || confirmPassword === "") {
-            showToast("Both password and confirm password are required.", 'error');
+            showToasted("Both password and confirm password are required.", 'error');
             return;
         }
 
         if (password.length < 8) {
-            showToast("Password must be at least 8 characters long.", 'error');
+            showToasted("Password must be at least 8 characters long.", 'error');
             return;
         }
 
         if (password !== confirmPassword) {
-            showToast("Passwords do not match.", 'error');
+            showToasted("Passwords do not match.", 'error');
             return;
         }
 
@@ -366,12 +344,9 @@ document.addEventListener("DOMContentLoaded", function () {
         sendAjaxRequest("validate-password.php", "POST", "password=" + encodeURIComponent(password) + "&registration_id=" + encodeURIComponent(registration_id), 
             function (response) {
                 if (!response.success) {
-                    showToast(JSON.stringify(response.api_response, null, 2), 'error');
+                    showToasted(JSON.stringify(response.api_response, null, 2), 'error');
                     passwordSubmit.style.cursor = 'pointer';
                 } else {
-                    console.log("Virtual Account Number:", response.account_number);
-                    console.log("Bank Name:", response.bank_name);
-                    console.log("API Raw Response:", response.api_response);
 
                     setTimeout(() => {
                         window.location.href = "login.php?success=1";

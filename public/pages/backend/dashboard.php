@@ -5,6 +5,10 @@ require __DIR__ . '/../../../functions/Model.php';
 require __DIR__ . '/../../partials/header.php';
 
 // var_dump($_SESSION);
+
+if (isset($_GET['success']) && $_GET['success'] == 1) {
+    echo "<script>showToasted('Login Successful', 'success')</script>";
+}
 ?>
 
 <body class="">

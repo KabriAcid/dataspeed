@@ -1,6 +1,4 @@
 @import url('variables.css');
-@import url('utilities.css');
-@import url('reusables.css');
 @import url('print.css');
 @import url('creative-tim.css');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@100;200;300;400;500;600;700;800;900&display=swap');
@@ -16,10 +14,6 @@ body {
   font-family: 'Quicksand' !important;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 a {
   text-decoration: none;
 }
@@ -27,7 +21,6 @@ a {
 a:hover {
   color: #0a0a0a !important;
 }
-
 
 main section {
   /* margin-top: 30px; */

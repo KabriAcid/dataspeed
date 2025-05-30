@@ -19,6 +19,12 @@ if (isset($_GET['referral_code'])) {
     <link rel="shortcut icon" href="../../logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
+
+    <!-- Toasted JS -->
+    <link rel="stylesheet" href="../../assets/css/toasted.css" />
+    <script src="../../assets/js/toasted.js"></script>
+
+
     <!-- Add font awesome icons to buttons (note that the fa-spin class rotates the icon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
@@ -71,7 +77,7 @@ if (isset($_GET['referral_code'])) {
                 <!-- EMAIL VERIFICATION -->
                 <div class="form-step d-none">
                     <div class="form-step-header">
-                        <h4 class="">What's your email address?</h4>
+                        <h4>What's your email address?</h4>
                         <p class="text-sm">You will receive a verification code, so make sure it is active.</p>
                     </div>
                     <div class="form-field">
@@ -116,7 +122,8 @@ if (isset($_GET['referral_code'])) {
                             <span class="phone-prefix text-sm">
                                 <img src="https://flagcdn.com/w40/ng.png" alt="Nigeria Flag"> +234
                             </span>
-                            <input type="text" id="phone" name="phone_number" placeholder="Phone Number" class="input">
+                            <input type="text" id="phone" name="phone_number" maxlength="10" placeholder="Phone Number"
+                                class="input">
                         </div>
                         <button type="button" class="btn primary-btn mt-3" id="phone-submit">
                             Continue

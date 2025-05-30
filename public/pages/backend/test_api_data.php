@@ -6,14 +6,14 @@ require __DIR__ . '/../../../config/config.php'; // Make sure this sets $_ENV['P
 // ✅ Hardcode for testing if necessary
 $secretKey = $_ENV['PRIMEBILLER_API_KEY'] ?? 'C9xJ2CHpCoCBvAsxmh3fCA7kCACyBAI8cAB5B75062DFw6483xrC1dzqatAG1748291676';
 
-if (!$secretKey || $secretKey === 'C9xJ2CHpCoCBvAsxmh3fCA7kCACyBAI8cAB5B75062DFw6483xrC1dzqatAG1748291676') {
-    die("❌ API token not set. Check your .env or config setup.\n");
-}
+
+$secretKey = 'Cx2c66xdAz7qJE5cb1C3y904aCorGCAAmC8ksBAb7Fe2lI1vBApfhtBCDiw51748584535';
+var_dump($secretKey);
 
 // ✅ Build Airtime Request Data
 $data = [
     "network" => "1", // MTN
-    "phone" => "07032529431",
+    "phone" => "08062365769",
     "ref" => "AIRTIME" . time(),
     "airtime_type" => "VTU", // or "SHARE"
     "ported_number" => true,
