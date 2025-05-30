@@ -7,11 +7,11 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Quicksand'!important;
 }
 
 body {
   background-color: var(--primary-light);
-  font-family: 'Quicksand' !important;
 }
 
 a {
@@ -1330,4 +1330,99 @@ section:not(.jumbotoron) {
 .step-label {
   margin-top: 5px;
   display: block;
+}
+
+/* BUY DATA */
+.network-tabs {
+  display: flex;
+  justify-content: space-around;
+}
+
+.network-tab {
+  padding: 10px 20px;
+  border-radius: 4px 12px 4px 4px;
+  box-shadow: 3px 4px 11px #eee;
+  margin-right: 10px;
+  width: 100%;
+  min-width: 50px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: 0.3s;
+}
+
+.network-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.network-tab span {
+  margin-top: 5px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.network-tab img {
+  max-width: 40px;
+  max-height: 40px;
+
+  min-width: none;
+  min-height: 40px;
+}
+.network-tab .active {
+  background-color: var(--brand-color);
+  color: white;
+}
+#mtn-tab {
+  background-color: var(--mtn-color);
+}
+#data-amount {
+  letter-spacing: .05em;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+#data-volume {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+#data-duration {
+  font-weight: 500;
+  color: var(--gray-500);
+  font-size: 12px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+.plans-section {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.plan-card {
+  /* padding: 15px; */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* BUY AIRTIME */
+.amount-btn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px 20px;
+  min-width: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.amount-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.amount-btn.active {
+  background-color: var(--primary);
+  color: #fff;
+  border-color: #000;
 }

@@ -7,8 +7,8 @@ require __DIR__ . '/../../partials/header.php';
 
 <body>
     <main class="container py-4">
-        <header class="mb-4 text-center">
-            <h5 class="fw-bold">Structures</h5>
+        <header class="mb-4">
+            <h5 class="fw-bold text-center">Structures</h5>
         </header>
 
 

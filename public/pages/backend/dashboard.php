@@ -86,7 +86,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
         <div class="row g-4 my-3" id="action-button-container">
             <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <a href="airtime.php" class="action-button">
+                    <a href="buy_airtime.php" class="action-button">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M12 5C12.5523 5 13 4.55228 13 4C13 3.44772 12.5523 3 12 3C11.4477 3 11 3.44772 11 4C11 4.55228 11.4477 5 12 5ZM12 5L14.5 14M12 5L9.5 14M16 1C16 1 17.5 2 17.5 4C17.5 6 16 7 16 7M8 1C8 1 6.5 2 6.5 4C6.5 6 8 7 8 7M14.5 14H9.5M14.5 14L15.8889 19M9.5 14L8.11111 19M7 23L8.11111 19M8.11111 19H15.8889M15.8889 19L17 23"
@@ -99,7 +99,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
 
             <div class="col-3">
                 <div class="d-flex flex-column align-items-center">
-                    <a href="data.php" class="action-button">
+                    <a href="buy_data.php" class="action-button">
                         <!--  -->
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
