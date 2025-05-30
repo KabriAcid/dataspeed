@@ -79,6 +79,13 @@ section:not(.jumbotoron) {
   transition: all .35s ease-in
 }
 
+button:disabled {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  cursor: not-allowed;
+}
+
 .secondary-btn:hover {
   background-color: var(--danger-dark) !important;
   color: white;

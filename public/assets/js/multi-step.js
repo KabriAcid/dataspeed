@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Step controls
     const steps = document.querySelectorAll(".form-step");
     const indicators = document.querySelectorAll(".pagination .page");
-    let currentStep = 0;
     let completedSteps = new Set();
+    let currentStep = parseInt(sessionStorage.getItem("currentStep")) || 0;
 
     function showStep(step) {
         steps.forEach((el, index) => {
@@ -17,48 +17,15 @@ document.addEventListener("DOMContentLoaded", function () {
         indicators.forEach((el, index) => {
             el.classList.toggle("active", index === step);
         });
-    }
 
-    function nextStep() {
-        if (currentStep < steps.length - 1) {
-            completedSteps.add(currentStep);
-            currentStep++;
-            showStep(currentStep);
-        }
+        sessionStorage.setItem("currentStep", step);
     }
 
     function goToStep(step) {
-        if (completedSteps.has(step - 1) || step === 0) {
+        if (step === 0 || completedSteps.has(step - 1)) {
             currentStep = step;
             showStep(currentStep);
         }
-    }
-
-    function sendAjaxRequest(url, method, data, callback) {
-        if (!navigator.onLine) {
-            return callback({ success: false, message: "You are offline. Please check your internet connection." });
-        }
-
-        const xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.timeout = 10000;
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                try {
-                    const response = JSON.parse(xhr.responseText);
-                    callback(response);
-                } catch {
-                    callback({ success: false, message: "Invalid JSON response" });
-                }
-            }
-        };
-
-        xhr.onerror = () => callback({ success: false, message: "Request failed." });
-        xhr.ontimeout = () => callback({ success: false, message: "Request timed out." });
-
-        xhr.send(data);
     }
 
     // Generic handler wrapper to disable button
@@ -81,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sendAjaxRequest("validate-referral.php", "POST", `referral_code=${encodeURIComponent(referralCode)}`, (response) => {
                 if (response.success) {
                     sessionStorage.setItem('referral_code', referralCode);
+                    completedSteps.add(0);
                     showToasted(response.message, 'success');
                     setTimeout(() => { goToStep(1); done(); }, TIMEOUT);
                 } else {
@@ -117,7 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     sendAjaxRequest("send-otp.php", "POST", `email=${encodeURIComponent(email)}&registration_id=${encodeURIComponent(registration_id)}`, (otpResponse) => {
                         if (otpResponse.success) {
-                            setTimeout(() => { nextStep(); done(); }, TIMEOUT);
+                            completedSteps.add(1);
+                            setTimeout(() => { goToStep(2); done(); }, TIMEOUT);
                         } else {
                             showToasted(otpResponse.message, 'error');
                             done();
@@ -149,7 +118,8 @@ document.addEventListener("DOMContentLoaded", function () {
             sendAjaxRequest("verify-otp.php", "POST", `email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}&registration_id=${encodeURIComponent(registration_id)}`, (response) => {
                 if (response.success) {
                     document.getElementById('email-msg').textContent = `Enter the 6-digit code sent to ${email}`;
-                    setTimeout(() => { nextStep(); done(); }, TIMEOUT);
+                    completedSteps.add(2);
+                    setTimeout(() => { goToStep(3); done(); }, TIMEOUT);
                 } else {
                     showToasted(response.message, 'error');
                     done();
@@ -180,7 +150,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             sendAjaxRequest("validate-phone.php", "POST", `phone=${encodeURIComponent(phone)}&registration_id=${encodeURIComponent(registration_id)}`, (response) => {
                 if (response.success) {
-                    setTimeout(() => { nextStep(); done(); }, TIMEOUT);
+                    completedSteps.add(3);
+                    setTimeout(() => { goToStep(4); done(); }, TIMEOUT);
                 } else {
                     showToasted(response.message, 'error');
                     done();
@@ -209,7 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const registration_id = sessionStorage.getItem('registration_id');
             sendAjaxRequest("validate-names.php", "POST", `first_name=${encodeURIComponent(firstName)}&last_name=${encodeURIComponent(lastName)}&registration_id=${encodeURIComponent(registration_id)}`, (response) => {
                 if (response.success) {
-                    setTimeout(() => { nextStep(); done(); }, TIMEOUT);
+                    completedSteps.add(4);
+                    setTimeout(() => { goToStep(5); done(); }, TIMEOUT);
                 } else {
                     showToasted(response.message, 'error');
                     done();
@@ -237,6 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sendAjaxRequest("validate-password.php", "POST", `password=${encodeURIComponent(password)}&registration_id=${encodeURIComponent(registration_id)}`, (response) => {
                 if (response.success) {
                     setTimeout(() => {
+                        sessionStorage.clear();
                         window.location.href = "login.php?success=1";
                     }, TIMEOUT);
                 } else {

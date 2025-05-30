@@ -68,7 +68,7 @@ if (isset($_GET['referral_code'])) {
                     <div class="form-field">
                         <input type="text" name="referral_code" id="referral-code"
                             placeholder="Referral code (optional)" class="input"
-                            value="<?php echo isset($referral_code) ? $referral_code : ''; ?>">
+                            value="<?php echo isset($referral_code) ? $referral_code : ''; ?>" autocomplete="off">
                         <button type="button" class="btn primary-btn mt-3" id="referral-submit">
                             Continue
                         </button>
@@ -81,7 +81,7 @@ if (isset($_GET['referral_code'])) {
                         <p class="text-sm">You will receive a verification code, so make sure it is active.</p>
                     </div>
                     <div class="form-field">
-                        <input type="email" name="email" id="email" placeholder="Email address" class="input">
+                        <input type="email" name="email" id="email" placeholder="Email address" class="input" autocomplete="off">
                         <button type="button" class="btn primary-btn mt-3" id="email-submit">
                             Continue
                         </button>
@@ -207,6 +207,7 @@ function updateTimer() {
 
 const timerInterval = setInterval(updateTimer, 1000);
 </script>
+<script src="../../assets/js/ajax.js"></script>
 <script src="../../assets/js/multi-step.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
