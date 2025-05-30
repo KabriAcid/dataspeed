@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         $stmt->execute([$user]);
-        $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userRow = $stmt->fetch();
 
         if ($userRow && password_verify($password, $userRow['password'])) {
             // Set session variables

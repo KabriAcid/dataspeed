@@ -91,7 +91,7 @@ if (isset($_GET['referral_code'])) {
                 <div class="form-step d-none">
                     <div class="form-step-header">
                         <h4>Verify Your OTP Code</h3>
-                            <p class="text-sm">Enter the 6-digit code sent to your email.</p>
+                            <p class="text-sm" id="email-msg">Enter the 6-digit code sent to your email.</p>
                     </div>
                     <div class="form-field">
                         <div class="otp-container my-4">

@@ -23,12 +23,6 @@ if (isset($_GET['success'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
 
-    <style>
-        body {
-            font-family: 'Quicksand' !important;
-        }
-    </style>
-
 </head>
 
 <body>
@@ -65,12 +59,9 @@ if (isset($_GET['success'])) {
                     <div>
                         <input type="password" id="password" name="password" placeholder="Password" class="input">
                     </div>
-                    <label for="" class="error-label" id="email-error"></label>
-
                     <p class="text-end"><a href="forgot-password.php" class="text-secondary text-sm">Forgot
                             password?</a></p>
                     <button type="submit" class="btn primary-btn mt-3" name="login" id="login">
-                        <i class="fa fa-spinner fa-spin d-none" id="spinner-icon"></i>
                         Login
                     </button>
                 </div>

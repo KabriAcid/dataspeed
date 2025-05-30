@@ -86,3 +86,7 @@ Array
 [2025-05-26 21:45:37] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-OPRCVBEEKV","account":[{"account_number":"5761409749","account_name":"VTU-Muhammad Bappayo","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-26 09:45:21"}],"meta":{"firstName":"Muhammad","lastName":"Bappayo","email":"alhpeace001@gmail.com"}}}
 [2025-05-26 21:45:38] DB Update Successful for user alhpeace001@gmail.com
 [2025-05-26 21:49:23] User's existing virtual account: 5761409749
+[2025-05-30 13:04:27] User's existing virtual account: None
+[2025-05-30 13:04:27] Generated reference: ref_6c49aac2-d108-4cdf-888a-7e6d1ac1eba6 for user abdulsalamiismaila8@gmail.com
+[2025-05-30 13:04:36] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-ZBPLNOVZJC","account":[{"account_number":"5761490639","account_name":"VTU-Abdulsalami Ismaila","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-30 01:04:36"}],"meta":{"firstName":"Abdulsalami","lastName":"Ismaila","email":"abdulsalamiismaila8@gmail.com"}}}
+[2025-05-30 13:04:36] DB Update Successful for user abdulsalamiismaila8@gmail.com

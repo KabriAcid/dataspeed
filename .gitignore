@@ -1,3 +1,2 @@
 .env
-*.sql
 src/api/*

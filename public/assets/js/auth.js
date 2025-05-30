@@ -52,9 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.send(data);
     }
 
-    function showToasted(element, message) {
-        element.textContent = message;
-    }
 
     const userInput = document.getElementById('user');
     const passwordInput = document.getElementById('password');
@@ -65,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = passwordInput.value.trim();
 
         if (user == "" && password == "") {
-            showToasted("Phone number and password is required.", 'error');
+            showToasted("Email and password is required.", 'error');
             userInput.classList.add("error-input");
             passwordInput.classList.add("error-input");
             return;

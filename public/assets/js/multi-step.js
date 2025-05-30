@@ -174,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sendAjaxRequest("verify-otp.php", "POST", "email=" + encodeURIComponent(email) + "&otp=" + encodeURIComponent(otp) + "&registration_id=" + encodeURIComponent(registration_id), function (response) {
             if (response.success) {
                 verifyOtpBtn.style.cursor = 'pointer';
+                document.getElementById('email-msg').textContent = 'Enter the 6-digit code sent to ' + email;
                 setTimeout(() => {
                     nextStep();
                 }, timeout); 

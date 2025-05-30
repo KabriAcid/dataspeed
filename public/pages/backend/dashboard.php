@@ -6,14 +6,22 @@ require __DIR__ . '/../../partials/header.php';
 
 // var_dump($_SESSION);
 
-if (isset($_GET['success']) && $_GET['success'] == 1) {
-    echo "<script>showToasted('Login Successful', 'success')</script>";
+// check if get success superglobal variable is = 1 then call the showToasted function
+
+$success = null;
+if (isset($_GET['success'])) {
+    $success = $_GET['success'];
 }
 ?>
 
-<body class="">
+<body>
 
     <main class="container-fluid py-4 mb-5">
+         <?php
+    if ($success == 1) {
+        echo "<script>showToasted('Login Successful', 'success')</script>";
+    }
+    ?>
         <header class="d-flex justify-content-between align-items-center mb-4">
             <!-- Left Content -->
             <div class="d-flex align-items-center">
