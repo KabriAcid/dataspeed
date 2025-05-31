@@ -1584,6 +1584,20 @@ button:disabled {
 
 /* PIN Container */
 .pin-container {
+  /* pin container should be fixed at the bottom with a little space on top and an overlay-like */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  z-index: 1000;
+  animation: slideUp 0.3s ease-in-out;
+  /* Slide up animation */
+  backdrop-filter: blur(10px);
+  position: fixed;
   width: 100%;
   max-width: 360px;
   display: flex;
