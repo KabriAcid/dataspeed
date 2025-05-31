@@ -113,32 +113,32 @@ require __DIR__ . '/../partials/header.php';
 
             <!-- Header -->
             <div class="modal-header">
-            <span class="modal-title">Confirm</span>
-            <button class="close-btn" onclick="closeModal()">×</button>
+                <span class="modal-title">Confirm</span>
+                <button class="close-btn" onclick="closeModal()">×</button>
             </div>
 
             <!-- Body -->
             <div class="modal-body">
-            <p class="subtitle">Send to</p>
-            <h2 class="phone-number" id="customer-phone">0906 789 5453</h2>
+                <p class="subtitle">Send to</p>
+                <h2 class="phone-number" id="customer-phone">0906 789 5453</h2>
 
-            <div class="info-row">
-                <span>Product</span>
-                <span><i class="icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M12 19.51L12.01 19.4989M2 8C8 3.5 16 3.5 22 8M5 12C9 8.99999 15 9 19 12M8.5 15.5C10.7504 14.1 13.2498 14.0996 15.5001 15.5"
-                                        stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                </i> Internet Data</span>
-            </div>
+                <div class="info-row">
+                    <span>Product</span>
+                    <span><i class="icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 19.51L12.01 19.4989M2 8C8 3.5 16 3.5 22 8M5 12C9 8.99999 15 9 19 12M8.5 15.5C10.7504 14.1 13.2498 14.0996 15.5001 15.5"
+                                stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </i> Internet Data</span>
+                </div>
             <div class="info-row">
                 <span>Amount</span>
-                <span class="fw-bolder fs-5" id="service-amount">250</span>
+                <span class="fw-bolder fs-6" id="service-amount">250</span>
             </div>
             <div class="info-row">
                 <span>Data Package</span>
-                <span class="fw-bold fs-6">1GB</span>
+                <span class="fw-bold">1GB</span>
             </div>
             <div class="info-row">
                 <span>Provider</span>
@@ -148,43 +148,73 @@ require __DIR__ . '/../partials/header.php';
 
             <!-- Footer -->
             <div class="modal-footer">
-            <button class="pay-btn" onclick="submitPayment()">Pay</button>
+            <button class="pay-btn" onclick="submitPayment()" id="show-pin-modal">Pay</button>
             </div>
         </div>
     </div>
 
-    <div id="pinModal" class="modal-overlay">
-  <div class="pin-modal-content">
-
-    <!-- Header -->
-    <div class="pin-header">
-      <span class="pin-title">Enter PIN</span>
-      <button class="pin-close-btn" onclick="closePinModal()">×</button>
+    <div id="pin-modal" class="modal-overlay">
+        <div class="modal-content">
+           <!-- Header -->
+            <div class="modal-header">
+                <span class="modal-title">PIN</span>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Welcome Back</h2>
+                <div class="pin-section">
+                    <p class="pin-instruction text-center">
+                        <span class="check-icon">✓</span> Enter your PIN
+                    </p>
+                    <div class="pin-dots">
+                        <div class="pin-dot" id="dot-1"></div>
+                        <div class="pin-dot" id="dot-2"></div>
+                        <div class="pin-dot" id="dot-3"></div>
+                        <div class="pin-dot" id="dot-4"></div>
+                    </div>
+                </div>
+                <!-- KEYPAD -->
+                <div class="keypad">
+                    <div class="keypad-row">
+                        <button class="key-button" data-value="1">1</button>
+                        <button class="key-button" data-value="2">2</button>
+                        <button class="key-button" data-value="3">3</button>
+                    </div>
+                    <div class="keypad-row">
+                        <button class="key-button" data-value="4">4</button>
+                        <button class="key-button" data-value="5">5</button>
+                        <button class="key-button" data-value="6">6</button>
+                    </div>
+                    <div class="keypad-row">
+                        <button class="key-button" data-value="7">7</button>
+                        <button class="key-button" data-value="8">8</button>
+                        <button class="key-button" data-value="9">9</button>
+                    </div>
+                    <div class="keypad-row">
+                        <div class="key-spacer"></div>
+                        <button class="key-button" data-value="0">0</button>
+                        <button class="key-backspace" id="backspace">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                        <path fill-rule="evenodd" d="M2.515 10.674a1.875 1.875 0 000 2.652L8.89 19.7c.352.351.829.549 1.326.549H19.5a3 3 0 003-3V6.75a3 3 0 00-3-3h-9.284c-.497 0-.974.198-1.326.55l-6.375 6.374zM12.53 9.22a.75.75 0 10-1.06 1.06L13.19 12l-1.72 1.72a.75.75 0 101.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 101.06-1.06L15.31 12l1.72-1.72a.75.75 0 10-1.06-1.06l-1.72 1.72-1.72-1.72z" clip-rule="evenodd"/>
+                        </svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- FOOTER ACTIONS  -->
+                <div class="footer-actions">
+                    <button class="action-button logout">
+                        ↩ Logout
+                    </button>
+                    <button class="action-button forgot shadow-sm">
+                        ? Forgot PIN?
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- PIN Dots -->
-    <div class="pin-dots">
-      <div class="dot" id="dot1"></div>
-      <div class="dot" id="dot2"></div>
-      <div class="dot" id="dot3"></div>
-      <div class="dot" id="dot4"></div>
-    </div>
-
-    <p class="forgot-pin">Forgot PIN?</p>
-
-    <!-- Keypad -->
-    <div class="pin-keypad">
-      ${[1,2,3,4,5,6,7,8,9,'',0,'←'].map((val, i) => `
-        <button class="key" onclick="handleKey('${val}')">${val === '←' ? '⌫' : val}</button>
-      `).join('')}
-    </div>
-  </div>
-</div>
-    </div>
-  </div>
-</div>
 
 <script src="../assets/js/ajax.js"></script>
+<script src="../assets/js/pin-pad.js"></script>
 <script>
     document.querySelectorAll('.network-tab').forEach(tab => {
         tab.addEventListener('click', function () {
@@ -201,6 +231,15 @@ require __DIR__ . '/../partials/header.php';
         });
     });
 
+        document.getElementById('show-pin-modal').addEventListener('click', () => {
+            document.getElementById('pin-modal').style.display = 'block';
+            initPinPad('#pin-modal', function(pin) {
+                console.log('PIN entered:', pin);
+                // Continue AJAX request here...
+            });
+        });
+
+
     const amount = document.getElementById('service-amount').textContent;
     
     function openModal() {
@@ -214,10 +253,11 @@ require __DIR__ . '/../partials/header.php';
     
     function closeModal() {
     document.getElementById('confirmModal').style.display = 'none';
+    document.getElementById('pin-modal').style.display = 'none';
 }
 
     function showPinModal() {
-        document.getElementById('pinModal').style.display = 'flex';
+        document.getElementById('pin-modal').style.display = 'flex';
     }
     
     function submitPayment() {

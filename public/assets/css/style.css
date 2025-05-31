@@ -1582,57 +1582,21 @@ button:disabled {
 
 /* PINPAD MODAL */
 
-/* PIN Container */
 .pin-container {
-  /* pin container should be fixed at the bottom with a little space on top and an overlay-like */
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: auto;
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  z-index: 1000;
-  animation: slideUp 0.3s ease-in-out;
-  /* Slide up animation */
-  backdrop-filter: blur(10px);
-  position: fixed;
+  background: #fff;
   width: 100%;
   max-width: 360px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--space-4);
+  max-height: 100%;
+  border-radius: 20px 20px 0 0;
+  overflow-y: auto;
+  padding: 16px 20px;
+  animation: slideUp 0.4s ease-out;
+  
 }
 
-/* Logo Section */
-.logo-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.icon-section {
   margin-bottom: var(--space-3);
-}
-
-.logo {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-primary);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: var(--space-2);
-  box-shadow: var(--shadow-md);
-  overflow: hidden;
-}
-
-.logo-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  border: 4px solid white;
-  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark));
+  text-align:center;
 }
 
 .company-name {
@@ -1641,26 +1605,23 @@ button:disabled {
   color: var(--color-neutral-800);
 }
 
-/* Welcome Text */
 .welcome-text {
   font-size: 1.75rem;
   font-weight: 600;
+  text-align: center;
   margin-bottom: var(--space-4);
   color: var(--color-neutral-900);
 }
 
-/* PIN Section */
 .pin-section {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
   margin-bottom: var(--space-4);
 }
 
 .pin-instruction {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-1);
   font-size: 0.875rem;
   margin-bottom: var(--space-2);
@@ -1669,12 +1630,12 @@ button:disabled {
 
 .check-icon {
   color: var(--color-accent);
-  font-size: 1rem;
 }
 
 .pin-dots {
   display: flex;
   gap: var(--space-2);
+  justify-content: center;
   margin-top: var(--space-1);
 }
 
@@ -1683,7 +1644,7 @@ button:disabled {
   height: 16px;
   border-radius: var(--radius-full);
   border: 2px solid var(--color-neutral-400);
-  transition: background-color var(--transition-normal), transform var(--transition-fast);
+  transition: all var(--transition-normal);
 }
 
 .pin-dot.filled {
@@ -1692,9 +1653,7 @@ button:disabled {
   transform: scale(1.1);
 }
 
-/* Keypad */
 .keypad {
-  width: 100%;
   margin-bottom: var(--space-4);
 }
 
@@ -1704,28 +1663,31 @@ button:disabled {
   margin-bottom: var(--space-3);
 }
 
-.key-button, .key-backspace {
+.key-button,
+.key-backspace {
   width: 64px;
   height: 64px;
+  border: none;
+  background: transparent;
   border-radius: var(--radius-full);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.75rem;
-  font-weight: 500;
   background-color: white;
+  font-size: 1.75rem;
+  font-weight: 800;
   color: var(--color-neutral-800);
+  cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
 }
 
-.key-button:hover, .key-backspace:hover {
+.key-button:hover,
+.key-backspace:hover {
   background-color: var(--color-neutral-100);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-.key-button:active, .key-backspace:active {
+.key-button:active,
+.key-backspace:active {
   transform: translateY(0);
   background-color: var(--color-neutral-200);
 }
@@ -1737,7 +1699,10 @@ button:disabled {
 .key-backspace {
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--transition-normal), visibility var(--transition-normal), transform var(--transition-fast), background-color var(--transition-fast);
+  transition: opacity var(--transition-normal),
+              visibility var(--transition-normal),
+              transform var(--transition-fast),
+              background-color var(--transition-fast);
 }
 
 .key-backspace.visible {
@@ -1745,37 +1710,29 @@ button:disabled {
   visibility: visible;
 }
 
-/* Footer Actions */
 .footer-actions {
   display: flex;
   justify-content: space-between;
-  width: 100%;
   padding: 0 var(--space-2);
 }
 
 .action-button {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
+  border: none;
+  background: none;
   color: var(--color-neutral-600);
   font-size: 0.875rem;
   font-weight: 500;
+  cursor: pointer;
   transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
 }
 
 .action-button:hover {
   color: var(--color-primary);
 }
 
-.action-button svg {
-  transition: transform var(--transition-fast);
-}
-
-.action-button:hover svg {
-  transform: scale(1.1);
-}
-
-/* Animation for PIN feedback */
 @keyframes pinPulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
@@ -1786,18 +1743,22 @@ button:disabled {
   animation: pinPulse 0.3s ease-in-out;
 }
 
-/* Responsive adjustments */
 @media (max-width: 380px) {
-  .key-button, .key-backspace, .key-spacer {
-    width: 56px;
-    height: 56px;
-    font-size: 1.5rem;
+  .key-button,
+  .key-backspace,
+  .key-spacer {
+      width: 56px;
+      height: 56px;
+      font-size: 1.5rem;
   }
-  
+
   .keypad-row {
-    margin-bottom: var(--space-2);
+      margin-bottom: var(--space-2);
   }
 }
+
+
+/* CONFIRM MODAL & PINPAD ANIMATION  */
 
 @keyframes slideUp {
   from {
