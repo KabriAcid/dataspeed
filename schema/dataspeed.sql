@@ -173,8 +173,8 @@ CREATE TABLE `referrals` (
 --
 
 INSERT INTO `referrals` (`referral_id`, `reward`, `user_id`, `referral_code`, `referral_link`, `status`, `created_at`) VALUES
-(9, 100.00, 133, '1Q9764VM5R', 'https://dataspeed.com.ng/public/pages/backend/register.php?referral_code=B1X69UVJKP', 'claimed', '2025-05-20 04:53:16'),
-(10, 100.00, 136, 'XL5ZJWK4DO', 'https://dataspeed.com.ng/public/pages/backend/register.php?referral_code=XL5ZJWK4DO', 'claimed', '2025-05-28 04:34:36');
+(9, 100.00, 133, '1Q9764VM5R', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=B1X69UVJKP', 'claimed', '2025-05-20 04:53:16'),
+(10, 100.00, 136, 'XL5ZJWK4DO', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=XL5ZJWK4DO', 'claimed', '2025-05-28 04:34:36');
 
 -- --------------------------------------------------------
 

@@ -23,8 +23,8 @@ session_start();
                 <a href="index.php" class="d-block fw-bold">Dataspeed</a>
             </div>
             <div class="d-flex align-items-center">
-                <a href="public/pages/backend/login.php" class="secondary-btn m-0 me-2">LOGIN</a>
-                <a href="public/pages/backend/register.php" class="btn primary-btn m-0">CREATE ACCOUNT</a>
+                <a href="public/pages/login.php" class="secondary-btn m-0 me-2">LOGIN</a>
+                <a href="public/pages/register.php" class="btn primary-btn m-0">CREATE ACCOUNT</a>
             </div>
         </div>
     </nav>

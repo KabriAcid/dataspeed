@@ -122,3 +122,16 @@
         font-size: 18px;
     }
 }
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  :root {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    font-size: 18px;
+  }
+}

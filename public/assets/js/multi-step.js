@@ -30,10 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Generic handler wrapper to disable button
     function handleButtonClick(btn, handler) {
-        // if (!navigator.onLine) {
-        //     showToasted('You are offline. Please check your internet connection.', 'error');
-        //     return;
-        // }
+        
         btn.disabled = true;
         btn.style.cursor = "not-allowed";
         handler(() => {

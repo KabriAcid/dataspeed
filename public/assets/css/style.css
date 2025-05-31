@@ -7,7 +7,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Quicksand'!important;
+  font-family: 'Quicksand','Segoe UI'!important;
 }
 
 body {
@@ -45,6 +45,26 @@ section:not(.jumbotoron) {
 }
 
 /* BUTTONS STYLINGS */
+
+.btn:disabled {
+  border: 1px solid var(--primary);
+  box-shadow: var(--shadow-lg);
+  background-color: transparent !important;
+  padding: 0.75rem 1.5rem;
+  text-transform: uppercase;
+
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--primary)!important;
+  text-align: center;
+  vertical-align: middle;
+  cursor: not-allowed!important;
+  user-select: none;
+  border-radius: 0.5rem;
+  transition: all .35s ease-in
+}
 .primary-btn {
   border: none;
   box-shadow: var(--shadow-md);
@@ -1427,11 +1447,12 @@ button:disabled {
 .amount-btn {
   background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 8px;
+  /* display: none; */
   padding: 10px 20px;
   min-width: 100px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   transition: all 0.2s ease;
 }
 
@@ -1561,68 +1582,209 @@ button:disabled {
 
 /* PINPAD MODAL */
 
-.pin-modal-content {
-  background: white;
+/* PIN Container */
+.pin-container {
   width: 100%;
-  padding: 16px;
-  border-radius: 20px 20px 0 0;
-  animation: slideUp 0.4s ease;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-4);
 }
 
-.pin-header {
+/* Logo Section */
+.logo-section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  font-weight: bold;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-3);
 }
-.pin-title {
-  flex: 1;
-  text-align: center;
+
+.logo {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--space-2);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
-.pin-close-btn {
-  font-size: 24px;
-  border: none;
-  background: none;
-  cursor: pointer;
+
+.logo-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 4px solid white;
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark));
+}
+
+.company-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-neutral-800);
+}
+
+/* Welcome Text */
+.welcome-text {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+  color: var(--color-neutral-900);
+}
+
+/* PIN Section */
+.pin-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.pin-instruction {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-2);
+  color: var(--color-neutral-700);
+}
+
+.check-icon {
+  color: var(--color-accent);
+  font-size: 1rem;
 }
 
 .pin-dots {
   display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-neutral-400);
+  transition: background-color var(--transition-normal), transform var(--transition-fast);
+}
+
+.pin-dot.filled {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+/* Keypad */
+.keypad {
+  width: 100%;
+  margin-bottom: var(--space-4);
+}
+
+.keypad-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.key-button, .key-backspace {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  display: flex;
   justify-content: center;
-  gap: 10px;
-  margin: 16px 0;
-}
-.dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background-color: #ccc;
-}
-.dot.filled {
-  background-color: #007bff;
+  align-items: center;
+  font-size: 1.75rem;
+  font-weight: 500;
+  background-color: white;
+  color: var(--color-neutral-800);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
 }
 
-.forgot-pin {
-  text-align: center;
-  font-size: 13px;
-  color: #888;
-  margin-bottom: 20px;
+.key-button:hover, .key-backspace:hover {
+  background-color: var(--color-neutral-100);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-.pin-keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+.key-button:active, .key-backspace:active {
+  transform: translateY(0);
+  background-color: var(--color-neutral-200);
 }
-.key {
-  padding: 18px;
-  font-size: 20px;
-  border: none;
-  background: #f0f0f0;
-  border-radius: 12px;
-  cursor: pointer;
+
+.key-spacer {
+  width: 64px;
 }
+
+.key-backspace {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal), transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.key-backspace.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Footer Actions */
+.footer-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 var(--space-2);
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-neutral-600);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.action-button:hover {
+  color: var(--color-primary);
+}
+
+.action-button svg {
+  transition: transform var(--transition-fast);
+}
+
+.action-button:hover svg {
+  transform: scale(1.1);
+}
+
+/* Animation for PIN feedback */
+@keyframes pinPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.pin-feedback {
+  animation: pinPulse 0.3s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 380px) {
+  .key-button, .key-backspace, .key-spacer {
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+  }
+  
+  .keypad-row {
+    margin-bottom: var(--space-2);
+  }
+}
+
 @keyframes slideUp {
   from {
     transform: translateY(100%);

@@ -22,10 +22,10 @@ if (isset($_SESSION['user'])) {
     <!-- Add font awesome icons to buttons (note that the fa-spin class rotates the icon) -->
 
     <!-- Toasted JS -->
-    <link rel="stylesheet" href="../../assets/css/toasted.css" />
-    <script src="../../assets/js/toasted.js"></script>
+    <link rel="stylesheet" href="../assets/css/toasted.css" />
+    <script src="../assets/js/toasted.js"></script>
 
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
     body {
         font-family: 'Quicksand' !important;

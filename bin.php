@@ -1,7 +1,7 @@
 <?php
 session_start();
-require __DIR__ . '/../../partials/header.php';
-require __DIR__ . '/../../../config/config.php';
+require __DIR__ . '/../partials/header.php';
+require __DIR__ . '/../../config/config.php';
 
 $public_key = htmlspecialchars($_ENV['FLW_PUBLIC_KEY']);
 $email = htmlspecialchars($_SESSION['user']['email']);
@@ -40,7 +40,7 @@ $names = $_SESSION['user']['first_name'] . " " . $_SESSION['user']['last_name'];
         </div>
 
         <!-- BOTTOM NAVIGATION -->
-        <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
+        <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://checkout.flutterwave.com/v3.js"></script>
