@@ -120,6 +120,7 @@
     /* Transitions */
     --transition-fast: 0.2s ease-in-out;
     --transition-medium: 0.4s ease-in-out;
+    --transition-normal: 0.5s ease-in-out;
     --transition-slow: 0.6s ease-in-out;
 
     /* Paddings */
