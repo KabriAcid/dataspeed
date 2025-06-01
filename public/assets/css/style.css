@@ -692,30 +692,8 @@ button:disabled {
   letter-spacing: 1px;
 }
 
-/* #action-button-container {} */
 
-.action-button {
-  color: var(--primary);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 55px;
-  height: 55px;
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  background-color: #fff;
-  text-decoration: none;
-  transition: 1s;
-}
 
-.action-button:hover {
-  transition: 1s;
-  transform: scale(1.05);
-}
-
-#action-button-container span {
-  letter-spacing: -0.05em;
-}
 
 .transaction-icon {
   border-radius: 8px;
@@ -1122,18 +1100,6 @@ button:disabled {
 
 
 /* PIN PAD MODAL */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-}
 
 .modal-content {
   background: #fff;
@@ -1156,6 +1122,16 @@ button:disabled {
   margin-bottom: 10px;
 }
 
+.pin-instruction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-2);
+  color: var(--color-neutral-700);
+}
+
 .pin-dots {
   display: flex;
   justify-content: center;
@@ -1163,54 +1139,9 @@ button:disabled {
   margin: 10px 0 20px;
 }
 
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #ccc;
-}
-
-.filled {
-  background-color: green;
-}
-
-.keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.keypad button {
-  font-size: 18px;
-  padding: 15px;
-  border: none;
-  background-color: #f0f0f0;
-  border-radius: 50%;
-  transition: background 0.3s;
-}
-
-.keypad button:hover {
-  background-color: #ddd;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.modal-actions button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #000;
-  font-weight: bold;
-}
-
 .amount {
   line-height: 24px;
   font-size: 18px;
-  font-family: 'Quicksand', sans-serif!important;
   font-weight: 600;
 }
 
@@ -1466,8 +1397,9 @@ button:disabled {
   border-color: #000;
 }
 
-/* Overlay */
+/* CONFIRM MODAL */
 .modal-overlay {
+  width: 100%;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
@@ -1476,6 +1408,7 @@ button:disabled {
   justify-content: center;
   z-index: 9999;
 }
+
 
 /* Slide-up content */
 .modal-content {
@@ -1513,19 +1446,10 @@ button:disabled {
 
 /* Body Content */
 .modal-body {
-  font-family: sans-serif;
   font-size: 14px;
-  color: #333;
 }
 
-.subtitle {
-  font-size: 13px;
-  color: #888;
-  text-align: center;
-  margin-bottom: 5px;
-}
-
-.phone-number {
+#customer-phone {
   font-size: 1.5rem;
   color: var(--primary);
   text-align: center;
@@ -1581,12 +1505,10 @@ button:disabled {
 }
 
 /* PINPAD MODAL */
-
 .pin-container {
   background: #fff;
   width: 100%;
   max-width: 360px;
-  max-height: 100%;
   border-radius: 20px 20px 0 0;
   overflow-y: auto;
   padding: 16px 20px;
@@ -1594,106 +1516,60 @@ button:disabled {
   
 }
 
-.icon-section {
-  margin-bottom: var(--space-3);
-  text-align:center;
-}
-
-.company-name {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-neutral-800);
-}
-
-.welcome-text {
-  font-size: 1.75rem;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: var(--space-4);
-  color: var(--color-neutral-900);
-}
-
 .pin-section {
   text-align: center;
   margin-bottom: var(--space-4);
-}
-
-.pin-instruction {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  font-size: 0.875rem;
-  margin-bottom: var(--space-2);
-  color: var(--color-neutral-700);
-}
-
-.check-icon {
-  color: var(--color-accent);
 }
 
 .pin-dots {
   display: flex;
   gap: var(--space-2);
   justify-content: center;
-  margin-top: var(--space-1);
+  margin: 15px 0;
 }
 
 .pin-dot {
   width: 16px;
   height: 16px;
-  border-radius: var(--radius-full);
-  border: 2px solid var(--color-neutral-400);
+  border: 1px solid #eee;
+  border-radius: 8px;
   transition: all var(--transition-normal);
 }
 
 .pin-dot.filled {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  transform: scale(1.1);
+  background-color: var(--primary);
 }
 
 .keypad {
   margin-bottom: var(--space-4);
+  width: 90%;
+  margin: auto;
+  max-width: 400px;
 }
 
 .keypad-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-1);
 }
 
 .key-button,
 .key-backspace {
-  width: 64px;
-  height: 64px;
+  width: 40%;
+  margin: 0 8px;
+  padding: 5px;
   border: none;
   background: transparent;
-  border-radius: var(--radius-full);
-  background-color: white;
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: 800;
-  color: var(--color-neutral-800);
+  color: var(--gray-600);
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
-}
-
-.key-button:hover,
-.key-backspace:hover {
-  background-color: var(--color-neutral-100);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
 }
 
 .key-button:active,
 .key-backspace:active {
   transform: translateY(0);
-  background-color: var(--color-neutral-200);
-}
-
-.key-spacer {
-  width: 64px;
 }
 
 .key-backspace {
@@ -1710,37 +1586,22 @@ button:disabled {
   visibility: visible;
 }
 
-.footer-actions {
+.modal-actions {
   display: flex;
   justify-content: space-between;
-  padding: 0 var(--space-2);
+  align-items: center;
+  margin-top: 20px;
 }
 
-.action-button {
+.modal-actions button {
   border: none;
-  background: none;
-  color: var(--color-neutral-600);
   font-size: 0.875rem;
-  font-weight: 500;
+  padding: 10px 15px;
   cursor: pointer;
   transition: color var(--transition-fast);
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.action-button:hover {
-  color: var(--color-primary);
-}
-
-@keyframes pinPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-
-.pin-feedback {
-  animation: pinPulse 0.3s ease-in-out;
+  border-radius: var(--radius-lg);
+  color: white;
+  background-color: var(--primary);
 }
 
 @media (max-width: 380px) {
@@ -1759,12 +1620,3 @@ button:disabled {
 
 
 /* CONFIRM MODAL & PINPAD ANIMATION  */
-
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}

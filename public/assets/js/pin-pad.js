@@ -1,65 +1,87 @@
 function initPinPad(containerSelector, onComplete) {
-  let pin = '';
-  const maxLength = 4;
   const container = document.querySelector(containerSelector);
-
   if (!container) return;
 
-  const dotEls = Array.from(container.querySelectorAll('.pin-dot'));
+  const dots = container.querySelectorAll(".pin-dot");
+  const keys = container.querySelectorAll(".key-button");
+  const backspace = container.querySelector("#backspace");
+  const logoutBtn = container.querySelector(".logout");
+  const forgotBtn = container.querySelector(".forgot");
+  let pin = "";
+  const MAX_LENGTH = 4;
 
-  function updateDots() {
-    dotEls.forEach((dot, i) => {
-      dot.classList.toggle('filled', i < pin.length);
+  const updateDots = () => {
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("filled", i < pin.length);
     });
-  }
+    backspace.style.visibility = pin.length > 0 ? "visible" : "hidden";
+  };
 
-  function addDigit(digit) {
-    if (pin.length < maxLength) {
+  const resetPin = () => {
+    pin = "";
+    updateDots();
+  };
+
+  const addDigit = (digit) => {
+    if (!/^\d$/.test(digit)) return;
+    if (pin.length < MAX_LENGTH) {
       pin += digit;
       updateDots();
-      if (pin.length === maxLength) {
+      if (pin.length === MAX_LENGTH) {
         setTimeout(() => {
           onComplete(pin);
           resetPin();
-        }, 300);
+        }, 250);
       }
     }
-  }
+  };
 
-  function removeDigit() {
-    pin = pin.slice(0, -1);
-    updateDots();
-  }
+  const removeDigit = () => {
+    if (pin.length > 0) {
+      pin = pin.slice(0, -1);
+      updateDots();
+    }
+  };
 
-  function resetPin() {
-    pin = '';
-    updateDots();
-  }
-
-  // Attach events locally to this container only
-  container.querySelectorAll('.key-button').forEach(button => {
-    button.addEventListener('click', () => {
-      addDigit(button.getAttribute('data-value'));
+  keys.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const val = btn.dataset.value;
+      addDigit(val);
     });
   });
 
-  container.querySelector('#backspace').addEventListener('click', removeDigit);
+  backspace?.addEventListener("click", removeDigit);
 
-  container.querySelector('.logout')?.addEventListener('click', () => {
-    alert('Logging out...');
-  });
+  // Initial state
+  updateDots();
 
-  container.querySelector('.forgot')?.addEventListener('click', () => {
-    alert('Forgot PIN clicked');
-  });
-
-  // Optional: Enable keyboard input
-  document.addEventListener('keydown', function handleKeyPress(e) {
-    if (!container.matches(':visible')) return;
-    if (/^[0-9]$/.test(e.key)) {
+  // Keyboard input support (when modal is visible)
+  document.addEventListener("keydown", (e) => {
+    if (container.offsetParent === null) return;
+    if (/^\d$/.test(e.key)) {
       addDigit(e.key);
-    } else if (e.key === 'Backspace') {
+    } else if (e.key === "Backspace") {
       removeDigit();
     }
   });
+
+  // Logout and Forgot PIN hooks
+  logoutBtn?.addEventListener("click", () => {
+    showToasted("Logging out...", "info");
+  });
+
+  forgotBtn?.addEventListener("click", () => {
+    showToasted("Forgot PIN clicked.", "info");
+  });
 }
+
+// Click outside the PIN modal to dismiss it
+document.addEventListener("click", function (e) {
+  const modal = document.getElementById("pinModal");
+  if (!modal || modal.style.display !== "flex") return;
+
+  const content = modal.querySelector(".pin-container");
+  if (content && !content.contains(e.target)) {
+    modal.style.display = "none";
+  }
+});
