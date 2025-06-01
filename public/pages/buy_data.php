@@ -142,7 +142,7 @@ require __DIR__ . '/../partials/header.php';
     <div class="pin-container">
         <!-- Avatar -->
         <div class="avatar-section d-flex justify-content-center align-items-center">
-            <img src="../assets/img/avatar.jpg" alt="User Avatar" class="avatar avatar-sm img-fluid">
+            <img src="../assets/img/avatar.jpg" alt="User Avatar" class="pinpad-avatar img-fluid">
         </div>
         <div class="my-3 text-center">
             <h5 class="mb-1">Welcome Back!</h5>

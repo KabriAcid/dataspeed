@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirmPin = trim($_POST['confirmPin'] ?? '');
 
     try {
+        // Password section
         if ($newPassword !== '' && $confirmPassword !== '') {
             if ($newPassword !== $confirmPassword) {
                 throw new Exception('Passwords do not match.');
@@ -38,7 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             echo json_encode(['success' => true, 'message' => 'Password updated successfully.']);
             exit;
-        } elseif ($newPin !== '' && $confirmPin !== '') {
+        }
+
+        // PIN section
+        elseif ($newPin !== '' && $confirmPin !== '') {
             if ($newPin !== $confirmPin) {
                 throw new Exception('PINs do not match.');
             }
@@ -46,17 +50,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('PIN must be exactly 4 digits.');
             }
 
+            // ✅ Securely hash the PIN
+            $hashedPin = password_hash($newPin, PASSWORD_DEFAULT);
+
             $stmt = $pdo->prepare("UPDATE users SET txn_pin = :pin WHERE user_id = :user_id");
             $stmt->execute([
-                'pin' => $newPin,
+                'pin' => $hashedPin,
                 'user_id' => $user_id
             ]);
 
             echo json_encode(['success' => true, 'message' => 'PIN updated successfully.']);
             exit;
-        } else {
+        }
+
+        // Nothing submitted
+        else {
             throw new Exception('Please fill in the required fields.');
         }
+
     } catch (Exception $e) {
         echo json_encode([
             'success' => false,
