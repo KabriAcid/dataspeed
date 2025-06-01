@@ -94,3 +94,9 @@ Array
 [2025-06-01 09:26:37] Generated reference: ref_976172b7-3a32-4448-a5d6-560c55b504ab for user duvuba@gmail.com
 [2025-06-01 09:26:44] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-JPQMONHLWF","account":[{"account_number":"5761525724","account_name":"VTU-Stacy Spencer","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-06-01 09:26:44"}],"meta":{"firstName":"Stacy","lastName":"Spencer","email":"duvuba@gmail.com"}}}
 [2025-06-01 09:26:44] DB Update Successful for user duvuba@gmail.com
+[2025-06-01 17:01:56] User's existing virtual account: None
+[2025-06-01 17:01:56] Generated reference: ref_b00ad35b-8724-491f-b720-48bc292eec6f for user wezis@gmail.com
+[2025-06-01 17:01:56] Billstack response: 
+[2025-06-01 17:02:10] User's existing virtual account: None
+[2025-06-01 17:02:10] Generated reference: ref_1dc4def2-ba3d-4dc0-8f25-d8f32ef9a05d for user wezis@gmail.com
+[2025-06-01 17:02:10] Billstack response: 

@@ -60,13 +60,17 @@ try {
     {
         $secretKey = $_ENV['BILLSTACK_SECRET_KEY'];
 
+        $bank_type = ["9PSB", "PALMPAY"];
+
+        $random = floor(rand(0, 1));
+
         $data = [
             "email" => $email,
             "reference" => $reference,
             "firstName" => $firstName,
             "lastName" => $lastName,
             "phone" => $phone_number,
-            "bank" => "9PSB"
+            "bank" => $bank_type[$random]
         ];
 
         $payload = json_encode($data);
@@ -196,7 +200,7 @@ try {
     pushNotification($pdo, $user_id, $title, $message, 'virtual_account', 'fa-home', false);
 
     // Insert notification for PIN not set
-    
+
 
     
     // Handle referral logic (optional)

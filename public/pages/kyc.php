@@ -3,17 +3,23 @@ session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../partials/header.php';
+
 ?>
 
-<body>
+<body style="padding-top: 70px;">
     <main class="container py-4">
-        <header class="mb-4 page-header">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h5 class="fw-bold">KYC</h5>
-            <span></span>
+        <header class="page-header mb-4">
+            <div class="header-container">
+                <div class="header-left">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                </div>
+                <h5 class="header-title fw-bold">KYC</h5>
+                <div class="header-right"></div>
+            </div>
         </header>
+
 
         <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" style="max-width:600px;margin:auto;">
             <!-- KYC Notice -->
@@ -108,7 +114,7 @@ require __DIR__ . '/../partials/header.php';
                     showToasted(res.message, "success");
                     form.reset();
                     setTimeout(() => {
-                        window.location.href = "dashboard.php";
+                        console.log(res.success, res.type)
                     }, 2000);
                 } else {
                     // Show toasted error message
@@ -135,6 +141,7 @@ require __DIR__ . '/../partials/header.php';
         }
     });
     </script>
+    <script src="../assets/js/scroll.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
