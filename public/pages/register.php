@@ -1,4 +1,3 @@
-<!-- REGISTER.PHP -->
 <?php
 session_start();
 
@@ -79,7 +78,7 @@ if (isset($_GET['referral_code'])) {
                         <p class="text-sm">You will receive a verification code, so make sure it is active.</p>
                     </div>
                     <div class="form-field">
-                        <input type="email" name="email" id="email" placeholder="Email address" class="input" autocomplete="off">
+                        <input type="email" name="email" id="email" placeholder="Email address" class="input">
                         <button type="button" class="btn primary-btn mt-3" id="email-submit">
                             Continue
                         </button>
