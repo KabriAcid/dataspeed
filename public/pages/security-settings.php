@@ -27,12 +27,12 @@ require __DIR__ . '/../partials/header.php';
                     <div class="mb-3">
                         <label for="newPassword" class="form-label">New Password</label>
                         <input type="password" placeholder="Password" id="newPassword" name="newPassword"
-                            class="form-control" minlength="6" required>
+                            class="input" minlength="6" required>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirm Password</label>
                         <input type="password" placeholder="Re-Password" id="confirmPassword" name="confirmPassword"
-                            class="form-control" minlength="6" required>
+                            class="input" minlength="6" required>
                     </div>
                 </div>
 
@@ -40,13 +40,13 @@ require __DIR__ . '/../partials/header.php';
                 <div class="tab-content" id="pin-tab">
                     <div class="mb-3">
                         <label for="newPin" class="form-label">New PIN</label>
-                        <input type="password" placeholder="PIN" id="newPin" name="newPin" class="form-control"
+                        <input type="password" placeholder="PIN" id="newPin" name="newPin" class="input"
                             pattern="\d{4}" maxlength="4" inputmode="numeric" required>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPin" class="form-label">Confirm PIN</label>
                         <input type="password" placeholder="Re-PIN" id="confirmPin" name="confirmPin"
-                            class="form-control" pattern="\d{4}" maxlength="4" inputmode="numeric" required>
+                            class="input" pattern="\d{4}" maxlength="4" inputmode="numeric" required>
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@ require __DIR__ . '/../partials/header.php';
     <footer class="my-4 text-center text-secondary small">
         &copy; Dreamcodes 2025. All rights reserved.
     </footer>
-    <script src="../../assets/js/ajax.js"></script>
+    <script src="../assets/js/ajax.js"></script>
     <script>
     
     document.addEventListener("DOMContentLoaded", () => {
@@ -104,8 +104,17 @@ require __DIR__ . '/../partials/header.php';
             ).join("&");
 
             sendAjaxRequest("update-passcodes.php", "POST", data, (res) => {
-                showToasted(res.message, res.success ? "success" : "error");
-                if (res.success) form.reset();
+                if (res.success) {
+                    showToasted(res.message, "success");
+                    form.reset();
+                    setTimeout(() => {
+                        window.location.href = "dashboard.php";
+                    }, 2000);
+                } else {
+                    // Show toasted error message
+                    showToasted(res.message, "error");
+
+                }
             });
         });
 

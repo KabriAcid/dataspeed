@@ -33,8 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode([
             "success" => true,
             "message" => $referral_code !== "" ? "Referral code valid." : "No referral code provided. Continuing...",
-            "registration_id" => $registration_id,
-            "next_step" => 1
+            "registration_id" => $registration_id
         ]);
 
     } catch (PDOException $e) {

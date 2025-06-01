@@ -63,6 +63,25 @@ if (isset($_GET['success'])) {
             </div>
         </div>
 
+        <!--  -->
+        <?php
+            if(!$user['txn_pin']){
+                ?>
+                <div class="bg-white border-0 rounded shadow-xl p-4 my-4 animate-fade-in">
+                    <a href="security-settings.php">
+                        <div class="d-flex align-items-center">
+                            <img src="../assets/img/icons/cyber-security.png" alt="" class="avatar-sm">
+                            <div class="ms-4">
+                                <h5 class="mb-0 text-dark fw-bold">Set Transaction PIN</h5>
+                                <p class="text-secondary mb-0">Secure your transactions with a PIN.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <?php
+            }
+            ?>
+
         <!-- ✅ Account Details Banner -->
         <?php if ($user): ?>
         <div class="account-banner bg-white border-0 rounded shadow-xl p-4 my-4 animate-fade-in">

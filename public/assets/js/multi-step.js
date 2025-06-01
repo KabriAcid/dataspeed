@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+
     // Step 0: Referral Code
     const referralInput = document.getElementById('referral-code');
     const referralContinueBtn = document.getElementById('referral-submit');
@@ -90,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             setTimeout(() => {
                                 goToStep(2);
                                 done();
-                                document.getElementById('user_email').textContent = 'Enter the 6-digit code sent to ' + response.email;
                                 showToasted(response.message, 'success')
                             }, TIMEOUT);
                         } else {

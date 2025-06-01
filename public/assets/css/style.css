@@ -46,36 +46,17 @@ section:not(.jumbotoron) {
 
 /* BUTTONS STYLINGS */
 
-.btn:disabled {
-  border: 1px solid var(--primary);
-  box-shadow: var(--shadow-lg);
-  background-color: transparent !important;
-  padding: 0.75rem 1.5rem;
-  text-transform: uppercase;
-
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 1.4;
-  color: var(--primary)!important;
-  text-align: center;
-  vertical-align: middle;
-  cursor: not-allowed!important;
-  user-select: none;
-  border-radius: 0.5rem;
-  transition: all .35s ease-in
-}
 .primary-btn {
+  background-image: linear-gradient(310deg, #330f0d, #94241E);
   border: none;
   box-shadow: var(--shadow-md);
-  background-color: var(--primary);
   color: white !important;
   text-transform: uppercase;
 }
 
 .primary-btn:hover {
   transform: translateY(-2px);
-  background-color: var(--danger-dark) !important;
+  background-color: var(--primary-dark) !important;
   color: white;
 }
 
@@ -99,22 +80,15 @@ section:not(.jumbotoron) {
   transition: all .35s ease-in
 }
 
-button:disabled {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: var(--primary);
-  border: 1px solid var(--primary);
-  cursor: not-allowed;
-}
-
 .secondary-btn:hover {
   background-color: var(--danger-dark) !important;
   color: white;
   transition: all .35s ease-in
 }
 
-.disabled-btn {
+button:disabled, .disabled-btn, .inactive-btn {
   box-shadow: var(--shadow-md);
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: transparent!important;
   padding: 0.75rem 1.5rem;
   text-transform: uppercase;
 
@@ -131,17 +105,8 @@ button:disabled {
   transition: all .35s ease-in
 }
 
-
 .disabled-btn:hover {
   cursor: not-allowed;
-}
-
-.inactive-btn {
-  background-color: transparent;
-  border: var(--secondary);
-  color: var(--gray-600);
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 .button-outline {
@@ -1156,7 +1121,7 @@ button:disabled {
 @media (min-width: 775px) {
   .tabs {
     width: 100%;
-    max-width: 800px;
+    max-width: 600px;
   }
 }
 
@@ -1598,22 +1563,8 @@ button:disabled {
   visibility: visible;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.modal-actions button {
-  border: none;
-  font-size: 0.875rem;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: color var(--transition-fast);
-  border-radius: var(--radius-lg);
-  color: white;
-  background-color: var(--primary);
+.modal-actions button:hover {
+  background-color: var(--primary-dark);
 }
 
 @media (max-width: 380px) {

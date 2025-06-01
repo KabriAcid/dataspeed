@@ -18,31 +18,39 @@ require __DIR__ . '/../partials/header.php';
         ?>
 
         <div class="notifications">
-            <?php foreach ($groupedNotifications as $date => $group): ?>
-            <div class="date-group">
-                <div class="date-header">
-                    <i class="fa fa-clock clock-icon"></i>
-                    <span><?= htmlspecialchars($date) ?></span>
-                </div>
+            <?php if($groupedNotifications){
+            foreach ($groupedNotifications as $date => $group): ?>
+                <div class="date-group">
+                    <div class="date-header">
+                        <i class="fa fa-clock clock-icon"></i>
+                        <span><?= htmlspecialchars($date) ?></span>
+                    </div>
 
-                <?php foreach ($group as $note): ?>
-                <div class="notification-card <?= $note['is_read'] === '0' ? 'unread' : '' ?>">
-                    <div class="notification-content">
-                        <div class="icon-wrapper <?= htmlspecialchars($note['type']) ?>">
-                            <i class="fa <?= htmlspecialchars($note['icon']) ?>"></i>
-                        </div>
-                        <div class="notification-details">
-                            <div class="notification-header">
-                                <h2><?= htmlspecialchars($note['title']) ?></h2>
-                                <span class="time"><?= (new DateTime($note['created_at']))->format('g:i A') ?></span>
+                    <?php foreach ($group as $note): ?>
+                    <div class="notification-card <?= $note['is_read'] === '0' ? 'unread' : '' ?>">
+                        <div class="notification-content">
+                            <div class="icon-wrapper <?= htmlspecialchars($note['type']) ?>">
+                                <i class="fa <?= htmlspecialchars($note['icon']) ?>"></i>
                             </div>
-                            <p><?= htmlspecialchars($note['message']) ?>&period;</p>
+                            <div class="notification-details">
+                                <div class="notification-header">
+                                    <h2><?= htmlspecialchars($note['title']) ?></h2>
+                                    <span class="time"><?= (new DateTime($note['created_at']))->format('g:i A') ?></span>
+                                </div>
+                                <p><?= htmlspecialchars($note['message']) ?>&period;</p>
+                            </div>
                         </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
-            </div>
-            <?php endforeach; ?>
+            <?php endforeach; 
+            } else {
+                ?>
+                <p class="text-center text-secondary">No notifications found.</p>
+                <?php
+                
+            }
+            ?>
         </div>
 
 

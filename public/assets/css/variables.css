@@ -1,6 +1,11 @@
 :root {
+
+  
     --primary: #94241E;
     --primary-light: #FBF0F6;
+    --primary-dark: #2c0d0b;
+
+    --accent-gradient-dark: linear-gradient(310deg, #2c0d0b, #94241E);
 
     --secondary: #e6e6e6;
 
