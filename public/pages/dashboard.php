@@ -4,8 +4,6 @@ require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../partials/header.php';
 
-// var_dump($_SESSION);
-
 // check if get success superglobal variable is = 1 then call the showToasted function
 
 $success = null;
@@ -63,16 +61,32 @@ if (isset($_GET['success'])) {
             </div>
         </div>
 
-        <!--  -->
+        <!-- TRANSACTION PIN NOT SET -->
         <?php
             if(!$user['txn_pin']){
                 ?>
-                <div class="bg-white border-0 rounded shadow-xl p-4 my-4 animate-fade-in cursor-pointer" onclick="location.href='security-settings.php'">
+                <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='security-settings.php'">
                     <div class="d-flex align-items-center">
-                        <img src="../assets/img/icons/cyber-security.png" alt="" class="avatar-sm">
+                        <img src="../assets/img/icons/cyber-security.png" alt="" class="avatar-sm" style="max-width:50px;">
                         <div class="ms-4">
                             <h6 class="mb-0 text-dark fw-bold">Set Transaction PIN</h6>
                             <p class="text-secondary mb-0 text-md">Secure your transactions with a PIN.</p>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+            <!-- KYC NOT MADE -->
+        <?php
+            if($user['kyc_status'] == 'unverified'){
+                ?>
+                <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='kyc.php'">
+                    <div class="d-flex align-items-center">
+                        <img src="../assets/icons/cbn.svg" alt="" class="avatar-sm" style="max-width:50px;">
+                        <div class="ms-4">
+                            <h6 class="mb-0 text-dark fw-bold">Complete KYC</h6>
+                            <p class="text-secondary mb-0 text-md">Verify your identity to unlock full features.</p>
                         </div>
                     </div>
                 </div>

@@ -43,21 +43,21 @@ $selectedLGA = $user['city'] ?? '';
                 <div class="row mb-1">
                     <div class="col-md-6 mb-3">
                         <label>First Name</label>
-                        <input type="text" class="input" value="<?= htmlspecialchars($user['first_name']) ?>" disabled>
+                        <input type="text" class="input" value="<?= htmlspecialchars($user['first_name']) ?? '' ?>" disabled>
                     </div>
                     <div class="col-md-6">
                         <label>Last Name</label>
-                        <input type="text" class="input" value="<?= htmlspecialchars($user['last_name']) ?>" disabled>
+                        <input type="text" class="input" value="<?= htmlspecialchars($user['last_name']) ?? '' ?>" disabled>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label>Email</label>
-                        <input type="email" class="input" value="<?= htmlspecialchars($user['email']) ?>" disabled>
+                        <input type="email" class="input" value="<?= htmlspecialchars($user['email']) ?? '' ?>" disabled>
                     </div>
                     <div class="col-md-6">
                         <label>Phone Number</label>
-                        <input type="text" class="input" value="<?= htmlspecialchars($user['phone_number']) ?>" disabled>
+                        <input type="text" class="input" value="<?= htmlspecialchars($user['phone_number']) ?? '' ?>" disabled>
                     </div>
                 </div>
                 <div class="text-end mt-3">

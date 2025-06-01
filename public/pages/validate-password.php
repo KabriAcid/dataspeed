@@ -194,6 +194,10 @@ try {
     $title = 'Virtual Account Created';
     $message = 'Congratulations! Your virtual account has been created successfully.';
     pushNotification($pdo, $user_id, $title, $message, 'virtual_account', 'fa-home', false);
+
+    // Insert notification for PIN not set
+    
+
     
     // Handle referral logic (optional)
     if (isset($_SESSION['referral_code']) && !empty($_SESSION['referral_code'])) {

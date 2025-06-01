@@ -8,8 +8,12 @@ require __DIR__ . '/../partials/header.php';
 
 <body>
     <main class="container py-4">
-        <header class="mb-4 text-center">
+        <header class="mb-4 text-center page-header">
+            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <h5 class="fw-bold">Notifications</h5>
+            <span></span>
         </header>
         <!-- Notifications List -->
         <?php
@@ -27,7 +31,7 @@ require __DIR__ . '/../partials/header.php';
                     </div>
 
                     <?php foreach ($group as $note): ?>
-                    <div class="notification-card <?= $note['is_read'] === '0' ? 'unread' : '' ?>">
+                    <div class="bg-white border-0 rounded shadow-xl p-3 my-4 animate-fade-in cursor-pointer <?= $note['is_read'] === '0' ? 'unread' : '' ?>">
                         <div class="notification-content">
                             <div class="icon-wrapper <?= htmlspecialchars($note['type']) ?>">
                                 <i class="fa <?= htmlspecialchars($note['icon']) ?>"></i>

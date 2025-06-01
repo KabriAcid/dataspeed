@@ -1,8 +1,8 @@
 <?php
 session_start();
-require __DIR__ . '/../../config/config.php';
-require __DIR__ . '/../../functions/Model.php';
-require __DIR__ . '/../partials/header.php';
+require __DIR__ . '/../../../config/config.php';
+require __DIR__ . '/../../../functions/Model.php';
+require __DIR__ . '/../../partials/header.php';
 ?>
 
 <body>
@@ -11,8 +11,7 @@ require __DIR__ . '/../partials/header.php';
             <h5 class="fw-bold text-center">Structures</h5>
         </header>
 
-
-        <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
+        <?php require __DIR__ . '/../../partials/bottom-nav.php' ?>
     </main>
 
     <footer class="my-4 text-center text-secondary small">
