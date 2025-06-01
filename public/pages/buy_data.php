@@ -95,7 +95,7 @@ require __DIR__ . '/../partials/header.php';
         <form action="" method="post">
     <div class="phone-container">
         <span class="phone-prefix text-xs">
-            <img src="https://flagcdn.com/w40/ng.png" alt=""> +234
+            <img src="../assets/img/ng.png" alt=""> +234
         </span>
         <input type="tel" id="phone-number" name="phone_number" maxlength="10"
             placeholder="Phone Number" class="input">

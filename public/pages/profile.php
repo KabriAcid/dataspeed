@@ -40,7 +40,7 @@ $selectedLGA = $user['city'] ?? '';
 
             <!-- Step 1: Biodata -->
             <form class="wizard-step active" id="step-biodata">
-                <div class="row mb-3">
+                <div class="row mb-1">
                     <div class="col-md-6 mb-3">
                         <label>First Name</label>
                         <input type="text" class="input" value="<?= htmlspecialchars($user['first_name']) ?>" disabled>
@@ -66,15 +66,25 @@ $selectedLGA = $user['city'] ?? '';
             </form>
 
             <!-- Step 2: Account -->
-            <form class="wizard-step d-none" id="step-account">
+            <form class="wizard-step" id="step-account">
                 <div class="row mb-3">
                     <div class="col-md-6 mb-3">
                         <label>Bank Name</label>
-                        <input type="text" name="bank_name" class="input" value="<?= htmlspecialchars($user['w_bank_name']) ?>">
+                        <input type="text" name="bank_name" placeholder="e.g OPay" class="input" value="<?= htmlspecialchars($user['w_bank_name']) ?>">
                     </div>
                     <div class="col-md-6">
                         <label>Account Number</label>
-                        <input type="number" name="account_number" maxlength="11" class="input" placeholder="10-digit NUBAN" value="<?= htmlspecialchars($user['w_account_number']) ?>">
+                        <input type="text"
+                            id="account_number"
+                            name="account_number"
+                            maxlength="10"
+                            inputmode="numeric"
+                            pattern="\d*"
+                            class="input"
+                            placeholder="10-digit NUBAN"
+                            value="<?= htmlspecialchars($user['w_account_number']) ?>"
+                            >
+
                     </div>
                 </div>
                 <div class="text-end mt-3">
@@ -83,8 +93,8 @@ $selectedLGA = $user['city'] ?? '';
             </form>
 
             <!-- Step 3: Address -->
-            <form class="wizard-step d-none" id="step-address">
-                <div class="row mb-3">
+            <form class="wizard-step" id="step-address">
+                <div class="row mb-1">
                     <div class="col-md-6 mb-3">
                         <label>State</label>
                         <select name="state" id="state" class="select-state input" required data-selected="<?= $selectedState ?>">
@@ -138,7 +148,7 @@ $selectedLGA = $user['city'] ?? '';
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label>Address</label>
-                        <input type="text" name="address" class="input" value="<?= htmlspecialchars($user['address']) ?>">
+                        <input type="text" name="address" class="input" placeholder="Home Address" value="<?= htmlspecialchars($user['address']) ?>">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>Country</label>
@@ -160,64 +170,93 @@ $selectedLGA = $user['city'] ?? '';
 
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/state-capital.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const stepForms = document.querySelectorAll('.wizard-step');
-        const stepCircles = document.querySelectorAll('.step-indicator');
-        const stepIds = ['biodata', 'account', 'address'];
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stepForms = document.querySelectorAll('.wizard-step');
+            const stepIndicators = document.querySelectorAll('.step-indicator');
+            const stepIds = ['biodata', 'account', 'address'];
 
-        let currentStep = 0;
+            let currentStep = 0;
 
-        function updateStepUI(index) {
-            stepForms.forEach((form, i) => {
-                form.classList.toggle('d-none', i !== index);
+            // Show toast message when the user clicks on the disabled button
+            document.querySelector('.disabled-btn').addEventListener('click', function () {
+                console.log('❌ Attempted to update biodata, but it is not editable.');
+                showToasted('This step is not editable yet.', 'info');
             });
+            /**
+             * Show the form for the selected step index
+             */
+            function updateStepUI(index) {
 
-            stepCircles.forEach((circle, i) => {
-                const stepCircle = circle.querySelector('.step-circle');
-                stepCircle.classList.toggle('bg-gradient-dark', i === index);
-                stepCircle.classList.toggle('text-white', i === index);
-                stepCircle.classList.toggle('bg-gradient-light', i !== index);
-                stepCircle.classList.toggle('text-dark', i !== index);
-            });
-
-            currentStep = index;
-        }
-
-        window.goToStep = function (index) {
-            console.log(`Navigating to step ${index}`);
-            updateStepUI(index);
-        };
-
-
-        // Initialize first step
-        updateStepUI(0);
-
-        // AJAX submission using your custom sendAjaxRequest
-        document.querySelectorAll('form.wizard-step').forEach((form, index) => {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const step = stepIds[index];
-                const formData = new FormData(form);
-                formData.append('step', step);
-
-                const params = new URLSearchParams();
-                for (let pair of formData.entries()) {
-                    params.append(pair[0], pair[1]);
-                }
-
-                sendAjaxRequest('update-address.php', 'POST', params.toString(), function (res) {
-                    if (res.success) {
-                        showToasted(res.message || 'Update successful', 'success');
+                // Show the correct form and hide the others
+                stepForms.forEach((form, i) => {
+                    if (i === index) {
+                        form.classList.remove('d-none');
+                        form.style.display = 'block';
+                        console.log(`✅ Showing form: #${form.id}`);
                     } else {
-                        showToasted(res.message || 'Update failed', 'error');
+                        form.classList.add('d-none');
+                        form.style.display = 'none';
                     }
+                });
+
+                // Update step circle styles
+                stepIndicators.forEach((indicator, i) => {
+                    const circle = indicator.querySelector('.step-circle');
+                    circle.classList.toggle('bg-gradient-dark', i === index);
+                    circle.classList.toggle('text-white', i === index);
+                    circle.classList.toggle('bg-gradient-light', i !== index);
+                    circle.classList.toggle('text-dark', i !== index);
+                });
+
+                currentStep = index;
+            }
+
+            /**
+             * When a step indicator is clicked
+             */
+            stepIndicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    updateStepUI(index);
+                });
+            });
+
+            // Make function globally available if needed
+            window.goToStep = function (index) {
+                updateStepUI(index);
+            };
+
+            // Initialize first step
+            updateStepUI(currentStep);
+
+            /**
+             * Handle form submissions using your custom AJAX logic
+             */
+            document.querySelectorAll('form.wizard-step').forEach((form, index) => {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const step = stepIds[index];
+                    const formData = new FormData(form);
+                    formData.append('step', step);
+
+                    const params = new URLSearchParams();
+                    for (let [key, value] of formData.entries()) {
+                        params.append(key, value);
+                    }
+
+
+                    sendAjaxRequest('update-address.php', 'POST', params.toString(), function (res) {
+                        if (res.success) {
+                            showToasted(res.message || 'Update successful', 'success');
+                        } else {
+                            showToasted(res.message || 'Update failed', 'error');
+                        }
+                    });
                 });
             });
         });
-    });
-</script>
+        </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

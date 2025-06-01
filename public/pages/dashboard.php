@@ -72,8 +72,8 @@ if (isset($_GET['success'])) {
                         <div class="d-flex align-items-center">
                             <img src="../assets/img/icons/cyber-security.png" alt="" class="avatar-sm">
                             <div class="ms-4">
-                                <h5 class="mb-0 text-dark fw-bold">Set Transaction PIN</h5>
-                                <p class="text-secondary mb-0">Secure your transactions with a PIN.</p>
+                                <h6 class="mb-0 text-dark fw-bold">Set Transaction PIN</h6>
+                                <p class="text-secondary mb-0 text-md">Secure your transactions with a PIN.</p>
                             </div>
                         </div>
                     </a>
@@ -88,18 +88,18 @@ if (isset($_GET['success'])) {
             <h4 class="mb-4 text-dark fw-bold border-start border-4 border-danger ps-3">Bank Account Details</h4>
             <div class="row text-dark">
                 <div class="col-md-4 mb-3">
-                    <h6 class="text-uppercase text-muted mb-1">Account Number</h6>
+                    <h6 class="text-uppercase text-secondary mb-1 text-sm">Account Number</h6>
                     <p class="fs-5 fw-semibold d-inline" id="account-number">
                         <?= htmlspecialchars($user['virtual_account']) ?>
                     </p>
-                    <i class="fa fa-copy ms-2 text-primary" id="copy-button" style="cursor: pointer;"></i>
+                    <i class="fa fa-copy ms-2 primary" id="copy-button" style="cursor: pointer;"></i>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <h6 class="text-uppercase text-muted mb-1">Account Name</h6>
+                    <h6 class="text-uppercase text-secondary mb-1 text-sm">Account Name</h6>
                     <p class="fs-5 fw-semibold"><?= htmlspecialchars($user['account_name']) ?></p>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <h6 class="text-uppercase text-muted mb-1">Bank Name</h6>
+                    <h6 class="text-uppercase text-secondary mb-1 text-sm">Bank Name</h6>
                     <p class="fs-5 fw-semibold"><?= htmlspecialchars($user['bank_name']) ?></p>
                 </div>
             </div>
