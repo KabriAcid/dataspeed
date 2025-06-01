@@ -29,6 +29,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->execute([$user]);
         $userRow = $stmt->fetch();
 
+        // Check account active status in the database
+        if ($userRow['account_status'] == 'Frozen') {
+            echo json_encode(["success" => false, "message" => "Account is frozen. Try again in 1 hour."]);
+            exit;
+        }
+        // Banned
+        if ($userRow['account_status'] == 'Banned') {
+            echo json_encode(["success" => false, "message" => "Account is banned. Contact support."]);
+            exit;
+        }
+        // Inactive
+        if ($userRow['account_status'] == 'Inactive') {
+            echo json_encode(["success" => false, "message" => "Account is inactive. Please activate your account."]);
+            exit;
+        }
+
+
         if ($userRow && password_verify($password, $userRow['password'])) {
             // Set session variables
             $_SESSION['user'] = $userRow['user_id'];

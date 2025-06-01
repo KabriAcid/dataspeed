@@ -19,10 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 
-    if (!$referral_code) {
-        echo json_encode(["success" => false, "message" => "Referral code not set."]);
-        exit;
-    }
+    // if (!$referral_code) {
+    //     echo json_encode(["success" => false, "message" => "Referral code not set."]);
+    //     exit;
+    // }
 
     try {
         $stmt = $pdo->prepare("SELECT registration_status, registration_id FROM users WHERE email = ?");

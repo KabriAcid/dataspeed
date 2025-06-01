@@ -29,6 +29,7 @@ function sendAjaxRequest(url, method, data, callback) {
           success: false,
           message: "Invalid JSON response.",
         });
+        console.error("Invalid JSON response", xhr.responseText);
       }
     }
   };

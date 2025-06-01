@@ -2,7 +2,7 @@
 
 session_start();
 require __DIR__ . '/../../config/config.php';
-require __DIR__ . '/../../../functions/sendMail.php';
+require __DIR__ . '/../../functions/sendMail.php';
 
 header("Content-Type: application/json");
 
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         sendMail($email, $subject, $body);
 
-        echo json_encode(["success" => true, "message" => "OTP sent successfully.", "otpCode" => $otp, "email" => email]);
+        echo json_encode(["success" => true, "message" => "OTP sent successfully.", "otpCode" => $otp, "email" => $email]);
     } catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }

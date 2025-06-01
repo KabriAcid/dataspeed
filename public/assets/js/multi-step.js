@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (!email || email.length <= 6 || email.includes("mailinator")) {
                 showToasted("Enter a valid email address.", 'error');
-                emailInput.classList.add("error-input");
                 done();
                 return;
             }
@@ -128,11 +127,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             sendAjaxRequest("verify-otp.php", "POST", `email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}&registration_id=${encodeURIComponent(registration_id)}`, (response) => {
                 if (response.success) {
-                    document.getElementById('email-msg').textContent = `Enter the 6-digit code sent to ${email}`;
+                    document.getElementById('user_email').textContent = `Enter the 6-digit code sent to ${email}`;
                     completedSteps.add(2);
                     setTimeout(() => { goToStep(3); done(); }, TIMEOUT);
                 } else {
                     showToasted(response.message, 'error');
+                    sessionStorage.clear();
                     done();
                 }
             });

@@ -90,3 +90,7 @@ Array
 [2025-05-30 13:04:27] Generated reference: ref_6c49aac2-d108-4cdf-888a-7e6d1ac1eba6 for user abdulsalamiismaila8@gmail.com
 [2025-05-30 13:04:36] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-ZBPLNOVZJC","account":[{"account_number":"5761490639","account_name":"VTU-Abdulsalami Ismaila","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-05-30 01:04:36"}],"meta":{"firstName":"Abdulsalami","lastName":"Ismaila","email":"abdulsalamiismaila8@gmail.com"}}}
 [2025-05-30 13:04:36] DB Update Successful for user abdulsalamiismaila8@gmail.com
+[2025-06-01 09:26:37] User's existing virtual account: None
+[2025-06-01 09:26:37] Generated reference: ref_976172b7-3a32-4448-a5d6-560c55b504ab for user duvuba@gmail.com
+[2025-06-01 09:26:44] Billstack response: {"status":true,"message":"Account reserved","data":{"reference":"R-JPQMONHLWF","account":[{"account_number":"5761525724","account_name":"VTU-Stacy Spencer","bank_name":"9PSB Bank","bank_id":"9PSB","created_at":"2025-06-01 09:26:44"}],"meta":{"firstName":"Stacy","lastName":"Spencer","email":"duvuba@gmail.com"}}}
+[2025-06-01 09:26:44] DB Update Successful for user duvuba@gmail.com
