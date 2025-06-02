@@ -151,19 +151,6 @@ require __DIR__ . '/../partials/header.php';
 <script src="../assets/js/pin-pad.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    fetch("fetch-plans.php")
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                displayNetworks(data.providers);
-                setupPlanSelection(data.plans);
-            } else {
-                console.error("Failed to load plans:", data.message);
-            }
-        })
-        .catch(error => console.error("Error fetching plans:", error));
-});
 
 function displayNetworks(providers) {
     const networkSection = document.querySelector(".network-tabs");
@@ -178,7 +165,6 @@ function displayNetworks(providers) {
         networkSection.appendChild(networkTab);
     });
 }
-
 
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -1413,6 +1413,16 @@ th {
 	font-size: 14px;
 }
 
+@keyframes slideUp {
+	from {
+		transform: translateY(100%);
+	}
+
+	to {
+		transform: translateY(0);
+	}
+}
+
 #customer-phone {
 	font-size: 1.5rem;
 	color: var(--primary);
@@ -1456,16 +1466,6 @@ th {
 	border-radius: 10px;
 	cursor: pointer;
 	font-size: 16px;
-}
-
-@keyframes slideUp {
-	from {
-		transform: translateY(100%);
-	}
-
-	to {
-		transform: translateY(0);
-	}
 }
 
 /* PINPAD MODAL */
