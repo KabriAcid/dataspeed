@@ -179,22 +179,6 @@ function displayNetworks(providers) {
     });
 }
 
-function setupPlanSelection(plans) {
-    const plansSection = document.querySelector(".plans-section");
-
-    plans.forEach(plan => {
-        const planCard = document.createElement("div");
-        planCard.classList.add("plan-card");
-        planCard.dataset.planId = plan.id;
-        planCard.innerHTML = `
-            <p>&#8358;${plan.price}</p>
-            <h5>${plan.name}</h5>
-        `;
-        planCard.addEventListener("click", () => handlePlanSelection(plan));
-
-        plansSection.appendChild(planCard);
-    });
-}
 
 
 document.addEventListener('DOMContentLoaded', function () {
