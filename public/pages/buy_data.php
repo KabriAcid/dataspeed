@@ -35,61 +35,21 @@ require __DIR__ . '/../partials/header.php';
         </div>
 
         <div class="plans-section">
-            <div class="d-flex" style="justify-content: space-around; align-items: center;">
-                <!-- Card  -->
-                <div>
-                    <div class="card p-0 plan-card border-0 mb-3 shadow">
-                        <div class="card-body px-3 py-2 text-dark rounded-3">
-                            <div class="text-center">
-                                <p id="data-amount">&#8358;800</p>
-                                <h5 id="data-volume">1.2GB</h5>
-                                <p id="data-duration">7 DAYS</p>
-                            </div>
-                            <!-- <span class="badge bg-dark-subtle text-dark fw-semibold">AWOOF</span> -->
-                        </div>
-                    </div>
-                </div>
-                <!-- Card  -->
-                <div>
-                    <div class="card p-0 plan-card border-0 mb-3 shadow">
-                        <div class="card-body px-3 py-2 text-dark rounded-3">
-                            <div class="text-center">
-                                <p id="data-amount">&#8358;800</p>
-                                <h5 id="data-volume">1.2GB</h5>
-                                <p id="data-duration">7 DAYS</p>
-                            </div>
-                            <!-- <span class="badge bg-dark-subtle text-dark fw-semibold">AWOOF</span> -->
-                        </div>
-                    </div>
-                </div>
-                <!-- Card  -->
-                <div>
-                    <div class="card p-0 plan-card border-0 mb-3 shadow">
-                        <div class="card-body px-3 py-2 text-dark rounded-3">
-                            <div class="text-center">
-                                <p id="data-amount">&#8358;800</p>
-                                <h5 id="data-volume">1.2GB</h5>
-                                <p id="data-duration">7 DAYS</p>
-                            </div>
-                            <!-- <span class="badge bg-dark-subtle text-dark fw-semibold">AWOOF</span> -->
-                        </div>
-                    </div>
-                </div>
-                <!-- Card  -->
-                <div>
-                    <div class="card p-0 plan-card border-0 mb-3 shadow">
-                        <div class="card-body px-3 py-2 text-dark rounded-3">
-                            <div class="text-center">
-                                <p id="data-amount">&#8358;800</p>
-                                <h5 id="data-volume">1.2GB</h5>
-                                <p id="data-duration">7 DAYS</p>
-                            </div>
-                            <!-- <span class="badge bg-dark-subtle text-dark fw-semibold">AWOOF</span> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php
+            // Fetch active data plans from the database
+            $stmt = $pdo->prepare("SELECT * FROM service_plans WHERE is_active = 1 ORDER BY price ASC");
+            $stmt->execute();
+            $plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            foreach ($plans as $plan) {
+                ?>
+                <div class='plan-card' data-plan-id='<?= $plan['id'];?>' data-provider-id='<?= $plan['provider_id'];?>'>
+                    <p>&#8358;<?= $plan['price'] ?></p>
+                    <h5><?= $plan['name'] ?></h5>
+                </div>
+                <?php
+            }
+            ?>
         </div>
 
         <form action="" method="post">
@@ -191,6 +151,52 @@ require __DIR__ . '/../partials/header.php';
 <script src="../assets/js/pin-pad.js"></script>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    fetch("fetch-plans.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                displayNetworks(data.providers);
+                setupPlanSelection(data.plans);
+            } else {
+                console.error("Failed to load plans:", data.message);
+            }
+        })
+        .catch(error => console.error("Error fetching plans:", error));
+});
+
+function displayNetworks(providers) {
+    const networkSection = document.querySelector(".network-tabs");
+
+    providers.forEach(provider => {
+        const networkTab = document.createElement("div");
+        networkTab.classList.add("network-tab");
+        networkTab.dataset.networkId = provider.id;
+        networkTab.innerHTML = `<span>${provider.name}</span>`;
+        networkTab.addEventListener("click", () => handleNetworkSelection(provider.id));
+
+        networkSection.appendChild(networkTab);
+    });
+}
+
+function setupPlanSelection(plans) {
+    const plansSection = document.querySelector(".plans-section");
+
+    plans.forEach(plan => {
+        const planCard = document.createElement("div");
+        planCard.classList.add("plan-card");
+        planCard.dataset.planId = plan.id;
+        planCard.innerHTML = `
+            <p>&#8358;${plan.price}</p>
+            <h5>${plan.name}</h5>
+        `;
+        planCard.addEventListener("click", () => handlePlanSelection(plan));
+
+        plansSection.appendChild(planCard);
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const phoneInput = document.getElementById('phone-number');
     const purchaseBtn = document.getElementById('purchaseBtn');
