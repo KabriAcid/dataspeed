@@ -20,7 +20,7 @@ require __DIR__ . '/../partials/header.php';
                     <span>MTN</span>
                 </div>
                 <div class="network-tab" id="airtel-tab" data-network="airtel" style="--brand-color: #EB1922;">
-                    <img src="../assets/icons/airtel-logo-1.svg" alt="airtel-logo">
+                    <img src="../assets/icons/airtel-logo-1.svg" alt="airtel-logo" class="airtel-logo">
                     <span>Airtel</span>
                 </div>
                 <div class="network-tab" id="glo-tab" data-network="glo" style="--brand-color: #50B651;">
@@ -33,6 +33,7 @@ require __DIR__ . '/../partials/header.php';
                 </div>
             </div>
         </div>
+
 
         <div class="plans-section">
             <?php
@@ -151,115 +152,149 @@ require __DIR__ . '/../partials/header.php';
 <script src="../assets/js/pin-pad.js"></script>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const phoneInput = document.getElementById("phone-number");
+    const purchaseBtn = document.getElementById("purchaseBtn");
+    const confirmModal = document.getElementById("confirmModal");
+    const closeConfirm = document.getElementById("closeConfirm");
+    const payBtn = document.getElementById("payBtn");
+    const customerPhone = document.getElementById("customer-phone");
 
-function displayNetworks(providers) {
-    const networkSection = document.querySelector(".network-tabs");
+    const networkTabs = document.querySelectorAll(".network-tab");
+    const planCards = document.querySelectorAll(".plan-card");
+    const airtelLogo = document.querySelector(".airtel-logo");
 
-    providers.forEach(provider => {
-        const networkTab = document.createElement("div");
-        networkTab.classList.add("network-tab");
-        networkTab.dataset.networkId = provider.id;
-        networkTab.innerHTML = `<span>${provider.name}</span>`;
-        networkTab.addEventListener("click", () => handleNetworkSelection(provider.id));
+    let selectedNetwork = null;
+    let selectedPlan = null;
 
-        networkSection.appendChild(networkTab);
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const phoneInput = document.getElementById('phone-number');
-    const purchaseBtn = document.getElementById('purchaseBtn');
-    const confirmModal = document.getElementById('confirmModal');
-    const closeConfirm = document.getElementById('closeConfirm');
-    const payBtn = document.getElementById('payBtn');
-    const customerPhone = document.getElementById('customer-phone');
-
-    // Validate phone number length
-    phoneInput.addEventListener('input', function () {
-        let raw = this.value.replace(/\D/g, '');
+    // **Phone Number Validation**
+    phoneInput.addEventListener("input", function () {
+        let raw = this.value.replace(/\D/g, "");
         if (raw.length > 10) raw = raw.slice(0, 10);
         this.value = raw;
 
-        if (raw.length === 10) {
-            purchaseBtn.disabled = false;
-        } else {
-            purchaseBtn.disabled = true;
-        }
+        purchaseBtn.disabled = raw.length !== 10;
     });
 
-    // Show confirm modal when phone is valid
-    purchaseBtn.addEventListener('click', function () {
+    // **Network Selection Handling**
+    networkTabs.forEach(tab => {
+        tab.addEventListener("click", function () {
+            // Remove active state from all tabs
+            networkTabs.forEach(tab => tab.classList.remove("active"));
+
+            // Apply active state to selected tab
+            this.classList.add("active");
+
+            // Get selected network ID & brand color
+            selectedNetwork = this.dataset.network;
+            const brandColor = this.style.getPropertyValue("--brand-color");
+
+            // Apply brand color globally
+            document.body.style.setProperty("--brand-color", brandColor);
+
+            // Change Airtel's logo when selected
+            airtelLogo.src = selectedNetwork === "airtel"
+                ? "../assets/icons/airtel-logo-2.svg"
+                : "../assets/icons/airtel-logo-1.svg";
+
+            // Clear previous plan selection
+            selectedPlan = null;
+            planCards.forEach(card => card.classList.remove("active"));
+        });
+    });
+
+    // **Plan Selection Handling**
+    planCards.forEach(card => {
+        card.addEventListener("click", function () {
+            if (!selectedNetwork) {
+                showToasted("Please select a network first.", "error");
+                return;
+            }
+
+            // Remove active state from all plans
+            planCards.forEach(card => card.classList.remove("active"));
+
+            // Apply active state to selected plan
+            this.classList.add("active");
+
+            // Store selected plan ID
+            selectedPlan = this.dataset.planId;
+
+            // Apply brand color background to the selected plan
+            this.style.backgroundColor = document.body.style.getPropertyValue("--brand-color");
+        });
+    });
+
+    // **Show Confirm Modal**
+    purchaseBtn.addEventListener("click", function () {
         const raw = phoneInput.value.trim();
-        if (raw.length !== 10) {
-            showToasted('Please enter a valid 10-digit phone number.', 'error');
+        if (raw.length !== 10 || !selectedNetwork || !selectedPlan) {
+            showToasted("Please complete all selections before proceeding.", "error");
             return;
         }
 
         const formatted = formatPhoneNumber(raw);
         customerPhone.textContent = formatted;
-        customerPhone.dataset.raw = '0' + raw;
-        confirmModal.style.display = 'flex';
+        customerPhone.dataset.raw = "0" + raw;
+        confirmModal.style.display = "flex";
     });
 
-    // Close modal with close button
-    closeConfirm?.addEventListener('click', () => {
-        confirmModal.style.display = 'none';
+    // **Close Confirm Modal**
+    closeConfirm?.addEventListener("click", () => {
+        confirmModal.style.display = "none";
     });
 
-    // Dismiss modal on outside click
-    confirmModal.addEventListener('click', (e) => {
+    confirmModal.addEventListener("click", (e) => {
         if (e.target === confirmModal) {
-            confirmModal.style.display = 'none';
+            confirmModal.style.display = "none";
         }
     });
 
-    // Pay button action
-    payBtn?.addEventListener('click', function () {
-        const phone = customerPhone?.dataset?.raw || '';
-        const amount = document.getElementById('confirm-amount')?.textContent.replace(/\D/g, '');
+    // **Pay Button Action**
+    payBtn?.addEventListener("click", function () {
+        const phone = customerPhone?.dataset?.raw || "";
+        const amount = document.getElementById("confirm-amount")?.textContent.replace(/\D/g, "");
 
         if (!phone || !amount) {
-            showToasted('Missing purchase details.', 'error');
+            showToasted("Missing purchase details.", "error");
             return;
         }
 
-        sendAjaxRequest('check-balance.php', 'POST', `amount=${amount}`, function (res) {
+        sendAjaxRequest("check-balance.php", "POST", `amount=${amount}`, function (res) {
             if (res.success) {
-                document.getElementById('pinModal').style.display = 'flex';
+                document.getElementById("pinModal").style.display = "flex";
             } else {
-                showToasted(res.message, 'error');
+                showToasted(res.message, "error");
             }
         });
     });
-});
 
-// Phone number formatter (e.g. 09012345678 => 090 1234 5678)
-function formatPhoneNumber(num) {
-    if (num.length !== 10) return num;
-    return '0' + num.substring(0, 3) + ' ' + num.substring(3, 7) + ' ' + num.substring(7);
-}
-</script>
+    // **Phone Number Formatter**
+    function formatPhoneNumber(num) {
+        return num.length === 10 ? "0" + num.substring(0, 3) + " " + num.substring(3, 7) + " " + num.substring(7) : num;
+    }
 
-<script>
-    // Reusable pin modal trigger
+    // **Reusable PIN Modal Trigger**
     const showPinModal = (onPinSuccess) => {
-        const modal = document.getElementById('pinModal');
-        modal.style.display = 'flex';
+        const modal = document.getElementById("pinModal");
+        modal.style.display = "flex";
 
-        initPinPad('#pinModal', function(pin) {
-            sendAjaxRequest('authenticate-pin.php', 'POST', 'pin=' + pin, function(res) {
+        initPinPad("#pinModal", function(pin) {
+            sendAjaxRequest("authenticate-pin.php", "POST", "pin=" + pin, function(res) {
                 if (res.success) {
-                    showToasted('PIN verified.', 'success');
-                    modal.style.display = 'none';
-                    onPinSuccess(); // continue
+                    showToasted("PIN verified.", "success");
+                    modal.style.display = "none";
+                    onPinSuccess(); // Continue process
                 } else {
-                    showToasted(res.message || 'Invalid PIN.', 'error');
+                    showToasted(res.message || "Invalid PIN.", "error");
                 }
             });
         });
     };
+});
+
 </script>
+
 
 
 <!-- FontAwesome CDN -->
