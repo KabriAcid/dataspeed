@@ -7,8 +7,8 @@ if (!isset($_GET['transaction_id'])) {
     exit;
 }
 
-if (isset($_SESSION['user'])) {
-    $user_id = $_SESSION['user']['user_id'];
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id']['user_id'];
 }
 
 $transaction_id = $_GET['transaction_id'];

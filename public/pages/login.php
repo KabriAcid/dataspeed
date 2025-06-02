@@ -3,6 +3,14 @@ $success = null;
 if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
+// config file and model
+session_start();
+require __DIR__ . '/../../config/config.php';
+require __DIR__ . '/../../functions/Model.php';
+
+$userInfo = getUserInfo($pdo, $userId = $_SESSION['user_id'] ?? null);
+echo $userInfo['account_status'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -4,7 +4,7 @@ require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../../functions/getVirtualAccount.php';
 
 // Assume user is logged in and $userId is set
-$userId = $_SESSION['user']['user_id'] ?? null;
+$userId = $_SESSION['user_id']['user_id'] ?? null;
 
 $virtualAccount = getUserVirtualAccount($pdo, $userId);
 ?>

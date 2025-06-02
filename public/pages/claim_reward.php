@@ -5,12 +5,12 @@ require __DIR__ . '/../../functions/Model.php';
 
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in']);
     exit;
 }
 
-$user_id = $_SESSION['user'] ?? null;
+$user_id = $_SESSION['user_id'] ?? null;
 
 if (!isset($_POST['referral_id'])) {
     echo json_encode(['success' => false, 'message' => 'No referral ID provided']);

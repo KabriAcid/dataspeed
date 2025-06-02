@@ -5,7 +5,7 @@ require __DIR__ . '/../../config/config.php';
 header('Content-Type: application/json');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (!isset($_SESSION['user'])) {
+    if (!isset($_SESSION['user_id'])) {
         echo json_encode(["success" => false, "message" => "Unauthorized access."]);
         exit;
     }
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
     $amount = (float)$amount;
-    $user_id = $_SESSION['user'];
+    $user_id = $_SESSION['user_id'];
 
     try {
         $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ?");

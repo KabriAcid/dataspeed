@@ -5,12 +5,12 @@ header('Content-Type: application/json');
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
 
-$user_id = $_SESSION['user'];
+$user_id = $_SESSION['user_id'];
 $step = $_POST['step'] ?? '';
 
 try {

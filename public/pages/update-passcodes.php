@@ -7,12 +7,12 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ensure user is authenticated
-    if (!isset($_SESSION['user'])) {
+    if (!isset($_SESSION['user_id'])) {
         echo json_encode(['success' => false, 'message' => 'Unauthorized access.']);
         exit;
     }
 
-    $user_id = $_SESSION['user'];
+    $user_id = $_SESSION['user_id'];
 
     // Trim inputs
     $newPassword = trim($_POST['newPassword'] ?? '');

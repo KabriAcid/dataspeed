@@ -26,9 +26,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare("SELECT * FROM users WHERE phone_number = ?");
         }
 
+        
         $stmt->execute([$user]);
         $userRow = $stmt->fetch();
 
+        if (!$userRow) {
+            echo json_encode(["success" => false, "message" => "Invalid user or password."]);
+            exit;
+        }
+        
         // Check account active status in the database
         if ($userRow['account_status'] == 'Frozen') {
             echo json_encode(["success" => false, "message" => "Account is frozen. Try again in 1 hour."]);
@@ -48,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($userRow && password_verify($password, $userRow['password'])) {
             // Set session variables
-            $_SESSION['user'] = $userRow['user_id'];
+            $_SESSION['user_id'] = $userRow['user_id'];
 
             echo json_encode(["success" => true, "message" => "Login successful."]);
         } else {

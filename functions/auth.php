@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($userData && password_verify($password, $userData['password'])) {
-        $_SESSION['user'] = $userData;
+        $_SESSION['user_id'] = $userData;
         echo json_encode(['status' => 'success', 'message' => 'Login successful.']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Invalid login credentials.']);

@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['step'] ?? '') === 'address') {
     $state = trim($_POST['state'] ?? '');
     $lga = trim($_POST['lga'] ?? '');
-    $userId = $_SESSION['user'] ?? null;
+    $userId = $_SESSION['user_id'] ?? null;
 
     if (!$state || !$lga || !$userId) {
         echo json_encode(['success' => false, 'message' => 'Missing required fields']);
