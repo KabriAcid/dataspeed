@@ -97,7 +97,8 @@ if (isset($_GET['referral_code'])) {
                         </button>
                     </div>
                     <div class="otp-timer-container">
-                        <p>Time remaining: <span id="otp-timer">10:00</span></p>
+                        <p>Time remaining: <span id="otp-timer">03:00</span></p>
+                        <a id="resend-otp-btn" class="disabled-link">Resend OTP</a>
                     </div>
                 </div>
 
@@ -171,31 +172,6 @@ function showOverlay() {
         document.getElementById("overlay").style.display = "none";
     }, timeout);
 }
-
-
-let countdown = 600; // 10 minutes in seconds
-const timerDisplay = document.getElementById("otp-timer");
-const verifyBtn = document.getElementById("verify-otp-btn");
-
-function updateTimer() {
-    if (!timerDisplay) return;
-
-    const minutes = Math.floor(countdown / 60);
-    const seconds = countdown % 60;
-    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-    if (countdown === 0) {
-        timerDisplay.textContent = "OTP Expired! Request a new one.";
-        verifyBtn.disabled = true;
-        verifyBtn.classList.add('inactive-btn');
-        verifyBtn.style.cursor = 'not-allowed';
-        clearInterval(timerInterval);
-    }
-
-    countdown--;
-}
-
-const timerInterval = setInterval(updateTimer, 1000);
 
 document.getElementById('registration_reset').addEventListener('click', function(){
     sessionStorage.clear();

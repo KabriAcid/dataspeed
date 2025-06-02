@@ -3,13 +3,7 @@ $success = null;
 if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
-// config file and model
-session_start();
-require __DIR__ . '/../../config/config.php';
-require __DIR__ . '/../../functions/Model.php';
 
-$userInfo = getUserInfo($pdo, $userId = $_SESSION['user_id'] ?? null);
-echo $userInfo['account_status'];
 
 ?>
 <!DOCTYPE html>
@@ -42,6 +36,14 @@ echo $userInfo['account_status'];
     <?php
     if ($success == 1) {
         echo "<script>showToasted('Registration Successful', 'success')</script>";
+        // Redirect to the same page without the success parameter
+        echo "<script>window.location.href='login.php';</script>";
+        exit;
+    } elseif ($success == 2) {
+        echo "<script>showToasted('Password reset Successfully', 'success')</script>";
+        // Redirect to the same page without the success parameter
+        echo "<script>window.location.href='login.php';</script>";
+        exit;
     }
     ?>
     <div class="form-container text-center">
