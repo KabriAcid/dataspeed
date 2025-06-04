@@ -37,7 +37,10 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <p class="m-0 mx-3 fw-semibold">Profile Setting</p>
+                            <div class="">
+                                <p class="m-0 mx-3 fw-semibold">Profile Setting</p>
+                                <span class="m-0 mx-3 text-sm text-secondary">Profile update and biodata.</span>
+                            </div>
                         </div>
                         <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -66,7 +69,10 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <p class="m-0 mx-3 fw-semibold">Transaction History</p>
+                            <div class="">
+                                <p class="m-0 mx-3 fw-semibold">Transaction History</p>
+                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">View all history of transactions.</span>
+                            </div>
                         </div>
                         <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -93,7 +99,10 @@ require __DIR__ . '/../partials/header.php';
                                         stroke-linejoin="round" />
                                 </svg>
                             </div>
-                            <p class="m-0 mx-3 fw-semibold">Referrals</p>
+                            <div class="">
+                                <p class="m-0 mx-3 fw-semibold">Referrals</p>
+                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">Claim pending referrals rewards.</span>
+                            </div>
                         </div>
                         <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -121,7 +130,10 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <p class="m-0 mx-3 fw-semibold">Security Settings</p>
+                            <div>
+                                <p class="m-0 mx-3 fw-semibold">Security Settings</p>
+                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">Change password and PIN.</span>
+                            </div>
                         </div>
                         <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -171,7 +183,10 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <p class="m-0 mx-3 fw-semibold">FAQ & Help</p>
+                            <div class="">
+                                <p class="m-0 mx-3 fw-semibold">FAQ & Help</p>
+                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">See frequently asked questions.</span>
+                            </div>
                         </div>
                         <div>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -203,7 +218,10 @@ require __DIR__ . '/../partials/header.php';
 
 
                             </div>
-                            <p class="m-0 mx-3 fw-semibold">Log Out</p>
+                            <div class="">
+                                <p class="m-0 mx-3 fw-semibold">Sign out</p>
+                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">Log out of your account.</span>
+                            </div>
                         </div>
                     </div>
                 </a>

@@ -6,7 +6,7 @@ require __DIR__ . '/../partials/header.php';
 
 ?>
 
-<body>
+<body class="pt-5">
     <main class="container py-4">
         <header class="mb-4 text-center page-header">
             <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">

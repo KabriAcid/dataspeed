@@ -36,34 +36,85 @@ require __DIR__ . '/../partials/header.php';
 
 
         <div class="plans-section">
-            <?php
-            // Fetch active data plans from the database
-            $stmt = $pdo->prepare("SELECT * FROM service_plans WHERE is_active = 1 ORDER BY price ASC");
-            $stmt->execute();
-            $plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($plans as $plan) {
-                ?>
-                <div class='plan-card' data-plan-id='<?= $plan['id'];?>' data-provider-id='<?= $plan['provider_id'];?>'>
-                    <p>&#8358;<?= $plan['price'] ?></p>
-                    <h5><?= $plan['name'] ?></h5>
-                </div>
+            <div class="">
+                <!-- Loop through top 3 plans -->
                 <?php
-            }
-            ?>
+                $plans = [
+                    ["price" => "₦500", "volume" => "1GB", "validity" => "1 DAY"],
+                    ["price" => "₦800", "volume" => "1.5GB", "validity" => "7 DAYS"],
+                    ["price" => "₦1,200", "volume" => "2GB", "validity" => "30 DAYS"],
+                ];
+                 foreach ($plans as $plan): ?>
+                    <div class="plans-container">
+                        <div class="plan-card" data-plan-id="<?= $plan['price']; ?>">
+                        <div class="plan-details">
+                            <div class="plan-price"><?= $plan['price']; ?></div>
+                            <div class="plan-data"><?= $plan['volume']; ?></div>
+                            <div class="plan-validity"><?= $plan['validity']; ?></div>
+                            <!-- <div class="plan-provider">AWOOF</div> -->
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                    
+                    <div class="see-all-card card card-body" id="seeAllBtn" data-bs-toggle="modal" data-bs-target="#allPlansModal">
+                        <div class="see-all-content">
+                            <span class="see-all-text">SEE ALL</span>
+                            <span class="arrow-icon"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Scrollable Modal -->
+        <div class="modal fade" id="allPlansModal" tabindex="-1" aria-labelledby="allPlansLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold">Select a Plan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body overflow-auto" style="max-height: 400px;">
+                        <div class="row g-3">
+                            <!-- Loop through additional plans -->
+                            <?php
+                            $extraPlans = [
+                                ["price" => "₦2,500", "volume" => "5GB", "validity" => "30 DAYS"],
+                                ["price" => "₦3,800", "volume" => "10GB", "validity" => "30 DAYS"],
+                                ["price" => "₦5,500", "volume" => "15GB", "validity" => "60 DAYS"],
+                            ];
+
+                            foreach ($extraPlans as $plan): ?>
+                                <div class="col-12 col-md-4">
+                                    <div class="card sim-card shadow-sm border-0 p-2 text-center" data-plan-id="<?= $plan['price']; ?>">
+                                        <div class="sim-chip"></div> <!-- SIM Chip Style -->
+                                        <h5 class="fw-bold text-primary"><?= $plan['price']; ?></h5>
+                                        <p class="text-dark"><?= $plan['volume']; ?></p>
+                                        <p class="text-muted"><?= $plan['validity']; ?></p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <form action="" method="post">
-    <div class="phone-container">
-        <span class="phone-prefix text-xs">
-            <img src="../assets/img/ng.png" alt=""> +234
-        </span>
-        <input type="tel" id="phone-number" name="phone_number" maxlength="10"
-            placeholder="Phone Number" class="input">
-    </div>
-    <!-- Trigger Button -->
-    <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
-</form>
+            <div class="phone-container">
+                <span class="phone-prefix text-xs">
+                    <img src="../assets/img/ng.png" alt=""> +234
+                </span>
+                <input type="tel" id="phone-number" name="phone_number" maxlength="10"
+                    placeholder="Phone Number" class="input">
+            </div>
+            <!-- Trigger Button -->
+            <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
+        </form>
 
 <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
 </main>
@@ -98,54 +149,59 @@ require __DIR__ . '/../partials/header.php';
     </div>
 </div>
 
-<!-- PIN Pad Modal -->
+<!-- PIN Modal -->
 <div id="pinModal" class="modal-overlay" style="display: none;">
-    <div class="pin-container">
-        <!-- Avatar -->
-        <div class="avatar-section d-flex justify-content-center align-items-center">
-            <img src="../assets/img/avatar.jpg" alt="User Avatar" class="pinpad-avatar img-fluid">
+  <div class="pin-container">
+      <div class="pin-header">
+          <img src="<?= $user['photo'];?>" alt="avatar" class="pinpad-avatar">
+          <h6>Abdullahi</h6>
+      </div>
+      <h3 style="text-align: center;">Welcome Back</h3>
+      <div class="pin-field">
+        <!-- Icon section -->
+        <div class="icon-section">
+          <i class="fas fa-shield-check check-icon fa-2x"></i>
+          <p class="mt-2 mb-0 fw-bold text-center">Enter Transaction PIN</p>
         </div>
-        <div class="my-3 text-center">
-            <h5 class="mb-1">Welcome Back!</h5>
-            <p>Please enter your 4-digit PIN</p>
-        </div>
-        <div class="pin-section">
+          <!-- PIN Dots -->
+          <div class="pin-section">
             <div class="pin-dots">
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
+              <div class="pin-dot"></div>
+              <div class="pin-dot"></div>
+              <div class="pin-dot"></div>
+              <div class="pin-dot"></div>
             </div>
-        </div>
-        <div class="keypad">
-            <div class="keypad-row">
-                <button class="key-button" data-value="1">1</button>
-                <button class="key-button" data-value="2">2</button>
-                <button class="key-button" data-value="3">3</button>
-            </div>
-            <div class="keypad-row">
-                <button class="key-button" data-value="4">4</button>
-                <button class="key-button" data-value="5">5</button>
-                <button class="key-button" data-value="6">6</button>
-            </div>
-            <div class="keypad-row">
-                <button class="key-button" data-value="7">7</button>
-                <button class="key-button" data-value="8">8</button>
-                <button class="key-button" data-value="9">9</button>
-            </div>
-            <div class="keypad-row">
-                <button class="key-button"></button>
-                <button class="key-button" data-value="0">0</button>
-                <button id="backspace" class="key-backspace">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M2.515 10.674a1.875 1.875 0 000 2.652L8.89 19.7c.352.351.829.549 1.326.549H19.5a3 3 0 003-3V6.75a3 3 0 00-3-3h-9.284c-.497 0-.974.198-1.326.55l-6.375 6.374zM12.53 9.22a.75.75 0 10-1.06 1.06L13.19 12l-1.72 1.72a.75.75 0 101.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 101.06-1.06L15.31 12l1.72-1.72a.75.75 0 10-1.06-1.06l-1.72 1.72-1.72-1.72z" clip-rule="evenodd"></path></svg>
-                </button>
-            </div>
-        </div>
-        <div class="modal-actions d-flex justify-content-start align-items-center mt-4">
-            <button class="logout bg-white fw-bolder text-dark shadow-md border-0 px-3 py-2 cursor-pointer rounded-2">Logout</button>
-            <button class="ms-3 forgot bg-white fw-bolder text-dark shadow-md border-0 px-3 py-2 cursor-pointer rounded-2">Forgot PIN?</button>
-        </div>
-    </div>
+          </div>
+      </div>
+      <div class="pin-keypad">
+          <div class="keypad-row">
+              <button class="key-button" data-value="1">1</button>
+              <button class="key-button" data-value="2">2</button>
+              <button class="key-button" data-value="3">3</button>
+          </div>
+          <div class="keypad-row">
+              <button class="key-button" data-value="4">4</button>
+              <button class="key-button" data-value="5">5</button>
+              <button class="key-button" data-value="6">6</button>
+          </div>
+          <div class="keypad-row">
+              <button class="key-button" data-value="7">7</button>
+              <button class="key-button" data-value="8">8</button>
+              <button class="key-button" data-value="9">9</button>
+          </div>
+          <div class="keypad-row">
+              <button class="key-spacer"></button>
+              <button class="key-button" data-value="0">0</button>
+              <button id="backspace" class="key-backspace">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="45" height="45"><path fill-rule="evenodd" d="M2.515 10.674a1.875 1.875 0 000 2.652L8.89 19.7c.352.351.829.549 1.326.549H19.5a3 3 0 003-3V6.75a3 3 0 00-3-3h-9.284c-.497 0-.974.198-1.326.55l-6.375 6.374zM12.53 9.22a.75.75 0 10-1.06 1.06L13.19 12l-1.72 1.72a.75.75 0 101.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 101.06-1.06L15.31 12l1.72-1.72a.75.75 0 10-1.06-1.06l-1.72 1.72-1.72-1.72z" clip-rule="evenodd"></path></svg>
+              </i></button>
+          </div>
+      </div>
+      <div class="pin-action-buttons">
+          <button id="pin-logout-btn">Logout</button>
+          <button id="pin-forgot-btn">Forgot PIN</button>
+      </div>
+  </div>
 </div>
 
 <script src="../assets/js/ajax.js"></script>

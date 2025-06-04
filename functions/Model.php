@@ -239,3 +239,7 @@ function updateWalletBalance(PDO $pdo, int $user_id, float $amount, string $type
         return false;
     }
 }
+
+function fetchServicePlans(){
+    return;
+}

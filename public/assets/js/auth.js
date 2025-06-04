@@ -9,23 +9,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const user = userInput.value.trim();
         const password = passwordInput.value.trim();
 
-        userInput.classList.remove("error-input");
-        passwordInput.classList.remove("error-input");
-
         if (!user && !password) {
             showToasted("Email and password are required.", 'error');
-            userInput.classList.add("error-input");
-            passwordInput.classList.add("error-input");
             return;
         }
         if (!user) {
             showToasted("Phone number or email is required.", 'error');
-            userInput.classList.add("error-input");
             return;
         }
         if (!password) {
             showToasted("Password is required.", 'error');
-            passwordInput.classList.add("error-input");
             return;
         }
 

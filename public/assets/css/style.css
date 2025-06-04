@@ -1000,7 +1000,7 @@ button:disabled {
 
 .time {
 	font-size: 0.75rem;
-	color: rgb(107, 114, 128);
+	color: #6b7280;
 }
 
 .notification-details p {
@@ -1093,13 +1093,6 @@ button:disabled {
 	font-size: 0.875rem;
 	margin-bottom: var(--space-2);
 	color: var(--color-neutral-700);
-}
-
-.pin-dots {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
-	margin: 10px 0 20px;
 }
 
 .amount {
@@ -1275,7 +1268,7 @@ th {
 
 .network-tab {
 	padding: 5px 10px;
-	border-radius: 4px 12px 4px 4px;
+	border-radius: 8px;
 	box-shadow: 3px 4px 11px #eee;
 	margin-right: 10px;
 	width: 100%;
@@ -1309,6 +1302,29 @@ th {
 	font-weight: 600;
 }
 
+.sim-card {
+    background: linear-gradient(to bottom, #ffffff, #f2f2f2);
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+    transition: 0.3s ease-in-out;
+}
+
+.sim-card.active {
+    background-color: var(--brand-color);
+    color: #fff;
+}
+
+.sim-chip {
+    width: 40px;
+    height: 30px;
+    background: gold;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    border-radius: 5px;
+}
+
 #data-amount {
 	letter-spacing: 0.05em;
 	font-weight: 500;
@@ -1330,13 +1346,90 @@ th {
 }
 .plans-section {
 	margin-top: 20px;
-	padding: 10px;
+}
+
+.plans-container {
+	display: flex;
+	justify-content: space-between;
 }
 
 .plan-card {
-	/* padding: 15px; */
-	border-radius: 8px;
 	margin-bottom: 10px;
+	width: 220px;
+	height: 200px;
+	background-color: #ffcc00;
+	border-radius: 16px;
+	max-width: 100px;
+	max-height: 100px;
+	position: relative;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	transition: transform 0.3s ease;
+	cursor: pointer;
+	padding: 16px;
+}
+
+.plan-details {
+	/* padding: 16px; */
+	text-align: center;
+}
+
+.plan-price {
+	font-size: 1rem;
+	font-weight: 500;
+	margin: 0;
+	margin-bottom: 0px;
+}
+
+.plan-data {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-bottom: 0px;
+	margin: 0;
+}
+
+.plan-validity {
+	font-size: 1.25rem;
+	font-weight: 500;
+	margin-bottom: 16px;
+}
+
+.plan-provider {
+	position: absolute;
+	bottom: 24px;
+	right: 24px;
+	font-weight: 500;
+}
+
+.see-all-card {
+	width: 220px;
+	height: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.see-all-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+}
+
+.see-all-text {
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+.arrow-icon {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	border-right: 3px solid #000;
+	border-top: 3px solid #000;
+	transform: rotate(45deg);
+	transition: transform 0.3s ease;
 }
 
 /* BUY AIRTIME */
@@ -1470,11 +1563,13 @@ th {
 
 /* PINPAD MODAL */
 .pin-container {
-	background: #fff;
 	width: 100%;
-	overflow-y: auto;
-	padding: 16px 20px;
-	animation: slideUp 0.4s ease-out;
+	z-index: 9999;
+	background-color: #fff;
+	height: 100%;
+	margin: auto;
+	padding: 12px 16px;
+	animation: SlideUp 0.4s ease-out;
 }
 /* Styles for pinpad avatar */
 
@@ -1505,19 +1600,33 @@ th {
 	width: 16px;
 	height: 16px;
 	border: 1px solid #ddd;
-	border-radius: 8px;
+	border-radius: 2px;
 	transition: all var(--transition-normal);
+}
+
+.pin-header img {
+	display: block;
+	width: 70px;
+	height: 70px;
+	border-radius: 100%;
+	margin: auto;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+.pin-header h6 {
+	text-align: center;
+	margin-bottom: 10px;
 }
 
 .pin-dot.filled {
 	background-color: var(--primary);
 }
 
-.keypad {
+.pin-keypad {
 	margin-bottom: var(--space-4);
+	max-width: 400px;
 	width: 90%;
 	margin: auto;
-	max-width: 400px;
 }
 
 .keypad-row {
@@ -1534,7 +1643,7 @@ th {
 	border: none;
 	background: transparent;
 	font-size: 1.85rem;
-	font-weight: 800;
+	font-weight: 500;
 	color: var(--gray-600);
 	cursor: pointer;
 	transition: all var(--transition-fast);
@@ -1558,8 +1667,30 @@ th {
 	visibility: visible;
 }
 
-.modal-actions button:hover {
-	background-color: var(--primary-dark);
+.pin-action-buttons {
+	margin: 20px 10px;
+}
+
+.pin-action-buttons button {
+	border: none;
+	background-color: white;
+	color: black;
+	padding: 8px 15px;
+	border: 1px solid #eee;
+	border-radius: 9999px;
+	box-shadow: 2px 2px 32px #eee;
+	font-weight: 800;
+	transition: 1s;
+}
+
+.pin-action-buttons button:hover {
+	background-color: var(--primary);
+	color: white;
+	transition: 1s;
+}
+
+.key-spacer {
+	display: none;
 }
 
 @media (max-width: 380px) {
@@ -1575,6 +1706,9 @@ th {
 		margin-bottom: var(--space-2);
 	}
 }
+
+
+
 
 /* PAGE HEADER  */
 .page-header {
