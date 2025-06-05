@@ -49,9 +49,9 @@ if (isset($_GET['success'])) {
         <div>
             <p class="text-secondary mb-0 text-sm">Total Balance</p>
             <div class="d-flex align-items-end">
-                <h2 class="display-5 fw-bold" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
-                <h2 class="display-5 fw-bold text-center d-none" id="hiddenBalance">********</h2>
-                <button class="btn btn-link text-secondary p-0 mx-1" id="toggleBalance" type="button">
+                <h2 class="display-5 fw-bold mb-0" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
+                <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
+                <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
                     <span id="balanceEye">
                         <!-- Default Eye-On SVG -->
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -248,26 +248,7 @@ if (isset($_GET['success'])) {
 
         <!-- FontAwesome CDN -->
     </main>
-
-    <script>
-    document.getElementById('toggleBalance').addEventListener('click', function() {
-        const balanceAmount = document.getElementById('balanceAmount');
-        const hiddenBalance = document.getElementById('hiddenBalance');
-        const eyeIcon = this.querySelector('svg');
-
-        if (balanceAmount.classList.contains('d-none')) {
-            balanceAmount.classList.remove('d-none');
-            hiddenBalance.classList.add('d-none');
-            eyeIcon.innerHTML =
-                '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
-        } else {
-            balanceAmount.classList.add('d-none');
-            hiddenBalance.classList.remove('d-none');
-            eyeIcon.innerHTML =
-                '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/>';
-        }
-    });
-    </script>
+    <script src="../assets/js/toggle-balance.js"></script>
     <script>
     document.getElementById('copy-icon').addEventListener('click', function() {
         const accountNumber = document.getElementById('account-number').innerText.trim();

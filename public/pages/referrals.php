@@ -193,6 +193,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
             console.error(err);
         });
     });
+    
     document.getElementById('copy-icon').addEventListener('click', function() {
         const referralCode = document.getElementById('referral_code').innerText.trim();
 
