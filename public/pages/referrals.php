@@ -153,7 +153,12 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                                         <?= $referrals['referral_code'] ?></h4>
                                 </div>
                                 <div class="shadow bg-white h-100 w-100 rounded ms-5">
-                                    <i class="fa fa-copy px-2 px-1 cursor-pointer fs-5" id="copy-icon"></i>
+                                <svg width="24" id="copy-icon" class="cursor-pointer" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.83333 6.61539C5.12206 6.61539 4.54545 7.18938 4.54545 7.89744V19.1795C4.54545 19.8875 5.12206 20.4615 5.83333 20.4615H14.0758C14.787 20.4615 15.3636 19.8875 15.3636 19.1795V11.3112C15.3636 10.9712 15.2279 10.6451 14.9864 10.4047L11.5571 6.99089C11.3156 6.75046 10.988 6.61539 10.6465 6.61539H5.83333ZM3 7.89744C3 6.33971 4.26853 5.07692 5.83333 5.07692H10.6465C11.3979 5.07692 12.1186 5.37408 12.6499 5.90303L16.0792 9.3168C16.6106 9.84575 16.9091 10.5632 16.9091 11.3112V19.1795C16.9091 20.7372 15.6406 22 14.0758 22H5.83333C4.26853 22 3 20.7372 3 19.1795V7.89744Z" fill="#030D45"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.12121 2.76923C7.12121 2.3444 7.46717 2 7.89394 2H12.1919C12.9434 2 13.664 2.29716 14.1954 2.82611L19.1701 7.77834C19.7015 8.30729 20 9.0247 20 9.77275V17.1282C20 17.553 19.654 17.8974 19.2273 17.8974C18.8005 17.8974 18.4545 17.553 18.4545 17.1282V9.77275C18.4545 9.43273 18.3189 9.10663 18.0773 8.8662L13.1026 3.91397C12.8611 3.67353 12.5335 3.53846 12.1919 3.53846H7.89394C7.46717 3.53846 7.12121 3.19407 7.12121 2.76923Z" fill="#030D45"/>
+                                </svg>
+
+
                                 </div>
                             </div>
                         </div>
@@ -195,16 +200,16 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
         navigator.clipboard.writeText(referralCode).then(() => {
             const copyBtn = document.getElementById('copy-icon');
             // Change icon to checkmark and color to green
-            copyBtn.classList.remove('fa-copy');
-            copyBtn.classList.add('fa-check', 'text-success');
-
+            
             showToasted('Copied successfully', 'success');
+            
+            document.getElementById('copy-icon').innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.9989 11.2858V19.1429C16.9989 20.6735 15.7637 22 14.1168 22H5.88213C4.33813 22 3 20.7756 3 19.1429V7.91841C3 6.3878 4.2352 5.06127 5.88213 5.06127H10.72C11.4405 5.06127 12.1611 5.36739 12.7787 5.8776L16.1755 9.24495C16.6901 9.85719 16.9989 10.5715 16.9989 11.2858Z" fill="#030D45"/>
+                <path d="M19.2635 17.9184C18.8517 17.9184 18.44 17.6123 18.44 17.1021V9.75515C18.44 9.44903 18.3371 9.1429 18.0283 8.83678L13.0875 3.93882C12.8816 3.73474 12.4699 3.53066 12.1611 3.53066H7.9408C7.52907 3.6327 7.11733 3.22454 7.11733 2.81637C7.11733 2.40821 7.52907 2.00005 7.9408 2.00005H12.264C12.9845 2.00005 13.7051 2.30617 14.2197 2.81637L19.1605 7.71433C19.6752 8.22454 19.984 8.93882 19.984 9.65311V17.1021C20.0869 17.5103 19.6752 17.9184 19.2635 17.9184Z" fill="#030D45"/>
+                </svg>
+            `;
 
-            // Revert back after 2 seconds
-            setTimeout(() => {
-                copyBtn.classList.remove('fa-check', 'text-success');
-                copyBtn.classList.add('fa-copy', 'text-primary');
-            }, 3000);
         }).catch(err => {
             showToasted('Could not copy code', 'error');
             console.error('Copy failed: ', err);

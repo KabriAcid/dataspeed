@@ -240,6 +240,15 @@ function updateWalletBalance(PDO $pdo, int $user_id, float $amount, string $type
     }
 }
 
-function fetchServicePlans(){
-    return;
+function fetchNigerianStates($pdo){
+   try {
+    $stmt = $pdo->prepare("SELECT * FROM nigerian_states;");
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+
+    return $result;
+
+   } catch (Exception $e) {
+        throw $e->getMessage();
+   }
 }
