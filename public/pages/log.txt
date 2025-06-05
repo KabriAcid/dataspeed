@@ -102,3 +102,9 @@ Array
 [2025-06-01 17:02:10] Billstack response: 
 [2025-06-02 03:06:38] User's existing virtual account: 5761257050
 [2025-06-02 03:23:52] User's existing virtual account: 5761257050
+[2025-06-05 03:22:52] User's existing virtual account: None
+[2025-06-05 03:22:52] Generated reference: ref_e263663b-8fa2-4ea7-a040-e8970577e3d5 for user fyti@gmail.com
+[2025-06-05 03:22:52] Billstack response: 
+[2025-06-05 03:22:57] User's existing virtual account: None
+[2025-06-05 03:22:57] Generated reference: ref_0c889164-29d2-4d40-96bf-d9e2acc1997c for user fyti@gmail.com
+[2025-06-05 03:22:57] Billstack response: 

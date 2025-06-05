@@ -111,7 +111,7 @@ if (isset($_GET['referral_code'])) {
                     <div class="form-field">
                         <div class="phone-container">
                             <span class="phone-prefix text-sm">
-                                <img src="https://flagcdn.com/w40/ng.png" alt="Nigeria Flag"> +234
+                                <img src="https://flagcdn.com/w40/ng.png" alt=""> +234
                             </span>
                             <input type="text" id="phone" name="phone_number" maxlength="10" placeholder="Phone Number"
                                 class="input">
@@ -165,13 +165,6 @@ if (isset($_GET['referral_code'])) {
     </main>
 </body>
 <script>
-function showOverlay() {
-    document.getElementById("overlay").style.display = "block";
-    const timeout = 10000;
-    setTimeout(() => {
-        document.getElementById("overlay").style.display = "none";
-    }, timeout);
-}
 
 document.getElementById('registration_reset').addEventListener('click', function(){
     sessionStorage.clear();

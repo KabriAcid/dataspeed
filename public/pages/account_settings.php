@@ -8,7 +8,7 @@ require __DIR__ . '/../partials/header.php';
 <body>
     <main class="container-fluid py-4">
         <!-- Header Section -->
-        <header class="mb-5">
+        <header class="mb-3">
             <h5 class="text-center fw-bold">Profile</h5>
         </header>
 
@@ -22,7 +22,6 @@ require __DIR__ . '/../partials/header.php';
                 </svg>
                 <?php endif; ?>
             </h4>
-            <p class="text-muted"><?= $user['city'] ?? 'Nigeria'; ?></p>
         </div>
 
         <!-- Account Settings -->
@@ -33,13 +32,11 @@ require __DIR__ . '/../partials/header.php';
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="icon-container">
-                                <svg width="18" height="18" viewBox="0 0 16 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M1 17V16C1 12.134 4.13401 9 8 9M15 17V16C15 12.134 11.866 9 8 9M8 9C10.2091 9 12 7.20914 12 5C12 2.79086 10.2091 1 8 1C5.79086 1 4 2.79086 4 5C4 7.20914 5.79086 9 8 9Z"
-                                        stroke="#94241E" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4.271 18.3457C4.271 18.3457 6.50002 15.5 12 15.5C17.5 15.5 19.7291 18.3457 19.7291 18.3457M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15 9C15 10.6569 13.6569 12 12 12C10.3431 12 9 10.6569 9 9C9 7.34315 10.3431 6 12 6C13.6569 6 15 7.34315 15 9Z"
+                                    stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
 
                             </div>
                             <div class="">
