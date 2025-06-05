@@ -172,6 +172,7 @@ document.getElementById('registration_reset').addEventListener('click', function
 });
 </script>
 <script src="../assets/js/ajax.js"></script>
+<script src="../assets/js/toggle-password.js"></script>
 <script src="../assets/js/multi-step.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

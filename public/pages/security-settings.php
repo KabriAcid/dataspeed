@@ -22,31 +22,39 @@ require __DIR__ . '/../partials/header.php';
 
         <div class="form-container mx-auto">
             <form id="securityForm" method="post" novalidate>
-                <!-- Password Tab -->
+               <!-- Password Tab -->
                 <div class="tab-content active" id="password-tab">
-                    <div class="mb-3">
+                    <div>
                         <label for="newPassword" class="form-label">New Password</label>
-                        <input type="password" placeholder="Password" id="newPassword" name="newPassword"
-                            class="input" minlength="6" required>
+                        <div class="mb-3 password-wrapper">
+                            <input type="password" placeholder="Password" id="newPassword" name="newPassword" class="input" minlength="6" required>
+                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                        </div>
                     </div>
-                    <div class="mb-3">
+                    <div>
                         <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <input type="password" placeholder="Re-Password" id="confirmPassword" name="confirmPassword"
-                            class="input" minlength="6" required>
+                        <div class="mb-3 password-wrapper">
+                            <input type="password" placeholder="Re-Password" id="confirmPassword" name="confirmPassword" class="input" minlength="6" required>
+                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- PIN Tab -->
                 <div class="tab-content" id="pin-tab">
-                    <div class="mb-3">
+                    <div>
                         <label for="newPin" class="form-label">New PIN</label>
-                        <input type="password" placeholder="PIN" id="newPin" name="newPin" class="input"
-                            pattern="\d{4}" maxlength="4" inputmode="numeric" required>
+                        <div class="mb-3 password-wrapper" style="position: relative;">
+                            <input type="password" placeholder="PIN" id="newPin" name="newPin" class="input" pattern="\d{4}" maxlength="4" inputmode="numeric" required>
+                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                        </div>
                     </div>
-                    <div class="mb-3">
+                    <div>
                         <label for="confirmPin" class="form-label">Confirm PIN</label>
-                        <input type="password" placeholder="Re-PIN" id="confirmPin" name="confirmPin"
-                            class="input" pattern="\d{4}" maxlength="4" inputmode="numeric" required>
+                        <div class="mb-3 password-wrapper" style="position: relative;">
+                            <input type="password" placeholder="Re-PIN" id="confirmPin" name="confirmPin" class="input" pattern="\d{4}" maxlength="4" inputmode="numeric" required>
+                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                        </div>
                     </div>
                 </div>
 
@@ -64,6 +72,7 @@ require __DIR__ . '/../partials/header.php';
     <footer class="my-4 text-center text-secondary small">
         &copy; Dreamcodes 2025. All rights reserved.
     </footer>
+    <script src="../assets/js/toggle-password.js"></script>
     <script src="../assets/js/ajax.js"></script>
     <script>
     
@@ -135,7 +144,6 @@ require __DIR__ . '/../partials/header.php';
         }
     });
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
