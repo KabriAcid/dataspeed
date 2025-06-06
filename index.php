@@ -156,8 +156,8 @@ session_start();
                 <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. At aut neque consectetur nihil
                     sint excepturi omnis adipisci possimus!</p>
                 <form action="" method="post" class="d-flex" style="width: 50%;margin: auto;">
-                    <input type="email" name="email" class="input" placeholder="Your email">
-                    <button type="submit" name="submit" class="btn primary-btn ml-3">SUBSCRIBE</button>
+                    <input type="email" name="email" class="input" placeholder="Your email address">
+                    <button type="submit" name="submit" class="btn primary-btn ms-3">SUBSCRIBE</button>
                 </form>
             </div>
         </section>
