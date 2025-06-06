@@ -6,11 +6,12 @@ require __DIR__ . '/../partials/header.php';
 
 ?>
 
+
 <body>
     <main class="container-fluid py-4">
         <!-- Header Section -->
         <header class="mb-5">
-            <h5 class="text-center fw-bold">Buy Data</h5>
+            <h5 class="text-center fw-bold">Data Bundles</h5>
         </header>
 
         <div class="network-section">
@@ -34,94 +35,31 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </div>
 
-
-        <div class="plans-section">
-    <div class="plans-container">
-        <?php
-        require __DIR__ . '/../../config/config.php';
-
-        // Fetch data service ID
-        $serviceQuery = $pdo->prepare("SELECT id FROM services WHERE slug = 'data'");
-        $serviceQuery->execute();
-        $dataService = $serviceQuery->fetch(PDO::FETCH_ASSOC);
-
-        if ($dataService) {
-            // Fetch active data plans
-            $plansQuery = $pdo->prepare("SELECT name, price, type FROM service_plans WHERE service_id = ? AND is_active = 1 LIMIT 3");
-            $plansQuery->execute([$dataService["id"]]);
-            $plans = $plansQuery->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($plans as $plan): ?>
-                <div class="plan-card" data-plan-id="<?= $plan['price']; ?>">
-                    <div class="plan-details">
-                        <div class="plan-price">₦<?= number_format($plan['price'], 2); ?></div>
-                        <div class="plan-data"><?= htmlspecialchars($plan['name']); ?></div>
-                        <div class="plan-validity"><?= htmlspecialchars($plan['type'] ?? 'N/A'); ?></div>
-                    </div>
-                </div>
-            <?php endforeach;
-        } else {
-            echo "<p class='text-center text-muted'>No data plans available.</p>";
-        }
-        ?>
-        
-        <div class="see-all-card card card-body" id="seeAllBtn" data-bs-toggle="modal" data-bs-target="#allPlansModal">
-            <div class="see-all-content">
-                <span class="see-all-text">SEE ALL</span>
-                <span class="arrow-icon"></span>
+          <!-- TABS -->
+          <div class="tabs" style="width: 100%;">
+            <!-- Top Tabs -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="self">Buy For Self</button>
+                <button class="tab-btn" data-tab="others">Buy For Others</button>
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- Scrollable Modal -->
-<div class="modal fade" id="allPlansModal" tabindex="-1" aria-labelledby="allPlansLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold">Select a Plan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <!-- Sub Tabs -->             <div class="sub-tab-buttons">
+                <button class="sub-tab-btn active" data-sub="daily">Daily</button>
+                <button class="sub-tab-btn" data-sub="weekly">Weekly</button>
+                <button class="sub-tab-btn" data-sub="monthly">Monthly</button>
             </div>
-            <div class="modal-body overflow-auto" style="max-height: 400px;">
-                <div class="row g-3">
-                    <?php
-                    // Fetch all additional plans
-                    $extraPlansQuery = $pdo->prepare("SELECT name, price, type FROM service_plans WHERE service_id = ? AND is_active = 1");
-                    $extraPlansQuery->execute([$dataService["id"]]);
-                    $extraPlans = $extraPlansQuery->fetchAll(PDO::FETCH_ASSOC);
 
-                    foreach ($extraPlans as $plan): ?>
-                        <div class="col-12 col-md-4">
-                            <div class="card sim-card shadow-sm border-0 p-2 text-center" data-plan-id="<?= $plan['price']; ?>">
-                                <div class="sim-chip"></div> <!-- SIM Chip Style -->
-                                <h5 class="fw-bold text-primary">₦<?= number_format($plan['price'], 2); ?></h5>
-                                <p class="text-dark"><?= htmlspecialchars($plan['name']); ?></p>
-                                <p class="text-muted"><?= htmlspecialchars($plan['type'] ?? 'N/A'); ?></p>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="" class="position-relative">
+                <div id="plan-cards" class="cards-grid">
+                    
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
-    </div>
-</div>
 
 
 
-        <form action="" method="post">
-            <div class="phone-container">
-                <span class="phone-prefix text-xs">
-                    <img src="../assets/img/ng.png" alt=""> +234
-                </span>
-                <input type="tel" id="phone-number" name="phone_number" maxlength="10"
-                    placeholder="Phone Number" class="input">
-            </div>
-            <!-- Trigger Button -->
-            <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
-        </form>
 
 <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
 </main>
@@ -143,10 +81,10 @@ require __DIR__ . '/../partials/header.php';
                 <span>Product</span>
                 <span><i class="icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M12 19.51L12.01 19.4989M2 8C8 3.5 16 3.5 22 8M5 12C9 8.99999 15 9 19 12M8.5 15.5C10.7504 14.1 13.2498 14.0996 15.5001 15.5"
-                                        stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
+                        <path
+                            d="M12 19.51L12.01 19.4989M2 8C8 3.5 16 3.5 22 8M5 12C9 8.99999 15 9 19 12M8.5 15.5C10.7504 14.1 13.2498 14.0996 15.5001 15.5"
+                            stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
                 </i> Internet Data</span>
             </div>
         </div>
@@ -156,186 +94,126 @@ require __DIR__ . '/../partials/header.php';
     </div>
 </div>
 
-<!-- PIN Modal -->
-<div id="pinModal" class="modal-overlay" style="display: none;">
-  <div class="pin-container">
-      <div class="pin-header">
-          <img src="<?= $user['photo'];?>" alt="avatar" class="pinpad-avatar">
-          <h6>Abdullahi</h6>
-      </div>
-      <h3 style="text-align: center;">Welcome Back</h3>
-      <div class="pin-field">
-        <!-- Icon section -->
-        <div class="icon-section">
-          <i class="fas fa-shield-check check-icon fa-2x"></i>
-          <p class="mt-2 mb-0 fw-bold text-center">Enter Transaction PIN</p>
-        </div>
-          <!-- PIN Dots -->
-          <div class="pin-section">
-            <div class="pin-dots">
-              <div class="pin-dot"></div>
-              <div class="pin-dot"></div>
-              <div class="pin-dot"></div>
-              <div class="pin-dot"></div>
-            </div>
-          </div>
-      </div>
-      <div class="pin-keypad">
-          <div class="keypad-row">
-              <button class="key-button" data-value="1">1</button>
-              <button class="key-button" data-value="2">2</button>
-              <button class="key-button" data-value="3">3</button>
-          </div>
-          <div class="keypad-row">
-              <button class="key-button" data-value="4">4</button>
-              <button class="key-button" data-value="5">5</button>
-              <button class="key-button" data-value="6">6</button>
-          </div>
-          <div class="keypad-row">
-              <button class="key-button" data-value="7">7</button>
-              <button class="key-button" data-value="8">8</button>
-              <button class="key-button" data-value="9">9</button>
-          </div>
-          <div class="keypad-row">
-              <button class="key-spacer"></button>
-              <button class="key-button" data-value="0">0</button>
-              <button id="backspace" class="key-backspace">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="45" height="45"><path fill-rule="evenodd" d="M2.515 10.674a1.875 1.875 0 000 2.652L8.89 19.7c.352.351.829.549 1.326.549H19.5a3 3 0 003-3V6.75a3 3 0 00-3-3h-9.284c-.497 0-.974.198-1.326.55l-6.375 6.374zM12.53 9.22a.75.75 0 10-1.06 1.06L13.19 12l-1.72 1.72a.75.75 0 101.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 101.06-1.06L15.31 12l1.72-1.72a.75.75 0 10-1.06-1.06l-1.72 1.72-1.72-1.72z" clip-rule="evenodd"></path></svg>
-              </i></button>
-          </div>
-      </div>
-      <div class="pin-action-buttons">
-          <button id="pin-logout-btn">Logout</button>
-          <button id="pin-forgot-btn">Forgot PIN</button>
-      </div>
-  </div>
-</div>
 
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/pin-pad.js"></script>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const phoneInput = document.getElementById("phone-number");
-    const purchaseBtn = document.getElementById("purchaseBtn");
-    const confirmModal = document.getElementById("confirmModal");
-    const closeConfirm = document.getElementById("closeConfirm");
-    const payBtn = document.getElementById("payBtn");
-    const customerPhone = document.getElementById("customer-phone");
-    const networkTabs = document.querySelectorAll(".network-tab");
-    const plansContainer = document.querySelector(".plans-container"); 
-    const airtelLogo = document.querySelector(".airtel-logo");
+    document.addEventListener("DOMContentLoaded", () => {
+        const brandColor = this.style.getPropertyValue("--brand-color");
 
-    let selectedNetwork = null;
-    let selectedPlan = null;
+        document.body.style.setProperty("--brand-color", brandColor);
+        airtelLogo.src = selectedNetwork === "airtel"
+            ? "../assets/icons/airtel-logo-2.svg"
+            : "../assets/icons/airtel-logo-1.svg";
 
-    // **Phone Number Validation**
-    phoneInput.addEventListener("input", function () {
-        let raw = this.value.replace(/\D/g, "").slice(0, 10);
-        this.value = raw;
-        purchaseBtn.disabled = raw.length !== 10;
-    });
+        document.querySelectorAll(".network-tab").forEach(tab => {
+            tab.addEventListener("click", () => {
+                // Reset background color for all tabs
+                document.querySelectorAll(".network-tab").forEach(t => {
+                    t.style.backgroundColor = "";
+                });
 
-    // **Network Selection Handling**
-    networkTabs.forEach(tab => {
-        tab.addEventListener("click", function () {
-            networkTabs.forEach(tab => tab.classList.remove("active"));
-            this.classList.add("active");
-
-            selectedNetwork = this.dataset.network;
-            const brandColor = this.style.getPropertyValue("--brand-color");
-
-            document.body.style.setProperty("--brand-color", brandColor);
-            airtelLogo.src = selectedNetwork === "airtel"
-                ? "../assets/icons/airtel-logo-2.svg"
-                : "../assets/icons/airtel-logo-1.svg";
-
-            selectedPlan = null;
-
-            // **Fetch plans dynamically**
-            sendAjaxRequest("fetch-plans.php", "POST", `network=${selectedNetwork}`, function (response) {
-                if (response.success) {
-                    plansContainer.innerHTML = "";
-                    plansContainer.style.opacity = 0;
-
-                    setTimeout(() => {
-                        response.plans.forEach(plan => {
-                            const planCard = document.createElement("div");
-                            planCard.className = "plan-card";
-                            planCard.dataset.planId = plan.price;
-                            planCard.innerHTML = `
-                                <div class="plan-details">
-                                    <div class="plan-price">${plan.price}</div>
-                                    <div class="plan-data">${plan.name}</div>
-                                    <div class="plan-validity">${plan.type || 'N/A'}</div>
-                                </div>
-                            `;
-                            planCard.addEventListener("click", function () {
-                                if (!selectedNetwork) {
-                                    showToasted("Please select a network first.", "error");
-                                    return;
-                                }
-
-                                document.querySelectorAll(".plan-card").forEach(card => card.classList.remove("active"));
-                                this.classList.add("active");
-
-                                selectedPlan = this.dataset.planId;
-                                this.style.backgroundColor = document.body.style.getPropertyValue("--brand-color");
-                            });
-
-                            plansContainer.appendChild(planCard);
-                        });
-                        plansContainer.style.opacity = 1;
-                    }, 200);
-                } else {
-                    showToasted(response.message, "error");
-                }
+                // Apply the brand color to the selected tab
+                const brandColor = this.style.getPropertyValue("--brand-color");
+                document.body.style.setProperty("--brand-color", brandColor);
             });
         });
     });
 
-    // **Show Confirm Modal**
-    purchaseBtn.addEventListener("click", function () {
-        if (!selectedNetwork || !selectedPlan || phoneInput.value.trim().length !== 10) {
-            showToasted("Please complete all selections before proceeding.", "error");
-            return;
-        }
+     document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".tabs").forEach(tabsContainer => {
+            const buttons = tabsContainer.querySelectorAll(".tab-btn");
+            const contents = tabsContainer.querySelectorAll(".tab-content");
 
-        customerPhone.textContent = formatPhoneNumber(phoneInput.value);
-        customerPhone.dataset.raw = "0" + phoneInput.value;
-        confirmModal.style.display = "flex";
-    });
+            // Activate first tab if none is active
+            const activeBtn = tabsContainer.querySelector(".tab-btn.active") || buttons[0];
+            if (activeBtn) activeBtn.classList.add("active");
 
-    closeConfirm?.addEventListener("click", () => confirmModal.style.display = "none");
-    confirmModal.addEventListener("click", (e) => { if (e.target === confirmModal) confirmModal.style.display = "none"; });
+            const tabId = activeBtn.dataset.tab;
+            contents.forEach(content => {
+                content.classList.toggle("active", content.id === tabId);
+            });
 
-    // **Pay Button Action**
-    payBtn?.addEventListener("click", function () {
-        const phone = customerPhone?.dataset?.raw || "";
-        const amount = document.getElementById("confirm-amount")?.textContent.replace(/\D/g, "");
+            // Add event listeners
+            buttons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const tabId = button.dataset.tab;
 
-        if (!phone || !amount) {
-            showToasted("Missing purchase details.", "error");
-            return;
-        }
+                    buttons.forEach(btn => btn.classList.remove("active"));
+                    button.classList.add("active");
 
-        sendAjaxRequest("check-balance.php", "POST", `amount=${amount}`, function (res) {
-            if (res.success) {
-                document.getElementById("pinModal").style.display = "flex";
-            } else {
-                showToasted(res.message, "error");
-            }
+                    contents.forEach(content => {
+                        content.classList.toggle("active", content.id ===
+                            tabId);
+                    });
+                });
+            });
         });
     });
 
-    // **Format Phone Number**
-    function formatPhoneNumber(num) {
-        return num.length === 10 ? "0" + num.substring(0, 3) + " " + num.substring(3, 7) + " " + num.substring(7) : num;
-    }
-});
+  const subTabButtons = document.querySelectorAll(".sub-tab-btn");
+
+  subTabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        // Toggle active class
+
+        subTabButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      // Get selected plan (e.g., daily, weekly)
+      const selectedPlan = btn.dataset.sub;
+
+      // Prepare data
+      const postData = `plan=${selectedPlan}`;
+
+      // Send AJAX request
+      sendAjaxRequest("fetch-plans.php", "POST", postData, (response) => {
+        if (response.success) {
+          document.querySelector("#completed").innerHTML = response.html;
+        } else {
+          showToasted(response.message, 'error');
+        }
+      });
+    });
+  });
+
+  function loadPlans(providerId, type, brandColor) {
+    const url = 'fetch-plans.php';
+    const data = `provider_id=${encodeURIComponent(providerId)}&type=${encodeURIComponent(type)}`;
+
+    sendAjaxRequest(url, 'POST', data, function (response) {
+        const container = document.getElementById('plan-cards');
+        container.innerHTML = ''; // Clear existing plans
+
+        if (!response.success) {
+            showToasted(response.message || 'Failed to load plans', 'error');
+            return;
+        }
+
+        // Loop through plans and create cards
+        response.plans.forEach(plan => {
+            const card = document.createElement('div');
+            card.classList.add('plan-card');
+            card.style.backgroundColor = brandColor;
+            card.dataset.apiId = plan.api_id;
+            card.dataset.planId = plan.id;
+            card.dataset.price = plan.price;
+
+            card.innerHTML = `
+                <div class="plan-name">${plan.name}</div>
+                <div class="plan-price">₦${parseFloat(plan.price).toLocaleString()}</div>
+            `;
+
+            card.addEventListener('click', () => {
+                proceedToSummary(plan); // Call the next step
+            });
+
+            container.appendChild(card);
+        });
+    });
+}
 
 </script>
-
 
 
 <!-- FontAwesome CDN -->
