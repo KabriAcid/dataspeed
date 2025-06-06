@@ -36,72 +36,79 @@ require __DIR__ . '/../partials/header.php';
 
 
         <div class="plans-section">
-            <div class="">
-                <!-- Loop through top 3 plans -->
-                <?php
-                $plans = [
-                    ["price" => "₦500", "volume" => "1GB", "validity" => "1 DAY"],
-                    ["price" => "₦800", "volume" => "1.5GB", "validity" => "7 DAYS"],
-                    ["price" => "₦1,200", "volume" => "2GB", "validity" => "30 DAYS"],
-                ];
-                 foreach ($plans as $plan): ?>
-                    <div class="plans-container">
-                        <div class="plan-card" data-plan-id="<?= $plan['price']; ?>">
-                        <div class="plan-details">
-                            <div class="plan-price"><?= $plan['price']; ?></div>
-                            <div class="plan-data"><?= $plan['volume']; ?></div>
-                            <div class="plan-validity"><?= $plan['validity']; ?></div>
-                            <!-- <div class="plan-provider">AWOOF</div> -->
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-                    
-                    <div class="see-all-card card card-body" id="seeAllBtn" data-bs-toggle="modal" data-bs-target="#allPlansModal">
-                        <div class="see-all-content">
-                            <span class="see-all-text">SEE ALL</span>
-                            <span class="arrow-icon"></span>
-                        </div>
+    <div class="plans-container">
+        <?php
+        require __DIR__ . '/../../config/config.php';
+
+        // Fetch data service ID
+        $serviceQuery = $pdo->prepare("SELECT id FROM services WHERE slug = 'data'");
+        $serviceQuery->execute();
+        $dataService = $serviceQuery->fetch(PDO::FETCH_ASSOC);
+
+        if ($dataService) {
+            // Fetch active data plans
+            $plansQuery = $pdo->prepare("SELECT name, price, type FROM service_plans WHERE service_id = ? AND is_active = 1 LIMIT 3");
+            $plansQuery->execute([$dataService["id"]]);
+            $plans = $plansQuery->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($plans as $plan): ?>
+                <div class="plan-card" data-plan-id="<?= $plan['price']; ?>">
+                    <div class="plan-details">
+                        <div class="plan-price">₦<?= number_format($plan['price'], 2); ?></div>
+                        <div class="plan-data"><?= htmlspecialchars($plan['name']); ?></div>
+                        <div class="plan-validity"><?= htmlspecialchars($plan['type'] ?? 'N/A'); ?></div>
                     </div>
                 </div>
+            <?php endforeach;
+        } else {
+            echo "<p class='text-center text-muted'>No data plans available.</p>";
+        }
+        ?>
+        
+        <div class="see-all-card card card-body" id="seeAllBtn" data-bs-toggle="modal" data-bs-target="#allPlansModal">
+            <div class="see-all-content">
+                <span class="see-all-text">SEE ALL</span>
+                <span class="arrow-icon"></span>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Scrollable Modal -->
-        <div class="modal fade" id="allPlansModal" tabindex="-1" aria-labelledby="allPlansLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Select a Plan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body overflow-auto" style="max-height: 400px;">
-                        <div class="row g-3">
-                            <!-- Loop through additional plans -->
-                            <?php
-                            $extraPlans = [
-                                ["price" => "₦2,500", "volume" => "5GB", "validity" => "30 DAYS"],
-                                ["price" => "₦3,800", "volume" => "10GB", "validity" => "30 DAYS"],
-                                ["price" => "₦5,500", "volume" => "15GB", "validity" => "60 DAYS"],
-                            ];
+<!-- Scrollable Modal -->
+<div class="modal fade" id="allPlansModal" tabindex="-1" aria-labelledby="allPlansLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Select a Plan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body overflow-auto" style="max-height: 400px;">
+                <div class="row g-3">
+                    <?php
+                    // Fetch all additional plans
+                    $extraPlansQuery = $pdo->prepare("SELECT name, price, type FROM service_plans WHERE service_id = ? AND is_active = 1");
+                    $extraPlansQuery->execute([$dataService["id"]]);
+                    $extraPlans = $extraPlansQuery->fetchAll(PDO::FETCH_ASSOC);
 
-                            foreach ($extraPlans as $plan): ?>
-                                <div class="col-12 col-md-4">
-                                    <div class="card sim-card shadow-sm border-0 p-2 text-center" data-plan-id="<?= $plan['price']; ?>">
-                                        <div class="sim-chip"></div> <!-- SIM Chip Style -->
-                                        <h5 class="fw-bold text-primary"><?= $plan['price']; ?></h5>
-                                        <p class="text-dark"><?= $plan['volume']; ?></p>
-                                        <p class="text-muted"><?= $plan['validity']; ?></p>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                    foreach ($extraPlans as $plan): ?>
+                        <div class="col-12 col-md-4">
+                            <div class="card sim-card shadow-sm border-0 p-2 text-center" data-plan-id="<?= $plan['price']; ?>">
+                                <div class="sim-chip"></div> <!-- SIM Chip Style -->
+                                <h5 class="fw-bold text-primary">₦<?= number_format($plan['price'], 2); ?></h5>
+                                <p class="text-dark"><?= htmlspecialchars($plan['name']); ?></p>
+                                <p class="text-muted"><?= htmlspecialchars($plan['type'] ?? 'N/A'); ?></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
+    </div>
+</div>
+
 
 
         <form action="" method="post">
