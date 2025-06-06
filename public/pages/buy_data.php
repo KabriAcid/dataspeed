@@ -215,9 +215,8 @@ require __DIR__ . '/../partials/header.php';
     const closeConfirm = document.getElementById("closeConfirm");
     const payBtn = document.getElementById("payBtn");
     const customerPhone = document.getElementById("customer-phone");
-
     const networkTabs = document.querySelectorAll(".network-tab");
-    const planCards = document.querySelectorAll(".plan-card");
+    const plansContainer = document.querySelector(".plans-container"); 
     const airtelLogo = document.querySelector(".airtel-logo");
 
     let selectedNetwork = null;
@@ -225,86 +224,83 @@ require __DIR__ . '/../partials/header.php';
 
     // **Phone Number Validation**
     phoneInput.addEventListener("input", function () {
-        let raw = this.value.replace(/\D/g, "");
-        if (raw.length > 10) raw = raw.slice(0, 10);
+        let raw = this.value.replace(/\D/g, "").slice(0, 10);
         this.value = raw;
-
         purchaseBtn.disabled = raw.length !== 10;
     });
 
     // **Network Selection Handling**
     networkTabs.forEach(tab => {
         tab.addEventListener("click", function () {
-            // Remove active state from all tabs
             networkTabs.forEach(tab => tab.classList.remove("active"));
-
-            // Apply active state to selected tab
             this.classList.add("active");
 
-            // Get selected network ID & brand color
             selectedNetwork = this.dataset.network;
             const brandColor = this.style.getPropertyValue("--brand-color");
 
-            // Apply brand color globally
             document.body.style.setProperty("--brand-color", brandColor);
-
-            // Change Airtel's logo when selected
             airtelLogo.src = selectedNetwork === "airtel"
                 ? "../assets/icons/airtel-logo-2.svg"
                 : "../assets/icons/airtel-logo-1.svg";
 
-            // Clear previous plan selection
             selectedPlan = null;
-            planCards.forEach(card => card.classList.remove("active"));
-        });
-    });
 
-    // **Plan Selection Handling**
-    planCards.forEach(card => {
-        card.addEventListener("click", function () {
-            if (!selectedNetwork) {
-                showToasted("Please select a network first.", "error");
-                return;
-            }
+            // **Fetch plans dynamically**
+            sendAjaxRequest("fetch-plans.php", "POST", `network=${selectedNetwork}`, function (response) {
+                if (response.success) {
+                    plansContainer.innerHTML = "";
+                    plansContainer.style.opacity = 0;
 
-            // Remove active state from all plans
-            planCards.forEach(card => card.classList.remove("active"));
+                    setTimeout(() => {
+                        response.plans.forEach(plan => {
+                            const planCard = document.createElement("div");
+                            planCard.className = "plan-card";
+                            planCard.dataset.planId = plan.price;
+                            planCard.innerHTML = `
+                                <div class="plan-details">
+                                    <div class="plan-price">${plan.price}</div>
+                                    <div class="plan-data">${plan.name}</div>
+                                    <div class="plan-validity">${plan.type || 'N/A'}</div>
+                                </div>
+                            `;
+                            planCard.addEventListener("click", function () {
+                                if (!selectedNetwork) {
+                                    showToasted("Please select a network first.", "error");
+                                    return;
+                                }
 
-            // Apply active state to selected plan
-            this.classList.add("active");
+                                document.querySelectorAll(".plan-card").forEach(card => card.classList.remove("active"));
+                                this.classList.add("active");
 
-            // Store selected plan ID
-            selectedPlan = this.dataset.planId;
+                                selectedPlan = this.dataset.planId;
+                                this.style.backgroundColor = document.body.style.getPropertyValue("--brand-color");
+                            });
 
-            // Apply brand color background to the selected plan
-            this.style.backgroundColor = document.body.style.getPropertyValue("--brand-color");
+                            plansContainer.appendChild(planCard);
+                        });
+                        plansContainer.style.opacity = 1;
+                    }, 200);
+                } else {
+                    showToasted(response.message, "error");
+                }
+            });
         });
     });
 
     // **Show Confirm Modal**
     purchaseBtn.addEventListener("click", function () {
-        const raw = phoneInput.value.trim();
-        if (raw.length !== 10 || !selectedNetwork || !selectedPlan) {
+        if (!selectedNetwork || !selectedPlan || phoneInput.value.trim().length !== 10) {
             showToasted("Please complete all selections before proceeding.", "error");
             return;
         }
 
-        const formatted = formatPhoneNumber(raw);
-        customerPhone.textContent = formatted;
-        customerPhone.dataset.raw = "0" + raw;
+        customerPhone.textContent = formatPhoneNumber(phoneInput.value);
+        customerPhone.dataset.raw = "0" + phoneInput.value;
         confirmModal.style.display = "flex";
     });
 
-    // **Close Confirm Modal**
-    closeConfirm?.addEventListener("click", () => {
-        confirmModal.style.display = "none";
-    });
-
-    confirmModal.addEventListener("click", (e) => {
-        if (e.target === confirmModal) {
-            confirmModal.style.display = "none";
-        }
-    });
+    closeConfirm?.addEventListener("click", () => confirmModal.style.display = "none");
+    confirmModal.addEventListener("click", (e) => { if (e.target === confirmModal) confirmModal.style.display = "none"; });
 
     // **Pay Button Action**
     payBtn?.addEventListener("click", function () {
@@ -325,28 +321,10 @@ require __DIR__ . '/../partials/header.php';
         });
     });
 
-    // **Phone Number Formatter**
+    // **Format Phone Number**
     function formatPhoneNumber(num) {
         return num.length === 10 ? "0" + num.substring(0, 3) + " " + num.substring(3, 7) + " " + num.substring(7) : num;
     }
-
-    // **Reusable PIN Modal Trigger**
-    const showPinModal = (onPinSuccess) => {
-        const modal = document.getElementById("pinModal");
-        modal.style.display = "flex";
-
-        initPinPad("#pinModal", function(pin) {
-            sendAjaxRequest("authenticate-pin.php", "POST", "pin=" + pin, function(res) {
-                if (res.success) {
-                    showToasted("PIN verified.", "success");
-                    modal.style.display = "none";
-                    onPinSuccess(); // Continue process
-                } else {
-                    showToasted(res.message || "Invalid PIN.", "error");
-                }
-            });
-        });
-    };
 });
 
 </script>
