@@ -22,7 +22,7 @@ function initPinPad(containerSelector, onComplete) {
     updateDots();
   };
 
-  const addDigit = (digit) => {
+  const addDigit = digit => {
     if (!/^\d$/.test(digit)) return;
     if (pin.length < MAX_LENGTH) {
       pin += digit;
@@ -43,7 +43,7 @@ function initPinPad(containerSelector, onComplete) {
     }
   };
 
-  keys.forEach((btn) => {
+  keys.forEach(btn => {
     btn.addEventListener("click", () => {
       const val = btn.dataset.value;
       addDigit(val);
@@ -56,7 +56,7 @@ function initPinPad(containerSelector, onComplete) {
   updateDots();
 
   // Keyboard input support (when modal is visible)
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", e => {
     if (container.offsetParent === null) return;
     if (/^\d$/.test(e.key)) {
       addDigit(e.key);
@@ -77,7 +77,7 @@ function initPinPad(containerSelector, onComplete) {
 
 // Click outside the PIN modal to dismiss it
 document.addEventListener("click", function (e) {
-  const modal = document.getElementById("pinModal");
+  const modal = document.getElementById("pinpadModal");
   if (!modal || modal.style.display !== "flex") return;
 
   const content = modal.querySelector(".pin-container");

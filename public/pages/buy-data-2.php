@@ -118,7 +118,7 @@ require __DIR__ . '/../partials/header.php';
 </div>
 
 <!-- PIN Modal -->
-<div id="pinModal" class="modal-overlay" style="display: none;">
+<div id="pinpadModal" class="modal-overlay" style="display: none;">
   <div class="pin-container">
       <div class="pin-header">
           <img src="<?= $user['photo'];?>" alt="avatar" class="pinpad-avatar">
@@ -283,7 +283,7 @@ require __DIR__ . '/../partials/header.php';
 
         sendAjaxRequest("check-balance.php", "POST", `amount=${amount}`, function (res) {
             if (res.success) {
-                document.getElementById("pinModal").style.display = "flex";
+                document.getElementById("pinpadModal").style.display = "flex";
             } else {
                 showToasted(res.message, "error");
             }

@@ -153,7 +153,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
         // Pin pad modal elements
         const payBtn = document.getElementById("payBtn");
-        const pinpadModal = document.getElementById("pinModal");
+        const pinpadModal = document.getElementById("pinpadModal");
         const closePinpad = document.getElementById("closePinpad");
 
         // --- Tab Switching ---
