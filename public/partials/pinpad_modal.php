@@ -1,8 +1,9 @@
 <!-- PIN Modal -->
-<div id="pinModal" class="modal-overlay" style="display: none;">
+ <link rel="stylesheet" href="../assets/css/style.css">
+<div id="pinModal" class="modal-overlay" style="">
   <div class="pin-container">
       <div class="pin-header">
-          <img src="avatar.jpg" alt="avatar" class="pinpad-avatar">
+          <img src="../assets/img/avatar.jpg" alt="avatar" class="pinpad-avatar">
           <h6>Abdullahi</h6>
       </div>
       <h3 style="text-align: center;">Welcome Back</h3>
@@ -10,7 +11,7 @@
         <!-- Icon section -->
         <div class="icon-section">
           <i class="fas fa-shield-check check-icon fa-2x"></i>
-          <p class="mt-2 mb-0 fw-bold">Enter Transaction PIN</p>
+          <p class="mt-2 mb-0 fw-bold text-center">Enter Transaction PIN</p>
         </div>
           <!-- PIN Dots -->
           <div class="pin-section">
@@ -52,3 +53,4 @@
       <button id="pin-forgot-btn">Forgot PIN</button>
   </div>
 </div>
+<script src="../assets/js/pin-pad.js"></script>
