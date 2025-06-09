@@ -60,15 +60,16 @@ document.addEventListener("DOMContentLoaded", function () {
             data,
             function (response) {
               if (response.success) {
-                showToasted(
-                  response.message || "Purchase successful!",
-                  "success"
-                );
+                showToasted(response.message, "success");
                 pinpadModal.style.display = "none";
-                // Optionally update balance or UI here
+                setTimeout(() => {
+                  window.location.href = "transaction-successful.php";
+                }, 1200); // Give user time to see the toast
               } else {
-                showToasted(response.message || "Purchase failed!", "error");
-                // Optionally reset PIN dots for another try
+                showToasted(response.message, "error");
+                pin = "";
+                updateDots();
+                updateBackspace();
               }
               pin = "";
               updateDots();
