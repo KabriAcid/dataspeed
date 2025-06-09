@@ -220,6 +220,26 @@ require __DIR__ . '/../partials/header.php';
         purchaseBtns.forEach(btn => {
             btn.addEventListener("click", function (e) {
                 e.preventDefault(); // Prevent form submission if inside a form
+
+                // Get the selected amount from the active tab's input or selected button
+                const activeTab = getActiveTab();
+                const amountInput = getActiveAmountInput();
+                let amount = amountInput.value.trim();
+
+                // If an amount-btn is selected, use its data-amount for formatting
+                const selectedBtn = activeTab.querySelector('.amount-btn.selected-amount');
+                if (selectedBtn) {
+                    amount = selectedBtn.getAttribute('data-amount');
+                }
+
+                // Format amount for display (add ₦ if missing)
+                const formattedAmount = amount ? `₦${Number(amount).toLocaleString()}` : "";
+
+                // Set the amount in the confirm modal
+                document.getElementById('confirm-amount').textContent = formattedAmount;
+
+                // You can also set other fields here (plan, phone, etc.) as needed
+
                 confirmModal.style.display = "flex";
             });
         });
