@@ -71,42 +71,6 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </div>
 
-
-
-<!-- Scrollable Modal -->
-<div class="modal fade" id="allPlansModal" tabindex="-1" aria-labelledby="allPlansLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold">Select a Plan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body overflow-auto" style="max-height: 400px;">
-                <div class="row g-3">
-                    <?php
-                    // Fetch all additional plans
-                    $extraPlansQuery = $pdo->prepare("SELECT name, price, type FROM service_plans WHERE service_id = ? AND is_active = 1");
-                    $extraPlansQuery->execute([$dataService["id"]]);
-                    $extraPlans = $extraPlansQuery->fetchAll(PDO::FETCH_ASSOC);
-
-                    foreach ($extraPlans as $plan): ?>
-                        <div class="col-12 col-md-4">
-                            <div class="card sim-card shadow-sm border-0 p-2 text-center" data-plan-id="<?= $plan['price']; ?>">
-                                <div class="sim-chip"></div> <!-- SIM Chip Style -->
-                                <h5 class="fw-bold text-primary">₦<?= number_format($plan['price'], 2); ?></h5>
-                                <p class="text-dark"><?= htmlspecialchars($plan['name']); ?></p>
-                                <p class="text-muted"><?= htmlspecialchars($plan['type'] ?? 'N/A'); ?></p>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 <form action="" method="post">
     <div class="phone-container">
         <span class="phone-prefix text-xs">

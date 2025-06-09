@@ -1377,42 +1377,19 @@ th {
   font-weight: 600;
 }
 
-.sim-card {
-  background: linear-gradient(to bottom, #ffffff, #f2f2f2);
-  border-radius: 15px;
-  padding: 15px;
-  position: relative;
-  transition: 0.3s ease-in-out;
-}
-
-.sim-card.active {
-  background-color: var(--brand-color);
-  color: #fff;
-}
-
-.sim-chip {
-  width: 40px;
-  height: 30px;
-  background: gold;
-  position: absolute;
-  top: 5px;
-  left: 10px;
-  border-radius: 5px;
-}
-
-#data-amount {
+.data-amount {
   letter-spacing: 0.05em;
   font-weight: 500;
   font-size: 14px;
   margin-bottom: 0;
 }
-#data-volume {
+.data-volume {
   font-weight: 700;
   text-transform: uppercase;
   font-size: 1.25rem;
   margin-bottom: 0;
 }
-#data-duration {
+.data-validity {
   font-weight: 500;
   color: var(--gray-500);
   font-size: 12px;
@@ -1424,8 +1401,9 @@ th {
 .plan-card {
   padding: 15px;
   border-radius: 10px;
-  color: white;
+  text-align: center;
   margin: 8px 0;
+  background-color: #fff;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
@@ -1440,16 +1418,6 @@ th {
   font-size: 14px;
 }
 
-
-.arrow-icon {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  border-right: 3px solid #000;
-  border-top: 3px solid #000;
-  transform: rotate(45deg);
-  transition: transform 0.3s ease;
-}
 
 /* BUY AIRTIME */
 .amount-btn {

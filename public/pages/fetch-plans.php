@@ -10,11 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // ✅ Sanitize input
-$provider_id = isset($_POST['provider_id']) ? intval($_POST['provider_id']) : 0;
-$type = trim($_POST['type'] ?? '');
+$type = trim($_POST['plan'] ?? '');
+$provider_id = $_SESSION['provider_id'] ?? 0; // OR pass via JS
 
-if ($provider_id <= 0 || empty($type)) {
-    echo json_encode(["success" => false, "message" => "Missing provider or type"]);
+if (empty($type) || $provider_id <= 0) {
+    echo json_encode(["success" => false, "message" => "Invalid type or provider"]);
     exit;
 }
 
@@ -31,9 +31,9 @@ try {
 
     $service_id = $service['id'];
 
-    // ✅ Fetch plans using ? placeholders
+    // ✅ Fetch plans
     $plansStmt = $pdo->prepare("
-        SELECT id, name, price, api_id 
+        SELECT id, name, price, api_id, volume, validity 
         FROM service_plans 
         WHERE service_id = ? 
         AND provider_id = ? 
@@ -41,7 +41,6 @@ try {
         AND is_active = 1
     ");
     $plansStmt->execute([$service_id, $provider_id, $type]);
-
     $plans = $plansStmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (empty($plans)) {
@@ -49,10 +48,25 @@ try {
         exit;
     }
 
-    echo json_encode(["success" => true, "plans" => $plans]);
+    // ✅ Generate HTML
+    ob_start();
+    foreach ($plans as $plan):
+    ?>
+        <div class="col-4">
+            <div class="plan-card" data-id="<?= $plan['id'] ?>" data-price="<?= $plan['price'] ?>" data-volume="<?= $plan['volume'] ?>">
+                <div class="data-price">₦<?= number_format($plan['price']) ?></div>
+                <div class="data-volume"><?= htmlspecialchars($plan['volume']) ?></div>
+                <div class="data-validity"><?= htmlspecialchars($plan['validity'] ?? '') ?></div>
+            </div>
+        </div>
+    <?php
+    endforeach;
+    $html = ob_get_clean();
+
+    echo json_encode(["success" => true, "html" => $html]);
     exit;
 
 } catch (PDOException $e) {
-    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["success" => false, "message" => "DB error: " . $e->getMessage()]);
     exit;
 }

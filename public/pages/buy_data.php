@@ -14,49 +14,64 @@ require __DIR__ . '/../partials/header.php';
             <h5 class="text-center fw-bold">Data Bundles</h5>
         </header>
 
-        <div class="network-section">
-            <div class="network-tabs">
-                <div class="network-tab" id="mtn-tab" data-network="mtn" style="--brand-color: #ffcc00;">
-                    <img src="../assets/icons/mtn_logo.svg" alt="mtn-logo">
-                    <span>MTN</span>
-                </div>
-                <div class="network-tab" id="airtel-tab" data-network="airtel" style="--brand-color: #EB1922;">
-                    <img src="../assets/icons/airtel-logo-1.svg" alt="airtel-logo" class="airtel-logo">
-                    <span>Airtel</span>
-                </div>
-                <div class="network-tab" id="glo-tab" data-network="glo" style="--brand-color: #50B651;">
-                    <img src="../assets/icons/glo_logo.svg" alt="glo-logo">
-                    <span>Glo</span>
-                </div>
-                <div class="network-tab" id="9mobile-tab" data-network="9mobile" style="--brand-color: #D6E806;">
-                    <img src="../assets/icons/9mobile_logo.svg" alt="9mobile-logo">
-                    <span>9Mobile</span>
-                </div>
+        <!-- Network Selection -->
+<div class="network-section">
+    <div class="network-tabs">
+        <div class="network-tab active" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #ffcc00;">
+            <img src="../assets/icons/mtn_logo.svg" alt="MTN">
+            <span>MTN</span>
+        </div>
+        <div class="network-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
+            <img src="../assets/icons/airtel-logo-1.svg" alt="Airtel" class="airtel-logo">
+            <span>Airtel</span>
+        </div>
+        <div class="network-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #50B651;">
+            <img src="../assets/icons/glo_logo.svg" alt="Glo">
+            <span>Glo</span>
+        </div>
+        <div class="network-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
+            <img src="../assets/icons/9mobile_logo.svg" alt="9Mobile">
+            <span>9Mobile</span>
+        </div>
+    </div>
+</div>
+
+<!-- Purchase Tabs -->
+<div class="tabs">
+    <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="self">Buy For Self</button>
+        <button class="tab-btn" data-tab="others">Buy For Others</button>
+    </div>
+
+    <div class="sub-tab-buttons">
+        <button class="sub-tab-btn active" data-sub="daily">Daily</button>
+        <button class="sub-tab-btn" data-sub="weekly">Weekly</button>
+        <button class="sub-tab-btn" data-sub="monthly">Monthly</button>
+    </div>
+
+    <!-- Plans Section -->
+    <div class="tab-contet position-relative">
+        <div id="plan-cards" class="cards-grid">
+            <div class="row">
+                <?php
+                $plansQuery = $pdo->prepare("SELECT id, price, volume, validity FROM service_plans WHERE provider_id = 1 AND type = 'daily' AND is_active = 1");
+                $plansQuery->execute();
+                $plans = $plansQuery->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($plans as $plan): ?>
+                    <div class="col-4">
+                        <div class="plan-card" data-id="<?= $plan['id'] ?>" data-price="<?= $plan['price'] ?>" data-volume="<?= $plan['volume'] ?>" data-validity="<?= $plan['validity'] ?>">
+                            <div class="data-price">₦<?= number_format($plan['price']) ?></div>
+                            <div class="data-volume"><?= htmlspecialchars($plan['volume']) ?></div>
+                            <div class="data-validity"><?= htmlspecialchars($plan['validity'] ?? '') ?></div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
-
-          <!-- TABS -->
-          <div class="tabs" style="width: 100%;">
-            <!-- Top Tabs -->
-            <div class="tab-buttons">
-                <button class="tab-btn active" data-tab="self">Buy For Self</button>
-                <button class="tab-btn" data-tab="others">Buy For Others</button>
-            </div>
-
-            <!-- Sub Tabs -->             <div class="sub-tab-buttons">
-                <button class="sub-tab-btn active" data-sub="daily">Daily</button>
-                <button class="sub-tab-btn" data-sub="weekly">Weekly</button>
-                <button class="sub-tab-btn" data-sub="monthly">Monthly</button>
-            </div>
-
-
-            <!-- Tab Content -->
-            <div class="tab-content" id="" class="position-relative">
-                <div id="plan-cards" class="cards-grid">
-                    
-                </div>
-            </div>
-        </div>
+        <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
+    </div>
+</div>
 
 
 
@@ -97,124 +112,153 @@ require __DIR__ . '/../partials/header.php';
 
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/pin-pad.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const brandColor = this.style.getPropertyValue("--brand-color");
+    let selectedNetwork = null;
+    let selectedPlan = null;
 
-        document.body.style.setProperty("--brand-color", brandColor);
-        airtelLogo.src = selectedNetwork === "airtel"
-            ? "../assets/icons/airtel-logo-2.svg"
-            : "../assets/icons/airtel-logo-1.svg";
+    const networkTabs = document.querySelectorAll(".network-tab");
+    const planCards = document.querySelectorAll(".plan-card");
+    const subTabs = document.querySelectorAll(".sub-tab-btn");
+    const bfsTab = document.querySelector(".tab-btn[data-tab='self']");
+    const bfoTab = document.querySelector(".tab-btn[data-tab='others']");
+    const phoneInput = document.getElementById("recipientPhone");
+    const purchaseBtn = document.getElementById("purchaseBtn");
 
-        document.querySelectorAll(".network-tab").forEach(tab => {
-            tab.addEventListener("click", () => {
-                // Reset background color for all tabs
-                document.querySelectorAll(".network-tab").forEach(t => {
-                    t.style.backgroundColor = "";
-                });
+    // **1. Handle Network Selection**
+    networkTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            selectedNetwork = tab.dataset.network;
 
-                // Apply the brand color to the selected tab
-                const brandColor = this.style.getPropertyValue("--brand-color");
-                document.body.style.setProperty("--brand-color", brandColor);
-            });
+        // Get brand color
+        let brandColor = getComputedStyle(tab).getPropertyValue("--brand-color");
+
+        // Set global brand color
+        document.body.style.setProperty("--brand-color", brandColor.trim());
+
+        // Remove previous highlights
+        networkTabs.forEach(t => {
+            t.style.backgroundColor = "";
+            t.classList.remove("active-network");
         });
-    });
 
-     document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".tabs").forEach(tabsContainer => {
-            const buttons = tabsContainer.querySelectorAll(".tab-btn");
-            const contents = tabsContainer.querySelectorAll(".tab-content");
-
-            // Activate first tab if none is active
-            const activeBtn = tabsContainer.querySelector(".tab-btn.active") || buttons[0];
-            if (activeBtn) activeBtn.classList.add("active");
-
-            const tabId = activeBtn.dataset.tab;
-            contents.forEach(content => {
-                content.classList.toggle("active", content.id === tabId);
-            });
-
-            // Add event listeners
-            buttons.forEach(button => {
-                button.addEventListener("click", () => {
-                    const tabId = button.dataset.tab;
-
-                    buttons.forEach(btn => btn.classList.remove("active"));
-                    button.classList.add("active");
-
-                    contents.forEach(content => {
-                        content.classList.toggle("active", content.id ===
-                            tabId);
-                    });
-                });
-            });
-        });
-    });
-
-  const subTabButtons = document.querySelectorAll(".sub-tab-btn");
-
-  subTabButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        // Toggle active class
-
-        subTabButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      // Get selected plan (e.g., daily, weekly)
-      const selectedPlan = btn.dataset.sub;
-
-      // Prepare data
-      const postData = `plan=${selectedPlan}`;
-
-      // Send AJAX request
-      sendAjaxRequest("fetch-plans.php", "POST", postData, (response) => {
-        if (response.success) {
-          document.querySelector("#completed").innerHTML = response.html;
-        } else {
-          showToasted(response.message, 'error');
+        // Apply active styles
+        tab.classList.add("active-network");
+        tab.style.backgroundColor = brandColor.trim(); // **Fix: Apply BG color**
+        // If Airtel is selected, update Airtel-specific background
+        if (selectedNetwork === "airtel") {
+            airtelLogo.src = selectedNetwork === "airtel"
+                ? "../assets/icons/airtel-logo-2.svg"
+                : "../assets/icons/airtel-logo-1.svg";
         }
-      });
+        });
     });
-  });
 
-  function loadPlans(providerId, type, brandColor) {
-    const url = 'fetch-plans.php';
-    const data = `provider_id=${encodeURIComponent(providerId)}&type=${encodeURIComponent(type)}`;
+    // **2. Prevent Plan Selection Until Network is Selected**
+    planCards.forEach(card => {
+        card.addEventListener("click", () => {
+            if (!selectedNetwork) {
+                showToasted("Please select a network first!", "info");
+                return;
+            }
 
-    sendAjaxRequest(url, 'POST', data, function (response) {
-        const container = document.getElementById('plan-cards');
-        container.innerHTML = ''; // Clear existing plans
+            // Highlight selected plan
+            planCards.forEach(c => c.classList.remove("selected-plan"));
+            card.classList.add("selected-plan");
 
-        if (!response.success) {
-            showToasted(response.message || 'Failed to load plans', 'error');
+            selectedPlan = card;
+            console.log("Plan selected:", selectedPlan.querySelector(".data-volume").innerText);
+        });
+    });
+
+    // **3. Handle Sub-tab Selection & AJAX Request**
+    subTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            let subType = tab.getAttribute("data-sub");
+
+            // Ensure BFS is active
+            if (!bfsTab.classList.contains("active")) return;
+
+            // Ensure Daily plan is selected
+            if (subType !== "daily") return;
+
+            // Ensure network & plan are selected
+            if (!selectedNetwork || !selectedPlan) {
+                showToasted("Select both a network and a plan first!", "success");
+                return;
+            }
+
+            let userPhone = getUserInfo().phone;
+            let planData = {
+                provider_id: selectedNetwork,
+                type: subType,
+                price: selectedPlan.querySelector(".data-price").innerText,
+                volume: selectedPlan.querySelector(".data-volume").innerText,
+                validity: selectedPlan.querySelector(".data-validity").innerText,
+                phone: userPhone
+            };
+
+            sendAjaxRequest("fetch-plan.php", planData, (response) => {
+                if (response.error) {
+                    showToasted(response.error, "error");
+                } else {
+                    updateTabContent(response.plans);
+                }
+            });
+        });
+    });
+
+    // **4. Smooth Transition for Plan Updates**
+    function updateTabContent(plans) {
+        let container = document.getElementById("plan-cards");
+        
+        // Apply fade out effect
+        container.style.opacity = 0;
+
+        setTimeout(() => {
+            container.innerHTML = ""; // Clear previous content
+
+            plans.forEach(plan => {
+                let card = document.createElement("div");
+                card.className = "plan-card";
+                card.innerHTML = `
+                    <div class="data-price">₦${plan.price}</div>
+                    <div class="data-volume">${plan.volume}</div>
+                    <div class="data-validity">${plan.validity}</div>
+                `;
+                
+                container.appendChild(card);
+            });
+
+            // Fade in new content
+            container.style.opacity = 1;
+        }, 300);
+    }
+
+    // **5. Handle BFO (Buy For Others)**
+    bfoTab.addEventListener("click", () => {
+        if (!selectedNetwork || !selectedPlan) {
+            showToasted("Select a network and a plan first!", "error");
             return;
         }
 
-        // Loop through plans and create cards
-        response.plans.forEach(plan => {
-            const card = document.createElement('div');
-            card.classList.add('plan-card');
-            card.style.backgroundColor = brandColor;
-            card.dataset.apiId = plan.api_id;
-            card.dataset.planId = plan.id;
-            card.dataset.price = plan.price;
-
-            card.innerHTML = `
-                <div class="plan-name">${plan.name}</div>
-                <div class="plan-price">₦${parseFloat(plan.price).toLocaleString()}</div>
-            `;
-
-            card.addEventListener('click', () => {
-                proceedToSummary(plan); // Call the next step
-            });
-
-            container.appendChild(card);
-        });
+        // Show input field & activate purchase button
+        phoneInput.style.display = "block";
+        purchaseBtn.classList.add("active");
     });
-}
+
+    purchaseBtn.addEventListener("click", () => {
+        if (!selectedPlan || !phoneInput.value) {
+            showToasted("Enter recipient phone number!", "error");
+            return;
+        }
+
+        toggleConfirmModal();
+    });
+});
 
 </script>
-
 
 <!-- FontAwesome CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
