@@ -184,18 +184,21 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
     </footer>
     <script>
     document.getElementById("copyText").addEventListener("click", () => {
+        let referralLink = document.getElementById("referralLinkInput").value; // Get referral link
+        
         if (navigator.share) {
             navigator.share({
-                title: "Check this out!",
-                text: "Here's a link you might find interesting:",
-                url: window.location.href // Shares the current page URL
+                title: "Join Now!",
+                text: "Use my referral link to get started:",
+                url: referralLink // Uses the referral link instead of the current URL
             })
-            .then(() => console.log("Link shared successfully!"))
+            .then(() => console.log("Referral link shared successfully!"))
             .catch(error => console.error("Error sharing:", error));
         } else {
             alert("Web Share API is not supported on this browser.");
         }
     });
+
 
 
     document.getElementById('copy-icon').addEventListener('click', function() {

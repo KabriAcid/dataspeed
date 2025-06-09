@@ -72,8 +72,8 @@ require __DIR__ . '/../partials/header.php';
         </div>
 
 <form action="" method="post">
-    <div class="phone-container">
-        <span class="phone-prefix text-xs">
+    <div class="input-group-container">
+        <span class="input-group-prefix text-xs">
             <img src="../assets/img/ng.png" alt=""> +234
         </span>
         <input type="tel" id="phone-number" name="phone_number" maxlength="10"

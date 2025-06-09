@@ -88,7 +88,6 @@ section:not(.jumbotoron) {
   transition: all 0.35s ease-in;
 }
 
-.primary-btn:disabled,
 button:disabled {
   box-shadow: var(--shadow-md);
   background-color: transparent !important;
@@ -102,6 +101,7 @@ button:disabled {
   color: var(--primary);
   text-align: center;
   vertical-align: middle;
+  cursor: not-allowed;
   user-select: none;
   border-radius: 0.5rem;
   transition: all 0.35s ease-in;
@@ -418,7 +418,7 @@ button:disabled {
   font-weight: 600;
 }
 
-.phone-container {
+.input-group-container {
   display: flex;
   align-items: center;
   width: 100%;
@@ -431,7 +431,7 @@ button:disabled {
   /* Prevents border-radius issues */
 }
 
-.phone-prefix {
+.input-group-prefix {
   display: flex;
   align-items: center;
   padding: 12px;
@@ -442,13 +442,13 @@ button:disabled {
   border-right: 1px solid #e9e9e9;
 }
 
-.phone-prefix img {
+.input-group-prefix img {
   width: 20px;
   height: auto;
   margin-right: 5px;
 }
 
-.phone-container .input {
+.input-group-container .input {
   border: none;
   flex: 1;
   border-radius: 0;
@@ -502,48 +502,13 @@ button:disabled {
 
 /* UDPATE PROFILE */
 .photo-container {
-  position: relative;
-  max-width: 600px;
-  margin: 0 auto;
-  overflow: hidden;
-  padding: 10px;
   display: flex;
-  align-items: center;
   justify-content: center;
-}
-
-.photo-container img::after {
-  content: "+";
-  z-index: -1;
-  position: absolute;
-  color: green;
-  border-radius: 100px;
-  width: 15px;
-  height: 15px;
-  top: 0;
-  right: 0;
-}
-
-.photo-container input[type="file"] {
-  display: none;
-}
-
-.photo-container .upload-icon {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 24px;
-  height: 24px;
-  background-color: #007bff;
-  border-radius: 50%;
-  color: white;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: bold;
 }
-
+select.select-state, select.select-lga {
+  padding-right: 20px!important;
+}
 .input[disabled] {
   background-color: #e9ecef;
   cursor: not-allowed;
@@ -1117,6 +1082,7 @@ button:disabled {
 .tab-buttons {
   display: flex;
   background-color: #fff;
+  border-radius: 8px;
   padding: 10px;
 }
 
@@ -1163,45 +1129,6 @@ button:disabled {
 th {
   text-align: center;
   font-size: 0.875rem;
-}
-
-.cut {
-  background-color: var(--primary-light);
-  width: 25px;
-  height: 25px;
-  border-radius: 100%;
-  position: absolute;
-}
-/* #cut1 sits at the center left */
-#cut1 {
-  left: -9px;
-  top: 50%;
-  z-index: 99;
-  transform: translateY(-50%);
-}
-#cut2 {
-  /* sits at the center right */
-  right: -9px;
-  top: 50%;
-  z-index: 99;
-  transform: translateY(-50%);
-}
-.dotted-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-image: linear-gradient(
-    to right,
-    transparent,
-    transparent 49%,
-    #ccc 49%,
-    #ccc 51%,
-    transparent 51%,
-    transparent
-  );
-  background-size: 10px 1px;
 }
 
 /* SUB TAB */
@@ -1337,8 +1264,10 @@ th {
 /* BUY DATA */
 .network-tabs {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  margin: auto;
+  max-width: 600px;
 }
 
 .network-tab {
@@ -1375,6 +1304,20 @@ th {
   background-color: var(--brand-color);
   color: white;
   font-weight: 600;
+}
+
+.network-tab {
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease;
+}
+.selected-network {
+  transform: scale(1.05); /* Slight zoom effect when selected */
+}
+
+.amount-btn {
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+.selected-amount {
+  transform: scale(1.1); /* Slight enlarge effect when selected */
 }
 
 .data-amount {
@@ -1447,10 +1390,10 @@ th {
   width: 100%;
   position: fixed;
   inset: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
+  align-items: flex-end !important;
+  justify-content: center !important;
   z-index: 9999;
 }
 

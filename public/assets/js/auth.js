@@ -36,7 +36,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!response.success) {
                     showToasted(response.message, 'error');
                 } else {
-                    window.location.href = 'dashboard.php?success=1';
+                    window.location.href = "dashboard.php?success=1";
+
+                    // After the page loads, remove the "success" parameter
+                    window.history.replaceState(null, null, "dashboard.php");
+
                 }
             }
         );

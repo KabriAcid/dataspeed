@@ -15,26 +15,26 @@ require __DIR__ . '/../partials/header.php';
         </header>
 
         <!-- Network Selection -->
-<div class="network-section">
-    <div class="network-tabs">
-        <div class="network-tab active" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #ffcc00;">
-            <img src="../assets/icons/mtn_logo.svg" alt="MTN">
-            <span>MTN</span>
+        <div class="network-section">
+            <div class="network-tabs">
+                <div class="network-tab active" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #ffcc00;">
+                    <img src="../assets/icons/mtn_logo.svg" alt="MTN">
+                    <span>MTN</span>
+                </div>
+                <div class="network-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
+                    <img src="../assets/icons/airtel-logo-1.svg" alt="Airtel" class="airtel-logo">
+                    <span>Airtel</span>
+                </div>
+                <div class="network-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
+                    <img src="../assets/icons/glo_logo.svg" alt="Glo">
+                    <span>Glo</span>
+                </div>
+                <div class="network-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
+                    <img src="../assets/icons/9mobile_logo.svg" alt="9Mobile">
+                    <span>9Mobile</span>
+                </div>
+            </div>
         </div>
-        <div class="network-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
-            <img src="../assets/icons/airtel-logo-1.svg" alt="Airtel" class="airtel-logo">
-            <span>Airtel</span>
-        </div>
-        <div class="network-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #50B651;">
-            <img src="../assets/icons/glo_logo.svg" alt="Glo">
-            <span>Glo</span>
-        </div>
-        <div class="network-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
-            <img src="../assets/icons/9mobile_logo.svg" alt="9Mobile">
-            <span>9Mobile</span>
-        </div>
-    </div>
-</div>
 
 <!-- Purchase Tabs -->
 <div class="tabs">
@@ -125,6 +125,7 @@ require __DIR__ . '/../partials/header.php';
     const bfoTab = document.querySelector(".tab-btn[data-tab='others']");
     const phoneInput = document.getElementById("recipientPhone");
     const purchaseBtn = document.getElementById("purchaseBtn");
+    const airtelLogo = document.querySelector(".airtel-logo");
 
     // **1. Handle Network Selection**
     networkTabs.forEach(tab => {
@@ -140,11 +141,12 @@ require __DIR__ . '/../partials/header.php';
         // Remove previous highlights
         networkTabs.forEach(t => {
             t.style.backgroundColor = "";
-            t.classList.remove("active-network");
+            t.classList.remove("active");
+
         });
 
         // Apply active styles
-        tab.classList.add("active-network");
+        tab.classList.add("active");
         tab.style.backgroundColor = brandColor.trim(); // **Fix: Apply BG color**
         // If Airtel is selected, update Airtel-specific background
         if (selectedNetwork === "airtel") {
@@ -184,12 +186,12 @@ require __DIR__ . '/../partials/header.php';
             if (subType !== "daily") return;
 
             // Ensure network & plan are selected
-            if (!selectedNetwork || !selectedPlan) {
+            if (!selectedNetwork && !selectedPlan) {
                 showToasted("Select both a network and a plan first!", "success");
                 return;
             }
 
-            let userPhone = getUserInfo().phone;
+            let userPhone = <?= $user['phone_number'] ?>;
             let planData = {
                 provider_id: selectedNetwork,
                 type: subType,
@@ -198,6 +200,7 @@ require __DIR__ . '/../partials/header.php';
                 validity: selectedPlan.querySelector(".data-validity").innerText,
                 phone: userPhone
             };
+
 
             sendAjaxRequest("fetch-plan.php", planData, (response) => {
                 if (response.error) {
@@ -235,17 +238,17 @@ require __DIR__ . '/../partials/header.php';
             container.style.opacity = 1;
         }, 300);
     }
-
     // **5. Handle BFO (Buy For Others)**
     bfoTab.addEventListener("click", () => {
-        if (!selectedNetwork || !selectedPlan) {
+        if (!selectedNetwork) {
+            selectedNetwork == 'mtn'
+        } else {
             showToasted("Select a network and a plan first!", "error");
             return;
         }
 
         // Show input field & activate purchase button
         phoneInput.style.display = "block";
-        purchaseBtn.classList.add("active");
     });
 
     purchaseBtn.addEventListener("click", () => {

@@ -11,7 +11,19 @@ if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
 ?>
+<script>
+    window.addEventListener("load", () => {
+    // Create a new URL object based on the current location
+    const url = new URL(window.location);
+    
+    // Remove 'success' parameter from the URL
+    url.searchParams.delete("success");
 
+    // Update the URL in the browser without reloading
+    window.history.replaceState(null, null, url.pathname + url.search);
+});
+
+</script>
 <body>
 
     <main class="container-fluid py-4 mb-5">

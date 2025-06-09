@@ -20,8 +20,8 @@ $states = fetchNigerianStates($pdo);
 
         <!-- Profile Photo -->
         <div class="photo-container position-relative mb-4" style="width: max-content;">
-            <img src="<?= htmlspecialchars($user['photo']); ?>" alt="Profile Photo" id="profile-photo"
-                class="avatar avatar-xl border-0 rounded-circle">
+            <!-- <img src="<?= htmlspecialchars($user['photo']); ?>" alt="Profile Photo" id="profile-photo"
+                class="avatar avatar-xl border-0 rounded-circle"> -->
             <input type="file" id="photo-input" accept="image/*" style="display: none;">
         </div>
 
@@ -153,7 +153,6 @@ $states = fetchNigerianStates($pdo);
 
             // Show toast message when the user clicks on the disabled button
             document.querySelector('.disabled-btn').addEventListener('click', function () {
-                console.log('❌ Attempted to update biodata, but it is not editable.');
                 showToasted('This step is not editable yet.', 'info');
             });
             /**

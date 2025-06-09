@@ -109,8 +109,8 @@ if (isset($_GET['referral_code'])) {
                         <p class="text-sm">Omit the first digit and insert the rest.</p>
                     </div>
                     <div class="form-field">
-                        <div class="phone-container">
-                            <span class="phone-prefix text-sm">
+                        <div class="input-group-container">
+                            <span class="input-group-prefix text-sm">
                                 <img src="https://flagcdn.com/w40/ng.png" alt=""> +234
                             </span>
                             <input type="text" id="phone" name="phone_number" maxlength="10" placeholder="Phone Number"
