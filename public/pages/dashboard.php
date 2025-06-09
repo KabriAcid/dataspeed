@@ -230,11 +230,11 @@ if (isset($_GET['success'])) {
                     echo '<p class="text-center text-muted">No transactions yet.</p>';
                 } else {
                     foreach ($transactions as $transaction) {
-                        $icon = getTransactionIcon($transaction['transaction_type']);
-                        $textColor = $transaction['transaction_type'] == 'Deposit' ? 'text-success' : 'text-danger';
+                        $icon = getTransactionIcon($transaction['type']);
+                        $textColor = $transaction['type'] == 'Deposit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
                         $date = date("M d, Y H:m", strtotime($transaction['created_at']));
-                        $prefix = ($transaction['transaction_type'] === 'Deposit') ? '+' : '-';
+                        $prefix = ($transaction['type'] === 'Deposit') ? '+' : '-';
 
                         if ($transactions) {
                 ?>
@@ -242,7 +242,7 @@ if (isset($_GET['success'])) {
                     <div class='d-flex align-items-center gap-3'>
                         <div class='transaction-icon p-2'><?= $icon ?></div>
                         <div>
-                            <h6 class='mb-0'><?= $transaction['transaction_type'] ?></h6>
+                            <h6 class='mb-0'><?= $transaction['type'] ?></h6>
                             <p class='text-sm text-secondary mb-0'><?= $date ?></p>
                         </div>
                     </div>

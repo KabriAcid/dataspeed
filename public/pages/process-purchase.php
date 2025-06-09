@@ -21,6 +21,9 @@ $phone = trim($_POST['phone'] ?? '');
 $network = trim($_POST['network'] ?? '');
 $type = trim($_POST['type'] ?? '');
 
+// using ternary operator to set default values
+$type = ($type == 'Self') ? 'Airtime Self' : 'Airtime Other';
+
 // Validate input
 if (!is_numeric($amount) || $amount <= 0) {
     echo json_encode(["success" => false, "message" => "Invalid amount."]);
