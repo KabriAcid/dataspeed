@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     $amount = trim($_POST["amount"] ?? '');
+    
     if (!is_numeric($amount) || $amount <= 0) {
         echo json_encode(["success" => false, "message" => "Invalid amount."]);
         exit;

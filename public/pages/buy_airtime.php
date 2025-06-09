@@ -128,6 +128,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
     <?php require __DIR__ . '/../partials/pinpad_modal.php' ?>
 
     </main>
+    <script src="../assets/js/ajax.js"></script>
+    <script src="../assets/js/pin-pad.js"></script>
     <script>
         // Set network SVG in confirm modal
         document.addEventListener("DOMContentLoaded", () => {
@@ -251,9 +253,6 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     amount = selectedBtn.getAttribute('data-amount');
                 }
 
-                // Format amount for display
-                const formattedAmount = amount ? `₦${Number(amount).toLocaleString()}` : "";
-
                 // Get selected network
                 const selectedNetworkTab = document.querySelector('.network-tab.selected-network');
                 const network = selectedNetworkTab ? selectedNetworkTab.getAttribute('data-network').toUpperCase() : '';
@@ -269,11 +268,9 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 // Set values in confirm modal
                 document.getElementById('customer-phone').textContent = phone ? formatPhoneNumber(phone) : 'N/A';
                 document.getElementById('customer-phone').setAttribute('data-raw', phone);
-                
                 document.getElementById('confirm-network').innerHTML = networkSVGs[network] || '';
                 document.getElementById('confirm-plan').textContent = activeTab.dataset.tab === "self" ? "Self" : "Others";
-                document.getElementById('confirm-amount').textContent = formattedAmount;
-
+                document.getElementById('confirm-amount').textContent = formattedAmount(amount);
 
                 confirmModal.style.display = "flex";
             });
@@ -294,14 +291,27 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
         payBtn.addEventListener("click", function () {
             // Hide confirm modal
-            confirmModal.style.display = "none";
-            // Show pinpad modal
-            pinpadModal.style.display = "flex";
+            // confirmModal.style.display = "none";
+
+            let amountText = document.getElementById('confirm-amount').textContent;
+            let rawAmount = amountText.replace(/[^\d]/g, ''); // keep only digitsa
+
+            sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function (response) {
+                if (response.success) {
+                    // Show pinpad modal
+                    showToasted(response.message, "success");
+                    pinpadModal.style.display = "flex";
+                } else {
+                    showToasted(response.message, "error");
+                }
+            });
+            
         });
 
-        closePinpad.addEventListener("click", function () {
-            pinpadModal.style.display = "none";
-        });
+
+        // closePinpad.addEventListener("click", function () {
+        //     pinpadModal.style.display = "none";
+        // });
 
         // Optional: Hide pinpad when clicking outside modal-content
         pinpadModal.addEventListener("click", function (e) {
@@ -343,6 +353,9 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
     // **Format Phone Number**
     function formatPhoneNumber(num) {
         return num.length === 10 ? "0" + num.substring(0, 3) + " " + num.substring(3, 7) + " " + num.substring(7) : num;
+    }
+    function formattedAmount(amount){
+        return amount ? `₦${Number(amount).toLocaleString()}` : "";
     }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

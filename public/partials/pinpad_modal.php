@@ -1,6 +1,5 @@
 <!-- PIN Modal -->
- <link rel="stylesheet" href="../assets/css/style.css">
- <div id="pinpadModal" class="modal-overlay" style="display: ;">
+ <div id="pinpadModal" class="modal-overlay" style="display: none;">
   <div class="pin-container">
     <div class="pin-header text-center">
       <img src="../assets/img/avatar.jpg" alt="avatar" class="pinpad-avatar">
@@ -38,7 +37,7 @@
         <button type="button" class="key-button" data-value="9">9</button>
       </div>
       <div class="keypad-row">
-        <button type="button" class="key-button invisible"></button>
+        <button type="button" class="key-spacer key-button invisible"></button>
         <button type="button" class="key-button" data-value="0">0</button>
         <button type="button" id="backspace" class="key-button key-backspace" aria-label="Backspace">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1A202C" style="width: 1.1em; height: 1.1em;">
@@ -48,9 +47,8 @@
       </div>
     </div>
     <div class="pin-action-buttons d-flex justify-content-between mt-3">
-      <button type="button" id="pin-exit-btn"><i class="fa fa-home"></i> Exit</button>
+      <button type="button" id="pin-exit-btn" id="closePinpad"><i class="fa fa-home"></i> Exit</button>
       <button type="button" id="pin-forgot-btn"><i class="fa fa-question-mark"></i> Forgot PIN</button>
     </div>
   </div>
 </div>
-<script src="../assets/js/pin-pad.js"></script>

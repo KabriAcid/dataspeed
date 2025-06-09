@@ -1,87 +1,112 @@
-function initPinPad(containerSelector, onComplete) {
-  const container = document.querySelector(containerSelector);
-  if (!container) return;
-
-  const dots = container.querySelectorAll(".pin-dot");
-  const keys = container.querySelectorAll(".key-button");
-  const backspace = container.querySelector("#backspace");
-  const logoutBtn = container.querySelector(".logout");
-  const forgotBtn = container.querySelector(".forgot");
+document.addEventListener("DOMContentLoaded", function () {
+  const pinpadModal = document.getElementById("pinpadModal");
+  const pinDots = pinpadModal.querySelectorAll(".pin-dot");
+  const keyButtons = pinpadModal.querySelectorAll(".key-button[data-value]");
+  const backspaceBtn = pinpadModal.querySelector("#backspace");
+  const exitBtn = pinpadModal.querySelector("#pin-exit-btn");
+  const forgotBtn = pinpadModal.querySelector("#pin-forgot-btn");
   let pin = "";
-  const MAX_LENGTH = 4;
 
-  const updateDots = () => {
-    dots.forEach((dot, i) => {
-      dot.classList.toggle("filled", i < pin.length);
+  // Utility: Update PIN dots
+  function updateDots() {
+    pinDots.forEach((dot, idx) => {
+      dot.classList.toggle("filled", idx < pin.length);
     });
-    backspace.style.visibility = pin.length > 0 ? "visible" : "hidden";
-  };
+  }
 
-  const resetPin = () => {
-    pin = "";
-    updateDots();
-  };
+  // Utility: Show/hide backspace
+  function updateBackspace() {
+    if (pin.length > 0) {
+      backspaceBtn.classList.add("visible");
+    } else {
+      backspaceBtn.classList.remove("visible");
+    }
+  }
 
-  const addDigit = digit => {
-    if (!/^\d$/.test(digit)) return;
-    if (pin.length < MAX_LENGTH) {
+  // Add digit to PIN
+  function addDigit(digit) {
+    if (pin.length < 4 && /^\d$/.test(digit)) {
       pin += digit;
       updateDots();
-      if (pin.length === MAX_LENGTH) {
+      updateBackspace();
+      if (pin.length === 4) {
         setTimeout(() => {
-          onComplete(pin);
-          resetPin();
-        }, 250);
+          // Call your PIN complete handler here
+          // Example: onPinComplete(pin);
+          pin = "";
+          updateDots();
+          updateBackspace();
+          pinpadModal.style.display = "none";
+        }, 200);
       }
     }
-  };
+  }
 
-  const removeDigit = () => {
+  // Remove last digit
+  function removeDigit() {
     if (pin.length > 0) {
       pin = pin.slice(0, -1);
       updateDots();
+      updateBackspace();
     }
-  };
+  }
 
-  keys.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const val = btn.dataset.value;
-      addDigit(val);
-    });
+  // Keypad button clicks
+  keyButtons.forEach(btn => {
+    btn.addEventListener("click", () => addDigit(btn.dataset.value));
   });
 
-  backspace?.addEventListener("click", removeDigit);
+  // Backspace click
+  backspaceBtn.addEventListener("click", removeDigit);
 
-  // Initial state
-  updateDots();
-
-  // Keyboard input support (when modal is visible)
-  document.addEventListener("keydown", e => {
-    if (container.offsetParent === null) return;
-    if (/^\d$/.test(e.key)) {
+  // Keyboard support
+  pinpadModal.addEventListener("keydown", function (e) {
+    if (e.key >= "0" && e.key <= "9") {
       addDigit(e.key);
     } else if (e.key === "Backspace") {
       removeDigit();
+    } else if (e.key === "Escape") {
+      pinpadModal.style.display = "none";
     }
   });
 
-  // Logout and Forgot PIN hooks
-  logoutBtn?.addEventListener("click", () => {
-    showToasted("Logging out...", "info");
+  // Focus modal for keyboard input when shown
+  const observer = new MutationObserver(() => {
+    if (pinpadModal.style.display !== "none") {
+      pinpadModal.setAttribute("tabindex", "-1");
+      pinpadModal.focus();
+    }
+  });
+  observer.observe(pinpadModal, {
+    attributes: true,
+    attributeFilter: ["style"],
   });
 
-  forgotBtn?.addEventListener("click", () => {
-    showToasted("Forgot PIN clicked.", "info");
+  // Dismiss modal on outside click
+  pinpadModal.addEventListener("click", function (e) {
+    if (e.target === pinpadModal) {
+      pinpadModal.style.display = "none";
+      pin = "";
+      updateDots();
+      updateBackspace();
+    }
   });
-}
 
-// Click outside the PIN modal to dismiss it
-document.addEventListener("click", function (e) {
-  const modal = document.getElementById("pinpadModal");
-  if (!modal || modal.style.display !== "flex") return;
+  // Exit and Forgot PIN actions
+  exitBtn?.addEventListener("click", function () {
+    pinpadModal.style.display = "none";
+    pin = "";
+    updateDots();
+    updateBackspace();
+    window.location.href = '/dataspeed/public/pages/dashboard.php';
+  });
 
-  const content = modal.querySelector(".pin-container");
-  if (content && !content.contains(e.target)) {
-    modal.style.display = "none";
-  }
+  forgotBtn?.addEventListener("click", function () {
+    // Implement your forgot PIN logic here
+    alert("Forgot PIN clicked!");
+  });
+
+  // Initialize state
+  updateDots();
+  updateBackspace();
 });

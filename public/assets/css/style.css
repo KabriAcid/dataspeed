@@ -1645,15 +1645,9 @@ th {
   transition: 1s;
 }
 
-.key-spacer {
-  visibility: hidden;
-  cursor: default;
-}
-
 @media (max-width: 380px) {
   .key-button,
-  .key-backspace,
-  .key-spacer {
+  .key-backspace {
     width: 56px;
     height: 56px;
     font-size: 1.5rem;
