@@ -2,7 +2,7 @@
 @import url("print.css");
 @import url("creative-tim.css");
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@100;200;300;400;500;600;700;800;900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 * {
   padding: 0;
@@ -65,6 +65,11 @@ section:not(.jumbotoron) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+}
+
+.invisible {
+  visibility: hidden;
 }
 
 /* BUTTONS STYLINGS */
@@ -1584,11 +1589,10 @@ th {
 .keypad-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: var(--space-1);
+  margin-bottom: var(--space-3);
 }
 
-.key-button,
-.key-backspace {
+.key-button {
   width: 40%;
   margin: 0 8px;
   padding: 5px;
@@ -1601,17 +1605,17 @@ th {
   transition: all var(--transition-fast);
 }
 
-.key-button:active,
-.key-backspace:active {
+.key-button:active {
   transform: translateY(0);
 }
 
 .key-backspace {
-  opacity: 0;
-  visibility: hidden;
+  /* opacity: 0; */
+  border: none;
+  background-color: transparent;
+  /* visibility: hidden; */
   transition: opacity var(--transition-normal),
-    visibility var(--transition-normal), transform var(--transition-fast),
-    background-color var(--transition-fast);
+    visibility var(--transition-normal), transform var(--transition-fast);
 }
 
 .key-backspace.visible {
@@ -1642,7 +1646,8 @@ th {
 }
 
 .key-spacer {
-  display: none;
+  visibility: hidden;
+  cursor: default;
 }
 
 @media (max-width: 380px) {
