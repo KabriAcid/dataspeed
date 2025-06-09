@@ -31,12 +31,51 @@ document.addEventListener("DOMContentLoaded", function () {
       updateBackspace();
       if (pin.length === 4) {
         setTimeout(() => {
-          // Call your PIN complete handler here
-          // Example: onPinComplete(pin);
-          pin = "";
-          updateDots();
-          updateBackspace();
-          pinpadModal.style.display = "none";
+          // --- BEGIN: AJAX purchase logic ---
+          // Gather data from modal
+          const amountText =
+            document.getElementById("confirm-amount").textContent;
+          const rawAmount = amountText.replace(/[^\d]/g, "");
+          const phone = document
+            .getElementById("customer-phone")
+            .getAttribute("data-raw");
+          const network = document
+            .getElementById("confirm-network")
+            .getAttribute("data-network");
+          const type = document.getElementById("confirm-plan").textContent;
+
+          // Prepare data string for AJAX
+          const data = `pin=${encodeURIComponent(
+            pin
+          )}&amount=${encodeURIComponent(rawAmount)}&phone=${encodeURIComponent(
+            phone
+          )}&network=${encodeURIComponent(network)}&type=${encodeURIComponent(
+            type
+          )}`;
+
+          // Use your custom AJAX function
+          sendAjaxRequest(
+            "process-purchase.php",
+            "POST",
+            data,
+            function (response) {
+              if (response.success) {
+                showToasted(
+                  response.message || "Purchase successful!",
+                  "success"
+                );
+                pinpadModal.style.display = "none";
+                // Optionally update balance or UI here
+              } else {
+                showToasted(response.message || "Purchase failed!", "error");
+                // Optionally reset PIN dots for another try
+              }
+              pin = "";
+              updateDots();
+              updateBackspace();
+            }
+          );
+          // --- END: AJAX purchase logic ---
         }, 200);
       }
     }
