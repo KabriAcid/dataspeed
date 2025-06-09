@@ -47,8 +47,8 @@
           </div>
       </div>
   </div>
-</div>
-<div class="pin-action-buttons">
-    <button id="pin-logout-btn">Logout</button>
-    <button id="pin-forgot-btn">Forgot PIN</button>
+  <div class="pin-action-buttons">
+      <button id="pin-logout-btn">Logout</button>
+      <button id="pin-forgot-btn">Forgot PIN</button>
+  </div>
 </div>

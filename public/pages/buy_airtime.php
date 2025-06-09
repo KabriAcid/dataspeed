@@ -4,6 +4,9 @@ require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../partials/header.php';
 ?>
+<?php
+$loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
+?>
 
 <body>
     <main class="container-fluid py-4">
@@ -98,18 +101,19 @@ require __DIR__ . '/../partials/header.php';
             <div class="modal-body">
                 <p class="text-sm text-secondary mb-1 text-center">Send to</p>
                 <div id="customer-phone" data-raw="">080********</div>
-                <div class="info-row"><span>Network:</span><span id="confirm-network" class="">MTN</span></div>
-                <div class="info-row"><span>Plan:</span><span id="confirm-plan" class="fw-bold">500MB</span></div>
-                <div class="info-row"><span>Amount:</span><span id="confirm-amount" class="fw-bolder primary fs-6">₦100</span></div>
+                <div class="info-row"><span>Network:</span><span id="confirm-network" class="">N/A</span></div>
+                <div class="info-row"><span>Type:</span><span id="confirm-plan" class="fw-bold">Self</span></div>
+                <div class="info-row"><span>Amount:</span><span id="confirm-amount" class="fw-bolder primary fs-6">₦0</span></div>
                 <div class="info-row">
                     <span>Product</span>
-                    <span><i class="icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <span>
+                        <i class="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
-                                d="M12 19.51L12.01 19.4989M2 8C8 3.5 16 3.5 22 8M5 12C9 8.99999 15 9 19 12M8.5 15.5C10.7504 14.1 13.2498 14.0996 15.5001 15.5"
+                                d="M12 5C12.5523 5 13 4.55228 13 4C13 3.44772 12.5523 3 12 3C11.4477 3 11 3.44772 11 4C11 4.55228 11.4477 5 12 5ZM12 5L14.5 14M12 5L9.5 14M16 1C16 1 17.5 2 17.5 4C17.5 6 16 7 16 7M8 1C8 1 6.5 2 6.5 4C6.5 6 8 7 8 7M14.5 14H9.5M14.5 14L15.8889 19M9.5 14L8.11111 19M7 23L8.11111 19M8.11111 19H15.8889M15.8889 19L17 23"
                                 stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                    </i> Internet Data</span>
+                    </i> Airtime</span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -121,10 +125,18 @@ require __DIR__ . '/../partials/header.php';
 
     <!-- Bottom navigation -->
     <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
+    <?php require __DIR__ . '/../partials/pinpad_modal.php' ?>
 
     </main>
     <script>
+        // Set network SVG in confirm modal
         document.addEventListener("DOMContentLoaded", () => {
+        const networkSVGs = {
+            MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:32px;">`,
+            AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:32px;">`,
+            GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:32px;">`,
+            '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:32px;">`
+        };
         let selectedNetwork = null;
         let selectedAmount = null;
 
@@ -133,9 +145,16 @@ require __DIR__ . '/../partials/header.php';
         const tabButtons = document.querySelectorAll(".tab-btn");
         const tabContents = document.querySelectorAll(".tab-content");
         const airtelLogo = document.querySelector(".airtel-logo");
+
+        // Confirm Modal Elements
         const confirmModal = document.getElementById("confirmModal");
         const closeConfirmBtn = document.getElementById("closeConfirm");
         const purchaseBtns = document.querySelectorAll(".purchase-btn");
+
+        // Pin pad modal elements
+        const payBtn = document.getElementById("payBtn");
+        const pinpadModal = document.getElementById("pinModal");
+        const closePinpad = document.getElementById("closePinpad");
 
         // --- Tab Switching ---
         tabButtons.forEach(btn => {
@@ -219,26 +238,42 @@ require __DIR__ . '/../partials/header.php';
         // --- Purchase Button & Confirm Modal ---
         purchaseBtns.forEach(btn => {
             btn.addEventListener("click", function (e) {
-                e.preventDefault(); // Prevent form submission if inside a form
+                e.preventDefault();
 
-                // Get the selected amount from the active tab's input or selected button
                 const activeTab = getActiveTab();
                 const amountInput = getActiveAmountInput();
+                const phoneInput = getActivePhoneInput();
                 let amount = amountInput.value.trim();
 
-                // If an amount-btn is selected, use its data-amount for formatting
+                // Get selected amount from button if present
                 const selectedBtn = activeTab.querySelector('.amount-btn.selected-amount');
                 if (selectedBtn) {
                     amount = selectedBtn.getAttribute('data-amount');
                 }
 
-                // Format amount for display (add ₦ if missing)
+                // Format amount for display
                 const formattedAmount = amount ? `₦${Number(amount).toLocaleString()}` : "";
 
-                // Set the amount in the confirm modal
+                // Get selected network
+                const selectedNetworkTab = document.querySelector('.network-tab.selected-network');
+                const network = selectedNetworkTab ? selectedNetworkTab.getAttribute('data-network').toUpperCase() : '';
+
+                // Determine phone number for summary
+                let phone;
+                if (activeTab.dataset.tab === "self") {
+                    phone = "<?php echo $loggedInPhone; ?>";
+                } else {
+                    phone = phoneInput ? phoneInput.value.trim() : '';
+                }
+
+                // Set values in confirm modal
+                document.getElementById('customer-phone').textContent = phone ? formatPhoneNumber(phone) : 'N/A';
+                document.getElementById('customer-phone').setAttribute('data-raw', phone);
+                
+                document.getElementById('confirm-network').innerHTML = networkSVGs[network] || '';
+                document.getElementById('confirm-plan').textContent = activeTab.dataset.tab === "self" ? "Self" : "Others";
                 document.getElementById('confirm-amount').textContent = formattedAmount;
 
-                // You can also set other fields here (plan, phone, etc.) as needed
 
                 confirmModal.style.display = "flex";
             });
@@ -252,6 +287,26 @@ require __DIR__ . '/../partials/header.php';
         confirmModal.addEventListener("click", function (e) {
             if (e.target === confirmModal) {
                 confirmModal.style.display = "none";
+            }
+        });
+
+        // PIN PAD functionality
+
+        payBtn.addEventListener("click", function () {
+            // Hide confirm modal
+            confirmModal.style.display = "none";
+            // Show pinpad modal
+            pinpadModal.style.display = "flex";
+        });
+
+        closePinpad.addEventListener("click", function () {
+            pinpadModal.style.display = "none";
+        });
+
+        // Optional: Hide pinpad when clicking outside modal-content
+        pinpadModal.addEventListener("click", function (e) {
+            if (e.target === pinpadModal) {
+                pinpadModal.style.display = "none";
             }
         });
 
@@ -284,6 +339,11 @@ require __DIR__ . '/../partials/header.php';
             purchaseBtn.disabled = !valid;
         }
     });
+
+    // **Format Phone Number**
+    function formatPhoneNumber(num) {
+        return num.length === 10 ? "0" + num.substring(0, 3) + " " + num.substring(3, 7) + " " + num.substring(7) : num;
+    }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

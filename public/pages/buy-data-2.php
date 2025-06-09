@@ -86,6 +86,7 @@ require __DIR__ . '/../partials/header.php';
 <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
 </main>
 
+
 <!-- Confirm Modal -->
 <div id="confirmModal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
