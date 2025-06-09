@@ -183,16 +183,20 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
             rights reserved.</p>
     </footer>
     <script>
-    document.getElementById("copyText").addEventListener("click", function() {
-        const linkInput = document.getElementById("referralLinkInput").value;
-        // Copy to clipboard after clicking the button
-        navigator.clipboard.writeText(linkInput).then(function() {
-            showToasted('Copied successfully', 'success');
-        }, function(err) {
-            showToasted('Could not copy code', 'error');
-            console.error(err);
-        });
+    document.getElementById("copyText").addEventListener("click", () => {
+        if (navigator.share) {
+            navigator.share({
+                title: "Check this out!",
+                text: "Here's a link you might find interesting:",
+                url: window.location.href // Shares the current page URL
+            })
+            .then(() => console.log("Link shared successfully!"))
+            .catch(error => console.error("Error sharing:", error));
+        } else {
+            alert("Web Share API is not supported on this browser.");
+        }
     });
+
 
     document.getElementById('copy-icon').addEventListener('click', function() {
         const referralCode = document.getElementById('referral_code').innerText.trim();
