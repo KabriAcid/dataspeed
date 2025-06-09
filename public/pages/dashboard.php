@@ -61,7 +61,7 @@ if (isset($_GET['success'])) {
         <div>
             <p class="text-secondary mb-0 text-sm">Total Balance</p>
             <div class="d-flex align-items-end">
-                <h2 class="display-5 fw-bold mb-0" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
+                <h2 class="display-5 fw-bold mb-0 digit" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
                 <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
                 <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
                     <span id="balanceEye">

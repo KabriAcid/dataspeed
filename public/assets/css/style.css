@@ -2,7 +2,8 @@
 @import url("print.css");
 @import url("creative-tim.css");
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@100;200;300;400;500;600;700;800;900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500..900&display=swap');
+
 * {
   padding: 0;
   margin: 0;
@@ -13,6 +14,27 @@
 body {
   background-color: var(--primary-light);
   padding-bottom: 80px;
+}
+
+/* Apply Rubik font to all digits in text, inputs, buttons, etc. */
+:is(body, *) {
+  font-variant-numeric: lining-nums; /* Optional: for better digit alignment */
+}
+
+.digit,
+input[type="number"],
+.key-button,
+.key-backspace,
+.pin-dot,
+[data-digit],
+[data-type="digit"] {
+  font-family: 'Rubik', 'Quicksand', 'Segoe UI', sans-serif !important;
+  letter-spacing: 0.04em;
+}
+
+/* Generic: All digits inside any element */
+*:not(code):not(pre) {
+  font-feature-settings: "lnum";
 }
 
 a {
