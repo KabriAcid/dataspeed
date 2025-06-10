@@ -1,13 +1,16 @@
 window.addEventListener("pinAuthenticated", function (e) {
   const pin = e.detail.pin;
-  // Now process the purchase with all the needed data
+  const pinpadModal = document.getElementById("pinpadModal");
+  const amount = pinpadModal.dataset.amount;
+  const phone = pinpadModal.dataset.phone;
+  const network = pinpadModal.dataset.network;
+  const type = pinpadModal.dataset.type;
+
   const data = `pin=${encodeURIComponent(pin)}&amount=${encodeURIComponent(
-    selectedPlan.price
+    amount
   )}&phone=${encodeURIComponent(phone)}&network=${encodeURIComponent(
-    selectedNetwork
-  )}&type=${encodeURIComponent(
-    selectedPlan.volume + " (" + selectedPlan.validity + ")"
-  )}`;
+    network
+  )}&type=${encodeURIComponent(type)}`;
   sendAjaxRequest("process-purchase.php", "POST", data, function (response) {
     if (response.success) {
       showToasted(response.message, "success");

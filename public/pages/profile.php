@@ -18,7 +18,7 @@ $states = fetchNigerianStates($pdo);
         <header>
             <div class="page-header mb-4 text-center">
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <h5 class="fw-bold">My Profile</h5>
                 <span></span>
@@ -93,8 +93,7 @@ $states = fetchNigerianStates($pdo);
                             pattern="\d*"
                             class="input"
                             placeholder="10-digit NUBAN"
-                            value="<?= htmlspecialchars($user['w_account_number']) ?>"
-                            >
+                            value="<?= htmlspecialchars($user['w_account_number']) ?>">
 
                     </div>
                 </div>
@@ -109,13 +108,13 @@ $states = fetchNigerianStates($pdo);
                     <div class="col-md-6 mb-3">
                         <label>State</label>
                         <select name="state" id="state" class="select-state input" required data-selected="<?= $selectedState ?>">
-                           <?php
-                        //    Fetch Nigerian states from the database
+                            <?php
+                            //    Fetch Nigerian states from the database
                             foreach ($states as $state) {
-                                 $selected = ($state['state_name'] === $selectedState) ? 'selected' : '';
-                                    echo "<option value=\"{$state['state_name']}\" $selected>{$state['state_name']}</option>";
+                                $selected = ($state['state_name'] === $selectedState) ? 'selected' : '';
+                                echo "<option value=\"{$state['state_name']}\" $selected>{$state['state_name']}</option>";
                             }
-                           ?>
+                            ?>
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -151,7 +150,7 @@ $states = fetchNigerianStates($pdo);
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/state-capital.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const stepForms = document.querySelectorAll('.wizard-step');
             const stepIndicators = document.querySelectorAll('.step-indicator');
             const stepIds = ['biodata', 'account', 'address'];
@@ -159,7 +158,7 @@ $states = fetchNigerianStates($pdo);
             let currentStep = 0;
 
             // Show toast message when the user clicks on the disabled button
-            document.querySelector('.disabled-btn').addEventListener('click', function () {
+            document.querySelector('.disabled-btn').addEventListener('click', function() {
                 showToasted('This step is not editable yet.', 'info');
             });
             /**
@@ -201,7 +200,7 @@ $states = fetchNigerianStates($pdo);
             });
 
             // Make function globally available if needed
-            window.goToStep = function (index) {
+            window.goToStep = function(index) {
                 updateStepUI(index);
             };
 
@@ -212,7 +211,7 @@ $states = fetchNigerianStates($pdo);
              * Handle form submissions using your custom AJAX logic
              */
             document.querySelectorAll('form.wizard-step').forEach((form, index) => {
-                form.addEventListener('submit', function (e) {
+                form.addEventListener('submit', function(e) {
                     e.preventDefault();
 
                     const step = stepIds[index];
@@ -225,7 +224,7 @@ $states = fetchNigerianStates($pdo);
                     }
 
 
-                    sendAjaxRequest('update-address.php', 'POST', params.toString(), function (res) {
+                    sendAjaxRequest('update-address.php', 'POST', params.toString(), function(res) {
                         if (res.success) {
                             showToasted(res.message || 'Update successful', 'success');
                         } else {
@@ -235,9 +234,10 @@ $states = fetchNigerianStates($pdo);
                 });
             });
         });
-        </script>
+    </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 
 </body>
+
 </html>

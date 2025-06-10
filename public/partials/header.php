@@ -23,6 +23,8 @@ if (isset($_SESSION['user_id'])) {
 
     <!-- lOTTIE ANIMATIONS -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- <script src="../assets/js/lottie-player.js"></script> -->
+
 
     <!-- Toasted JS -->
     <link rel="stylesheet" href="../assets/css/toasted.css" />

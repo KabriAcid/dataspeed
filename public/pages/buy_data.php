@@ -110,7 +110,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
     </main>
 
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/customEvents.js"></script>
+    <script src="../assets/js/pin-events.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
     <script>
         const networkSVGs = {
@@ -295,21 +295,11 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             });
 
             payBtn.addEventListener("click", function() {
-                // ...your balance check logic...
-
-                // Get the pin pad modal
                 const pinpadModal = document.getElementById("pinpadModal");
-
-                // When ready to process the PIN (after 4 digits entered)
-                const rawAmount = pinpadModal.dataset.amount;
-                const phone = pinpadModal.dataset.phone;
-                const network = pinpadModal.dataset.network;
-                const type = pinpadModal.dataset.type;
-
-                // Now use these variables in your AJAX call
-                const data = `pin=${encodeURIComponent(pin)}&amount=${encodeURIComponent(rawAmount)}&phone=${encodeURIComponent(phone)}&network=${encodeURIComponent(network)}&type=${encodeURIComponent(type)}`;
-
-                // Show the pin pad
+                pinpadModal.dataset.amount = selectedPlan.price;
+                pinpadModal.dataset.phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
+                pinpadModal.dataset.network = selectedNetwork;
+                pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.style.display = "flex";
             });
 
@@ -334,7 +324,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
     </script>
 
     <!-- FontAwesome CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

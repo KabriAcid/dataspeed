@@ -1,5 +1,5 @@
 <!-- PIN Modal -->
- <div id="pinpadModal" class="modal-overlay" style="display: none;">
+<div id="pinpadModal" class="modal-overlay" style="display: none;" data-amount="" data-phone="" data-network="" data-type="">
   <div class="pin-container">
     <div class="pin-header text-center">
       <img src="../assets/img/avatar.jpg" alt="avatar" class="pinpad-avatar">

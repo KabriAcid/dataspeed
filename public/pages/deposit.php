@@ -21,7 +21,7 @@ $names = $_SESSION['user_id']['first_name'] . " " . $_SESSION['user_id']['last_n
         <!-- BOTTOM NAVIGATION -->
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <?php require __DIR__ . '/../partials/scripts.php'; ?>
         <script src="https://checkout.flutterwave.com/v3.js"></script>
 
     </main>

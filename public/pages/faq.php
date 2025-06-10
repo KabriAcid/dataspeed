@@ -11,7 +11,7 @@ require __DIR__ . '/../partials/header.php';
         <header>
             <div class="page-header mb-4 text-center">
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <h5 class="fw-bold">FAQ</h5>
                 <span></span>
@@ -121,28 +121,28 @@ require __DIR__ . '/../partials/header.php';
         &copy; Dreamcodes 2025. All rights reserved.
     </footer>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const faqItems = document.querySelectorAll('.faq-item');
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
 
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
 
-            question.addEventListener('click', () => {
-                // Close other open items
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item && otherItem.classList.contains('active')) {
-                        otherItem.classList.remove('active');
-                    }
+                question.addEventListener('click', () => {
+                    // Close other open items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+
+                    // Toggle current item
+                    item.classList.toggle('active');
                 });
-
-                // Toggle current item
-                item.classList.toggle('active');
             });
         });
-    });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

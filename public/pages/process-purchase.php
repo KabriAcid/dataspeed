@@ -57,7 +57,7 @@ if (strlen($user['txn_pin']) === 4 && is_numeric($user['txn_pin'])) {
     $pinValid = password_verify($pin, $user['txn_pin']);
 }
 if (!$pinValid) {
-    echo json_encode(["success" => false, "message" => "Incorrect PIN."]);
+    echo json_encode(["success" => false, "message" => "Incorrect Transaction PIN."]);
     exit;
 }
 

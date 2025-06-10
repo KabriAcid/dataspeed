@@ -135,7 +135,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
     </main>
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/customEvents.js"></script>
+    <script src="../assets/js/pin-events.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
     <script>
         // Set network SVG in confirm modal
@@ -298,8 +298,6 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             // PIN PAD functionality
 
             payBtn.addEventListener("click", function() {
-                // Hide confirm modal
-                // confirmModal.style.display = "none";
 
                 let amountText = document.getElementById('confirm-amount').textContent;
                 let rawAmount = amountText.replace(/[^\d]/g, ''); // keep only digitsa
@@ -314,12 +312,14 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     }
                 });
 
+                // Hide confirm modal
+                confirmModal.style.display = "none";
             });
 
 
-            // closePinpad.addEventListener("click", function () {
-            //     pinpadModal.style.display = "none";
-            // });
+            closePinpad.addEventListener("click", function() {
+                pinpadModal.style.display = "none";
+            });
 
             // Optional: Hide pinpad when clicking outside modal-content
             pinpadModal.addEventListener("click", function(e) {
@@ -370,7 +370,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             return amount ? `₦${Number(amount).toLocaleString()}` : "";
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

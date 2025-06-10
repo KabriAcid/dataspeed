@@ -165,15 +165,14 @@ if (isset($_GET['referral_code'])) {
     </main>
 </body>
 <script>
-
-document.getElementById('registration_reset').addEventListener('click', function(){
-    sessionStorage.clear();
-    window.location.href = 'register.php';
-});
+    document.getElementById('registration_reset').addEventListener('click', function() {
+        sessionStorage.clear();
+        window.location.href = 'register.php';
+    });
 </script>
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/toggle-password.js"></script>
 <script src="../assets/js/multi-step.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<?php require __DIR__ . '/../partials/scripts.php'; ?>
 
 </html>

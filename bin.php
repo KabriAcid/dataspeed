@@ -11,11 +11,11 @@ $names = $_SESSION['user_id']['first_name'] . " " . $_SESSION['user_id']['last_n
 
 <body>
 
-        <main class="container-fluid py-4">
-            <header class="d-flex justify-content-between align-items-start mb-4">
-                <a href="dashboard.php" class="btn btn-secondary btn-sm">Back</a>
+    <main class="container-fluid py-4">
+        <header class="d-flex justify-content-between align-items-start mb-4">
+            <a href="dashboard.php" class="btn btn-secondary btn-sm">Back</a>
 
-            </header>
+        </header>
 
         <div class="form-container container">
             <h3 class="text-center mb-4">Fund Your Wallet</h3>
@@ -42,7 +42,7 @@ $names = $_SESSION['user_id']['first_name'] . " " . $_SESSION['user_id']['last_n
         <!-- BOTTOM NAVIGATION -->
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <?php require __DIR__ . '/../partials/scripts.php'; ?>
         <script src="https://checkout.flutterwave.com/v3.js"></script>
 
         <script>

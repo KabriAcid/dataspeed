@@ -67,8 +67,8 @@ if (isset($_GET['success'])) {
                     </div>
                     <div class="my-3"></div>
                     <div class="password-wrapper">
-                    <input type="password" id="password" class="input" placeholder="Enter your password" style="padding-right: 40px;" />
-                    <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                        <input type="password" id="password" class="input" placeholder="Enter your password" style="padding-right: 40px;" />
+                        <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
                     </div>
 
                     <p class="text-end"><a href="forgot-password.php" class="text-secondary text-sm">Forgot
@@ -87,6 +87,6 @@ if (isset($_GET['success'])) {
 <script src="../assets/js/toggle-password.js"></script>
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<?php require __DIR__ . '/../partials/scripts.php'; ?>
 
 </html>
