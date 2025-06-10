@@ -1664,31 +1664,8 @@ th {
   }
 }
 
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  height: 100%;
-}
-
-.header-left,
-.header-right {
-  width: 40px; /* Reserve space so center stays centered */
-  display: flex;
-  align-items: center;
-}
-
-.header-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-}
-
 .page-header.scrolled {
-  background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 3px 66px rgba(0, 0, 0, 0.06);
 }
 
 /* TRANSACTION SUCCESSFUL PAGE */
