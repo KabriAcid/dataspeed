@@ -1,4 +1,9 @@
+--- FIXES ---
+
 - Fixing the primary, secondary btn classes.
 - Fixing the balance toggle functionality.
-- Fixing the data plan card.
+- Finding relevant icons for transactions.
+
+--- FEATURES ---
+- Adding action buttons for e.g Transfer to Friend
 

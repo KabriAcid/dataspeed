@@ -6,7 +6,7 @@ require __DIR__ . '/../partials/header.php';
 
 ?>
 
-<body style="padding-top: 70px;">
+<body>
     <main class="container py-4">
         <!-- Header Section -->
         <header>

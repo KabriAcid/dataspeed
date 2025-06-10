@@ -139,6 +139,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:32px;">`,
             '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:32px;">`
         };
+        
         let selectedNetwork = null;
         let selectedAmount = null;
 
