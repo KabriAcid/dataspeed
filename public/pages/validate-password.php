@@ -89,21 +89,19 @@ try {
         $curlError = curl_error($ch);
         curl_close($ch);
 
-        // Log API response for debugging
-        file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Billstack response: " . $response . PHP_EOL, FILE_APPEND);
 
         if ($curlError) {
-            return ["error" => true, "message" => "cURL Error: $curlError"];
+            return ["success" => false, "message" => "cURL Error: $curlError"];
         }
 
         $decoded = json_decode($response, true);
 
         if (!$decoded) {
-            return ["error" => true, "message" => "Failed to decode API response."];
+            return ["success" => false, "message" => "Failed to decode API response."];
         }
 
         if (!isset($decoded['data']['account'][0]['account_number'])) {
-            return ["error" => true, "message" => "Invalid response from Billstack API.", "api_response" => $decoded];
+            return ["success" => false, "message" => "Invalid response from Billstack API.", "api_response" => $decoded];
         }
 
         return [
@@ -143,7 +141,7 @@ try {
     // Call API to create virtual account
     $virtualAccount = createVirtualAccount($email, $reference, $firstName, $lastName, $phone_number);
 
-    if (isset($virtualAccount['error']) && $virtualAccount['error'] === true) {
+    if (isset($virtualAccount['success']) && $virtualAccount['success'] === false) {
         echo json_encode([
             "success" => false,
             "message" => $virtualAccount['message'] ?? 'Error creating virtual account',
@@ -159,12 +157,17 @@ try {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Update user with virtual account details and password
-    $stmt = $pdo->prepare("UPDATE users SET password = ?, referral_code = ?, registration_status = 'complete', 
+    $stmt = $pdo->prepare("UPDATE users SET password = ?, referral_code = ?, referral_link = ?, registration_status = 'complete', 
         virtual_account = ?, bank_name = ?, account_name = ?, billstack_ref = ? WHERE registration_id = ?");
+
+    if(isset($_SESSION['referral_code'])){
+        $referralLink = "https://dataspeed.com.ng/public/pages/register.php?referral_code=" . $_SESSION['referral_code'];
+    }
 
     $updateSuccess = $stmt->execute([
         $hashedPassword,
         $referralCode,
+        $referralLink,
         $virtualAccount['account_number'],
         $virtualAccount['bank_name'],
         $virtualAccount['account_name'],
@@ -193,6 +196,12 @@ try {
     $stmt = $pdo->prepare("SELECT user_id FROM users WHERE registration_id = ?");
     $stmt->execute([$registration_id]);
     $user_id = $stmt->fetchColumn();
+
+    $wallet_balance = (float) "0.00";
+    
+    $stmt = $pdo->prepare("INSERT INTO account_balance SET user_id = ?, wallet_balance = ? WHERE registration_id = ?");
+    $stmt->execute([$user_id, $wallet_balance, $registration_id]);
+
     
 
     // Insert notification for user in the db
@@ -211,15 +220,11 @@ try {
         $referrerId = $stmt->fetchColumn();
 
         if ($referrerId) {
-            $insertReferral = $pdo->prepare("INSERT INTO referrals (user_id, referral_code, referral_link, reward, status, created_at) 
-                VALUES (?, ?, ?, ?, ?, NOW())");
-
-            $referralLink = "https://dataspeed.com.ng/public/pages/register.php?referral_code=" . $_SESSION['referral_code'];
+            $insertReferral = $pdo->prepare("INSERT INTO referral_reward (user_id, reward, status, created_at) 
+                VALUES (?, ?, ?, NOW())");
 
             $insertReferral->execute([
                 $referrerId,
-                $_SESSION['referral_code'],
-                $referralLink,
                 100,
                 'pending'
             ]);

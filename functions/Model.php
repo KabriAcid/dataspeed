@@ -59,11 +59,13 @@ function getTransactions($pdo, $user_id)
     }
 }
 
+
 function getTransactionIcon($type)
 {
     $icons = [
         'Data' => '<i class="fa fa-wifi text-danger"></i>',
         'Airtime' => '<i class="fa fa-phone text-primary"></i>',
+        'Airtime Self' => '<i class="fa fa-phone text-primary"></i>',
         'Deposit' => '<i class="fa fa-credit-card text-success"></i>',
         'Withdrawal' => '<i class="fa fa-arrow-down text-danger"></i>',
         'Default' => '<i class="fa fa-credit-card"></i>'
@@ -76,7 +78,7 @@ function getTransactionIcon($type)
 function getUserReferralDetails($pdo, $user_id)
 {
     try {
-        $stmt = $pdo->prepare("SELECT * FROM referrals WHERE user_id = ?");
+        $stmt = $pdo->prepare("SELECT referral_code, referral_link, referred_by FROM users WHERE user_id = ?");
         $stmt->execute([$user_id]);
 
         // Check if the referral details are empty
@@ -92,11 +94,11 @@ function getUserReferralDetails($pdo, $user_id)
 
 function getReferralRewards(PDO $pdo, int $userd): array
 {
-    $pendingStmt = $pdo->prepare("SELECT SUM(reward) AS total FROM referrals WHERE user_id = ? AND status = 'pending'");
+    $pendingStmt = $pdo->prepare("SELECT SUM(reward) AS total FROM referral_reward WHERE user_id = ? AND status = 'pending'");
     $pendingStmt->execute([$userd]);
     $pending = $pendingStmt->fetchColumn() ?? 0;
 
-    $claimedStmt = $pdo->prepare("SELECT SUM(reward) AS total FROM referrals WHERE user_id = ? AND status = 'claimed'");
+    $claimedStmt = $pdo->prepare("SELECT SUM(reward) AS total FROM referral_reward WHERE user_id = ? AND status = 'claimed'");
     $claimedStmt->execute([$userd]);
     $claimed = $claimedStmt->fetchColumn() ?? 0;
 
@@ -105,14 +107,14 @@ function getReferralRewards(PDO $pdo, int $userd): array
 
 function getReferralsByStatus(PDO $pdo, int $user_id, string $status): array
 {
-    $stmt = $pdo->prepare("SELECT * FROM referrals WHERE user_id = ? AND status = ? ORDER BY created_at DESC");
+    $stmt = $pdo->prepare("SELECT * FROM referral_reward WHERE user_id = ? AND status = ? ORDER BY created_at DESC");
     $stmt->execute([$user_id, $status]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function getReferralById(PDO $pdo, $id)
 {
-    $stmt = $pdo->prepare("SELECT * FROM referrals WHERE referral_id = ?");
+    $stmt = $pdo->prepare("SELECT * FROM referral_reward WHERE referral_id = ?");
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }

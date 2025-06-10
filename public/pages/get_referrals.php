@@ -15,12 +15,12 @@ if (!$user_id) {
 
 try {
     // Fetch pending referrals for this user
-    $stmtPending = $pdo->prepare("SELECT id AS referral_id, reward, status, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS created_at FROM referrals WHERE user_id = ? AND status = 'Pending'");
+    $stmtPending = $pdo->prepare("SELECT id AS referral_id, reward, status, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS created_at FROM referral_reward WHERE user_id = ? AND status = 'Pending'");
     $stmtPending->execute([$user_id]);
     $pending = $stmtPending->fetchAll(PDO::FETCH_ASSOC);
 
     // Fetch completed (claimed) referrals
-    $stmtCompleted = $pdo->prepare("SELECT id AS referral_id, reward, status, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS created_at FROM referrals WHERE user_id = ? AND status = 'Claimed'");
+    $stmtCompleted = $pdo->prepare("SELECT id AS referral_id, reward, status, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS created_at FROM referral_reward WHERE user_id = ? AND status = 'Claimed'");
     $stmtCompleted->execute([$user_id]);
     $completed = $stmtCompleted->fetchAll(PDO::FETCH_ASSOC);
 

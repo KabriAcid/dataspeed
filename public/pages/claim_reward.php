@@ -21,7 +21,7 @@ $referral_id = (int) $_POST['referral_id'];
 
 try {
     // Fetch the referral and validate it
-    $stmt = $pdo->prepare("SELECT reward FROM referrals WHERE referral_id = ? AND user_id = ? AND status = 'pending'");
+    $stmt = $pdo->prepare("SELECT reward FROM referral_reward WHERE referral_id = ? AND user_id = ? AND status = 'pending'");
     $stmt->execute([$referral_id, $user_id]);
     $referral = $stmt->fetch(PDO::FETCH_ASSOC);
 

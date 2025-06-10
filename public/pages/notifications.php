@@ -7,10 +7,10 @@ require __DIR__ . '/../partials/header.php';
 ?>
 
 <body class="pt-5">
-    <main class="container py-4">
-        <header class="mb-4 text-center page-header">
+    <main class="container-fluid py-4">
+        <header class="page-header mb-4 text-center">
             <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <h5 class="fw-bold">Notifications</h5>
             <span></span>
@@ -39,7 +39,7 @@ require __DIR__ . '/../partials/header.php';
                             <div class="notification-details">
                                 <div class="notification-header">
                                     <h2><?= htmlspecialchars($note['title']) ?></h2>
-                                    <span class="time"><?= (new DateTime($note['created_at']))->format('g:i A') ?></span>
+                                    <span class="notification-time"><?= (new DateTime($note['created_at']))->format('g:i A') ?></span>
                                 </div>
                                 <p><?= htmlspecialchars($note['message']) ?>&period;</p>
                             </div>
@@ -48,15 +48,12 @@ require __DIR__ . '/../partials/header.php';
                     <?php endforeach; ?>
                 </div>
             <?php endforeach; 
-            } else {
-                ?>
+            } else { ?>
                 <p class="text-center text-secondary">No notifications found.</p>
                 <?php
-                
             }
             ?>
         </div>
-
 
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
     </main>

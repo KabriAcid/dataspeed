@@ -1,6 +1,7 @@
 <?php
 session_start();
 require __DIR__ . '/../../config/config.php';
+require __DIR__ . '/../../functions/Model.php';
 
 header('Content-Type: application/json');
 
@@ -21,7 +22,7 @@ $phone = trim($_POST['phone'] ?? '');
 $network = trim($_POST['network'] ?? '');
 $type = trim($_POST['type'] ?? '');
 
-// using ternary operator to set default values
+// using ternary operator to set values
 $type = ($type == 'Self') ? 'Airtime Self' : 'Airtime Other';
 
 // Validate input
@@ -29,10 +30,11 @@ if (!is_numeric($amount) || $amount <= 0) {
     echo json_encode(["success" => false, "message" => "Invalid amount."]);
     exit;
 }
-$amount = (float)$amount;
+
+$amount = (float) $amount;
 
 // Fetch user and PIN
-$stmt = $pdo->prepare("SELECT user_id, txn_pin, account_id FROM users WHERE user_id = ?");
+$stmt = $pdo->prepare("SELECT user_id, txn_pin FROM users WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();
 
@@ -86,29 +88,38 @@ try {
     $service_id = 2; // Example: 2 for Airtime, adjust as needed
     $provider_id = null; // You may want to map $network to provider_id
     $plan_id = null; // If you have a plan, set it
-    $wallet_id = $user['account_id'];
-    $status = "completed";
+    $status = "success";
+    
+    $stmt = $pdo->prepare("SELECT email FROM users WHERE user_id = ?");
+    $stmt->execute([$user_id]);
+    $email = $stmt->fetch();
 
-    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, wallet_id, service_id, provider_id, plan_id, type, amount, email, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $email = $email['email'];
+
+    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, amount, email, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([
         $user_id,
-        $wallet_id,
         $service_id,
         $provider_id,
         $plan_id,
         $type,
         $amount,
-        null, // email (optional)
+        $email,
         $status
     ]);
 
-    $pdo->commit();
-
-    echo json_encode([
-        "success" => true,
-        "message" => "Purchase successful! ₦" . number_format($amount, 2) . " deducted.",
-        "new_balance" => $balance - $amount
-    ]);
+    if($pdo->commit()){
+        // Insert notification for user in the db
+        $title = 'Airtime Purchase Successful';
+        $message = 'You have purchased airtime for ' . $amount;
+        pushNotification($pdo, $user_id, $title, $message, 'airtime_purchase', 'fa-check', false);
+    
+        echo json_encode([
+            "success" => true,
+            "message" => "Purchase successful!",
+            "new_balance" => $balance - $amount
+        ]);
+    }
 } catch (PDOException $e) {
     $pdo->rollBack();
     echo json_encode(["success" => false, "message" => "Transaction failed: " . $e->getMessage()]);

@@ -28,7 +28,7 @@ input[type="number"],
 .pin-dot,
 [data-digit],
 [data-type="digit"] {
-  font-family: 'Rubik', 'Quicksand', 'Segoe UI', sans-serif !important;
+  font-family: 'Quicksand', 'Segoe UI', sans-serif !important;
   letter-spacing: 0.04em;
 }
 
@@ -43,6 +43,10 @@ a {
 
 a:hover {
   color: #0a0a0a !important;
+}
+
+header {
+  margin-bottom: 3.5rem;
 }
 
 main section {
@@ -149,7 +153,24 @@ button:disabled {
   border-color: 2px var(--primary);
 }
 
-/*  */
+/* PAGE HEADER  */
+.page-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  height: 60px;
+}
+.page-header.scrolled {
+  box-shadow: var(--shadow-md);
+}
 
 #main-header {
   color: var(--dark);
@@ -516,6 +537,10 @@ button:disabled {
   border: 2px solid white;
 }
 
+.bell-icon {
+  color: rgb(75, 85, 99);
+}
+
 .action-button {
   padding: 12px 15px;
   background-color: #fff;
@@ -839,7 +864,9 @@ select.select-state, select.select-lga {
 #copy-button {
   cursor: pointer;
 }
-
+#copy-icon {
+  transition: 1s;
+}
 /* OVERLAY FROM W3SCHOOLS.COM */
 #overlay {
   position: fixed;
@@ -912,20 +939,15 @@ select.select-state, select.select-lga {
 
 /* NOTIFICATIONS */
 
-.bell-icon {
-  color: rgb(75, 85, 99);
-}
-
-/* Notifications container */
 .notifications {
-  max-width: 28rem;
+  max-width: 600px;
   margin: 0 auto;
   padding: 1.5rem 1rem;
 }
 
 /* Date group styles */
 .date-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .date-header {
@@ -943,21 +965,6 @@ select.select-state, select.select-lga {
   font-size: 0.875rem;
   font-weight: 500;
   color: rgb(107, 114, 128);
-}
-
-/* Notification card styles */
-.notification-card {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  transition: all 0.2s ease;
-}
-
-.notification-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .notification-content {
@@ -984,12 +991,12 @@ select.select-state, select.select-lga {
 }
 
 .notification-header h2 {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 500;
   color: rgb(17, 24, 39);
 }
 
-.time {
+.notification-time {
   font-size: 0.75rem;
   color: #6b7280;
 }
@@ -1054,7 +1061,6 @@ select.select-state, select.select-lga {
 }
 
 /* PIN PAD MODAL */
-
 .modal-content {
   background: #fff;
   padding: 30px;
@@ -1656,26 +1662,6 @@ th {
   .keypad-row {
     margin-bottom: var(--space-2);
   }
-}
-
-/* PAGE HEADER  */
-.page-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1030;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.72
-  ); /* Custom transparent background */
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #e0e0e0;
-  width: 100%;
-  padding: 12px 16px;
-  height: 60px;
 }
 
 .header-container {

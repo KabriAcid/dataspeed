@@ -8,15 +8,14 @@ require __DIR__ . '/../partials/header.php';
 <body>
     <main class="container-fluid py-4">
         <!-- Header Section -->
-        <header class="mb-5 d-flex justify-content-between align-items-center">
-            <span></span>
-            <h6 class="text-center fw-bold">Transactions</h6>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M12.0049 5.99512L12.0049 6.00512M12.0049 17.9951L12.0049 18.0051M12.0049 11.9951L12.0049 12.0051"
-                    stroke="#141C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-
+        <header>
+            <div class="page-header mb-4 text-center">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h5 class="fw-bold">Transactions</h5>
+                <span></span>
+            </div>
         </header>
 
         <!-- Transaction body -->

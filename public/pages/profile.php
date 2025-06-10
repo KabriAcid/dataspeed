@@ -14,8 +14,15 @@ $states = fetchNigerianStates($pdo);
 
 <body>
     <main class="container-fluid px-2 py-4">
-        <header class="text-center mb-4">
-            <h5 class="fw-bold">My Profile</h5>
+        <!-- Header Section -->
+        <header>
+            <div class="page-header mb-4 text-center">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h5 class="fw-bold">My Profile</h5>
+                <span></span>
+            </div>
         </header>
 
         <!-- Profile Photo -->
@@ -25,7 +32,7 @@ $states = fetchNigerianStates($pdo);
             <input type="file" id="photo-input" accept="image/*" style="display: none;">
         </div>
 
-        <div class="form-container">
+        <div class="form-container" style="min-height: 410px;">
             <!-- Step Tracker -->
             <div class="d-flex justify-content-between py-4 px-0 step-tracker">
                 <div class="step-indicator text-center flex-fill" data-step="0">
@@ -59,7 +66,7 @@ $states = fetchNigerianStates($pdo);
                         <label>Email</label>
                         <input type="email" class="input" value="<?= htmlspecialchars($user['email']) ?? '' ?>" disabled>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <label>Phone Number</label>
                         <input type="text" class="input" value="<?= htmlspecialchars($user['phone_number']) ?? '' ?>" disabled>
                     </div>

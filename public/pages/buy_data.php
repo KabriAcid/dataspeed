@@ -73,12 +73,6 @@ require __DIR__ . '/../partials/header.php';
     </div>
 </div>
 
-
-
-
-<?php require __DIR__ . '/../partials/bottom-nav.php' ?>
-</main>
-
 <!-- Confirm Modal -->
 <div id="confirmModal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
@@ -108,6 +102,12 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 </div>
+
+</main>
+
+<!-- Bottom navigation -->
+<?php require __DIR__ . '/../partials/bottom-nav.php' ?>
+<?php require __DIR__ . '/../partials/pinpad_modal.php' ?>
 
 
 <script src="../assets/js/ajax.js"></script>

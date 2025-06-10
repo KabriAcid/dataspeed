@@ -8,15 +8,22 @@ $referrals = getUserReferralDetails($pdo, $user_id);
 $rewards = getReferralRewards($pdo, $user_id);
 $pendingReferrals = getReferralsByStatus($pdo, $user_id, 'pending');
 $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
+
 ?>
 
 <body>
     <main class="container-fluid py-4">
         <!-- Header Section -->
-        <header class="mb-5">
-            <h5 class="text-center fw-bold">Referrrals</h5>
+        <header>
+            <div class="page-header mb-4 text-center">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h5 class="fw-bold">Referrals</h5>
+                <span></span>
+            </div>
         </header>
-
+        
         <div>
             <div class="row mb-5">
                 <!-- Pending Reward -->
@@ -142,8 +149,8 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 
 
             <div class="row mt-5">
-                <div class="col-lg-6 col-xl-4">
-                    <div class="d-flex justify-content-start align-items-center">
+                <div class="col-12">
+                    <div class="d-flex justify-content-center align-items-center">
                         <!-- Copy Code -->
                         <div class="referral-code shadow-sm px-3 py-2 rounded bg-white">
                             <div class="d-flex justify-content-between align-items-center">
@@ -154,11 +161,9 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                                 </div>
                                 <div class="ms-5">
                                     <svg width="24" id="copy-icon" class="cursor-pointer" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.83333 6.61539C5.12206 6.61539 4.54545 7.18938 4.54545 7.89744V19.1795C4.54545 19.8875 5.12206 20.4615 5.83333 20.4615H14.0758C14.787 20.4615 15.3636 19.8875 15.3636 19.1795V11.3112C15.3636 10.9712 15.2279 10.6451 14.9864 10.4047L11.5571 6.99089C11.3156 6.75046 10.988 6.61539 10.6465 6.61539H5.83333ZM3 7.89744C3 6.33971 4.26853 5.07692 5.83333 5.07692H10.6465C11.3979 5.07692 12.1186 5.37408 12.6499 5.90303L16.0792 9.3168C16.6106 9.84575 16.9091 10.5632 16.9091 11.3112V19.1795C16.9091 20.7372 15.6406 22 14.0758 22H5.83333C4.26853 22 3 20.7372 3 19.1795V7.89744Z" fill="#030D45"/>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.12121 2.76923C7.12121 2.3444 7.46717 2 7.89394 2H12.1919C12.9434 2 13.664 2.29716 14.1954 2.82611L19.1701 7.77834C19.7015 8.30729 20 9.0247 20 9.77275V17.1282C20 17.553 19.654 17.8974 19.2273 17.8974C18.8005 17.8974 18.4545 17.553 18.4545 17.1282V9.77275C18.4545 9.43273 18.3189 9.10663 18.0773 8.8662L13.1026 3.91397C12.8611 3.67353 12.5335 3.53846 12.1919 3.53846H7.89394C7.46717 3.53846 7.12121 3.19407 7.12121 2.76923Z" fill="#030D45"/>
-                                </svg>
-
-
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.83333 6.61539C5.12206 6.61539 4.54545 7.18938 4.54545 7.89744V19.1795C4.54545 19.8875 5.12206 20.4615 5.83333 20.4615H14.0758C14.787 20.4615 15.3636 19.8875 15.3636 19.1795V11.3112C15.3636 10.9712 15.2279 10.6451 14.9864 10.4047L11.5571 6.99089C11.3156 6.75046 10.988 6.61539 10.6465 6.61539H5.83333ZM3 7.89744C3 6.33971 4.26853 5.07692 5.83333 5.07692H10.6465C11.3979 5.07692 12.1186 5.37408 12.6499 5.90303L16.0792 9.3168C16.6106 9.84575 16.9091 10.5632 16.9091 11.3112V19.1795C16.9091 20.7372 15.6406 22 14.0758 22H5.83333C4.26853 22 3 20.7372 3 19.1795V7.89744Z" fill="#030D45"/>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.12121 2.76923C7.12121 2.3444 7.46717 2 7.89394 2H12.1919C12.9434 2 13.664 2.29716 14.1954 2.82611L19.1701 7.77834C19.7015 8.30729 20 9.0247 20 9.77275V17.1282C20 17.553 19.654 17.8974 19.2273 17.8974C18.8005 17.8974 18.4545 17.553 18.4545 17.1282V9.77275C18.4545 9.43273 18.3189 9.10663 18.0773 8.8662L13.1026 3.91397C12.8611 3.67353 12.5335 3.53846 12.1919 3.53846H7.89394C7.46717 3.53846 7.12121 3.19407 7.12121 2.76923Z" fill="#030D45"/>
+                                    </svg>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +174,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                         <div class="referral-link rounded mx-3 d-block">
                             <input type="text" id="referralLinkInput" value="<?= htmlspecialchars($referralLink) ?>"
                                 readonly hidden>
-                            <button type="button" id="copyText" class="btn mb-0 primary-btn no-wrap p-4 px-5">Share
+                            <button type="button" id="shareButton" class="btn mb-0 primary-btn p-4 px-4">Share
                                 Link</button>
                         </div>
 
@@ -182,8 +187,9 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
         <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All
             rights reserved.</p>
     </footer>
+    <script src="../assets/js/ajax.js"></script>
     <script>
-    document.getElementById("copyText").addEventListener("click", () => {
+    document.getElementById("shareButton").addEventListener("click", () => {
         let referralLink = document.getElementById("referralLinkInput").value; // Get referral link
         
         if (navigator.share) {
@@ -217,6 +223,15 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                 <path d="M19.2635 17.9184C18.8517 17.9184 18.44 17.6123 18.44 17.1021V9.75515C18.44 9.44903 18.3371 9.1429 18.0283 8.83678L13.0875 3.93882C12.8816 3.73474 12.4699 3.53066 12.1611 3.53066H7.9408C7.52907 3.6327 7.11733 3.22454 7.11733 2.81637C7.11733 2.40821 7.52907 2.00005 7.9408 2.00005H12.264C12.9845 2.00005 13.7051 2.30617 14.2197 2.81637L19.1605 7.71433C19.6752 8.22454 19.984 8.93882 19.984 9.65311V17.1021C20.0869 17.5103 19.6752 17.9184 19.2635 17.9184Z" fill="#030D45"/>
                 </svg>
             `;
+
+            setTimeout(() => {
+                document.getElementById('copy-icon').innerHTML = `
+                    <svg width="24" id="copy-icon" class="cursor-pointer" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.83333 6.61539C5.12206 6.61539 4.54545 7.18938 4.54545 7.89744V19.1795C4.54545 19.8875 5.12206 20.4615 5.83333 20.4615H14.0758C14.787 20.4615 15.3636 19.8875 15.3636 19.1795V11.3112C15.3636 10.9712 15.2279 10.6451 14.9864 10.4047L11.5571 6.99089C11.3156 6.75046 10.988 6.61539 10.6465 6.61539H5.83333ZM3 7.89744C3 6.33971 4.26853 5.07692 5.83333 5.07692H10.6465C11.3979 5.07692 12.1186 5.37408 12.6499 5.90303L16.0792 9.3168C16.6106 9.84575 16.9091 10.5632 16.9091 11.3112V19.1795C16.9091 20.7372 15.6406 22 14.0758 22H5.83333C4.26853 22 3 20.7372 3 19.1795V7.89744Z" fill="#030D45"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.12121 2.76923C7.12121 2.3444 7.46717 2 7.89394 2H12.1919C12.9434 2 13.664 2.29716 14.1954 2.82611L19.1701 7.77834C19.7015 8.30729 20 9.0247 20 9.77275V17.1282C20 17.553 19.654 17.8974 19.2273 17.8974C18.8005 17.8974 18.4545 17.553 18.4545 17.1282V9.77275C18.4545 9.43273 18.3189 9.10663 18.0773 8.8662L13.1026 3.91397C12.8611 3.67353 12.5335 3.53846 12.1919 3.53846H7.89394C7.46717 3.53846 7.12121 3.19407 7.12121 2.76923Z" fill="#030D45"/>
+                    </svg>
+                `;
+            }, 2000);
 
         }).catch(err => {
             showToasted('Could not copy code', 'error');
@@ -254,58 +269,6 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
             });
         });
     });
-
-    function sendAjaxRequest(url, method, data, callback) {
-        if (!navigator.onLine) {
-            callback({
-                success: false,
-                message: "You are offline. Please check your internet connection."
-            });
-            return;
-        }
-
-        const xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 0) {
-                    callback({
-                        success: false,
-                        message: "Request failed. You may be offline or the server is unreachable."
-                    });
-                } else {
-                    try {
-                        const response = JSON.parse(xhr.responseText);
-                        callback(response);
-                    } catch (error) {
-                        callback({
-                            success: false,
-                            message: "Invalid JSON response"
-                        });
-                    }
-                }
-            }
-        };
-
-        xhr.onerror = function() {
-            callback({
-                success: false,
-                message: "An error occurred during the request. Please check your internet connection."
-            });
-        };
-
-        xhr.ontimeout = function() {
-            callback({
-                success: false,
-                message: "Request timed out. Please check your internet connection and try again."
-            });
-        };
-
-        xhr.timeout = 10000;
-        xhr.send(data);
-    }
 
     document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".claim-btn").forEach(button => {
