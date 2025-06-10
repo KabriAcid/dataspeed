@@ -125,7 +125,7 @@ require __DIR__ . '/../partials/header.php';
             </div>
 
             <div class="mb-3">
-                <a href="security-settings.php">
+                <a href="security-settings.php?tab=password">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="icon-container">

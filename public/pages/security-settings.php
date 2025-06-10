@@ -92,8 +92,15 @@ require __DIR__ . '/../partials/header.php';
         const submitBtn = form.querySelector('button[type="submit"]');
         const buttonText = submitBtn.querySelector(".button-text");
 
-        // Activate first tab
-        let activeTab = document.querySelector(".tab-btn.active")?.dataset.tab || tabButtons[0].dataset.tab;
+        // Get tab from URL
+        function getTabFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const tab = params.get('tab');
+            return tab && ['password', 'pin'].includes(tab) ? tab : tabButtons[0].dataset.tab;
+        }
+
+        // Activate tab from URL or default
+        let activeTab = getTabFromURL();
         activateTab(activeTab);
 
         tabButtons.forEach(button => {
@@ -102,6 +109,7 @@ require __DIR__ . '/../partials/header.php';
                 activateTab(activeTab);
                 buttonText.textContent = `Update ${capitalize(activeTab)}`;
             });
+        window.history.replaceState(null, '', `?tab=${activeTab}`);
         });
 
         form.addEventListener("submit", function(e) {
