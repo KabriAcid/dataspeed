@@ -135,6 +135,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
     </main>
     <script src="../assets/js/ajax.js"></script>
+    <script src="../assets/js/customEvents.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
     <script>
         // Set network SVG in confirm modal

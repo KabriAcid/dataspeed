@@ -110,6 +110,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
     </main>
 
     <script src="../assets/js/ajax.js"></script>
+    <script src="../assets/js/customEvents.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
     <script>
         const networkSVGs = {
@@ -294,13 +295,22 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             });
 
             payBtn.addEventListener("click", function() {
-                // Show the pin pad modal
+                // ...your balance check logic...
+
+                // Get the pin pad modal
                 const pinpadModal = document.getElementById("pinpadModal");
-                if (pinpadModal) {
-                    pinpadModal.style.display = "flex";
-                }
-                // Optionally hide the confirm modal
-                confirmModal.style.display = "none";
+
+                // When ready to process the PIN (after 4 digits entered)
+                const rawAmount = pinpadModal.dataset.amount;
+                const phone = pinpadModal.dataset.phone;
+                const network = pinpadModal.dataset.network;
+                const type = pinpadModal.dataset.type;
+
+                // Now use these variables in your AJAX call
+                const data = `pin=${encodeURIComponent(pin)}&amount=${encodeURIComponent(rawAmount)}&phone=${encodeURIComponent(phone)}&network=${encodeURIComponent(network)}&type=${encodeURIComponent(type)}`;
+
+                // Show the pin pad
+                pinpadModal.style.display = "flex";
             });
 
             // **Format Phone Number**

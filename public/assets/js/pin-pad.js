@@ -31,20 +31,12 @@ document.addEventListener("DOMContentLoaded", function () {
       updateBackspace();
       if (pin.length === 4) {
         setTimeout(() => {
-          // --- BEGIN: AJAX purchase logic ---
-          // Gather data from modal
-          const amountText =
-            document.getElementById("confirm-amount").textContent;
-          const rawAmount = amountText.replace(/[^\d]/g, "");
-          const phone = document
-            .getElementById("customer-phone")
-            .getAttribute("data-raw");
-          const network = document
-            .getElementById("confirm-network")
-            .getAttribute("data-network");
-          const type = document.getElementById("confirm-plan").textContent;
+          // --- BEGIN: AJAX PIN verify logic using data attributes ---
+          const rawAmount = pinpadModal.dataset.amount;
+          const phone = pinpadModal.dataset.phone;
+          const network = pinpadModal.dataset.network;
+          const type = pinpadModal.dataset.type;
 
-          // Prepare data string for AJAX
           const data = `pin=${encodeURIComponent(
             pin
           )}&amount=${encodeURIComponent(rawAmount)}&phone=${encodeURIComponent(
@@ -53,18 +45,22 @@ document.addEventListener("DOMContentLoaded", function () {
             type
           )}`;
 
-          // Use your custom AJAX function
+          function onPinSuccess(pin) {
+            const event = new CustomEvent("pinAuthenticated", {
+              detail: { pin },
+            });
+            window.dispatchEvent(event);
+            pinpadModal.style.display = "none";
+          }
+
           sendAjaxRequest(
-            "process-purchase.php",
+            "verify-pin.php",
             "POST",
-            data,
+            `pin=${encodeURIComponent(pin)}`,
             function (response) {
               if (response.success) {
                 showToasted(response.message, "success");
-                pinpadModal.style.display = "none";
-                setTimeout(() => {
-                  window.location.href = "transaction-successful.php";
-                }, 1200); // Give user time to see the toast
+                onPinSuccess(pin);
               } else {
                 showToasted(response.message, "error");
                 pin = "";
@@ -76,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
               updateBackspace();
             }
           );
-          // --- END: AJAX purchase logic ---
+          // --- END: AJAX PIN verify logic ---
         }, 200);
       }
     }
@@ -138,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pin = "";
     updateDots();
     updateBackspace();
-    window.location.href = '/dataspeed/public/pages/dashboard.php';
+    window.location.href = "/dataspeed/public/pages/dashboard.php";
   });
 
   forgotBtn?.addEventListener("click", function () {

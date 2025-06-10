@@ -1632,7 +1632,7 @@ th {
 }
 
 .key-backspace {
-  /* opacity: 0; */
+  padding: 0 15px;
   border: none;
   background-color: transparent;
   /* visibility: hidden; */
