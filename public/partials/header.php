@@ -21,9 +21,13 @@ if (isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Add font awesome icons to buttons (note that the fa-spin class rotates the icon) -->
 
+    <!-- lOTTIE ANIMATIONS -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     <!-- Toasted JS -->
     <link rel="stylesheet" href="../assets/css/toasted.css" />
     <script src="../assets/js/toasted.js"></script>
+    
 
     <link rel="stylesheet" href="../assets/css/style.css">
 
