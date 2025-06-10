@@ -56,13 +56,33 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
         </div>
 
         <!-- Plans Section -->
-        <div class="tab-content position-relative">
+        <div class="tab-content position-relative active">
             <div id="planCards" class="row g-3">
                 <!-- Plan cards will be dynamically loaded here -->
+            </div>
+            <div class="d-flex justify-content-end mt-2">
+                <button type="button" class="btn btn-link" id="seeAllPlansBtn">
+                    <span class="me-1">See All</span>
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                        <path d="M5 12h14M13 6l6 6-6 6" stroke="#141C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
             </div>
             <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
         </div>
 
+        <!-- Plans Modal -->
+        <div id="plansModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h5 class="modal-title">All Plans</h5>
+                    <button class="close-btn" id="closePlansModal" type="button">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="allPlanCards" class="row g-3"></div>
+                </div>
+            </div>
+        </div>
         <!-- Confirm Modal -->
         <div id="confirmModal" class="modal-overlay" style="display: none;">
             <div class="modal-content">
@@ -126,6 +146,11 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             const confirmAmount = document.getElementById("confirmAmount");
             const payBtn = document.getElementById("payBtn");
             const airtelLogo = document.querySelector(".airtel-logo");
+            const seeAllPlansBtn = document.getElementById("seeAllPlansBtn");
+            const plansModal = document.getElementById("plansModal");
+            const closePlansModal = document.getElementById("closePlansModal");
+            const allPlanCards = document.getElementById("allPlanCards");
+
 
             // --- State ---
             let selectedNetwork = document.querySelector(".network-tab.active")?.dataset.network || null;
@@ -172,40 +197,47 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 });
             });
 
-            // --- Load plans via AJAX ---
-            function loadPlans() {
+            // --- Load plans via AJAX (for both main and modal) ---
+            function loadPlans(forModal = false) {
                 if (!selectedProviderId || !selectedSub) return;
-                planCardsContainer.innerHTML = '<div class="text-center py-4">Loading plans...</div>';
+                const container = forModal ? allPlanCards : planCardsContainer;
+                container.innerHTML = '<div class="text-center py-4">Loading plans...</div>';
                 sendAjaxRequest(
-                    "fetch-plan.php",
+                    "fetch-plans.php",
                     "POST",
                     `provider_id=${encodeURIComponent(selectedProviderId)}&type=${encodeURIComponent(selectedSub)}`,
                     function(response) {
                         if (response.success && Array.isArray(response.plans)) {
-                            renderPlans(response.plans);
+                            renderPlans(response.plans, forModal);
+                            showToasted(response.message, "success");
+                            console.log(response.message);
                         } else {
-                            planCardsContainer.innerHTML = '<div class="text-danger text-center py-4">No plans found.</div>';
+                            container.innerHTML = '<div class="text-danger text-center py-4">No plans found.</div>';
+                            showToasted(response.message, "error");
+                            console.error("Error loading plans:", response.message);
                         }
                     }
                 );
             }
 
-            // --- Render plans ---
-            function renderPlans(plans) {
-                planCardsContainer.innerHTML = "";
-                plans.forEach(plan => {
+            // --- Render plans (2 per row, Awoof badge, etc.) ---
+            function renderPlans(plans, forModal = false) {
+                const container = forModal ? allPlanCards : planCardsContainer;
+                container.innerHTML = "";
+                plans.forEach((plan, idx) => {
                     const card = document.createElement("div");
-                    card.className = "col-12 col-md-6 col-lg-4";
+                    card.className = "col-12 col-md-6";
                     card.innerHTML = `
-                <div class="plan-card border rounded p-3 h-100" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
-                    <div class="data-volume fw-bold fs-5 mb-1">${plan.volume}</div>
+                <div class="plan-card border p-3 h-100" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
+                    <div class="data-price text-secondary mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
+                    <div class="data-volume mb-1">${plan.volume}</div>
                     <div class="data-validity text-secondary mb-2">${plan.validity}</div>
-                    <div class="data-price text-primary fw-bold fs-6">₦${Number(plan.price).toLocaleString()}</div>
+                    <span class="awoof-badge">AWOOF</span>
                 </div>
             `;
                     // Plan card click
                     card.querySelector(".plan-card").addEventListener("click", function() {
-                        document.querySelectorAll(".plan-card").forEach(c => c.classList.remove("selected-plan"));
+                        document.querySelectorAll(forModal ? "#allPlanCards .plan-card" : "#planCards .plan-card").forEach(c => c.classList.remove("selected-plan"));
                         this.classList.add("selected-plan");
                         selectedPlan = {
                             plan_id: plan.plan_id,
@@ -214,13 +246,29 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                             validity: plan.validity
                         };
                         checkPurchaseReady();
+                        if (forModal) {
+                            plansModal.style.display = "none";
+                        }
                     });
-                    planCardsContainer.appendChild(card);
+                    container.appendChild(card);
                 });
                 selectedPlan = null;
                 checkPurchaseReady();
             }
 
+            // --- See All Plans Modal ---
+            seeAllPlansBtn.addEventListener("click", function() {
+                plansModal.style.display = "flex";
+                loadPlans(true);
+            });
+            closePlansModal.addEventListener("click", function() {
+                plansModal.style.display = "none";
+            });
+            plansModal.addEventListener("click", function(e) {
+                if (e.target === plansModal) plansModal.style.display = "none";
+            });
+
+            // ...rest of your logic (network/tab selection, purchase, etc.)...
             // --- Highlight selected plan (reset) ---
             function highlightSelectedPlan() {
                 document.querySelectorAll(".plan-card").forEach(c => c.classList.remove("selected-plan"));

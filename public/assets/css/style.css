@@ -1375,23 +1375,40 @@ th {
 
 /* Plans Section */
 .plan-card {
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-  margin: 8px 0;
-  background-color: #fff;
+  background: #fff;
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: border 0.2s, box-shadow 0.2s;
+  position: relative;
+  max-height: 120px;
 }
+.plan-card.selected-plan,
 .plan-card:hover {
-  transform: scale(1.03);
+  border: 2px solid var(--primary, #ffcc00);
+  box-shadow: 0 2px 12px #f7e7a3;
+  background: var(--primary-light);
 }
-.plan-name {
-  font-weight: bold;
-  font-size: 16px;
+.plan-card .data-volume {
+  font-size: 1.3rem;
+  font-weight: 700;
 }
-.plan-price {
-  font-size: 14px;
+.plan-card .data-validity {
+  font-size: 0.95rem;
+}
+.plan-card .data-price {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.plan-card .awoof-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  padding: 2px 8px;
+  letter-spacing: 1px;
 }
 
 
