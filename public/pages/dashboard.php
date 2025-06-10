@@ -81,7 +81,7 @@ if (isset($_GET['success'])) {
         <?php
             if(!$user['txn_pin']){
                 ?>
-                <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='security-settings.php'">
+                <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='security-settings.php?tab=pin'">
                     <div class="d-flex align-items-center">
                         <img src="../assets/img/icons/cyber-security.png" alt="" class="avatar-sm" style="max-width:50px;">
                         <div class="ms-4">
