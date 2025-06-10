@@ -1378,7 +1378,7 @@ th {
   background: #fff;
   border-radius: 8px;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 5px;
   margin: 12px 0;
   position: relative;
   text-align: center;
@@ -1396,18 +1396,19 @@ th {
   box-shadow: 0 2px 12px var(--primary-light);
 }
 .plan-card .data-volume {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  letter-spacing: 1.1px;
   margin-bottom: 0!important;
   font-weight: 700;
 }
 .plan-card .data-validity {
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   margin-bottom: 0!important;
 }
 .plan-card .data-price {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   margin-bottom: 0!important;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 
