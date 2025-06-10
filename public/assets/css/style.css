@@ -1150,8 +1150,7 @@ select.select-state, select.select-lga {
 .tab-content {
   display: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  /* padding: 20px; */
+  transition: opacity 0.4s cubic-bezier(.4,0,.2,1);
 }
 
 .tab-content.active {
@@ -1299,6 +1298,7 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   margin: auto;
   max-width: 600px;
 }
@@ -1306,8 +1306,8 @@ th {
 .network-tab {
   padding: 5px 10px;
   border-radius: 8px;
-  box-shadow: 3px 4px 11px #eee;
-  margin-right: 10px;
+  box-shadow: 3px 4px 22px #eee;
+  margin: 0 5px;
   width: 100%;
   min-width: 50px;
   cursor: pointer;
@@ -1378,37 +1378,36 @@ th {
   background: #fff;
   border-radius: 8px;
   cursor: pointer;
-  transition: border 0.2s, box-shadow 0.2s;
+  padding: 5px 10px;
+  margin: 12px 0;
   position: relative;
-  max-height: 120px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 120px;
+  min-height: 100px;
+  width: auto;
+  height: auto;
+  max-width: 180px;
+  max-height: 140px;
+  padding: 12px 16px;
 }
 .plan-card.selected-plan,
 .plan-card:hover {
-  border: 2px solid var(--primary, #ffcc00);
-  box-shadow: 0 2px 12px #f7e7a3;
-  background: var(--primary-light);
+  box-shadow: 0 2px 12px var(--primary-light);
 }
 .plan-card .data-volume {
   font-size: 1.3rem;
+  margin-bottom: 0!important;
   font-weight: 700;
 }
 .plan-card .data-validity {
   font-size: 0.95rem;
+  margin-bottom: 0!important;
 }
 .plan-card .data-price {
   font-size: 1.1rem;
+  margin-bottom: 0!important;
   font-weight: 600;
-}
-.plan-card .awoof-badge {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: var(--primary);
-  color: #fff;
-  font-size: 0.8rem;
-  border-radius: 6px;
-  padding: 2px 8px;
-  letter-spacing: 1px;
 }
 
 

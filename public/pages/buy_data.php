@@ -9,27 +9,33 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
 <body>
     <main class="container-fluid py-4">
-        <!-- Header -->
-        <header class="mb-5">
-            <h5 class="text-center fw-bold">Data Bundles</h5>
+        <!-- Header Section -->
+        <header>
+            <div class="page-header mb-4 text-center">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <h5 class="fw-bold">Buy Data</h5>
+                <span></span>
+            </div>
         </header>
 
         <!-- Network Selection -->
-        <div class="network-section mb-3">
-            <div class="network-tabs d-flex justify-content-between">
-                <div class="network-tab active" data-network="mtn" data-provider-id="1" style="--brand-color: #ffcc00;">
+        <div class="network-section ">
+            <div class="network-tabs">
+                <div class="network-tab selected-network active" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #ffcc00;">
                     <img src="../assets/icons/mtn_logo.svg" alt="MTN">
                     <span>MTN</span>
                 </div>
-                <div class="network-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
+                <div class="network-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
                     <img src="../assets/icons/airtel-logo-1.svg" alt="Airtel" class="airtel-logo">
                     <span>Airtel</span>
                 </div>
-                <div class="network-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
+                <div class="network-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
                     <img src="../assets/icons/glo_logo.svg" alt="Glo">
                     <span>Glo</span>
                 </div>
-                <div class="network-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
+                <div class="network-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
                     <img src="../assets/icons/9mobile_logo.svg" alt="9Mobile">
                     <span>9Mobile</span>
                 </div>
@@ -47,42 +53,26 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 <button class="sub-tab-btn" data-sub="weekly" type="button">Weekly</button>
                 <button class="sub-tab-btn" data-sub="monthly" type="button">Monthly</button>
             </div>
-        </div>
-
-        <!-- Recipient Phone (for Buy For Others) -->
-        <div class="mb-3" id="recipientPhoneWrap" style="display: none;">
-            <label for="recipientPhone" class="form-label">Recipient Phone</label>
-            <input type="tel" class="form-control" id="recipientPhone" placeholder="Enter recipient phone number">
-        </div>
-
-        <!-- Plans Section -->
-        <div class="tab-content position-relative active">
-            <div id="planCards" class="row g-3">
-                <!-- Plan cards will be dynamically loaded here -->
-            </div>
-            <div class="d-flex justify-content-end mt-2">
-                <button type="button" class="btn btn-link" id="seeAllPlansBtn">
-                    <span class="me-1">See All</span>
-                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-                        <path d="M5 12h14M13 6l6 6-6 6" stroke="#141C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-            </div>
-            <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
-        </div>
-
-        <!-- Plans Modal -->
-        <div id="plansModal" class="modal-overlay" style="display: none;">
-            <div class="modal-content" style="max-width: 500px;">
-                <div class="modal-header">
-                    <h5 class="modal-title">All Plans</h5>
-                    <button class="close-btn" id="closePlansModal" type="button">&times;</button>
+            <!-- Plans Section -->
+            <div class="tab-content position-relative active">
+                <div id="planCards" class="row mt-3">
+                    <!-- Plan cards will be dynamically loaded here -->
                 </div>
-                <div class="modal-body">
-                    <div id="allPlanCards" class="row g-3"></div>
+
+                <!-- Recipient Phone (for Buy For Others) -->
+                <div class="input-group-container" id="recipientPhoneWrap" style="display: none;">
+                    <span class="input-group-prefix text-xs">
+                        <img src="../assets/img/ng.png" alt=""> +234
+                    </span>
+                    <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="10"
+                        placeholder="Phone Number" class="input phone-input" required>
                 </div>
+
+                <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
             </div>
         </div>
+
+
         <!-- Confirm Modal -->
         <div id="confirmModal" class="modal-overlay" style="display: none;">
             <div class="modal-content">
@@ -92,7 +82,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 </div>
                 <div class="modal-body">
                     <p class="text-sm text-secondary mb-1 text-center">Send to</p>
-                    <div id="customerPhone" data-raw=""></div>
+                    <div id="customer-phone" data-raw=""></div>
                     <div class="info-row"><span>Network:</span><span id="confirmNetwork"></span></div>
                     <div class="info-row"><span>Plan:</span><span id="confirmPlan" class="fw-bold"></span></div>
                     <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bolder primary fs-6"></span></div>
@@ -140,21 +130,18 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             const purchaseBtn = document.getElementById("purchaseBtn");
             const confirmModal = document.getElementById("confirmModal");
             const closeConfirm = document.getElementById("closeConfirm");
-            const customerPhone = document.getElementById("customerPhone");
+            const customerPhone = document.getElementById("customer-phone");
             const confirmNetwork = document.getElementById("confirmNetwork");
             const confirmPlan = document.getElementById("confirmPlan");
             const confirmAmount = document.getElementById("confirmAmount");
             const payBtn = document.getElementById("payBtn");
             const airtelLogo = document.querySelector(".airtel-logo");
-            const seeAllPlansBtn = document.getElementById("seeAllPlansBtn");
-            const plansModal = document.getElementById("plansModal");
-            const closePlansModal = document.getElementById("closePlansModal");
             const allPlanCards = document.getElementById("allPlanCards");
 
 
             // --- State ---
-            let selectedNetwork = document.querySelector(".network-tab.active")?.dataset.network || null;
-            let selectedProviderId = document.querySelector(".network-tab.active")?.dataset.providerId || null;
+            let selectedNetwork = "mtn";
+            let selectedProviderId = "1";
             let selectedPlan = null;
             let selectedSub = document.querySelector(".sub-tab-btn.active")?.dataset.sub || "daily";
             let buyFor = "self";
@@ -162,8 +149,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             // --- Network selection ---
             networkTabs.forEach(tab => {
                 tab.addEventListener("click", function() {
-                    networkTabs.forEach(t => t.classList.remove("active"));
-                    tab.classList.add("active");
+                    networkTabs.forEach(t => t.classList.remove("selected-network", "active"));
+                    tab.classList.add("selected-network", "active");
                     selectedNetwork = tab.dataset.network;
                     selectedProviderId = tab.dataset.providerId;
 
@@ -179,11 +166,17 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     tabBtns.forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
                     buyFor = btn.dataset.tab;
-                    // Show/hide recipient phone input
                     recipientPhoneWrap.style.display = buyFor === "others" ? "block" : "none";
                     selectedPlan = null;
                     highlightSelectedPlan();
                     purchaseBtn.disabled = true;
+
+                    // Animate tab-content
+                    const tabContent = document.querySelector('.tab-content');
+                    tabContent.classList.remove('active');
+                    setTimeout(() => {
+                        tabContent.classList.add('active');
+                    }, 10); // Small delay for transition
                 });
             });
 
@@ -209,8 +202,6 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     function(response) {
                         if (response.success && Array.isArray(response.plans)) {
                             renderPlans(response.plans, forModal);
-                            showToasted(response.message, "success");
-                            console.log(response.message);
                         } else {
                             container.innerHTML = '<div class="text-danger text-center py-4">No plans found.</div>';
                             showToasted(response.message, "error");
@@ -220,25 +211,37 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 );
             }
 
-            // --- Render plans (2 per row, Awoof badge, etc.) ---
+            // --- Render plans (2 per row, etc.) ---
             function renderPlans(plans, forModal = false) {
                 const container = forModal ? allPlanCards : planCardsContainer;
                 container.innerHTML = "";
                 plans.forEach((plan, idx) => {
                     const card = document.createElement("div");
-                    card.className = "col-12 col-md-6";
+                    card.className = "col-4 mb-3";
                     card.innerHTML = `
-                <div class="plan-card border p-3 h-100" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
-                    <div class="data-price text-secondary mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
-                    <div class="data-volume mb-1">${plan.volume}</div>
-                    <div class="data-validity text-secondary mb-2">${plan.validity}</div>
-                    <span class="awoof-badge">AWOOF</span>
-                </div>
-            `;
+                        <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
+                            <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
+                            <div class="data-volume mb-1">${plan.volume}</div>
+                            <div class="data-validity mb-2">${plan.validity}</div>
+                        </div>
+                    `;
+
                     // Plan card click
                     card.querySelector(".plan-card").addEventListener("click", function() {
-                        document.querySelectorAll(forModal ? "#allPlanCards .plan-card" : "#planCards .plan-card").forEach(c => c.classList.remove("selected-plan"));
+                        document.querySelectorAll(forModal ? "#allPlanCards .plan-card" : "#planCards .plan-card").forEach(c => {
+                            c.classList.remove("selected-plan");
+                            c.style.backgroundColor = "";
+                            c.style.color = "";
+                            c.querySelectorAll('*').forEach(el => el.style.color = "");
+                        });
                         this.classList.add("selected-plan");
+                        // Set background to network color, text to white
+                        const selectedNetworkTab = document.querySelector('.network-tab.selected-network');
+                        const brandColor = selectedNetworkTab ? getComputedStyle(selectedNetworkTab).getPropertyValue('--brand-color') : '#ffcc00';
+                        this.style.backgroundColor = brandColor;
+                        this.style.color = "#fff";
+                        this.querySelectorAll('*').forEach(el => el.style.color = "#fff");
+
                         selectedPlan = {
                             plan_id: plan.plan_id,
                             price: plan.price,
@@ -246,9 +249,6 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                             validity: plan.validity
                         };
                         checkPurchaseReady();
-                        if (forModal) {
-                            plansModal.style.display = "none";
-                        }
                     });
                     container.appendChild(card);
                 });
@@ -256,19 +256,6 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 checkPurchaseReady();
             }
 
-            // --- See All Plans Modal ---
-            seeAllPlansBtn.addEventListener("click", function() {
-                plansModal.style.display = "flex";
-                loadPlans(true);
-            });
-            closePlansModal.addEventListener("click", function() {
-                plansModal.style.display = "none";
-            });
-            plansModal.addEventListener("click", function(e) {
-                if (e.target === plansModal) plansModal.style.display = "none";
-            });
-
-            // ...rest of your logic (network/tab selection, purchase, etc.)...
             // --- Highlight selected plan (reset) ---
             function highlightSelectedPlan() {
                 document.querySelectorAll(".plan-card").forEach(c => c.classList.remove("selected-plan"));
@@ -289,13 +276,37 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             // --- Purchase button: show confirm modal ---
             purchaseBtn.addEventListener("click", function() {
                 // Fill confirm modal
-                customerPhone.textContent = buyFor === "self" ? "My Number" : recipientPhoneInput.value.trim();
-                customerPhone.setAttribute("data-raw", buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim());
-                confirmNetwork.textContent = selectedNetwork?.toUpperCase() || "";
+                const phone = buyFor === "self" ?
+                    "<?= $loggedInPhone ?>" :
+                    recipientPhoneInput.value.trim();
+
+                // Format phone number
+                customerPhone.textContent = formatPhoneNumber(phone);
+                customerPhone.setAttribute("data-raw", phone);
+
+                // Insert network SVG
+                const networkKey = selectedNetwork?.toUpperCase() || "MTN";
+                confirmNetwork.innerHTML = networkSVGs[networkKey] || "";
+
                 confirmPlan.textContent = `${selectedPlan.volume} (${selectedPlan.validity})`;
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
                 confirmModal.style.display = "flex";
             });
+
+            payBtn.addEventListener("click", function() {
+                // Show the pin pad modal
+                const pinpadModal = document.getElementById("pinpadModal");
+                if (pinpadModal) {
+                    pinpadModal.style.display = "flex";
+                }
+                // Optionally hide the confirm modal
+                confirmModal.style.display = "none";
+            });
+
+            // **Format Phone Number**
+            function formatPhoneNumber(num) {
+                return num.length === 10 ? "0" + num.substring(0, 3) + " " + num.substring(3, 7) + " " + num.substring(7) : num;
+            }
 
             // --- Close confirm modal ---
             closeConfirm.addEventListener("click", function() {

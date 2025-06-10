@@ -52,7 +52,6 @@ try {
     // Return as JSON array (not HTML)
     echo json_encode([
         "success" => true,
-        "message" => count($plans) . " plans loaded successfully.",
         "plans" => $plans
     ]);
     exit;
