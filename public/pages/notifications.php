@@ -9,7 +9,7 @@ require __DIR__ . '/../partials/header.php';
 <body class="pt-5">
     <main class="container-fluid py-4">
         <header class="page-header mb-4 text-center">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="header-back-button" width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             <h5 class="fw-bold">Notifications</h5>
