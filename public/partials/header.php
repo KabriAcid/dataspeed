@@ -27,8 +27,6 @@ function set_title($title = null)
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
 
     <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-
     <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet">
     <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet">
     
@@ -39,6 +37,11 @@ function set_title($title = null)
     <!-- Toasted JS for notifications -->
     <link rel="stylesheet" href="../assets/css/toasted.css" />
     <script src="../assets/js/toasted.js"></script>
+    
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+   
 
+    <link rel="stylesheet" href="../assets/css/soft-design-system-pro.min3f71.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    
 </head>

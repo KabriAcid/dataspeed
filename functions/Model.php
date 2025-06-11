@@ -250,7 +250,7 @@ function fetchNigerianStates($pdo){
 
     return $result;
 
-   } catch (Exception $e) {
-        throw $e->getMessage();
+   } catch (PDOException $e) {
+        echo $e->getMessage();
    }
 }

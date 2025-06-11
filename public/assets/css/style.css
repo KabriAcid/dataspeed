@@ -1,6 +1,5 @@
 @import url("variables.css");
 @import url("print.css");
-@import url("soft-design-system-pro.min3f71.css");
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
@@ -19,6 +18,16 @@ body {
 /* Apply Rubik font to all digits in text, inputs, buttons, etc. */
 :is(body, *) {
   font-variant-numeric: lining-nums; /* Optional: for better digit alignment */
+}
+
+/* Add this to your custom CSS or in a <style> tag */
+.ni {
+  font-family: 'NucleoIcons' !important;
+  font-style: normal;
+  font-weight: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  text-align: center;
 }
 
 .digit,
@@ -402,8 +411,8 @@ button:disabled {
   margin: 25px 0;
 }
 
-.form .d-none {
-  display: none;
+.d-none {
+  display: none!important;
 }
 
 .spinner-icon {
@@ -581,8 +590,9 @@ button:disabled {
 }
 
 .action-grid-label {
-  font-size: 0.95rem;
-  color: #222;
+  font-size: 0.85rem;
+  color: var(--gray-700);
+  text-wrap: nowrap;
   font-weight: 500;
   margin-top: 2px;
 }

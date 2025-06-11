@@ -142,8 +142,8 @@ if (isset($_GET['success'])) {
 
 
         <!-- Action Buttons -->
-        <div class="row my-3 action-grid justify-content-center">
-            <div class="col-3 text-center">
+        <div class="row my-3 action-grid">
+            <div class="col-3 text-center d-flex justify-content-center">
                 <a href="buy_airtime.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -154,7 +154,7 @@ if (isset($_GET['success'])) {
                     <span class="action-grid-label">Airtime</span>
                 </a>
             </div>
-            <div class="col-3 text-center">
+            <div class="col-3 text-center d-flex justify-content-center">
                 <a href="buy_data.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -165,18 +165,18 @@ if (isset($_GET['success'])) {
                     <span class="action-grid-label">Data</span>
                 </a>
             </div>
-            <div class="col-3 text-center">
-                <a href="betting.php" class="action-grid-btn d-flex flex-column align-items-center">
+            <div class="col-3 text-center d-flex justify-content-center">
+                <a href="transfer-money.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="10" stroke="var(--primary)" stroke-width="1.5" />
                             <circle cx="12" cy="12" r="4" fill="var(--primary)" fill-opacity="0.12" />
                         </svg>
                     </span>
-                    <span class="action-grid-label">Betting</span>
+                    <span class="action-grid-label">Transfer Money</span>
                 </a>
             </div>
-            <div class="col-3 text-center">
+            <div class="col-3 text-center d-flex justify-content-center">
                 <a href="tv.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -187,7 +187,7 @@ if (isset($_GET['success'])) {
                     <span class="action-grid-label">TV</span>
                 </a>
             </div>
-            <div class="col-3 text-center">
+            <div class="col-3 text-center d-flex justify-content-center">
                 <a href="owealth.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -199,7 +199,7 @@ if (isset($_GET['success'])) {
                     <span class="action-grid-label">OWealth</span>
                 </a>
             </div>
-            <div class="col-3 text-center">
+            <div class="col-3 text-center d-flex justify-content-center">
                 <a href="loan.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -210,7 +210,7 @@ if (isset($_GET['success'])) {
                     <span class="action-grid-label">Loan</span>
                 </a>
             </div>
-            <div class="col-3 text-center">
+            <div class="col-3 text-center d-flex justify-content-center">
                 <a href="invitation.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -222,7 +222,7 @@ if (isset($_GET['success'])) {
                     <span class="action-grid-label">Invitation</span>
                 </a>
             </div>
-            <div class="col-3 text-center">
+            <div class="col-3 text-center d-flex justify-content-center">
                 <a href="more.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">

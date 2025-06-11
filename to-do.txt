@@ -7,3 +7,6 @@
 --- FEATURES ---
 - Adding action buttons for e.g Transfer to Friend
 
+
+body bgcolor - #F8FAFF
+content bgcolor #FFFFFF
