@@ -980,10 +980,9 @@ select.select-state, select.select-lga {
 
 /* NOTIFICATIONS */
 
-.notifications {
+.notifications-container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 1.5rem 1rem;
 }
 
 /* Date group styles */
