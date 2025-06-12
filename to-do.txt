@@ -1,9 +1,37 @@
---- FIXES ---
+--- UI COMPONENTS ---
+- Fix primary and secondary button classes for consistent styling.
+- Find and add relevant icons for transaction types.
+- Improve mobile responsiveness.
+- Refine color scheme and typography.
 
-- Fixing the primary, secondary btn classes.
-- Fixing the balance toggle functionality.
-- Finding relevant icons for transactions.
+--- BALANCE MODULE ---
+- Fix balance toggle functionality to show/hide balance correctly.
+- Write unit tests for balance toggle.
 
---- FEATURES ---
-- Adding action buttons for e.g Transfer to Friend
+--- TRANSACTIONS MODULE ---
+- Implement transaction filtering (by date, type, amount).
+- Implement search functionality for transactions.
+- Add dashboard analytics (spending trends, income vs expenses).
+- Add action buttons (e.g., "Transfer to Friend", "Request Payment").
+- Find and add relevant icons for transaction types.
+- Write unit and integration tests for transaction actions.
 
+--- USER PROFILE MODULE ---
+- Add user profile management (edit profile, change password).
+- Add multi-language support.
+- Enhance accessibility (keyboard navigation, ARIA labels).
+
+--- NOTIFICATION SYSTEM ---
+- Enable notifications for important account activities:
+    - After password reset
+    - After account creation
+    - After PIN set
+    - After KYC completion
+    - Transaction alerts
+
+--- AUTHENTICATION & SECURITY ---
+- Add integration tests for user flows (login, transfer, logout).
+
+--- DOCUMENTATION ---
+- Update README with setup instructions.
+- Document API endpoints and usage.

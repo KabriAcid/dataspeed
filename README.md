@@ -1,4 +1,4 @@
-# dataspeed
+# Dataspeed
  A VTU airtime web application for purchasing data, airtime, and bill payment.
 
 ## **How `send-otp.php` and `sendMail.php` Work Together**  

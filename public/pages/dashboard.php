@@ -263,7 +263,7 @@ if (isset($_GET['success'])) {
                 ?>
                             <div class='d-flex justify-content-between align-items-start mb-3 pb-2'>
                                 <div class='d-flex align-items-center gap-3'>
-                                    <div class='transaction-icon p-2'><?= $icon ?></div>
+                                    <div class='icon-container p-2'><?= $icon ?></div>
                                     <div>
                                         <h6 class='mb-0'><?= $transaction['type'] ?></h6>
                                         <p class='text-sm text-secondary mb-0'><?= $date ?></p>

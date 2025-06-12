@@ -731,6 +731,9 @@ select.select-state, select.select-lga {
 
 .transaction-icon {
   border-radius: 8px;
+  width: 45px;
+  height: 45px;
+  
   max-width: 45px;
   max-height: 45px;
   display: flex;

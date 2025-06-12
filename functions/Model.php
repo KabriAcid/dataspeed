@@ -63,12 +63,12 @@ function getTransactions($pdo, $user_id)
 function getTransactionIcon($type)
 {
     $icons = [
-        'Data' => '<i class="fa fa-wifi text-danger"></i>',
-        'Airtime' => '<i class="fa fa-phone text-primary"></i>',
-        'Airtime Self' => '<i class="fa fa-phone text-primary"></i>',
-        'Deposit' => '<i class="fa fa-credit-card text-success"></i>',
-        'Withdrawal' => '<i class="fa fa-arrow-down text-danger"></i>',
-        'Default' => '<i class="fa fa-credit-card"></i>'
+        'Data' => '<i class="ni ni-wifi text-danger"></i>',
+        'Airtime' => '<i class="ni ni-phone text-primary"></i>',
+        'Airtime Self' => '<i class="ni ni-phone text-primary"></i>',
+        'Deposit' => '<i class="ni ni-credit-card text-success"></i>',
+        'Withdrawal' => '<i class="ni ni-arrow-down text-danger"></i>',
+        'Default' => '<i class="ni ni-credit-card"></i>'
     ];
 
     return $icons[$type] ?? $icons['Default'];
