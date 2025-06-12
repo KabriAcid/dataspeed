@@ -19,49 +19,87 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </header>
 
-
-
         <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" style="max-width:600px;margin:auto;">
             <!-- KYC Notice -->
             <div class="mb-3">
                 <h6 class="fw-bold text-center">Know Your Customer (KYC)</h6>
-                <p class="text-secondary small">To ensure the security and integrity of our platform, we require all users to complete the KYC process. Please update your account with your BVN or NIN.</p>
+                <p class="text-secondary small">
+                    For your safety and to protect our community, we ask all users to verify their identity through the KYC (Know Your Customer) process. This helps prevent fraud, keeps your account secure, and ensures we meet legal requirements. Please update your account using your NIN or BVN.
+                </p>
+
             </div>
         </div>
 
         <div class="tabs">
             <div class="tab-buttons">
                 <button class="tab-btn active" data-tab="nin">NIN</button>
-                <button class="tab-btn" data-tab="pin">BVN</button>
+                <button class="tab-btn" data-tab="bvn">BVN</button>
             </div>
         </div>
-
         <div class="form-container mx-auto">
             <form id="KYCForm" method="post" novalidate>
                 <!-- NIN Tab -->
                 <div class="tab-content active" id="nin-tab">
                     <div class="mb-3">
                         <input type="text" placeholder="NIN" id="nin" name="nin"
-                            class="input" maxlength="10" pattern="\d{10}" inputmode="numeric" required>
+                            class="input" maxlength="11" pattern="\d{11}" inputmode="numeric" required>
+                    </div>
+                    <!--Verification consent toggle  -->
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="consent" name="nin-consent" required>
+                        <label class="form-check-label text-sm" for="consent">
+                            I consent to the verification of my KYC.
+                        </label>
+
+                    </div>
+                    <div>
+                        <button type="submit" id="nin-btn" class="btn primary-btn w-100" disabled>
+                            <span class="button-text text-uppercase">Update NIN</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- BVN Tab -->
-                <div class="tab-content" id="pin-tab">
+                <div class="tab-content" id="bvn-tab">
                     <div class="mb-3">
-                        <input type="text" placeholder="BVN" id="bvn" name="bvn" class="input"
-                            pattern="\d{10}" maxlength="10" inputmode="numeric" required>
+                        <input type="text" placeholder="BVN" id="bvn" name="bvn"
+                            class="input" maxlength="11" pattern="\d{11}" inputmode="numeric" required>
                     </div>
-                </div>
+                    <!--Verification consent toggle  -->
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="consent" name="bvn-consent" required>
+                        <label class="form-check-label text-sm" for="consent">
+                            I consent to the verification of my KYC.
+                        </label>
 
-                <div>
-                    <button type="submit" class="btn primary-btn w-100">
-                        <span class="button-text text-uppercase">Update Password</span>
-                    </button>
+                    </div>
+                    <div>
+                        <button type="submit" id="bvn-btn" class="btn primary-btn w-100" disabled>
+                            <span class="button-text text-uppercase">Update BVN</span>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
-
+        <!-- A modal that displays when the AJAX response is true -->
+        <div class="modal fade" id="kycConfirmationModal" tabindex="-1" aria-labelledby="kycConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="kycConfirmationModalLabel">KYC Verification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="kycConfirmationMessage">Please confirm your KYC details.</p>
+                        <div id="kycDetails"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="confirmKYC">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
     </main>
@@ -73,30 +111,58 @@ require __DIR__ . '/../partials/header.php';
     <script src="../assets/js/ajax.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const tabsContainer = document.querySelector(".tabs");
-            const tabButtons = tabsContainer.querySelectorAll(".tab-btn");
-            const contents = document.querySelectorAll(".tab-content");
-            const form = document.getElementById("KYCForm");
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const buttonText = submitBtn.querySelector(".button-text");
+            const ninInput = document.getElementById("nin");
+            const bvnInput = document.getElementById("bvn");
+            const ninButton = document.getElementById("nin-btn");
+            const bvnButton = document.getElementById("bvn-btn");
+            const tabButtons = document.querySelectorAll(".tab-btn");
+            const tabContents = document.querySelectorAll(".tab-content");
 
-            // Activate first tab
-            let activeTab = document.querySelector(".tab-btn.active")?.dataset.tab || tabButtons[0].dataset.tab;
-            activateTab(activeTab);
+            // Enable/Disable buttons based on input length
+            ninInput.addEventListener("input", () => {
+                ninButton.disabled = ninInput.value.length !== 11;
+            });
 
-            tabButtons.forEach(button => {
+            bvnInput.addEventListener("input", () => {
+                bvnButton.disabled = bvnInput.value.length !== 11;
+            });
+
+            // Tab switching logic
+            tabButtons.forEach((button) => {
                 button.addEventListener("click", () => {
-                    activeTab = button.dataset.tab;
-                    activateTab(activeTab);
-                    buttonText.textContent = `Update ${capitalize(activeTab)}`;
+                    const targetTab = button.getAttribute("data-tab");
+                    const targetContent = document.getElementById(`${targetTab}-tab`);
+
+                    // Ensure the target content exists
+                    if (!targetContent) {
+                        console.error(`Tab content with ID "${targetTab}-tab" not found.`);
+                        return;
+                    }
+
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach((btn) => btn.classList.remove("active"));
+                    tabContents.forEach((content) => content.classList.remove("active"));
+
+                    // Add active class to the clicked button and corresponding content
+                    button.classList.add("active");
+                    targetContent.classList.add("active");
                 });
             });
 
+            // Form submission logic
+            const form = document.getElementById("KYCForm");
             form.addEventListener("submit", function(e) {
                 e.preventDefault();
 
-                const activeInputs = document.querySelectorAll(`#${activeTab}-tab input`);
+                const activeTab = document.querySelector(".tab-content.active");
+                const activeInputs = activeTab.querySelectorAll("input");
                 for (const input of activeInputs) {
+                    // Check if strings is not a number
+                    if (!/^\d{11}$/.test(input.value)) {
+                        showToasted("Please enter a valid 11-digit number.", "error");
+                        input.focus();
+                        return;
+                    }
                     if (!input.checkValidity()) {
                         showToasted(`Please fill the ${input.placeholder} field correctly.`, "error");
                         input.focus();
@@ -108,39 +174,22 @@ require __DIR__ . '/../partials/header.php';
                     `${encodeURIComponent(input.name)}=${encodeURIComponent(input.value)}`
                 ).join("&");
 
-                sendAjaxRequest("verify-kyc.php", "POST", data, (res) => {
-                    if (res.success) {
-                        showToasted(res.message, "success");
+                sendAjaxRequest("verify-kyc.php", "POST", data, (response) => {
+                    if (response.success) {
+                        showToasted(response.message, "success");
                         form.reset();
-                        setTimeout(() => {
-                            console.log(res.success, res.type)
-                        }, 2000);
-                    } else {
-                        // Show toasted error message
-                        showToasted(res.message, "error");
+                        ninButton.disabled = true;
+                        bvnButton.disabled = true;
 
+                        // Show the modal (Bootstrap 5)
+                        document.getElementById('kycConfirmationModal').classList.add('show');
+                    } else {
+                        showToasted(response.message, "error");
                     }
                 });
             });
-
-            function activateTab(tabId) {
-                tabButtons.forEach(btn =>
-                    btn.classList.toggle("active", btn.dataset.tab === tabId)
-                );
-
-                contents.forEach(content =>
-                    content.classList.toggle("active", content.id === `${tabId}-tab`)
-                );
-
-                buttonText.textContent = `Update ${capitalize(tabId)}`;
-            }
-
-            function capitalize(str) {
-                return str.charAt(0).toUpperCase() + str.slice(1);
-            }
         });
     </script>
-    <script src="../assets/js/scroll.js"></script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 

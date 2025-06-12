@@ -8,17 +8,22 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Quicksand", "Segoe UI" !important;
 }
 
 body {
   background-color: var(--primary-light);
   padding-bottom: 80px;
+  font-family: "Quicksand", "Segoe UI" !important;
 }
 
 /* Apply Rubik font to all digits in text, inputs, buttons, etc. */
 :is(body, *) {
   font-variant-numeric: lining-nums; /* Optional: for better digit alignment */
+}
+
+/* Exclude Nucleo icons from font-family override */
+.ni {
+  font-family: "Nucleo Icons" !important;
 }
 
 .digit,

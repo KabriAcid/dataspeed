@@ -13,7 +13,7 @@ $states = fetchNigerianStates($pdo);
 ?>
 
 <body>
-    <main class="container-fluid px-2 py-4">
+    <main class="container px-2 py-4">
         <!-- Header Section -->
         <header>
             <div class="page-header mb-4 text-center">
