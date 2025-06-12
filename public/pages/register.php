@@ -6,6 +6,12 @@ if (isset($_GET['referral_code'])) {
     $_SESSION['referral_code'] = $_GET['referral_code'];
     $referral_code = $_SESSION['referral_code'] ? $_SESSION['referral_code'] : '';
 }
+function set_title($title = null)
+{
+    $default = "DataSpeed";
+    return htmlspecialchars($title ?: $default);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,24 +19,34 @@ if (isset($_GET['referral_code'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($title) ? $title : "DataSpeed" ?></title>
+    <!-- Page title is set dynamically -->
+    <title><?= set_title($title ?? null) ?></title>
     <link rel="shortcut icon" href="../logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
 
-    <!-- Toasted JS -->
+    <!-- Font Awesome for icons -->
+    <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet">
+    <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet">
+
+    <!-- Lottie Animations -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- <script src="../assets/js/lottie-player.js"></script> -->
+
+    <!-- Toasted JS for notifications -->
     <link rel="stylesheet" href="../assets/css/toasted.css" />
     <script src="../assets/js/toasted.js"></script>
 
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 
-    <!-- Add font awesome icons to buttons (note that the fa-spin class rotates the icon) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="../assets/css/soft-design-system-pro.min3f71.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
 
 <body>
-    <main class="container">
+    <main class="container py-4">
         <div class="form-container text-center">
             <div class="form-top-container">
                 <svg id="registration_reset" class="cursor-pointer" width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -151,12 +167,12 @@ if (isset($_GET['referral_code'])) {
                         <input type="password" class="input" id="confirm-password" name="confirm_password"
                             placeholder="Password">
                     </div>
-                    <button type="button" class="btn primary-btn" id="password-submit" onclick="showOverlay()">
+                    <button type="button" class="btn primary-btn" id="password-submit">
                         Finish
                     </button>
                 </div>
 
-                <div id="overlay">
+                <div id="overlay-loader">
                     <div class="loader"></div>
                 </div>
             </form>
@@ -165,6 +181,12 @@ if (isset($_GET['referral_code'])) {
     </main>
 </body>
 <script>
+    function showOverlay() {
+        document.getElementById('overlay-loader').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('overlay-loader').style.display = 'none';
+        }, 3000);
+    }
     document.getElementById('registration_reset').addEventListener('click', function() {
         sessionStorage.clear();
         window.location.href = 'register.php';

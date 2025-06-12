@@ -75,7 +75,13 @@ document.addEventListener("DOMContentLoaded", function () {
     handleButtonClick(emailContinueBtn, done => {
       const email = emailInput.value.trim();
 
-      if (!email || email.length <= 6 || email.includes("mailinator")) {
+      if (email == "") {
+        showToasted("Email address is required.", "error");
+        done();
+        return;
+      }
+
+      if (email.length <= 6 || email.includes("mailinator")) {
         showToasted("Email address not supported.", "error");
         done();
         return;

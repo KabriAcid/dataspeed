@@ -919,7 +919,7 @@ select.select-state, select.select-lga {
   transition: 1s;
 }
 /* OVERLAY FROM W3SCHOOLS.COM */
-#overlay {
+#overlay-loader {
   position: fixed;
   display: none;
   width: 100%;
@@ -955,7 +955,7 @@ select.select-state, select.select-lga {
   border: var(--_border-width) solid;
   border-color: var(--color) var(--ghost-color) var(--ghost-color) var(--color);
   border-radius: 100%;
-  z-index: 999;
+  z-index: 99999;
 
   &::before,
   &::after {
@@ -1076,10 +1076,7 @@ select.select-state, select.select-lga {
 }
 
 /* Specific styles for different notification types */
-.referral-bottom-content {
-  position: absolute;
-  bottom: 150px;
-}
+
 .icon-wrapper.default {
   background-color: #ff67c5;
   /* Blue */
@@ -1154,6 +1151,7 @@ select.select-state, select.select-lga {
   margin: 20px auto;
   overflow: hidden;
 }
+
 /* On large screens tabs should have max-width */
 @media (min-width: 775px) {
   .tabs {
@@ -1246,6 +1244,12 @@ th {
 
 .sub-tab-btn:hover:not(.active) {
   background-color: var(--primary-light);
+}
+
+/* REFERRALS PAGE */
+.referral-code, .referral-link {
+  min-width: 180px;
+  min-height: 45px;
 }
 
 /* Optional hidden class if needed elsewhere */

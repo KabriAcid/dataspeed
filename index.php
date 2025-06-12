@@ -1,5 +1,11 @@
 <?php
 session_start();
+function set_title($title = null)
+{
+    $default = "DataSpeed";
+    return htmlspecialchars($title ?: $default);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,20 +13,37 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dataspeed - Homepage</title>
-    <link rel="shortcut icon" href="public/logo.svg" type="image/x-icon">
+    <!-- Page title is set dynamically -->
+    <title><?= set_title($title ?? null) ?></title>
+    <link rel="shortcut icon" href="../logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Font Awesome for icons -->
+    <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet">
+    <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet">
+
+    <!-- Lottie Animations -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- <script src="public/assets/js/lottie-player.js"></script> -->
+
+    <!-- Toasted JS for notifications -->
+    <link rel="stylesheet" href="public/assets/css/toasted.css" />
+    <script src="public/assets/js/toasted.js"></script>
+
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+
+    <link rel="stylesheet" href="public/assets/css/soft-design-system-pro.min3f71.css">
     <link rel="stylesheet" href="public/assets/css/style.css">
+
 </head>
 
 <body>
     <nav class="bg-light navbar fixed-top">
         <div class="d-flex justify-content-between align-items-center w-100">
             <div>
-                <a href="index.php" class="d-block fw-bold">Dataspeed</a>
+                <a href="index.php" class="d-block fw-bold">Jabir</a>
             </div>
             <div class="d-flex align-items-center">
                 <a href="public/pages/login.php" class="secondary-btn m-0 me-2">LOGIN</a>
