@@ -78,7 +78,7 @@ try {
         $ch = curl_init('https://api.billstack.co/v2/thirdparty/generateVirtualAccount/');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        
+
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Authorization: Bearer ' . $secretKey,
@@ -160,7 +160,9 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET password = ?, referral_code = ?, referral_link = ?, registration_status = 'complete', 
         virtual_account = ?, bank_name = ?, account_name = ?, billstack_ref = ? WHERE registration_id = ?");
 
-    if(isset($_SESSION['referral_code'])){
+    $referralLink = null;
+
+    if (isset($_SESSION['referral_code'])) {
         $referralLink = "https://dataspeed.com.ng/public/pages/register.php?referral_code=" . $_SESSION['referral_code'];
     }
 
@@ -197,22 +199,38 @@ try {
     $stmt->execute([$registration_id]);
     $user_id = $stmt->fetchColumn();
 
-    $wallet_balance = (float) "0.00";
-    
-    $stmt = $pdo->prepare("INSERT INTO account_balance SET user_id = ?, wallet_balance = ? WHERE registration_id = ?");
-    $stmt->execute([$user_id, $wallet_balance, $registration_id]);
+    $wallet_balance = 0;
 
-    
+    try {
+        $stmt = $pdo->prepare("INSERT INTO account_balance (user_id, wallet_balance, registration_id, email, phone_number) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $user_id,
+            $wallet_balance,
+            $registration_id,
+            $user['email'],
+            $user['phone_number']
+        ]);
+    } catch (PDOException $th) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Account balance creation failed.",
+        ]);
+        exit;
+    }
+
 
     // Insert notification for user in the db
     $title = 'Virtual Account Created';
     $message = 'Congratulations! Your virtual account has been created successfully.';
-    pushNotification($pdo, $user_id, $title, $message, 'virtual_account', 'fa-home', false);
+    pushNotification($pdo, $user_id, $title, $message, 'virtual_account', 'fa-account', false);
 
     // Insert notification for PIN not set
+    $pinTitle = 'Set Your Transaction PIN';
+    $pinMessage = 'For your security, please set your transaction PIN to enable transactions.';
+    pushNotification($pdo, $user_id, $pinTitle, $pinMessage, 'security', 'fa-key', false);
 
 
-    
+
     // Handle referral logic (optional)
     if (isset($_SESSION['referral_code']) && !empty($_SESSION['referral_code'])) {
         $stmt = $pdo->prepare("SELECT user_id FROM users WHERE referral_code = ?");

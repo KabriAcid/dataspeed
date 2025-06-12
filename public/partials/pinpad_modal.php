@@ -2,13 +2,13 @@
 <div id="pinpadModal" class="modal-overlay" style="display: none;" data-amount="" data-phone="" data-network="" data-type="">
   <div class="pin-container">
     <div class="pin-header text-center">
-      <img src="../assets/img/avatar.jpg" alt="avatar" class="pinpad-avatar">
-      <h6>Abdullahi</h6>
+      <img src="<?= $user['photo']; ?>" alt="avatar" class="pinpad-avatar">
+      <h6><?= $user['first_name']; ?></h6>
       <h3>Welcome Back</h3>
     </div>
     <div class="pin-field">
       <div class="icon-section text-center">
-        <i class="fas fa-shield-check check-icon fa-2x"></i>
+        <i class="nc-icon nc-check-circle check-icon fa-2x"></i>
         <p class="mt-2 mb-0 fw-bold">Enter Transaction PIN</p>
       </div>
       <div class="pin-section">

@@ -31,7 +31,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
 
         <!-- Account Settings -->
-        <div class="main-body mt-5">
+        <div class="mt-5">
             <p class="text-muted fw-bold">Account Settings</p>
             <div class="mb-3">
                 <a href="profile.php">
