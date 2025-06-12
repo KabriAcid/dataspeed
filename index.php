@@ -43,7 +43,7 @@ function set_title($title = null)
     <nav class="bg-light navbar fixed-top">
         <div class="d-flex justify-content-between align-items-center w-100">
             <div>
-                <a href="index.php" class="d-block fw-bold">Jabir</a>
+                <a href="index.php" class="d-block fw-bold">Dataspeed</a>
             </div>
             <div class="d-flex align-items-center">
                 <a href="public/pages/login.php" class="secondary-btn m-0 me-2">LOGIN</a>
