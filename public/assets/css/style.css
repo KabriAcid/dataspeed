@@ -736,13 +736,21 @@ select.select-state, select.select-lga {
 
 .transaction-icon {
   border-radius: 8px;
-  max-width: 45px;
-  max-height: 45px;
+  width: 50px;
+  height: 50px;
+  max-height: 50px;
+  max-width: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #ffffff;
+  background: #f1effa;
+  /* background: #ffffff; */
   box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+}
+
+.icon-container {
+  border-radius: 8px;
+  padding: 12px 16px;
 }
 
 /* footer */

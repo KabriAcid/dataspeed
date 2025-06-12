@@ -59,7 +59,7 @@ if (isset($_GET['success'])) {
         <!-- Balance Section -->
         <div>
             <p class="text-secondary mb-0 text-sm">Total Balance</p>
-            <div class="d-flex align-items-end">
+            <div class="d-flex align-items-center">
                 <h2 class="display-5 fw-bold mb-0 digit" id="balanceAmount"><?= "&#8358;" . showBalance($pdo, $user_id) ?></h2>
                 <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
                 <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
@@ -188,7 +188,7 @@ if (isset($_GET['success'])) {
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">
-                <a href="owealth.php" class="action-grid-btn d-flex flex-column align-items-center">
+                <a href="electricity_bills.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <path d="M12 17C15.3137 17 18 14.3137 18 11C18 7.68629 15.3137 5 12 5C8.68629 5 6 7.68629 6 11C6 14.3137 8.68629 17 12 17Z"
@@ -196,7 +196,7 @@ if (isset($_GET['success'])) {
                             <circle cx="12" cy="11" r="3" fill="var(--primary)" fill-opacity="0.12" />
                         </svg>
                     </span>
-                    <span class="action-grid-label">OWealth</span>
+                    <span class="action-grid-label">Electricity</span>
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">
@@ -255,7 +255,7 @@ if (isset($_GET['success'])) {
                         $textColor = $transaction['type'] == 'Deposit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
                         $date = date("M d, Y H:m", strtotime($transaction['created_at']));
-                        $prefix = ($transaction['type'] === 'Deposit') ? '+' : '-';
+                        $prefix = ($transaction['type'] === 'Deposit') ? '₦+' : '-₦';
 
                         if ($transactions) {
                 ?>
@@ -281,7 +281,7 @@ if (isset($_GET['success'])) {
 
         <!-- FontAwesome CDN -->
     </main>
-    <script src="../assets/js/toggle-balance.js"></script>
+    <script src="../assets/js/toggle-number.js"></script>
     <script>
         document.getElementById('copy-icon').addEventListener('click', function() {
             const accountNumber = document.getElementById('account-number').innerText.trim();

@@ -65,7 +65,7 @@ function getTransactionIcon($type)
     $icons = [
         'Data' => '<i class="fa fa-wifi text-danger"></i>',
         'Airtime' => '<i class="fa fa-phone text-primary"></i>',
-        'Airtime Self' => '<i class="fa fa-phone text-primary"></i>',
+        'airtime_purchase' => '<i class="fa fa-phone text-primary"></i>',
         'Deposit' => '<i class="fa fa-credit-card text-success"></i>',
         'Withdrawal' => '<i class="fa fa-arrow-down text-danger"></i>',
         'Default' => '<i class="fa fa-credit-card"></i>'
@@ -253,4 +253,13 @@ function fetchNigerianStates($pdo){
    } catch (PDOException $e) {
         echo $e->getMessage();
    }
+}
+
+function getUserIdByAccount($accountNumber)
+{
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT user_id FROM users WHERE account_number = ?");
+    $stmt->execute([$accountNumber]);
+    $row = $stmt->fetch();
+    return $row ? $row['user_id'] : null;
 }
