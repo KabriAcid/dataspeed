@@ -257,13 +257,13 @@ if (isset($_GET['success'])) {
                         $textColor = $transaction['type'] == 'Deposit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
                         $date = date("M d, Y H:m", strtotime($transaction['created_at']));
-                        $prefix = ($transaction['type'] === 'Deposit') ? '+' : '-';
+                        $prefix = ($transaction['type'] === 'Deposit') ? '+₦' : '-₦';
 
                         if ($transactions) {
                 ?>
                             <div class='d-flex justify-content-between align-items-start mb-3 pb-2'>
                                 <div class='d-flex align-items-center gap-3'>
-                                    <div class='icon-container p-2'><?= $icon ?></div>
+                                    <div class='transaction-icon'><?= $icon ?></div>
                                     <div>
                                         <h6 class='mb-0'><?= $transaction['type'] ?></h6>
                                         <p class='text-sm text-secondary mb-0'><?= $date ?></p>
@@ -283,7 +283,7 @@ if (isset($_GET['success'])) {
 
         <!-- FontAwesome CDN -->
     </main>
-    <script src="../assets/js/toggle-balance.js"></script>
+    <script src="../assets/js/toggle-number.js"></script>
     <script>
         document.getElementById('copy-icon').addEventListener('click', function() {
             const accountNumber = document.getElementById('account-number').innerText.trim();
