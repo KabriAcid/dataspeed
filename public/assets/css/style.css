@@ -41,6 +41,13 @@ input[type="number"],
   letter-spacing: 0.04em;
 }
 
+.favicon {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+
 /* Generic: All digits inside any element */
 *:not(code):not(pre) {
   font-feature-settings: "lnum";

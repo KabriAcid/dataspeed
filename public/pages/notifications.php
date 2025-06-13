@@ -27,6 +27,7 @@ $groupedNotifications = groupNotificationsByDate($notifications);
             <div class="card h-100 p-0">
                 <div class="card-header pb-0">
                     <h6>Orders overview</h6>
+                    <i class="fa fa-home"></i>
                     <p class="text-sm">
                         <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
                         <span class="font-weight-bold">24%</span> this month

@@ -20,7 +20,7 @@ function set_title($title = null)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Page title is set dynamically -->
     <title><?= set_title($title ?? null) ?></title>
-    <link rel="shortcut icon" href="../logo.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="/dataspeed/public/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
 

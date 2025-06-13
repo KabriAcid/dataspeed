@@ -15,7 +15,7 @@ function set_title($title = null)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Page title is set dynamically -->
     <title><?= set_title($title ?? null) ?></title>
-    <link rel="shortcut icon" href="../logo.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="/dataspeed/public/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
 
@@ -43,7 +43,7 @@ function set_title($title = null)
     <nav class="bg-light navbar fixed-top">
         <div class="d-flex justify-content-between align-items-center w-100">
             <div>
-                <a href="index.php" class="d-block fw-bold">Dataspeed</a>
+                <a href="index.php" class="d-block fw-bold"><img src="/dataspeed/public/favicon.png" alt="" class="favicon"></a>
             </div>
             <div class="d-flex align-items-center">
                 <a href="public/pages/login.php" class="secondary-btn m-0 me-2">LOGIN</a>
