@@ -59,19 +59,35 @@ function getTransactions($pdo, $user_id)
     }
 }
 
-
-function getTransactionIcon($type)
+function getTransactionIcon($description)
 {
-    $icons = [
-        'Data' => '<i class="fa fa-wifi text-danger"></i>',
-        'Airtime' => '<i class="fa fa-phone text-primary"></i>',
-        'airtime_purchase' => '<i class="fa fa-phone text-primary"></i>',
-        'Deposit' => '<i class="fa fa-credit-card text-success"></i>',
-        'Withdrawal' => '<i class="fa fa-arrow-down text-danger"></i>',
-        'Default' => '<i class="fa fa-credit-card"></i>'
+    $map = [
+        // Keyword         => [icon, color]
+        'airtime'        => ['ni-mobile-button', 'text-primary'],
+        'data'           => ['ni-wifi', 'text-info'],
+        'deposit'        => ['ni-money-coins', 'text-success'],
+        'withdrawal'     => ['ni-briefcase-24', 'text-danger'],
+        'transfer'       => ['ni-send', 'text-warning'],
+        'bill'           => ['ni-credit-card', 'text-info'],
+        'electricity'    => ['ni-bulb-61', 'text-warning'],
+        'tv'             => ['ni-tv-2', 'text-primary'],
+        'reward'         => ['ni-gift', 'text-success'],
+        'loan'           => ['ni-bank', 'text-info'],
+        'failed'         => ['ni-fat-remove', 'text-danger'],
+        'success'        => ['ni-check-bold', 'text-success'],
+        // Add more as needed
     ];
 
-    return $icons[$type] ?? $icons['Default'];
+    $desc = strtolower($description);
+
+    foreach ($map as $keyword => [$icon, $color]) {
+        if (strpos($desc, $keyword) !== false) {
+            return "<i class='ni $icon $color'></i>";
+        }
+    }
+
+    // Default icon
+    return "<i class='ni ni-credit-card text-secondary'></i>";
 }
 
 // A function for retrieving user referral details from the database

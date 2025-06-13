@@ -255,7 +255,7 @@ if (isset($_GET['success'])) {
                         $textColor = $transaction['type'] == 'Deposit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
                         $date = date("M d, Y H:m", strtotime($transaction['created_at']));
-                        $prefix = ($transaction['type'] === 'Deposit') ? '₦+' : '-₦';
+                        $prefix = ($transaction['type'] === 'Deposit') ? '+₦' : '-₦';
 
                         if ($transactions) {
                 ?>

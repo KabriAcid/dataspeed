@@ -810,8 +810,7 @@ select.select-lga {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f1effa;
-  /* background: #ffffff; */
+  background: #ffffff;
   box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
 }
 
