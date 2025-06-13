@@ -141,10 +141,10 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
         // Set network SVG in confirm modal
         document.addEventListener("DOMContentLoaded", () => {
             const networkSVGs = {
-                MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:32px;">`,
-                AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:32px;">`,
-                GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:32px;">`,
-                '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:32px;">`
+                MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:25px;">`,
+                AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:25px;">`,
+                GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:25px;">`,
+                '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:25px;">`
             };
 
             let selectedNetwork = null;
@@ -305,7 +305,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
                         // Show pinpad modal
-                        showToasted(response.message, "success");
+                        // showToasted(response.message, "success");
                         pinpadModal.style.display = "flex";
                     } else {
                         showToasted(response.message, "error");

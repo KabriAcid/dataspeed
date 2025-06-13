@@ -40,22 +40,14 @@ function showBalance($pdo, $user_id)
 function getTransactions($pdo, $user_id)
 {
     try {
-        $stmt = $pdo->prepare("SELECT * FROM transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT 5");
+        $stmt = $pdo->prepare("SELECT id, user_id, service_id, type, amount, status, created_at, icon, color, description FROM transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT 10");
         $stmt->execute([$user_id]);
         $transactions = $stmt->fetchAll();
 
-        // Check if the transactions are empty
-        if (empty($transactions)) {
-            return [];
-        } else {
-            // Check if the transactions are null
-            if ($transactions === null) {
-                return [];
-            }
-        }
-        return $transactions;
+        return $transactions ?: [];
     } catch (PDOException $e) {
         echo $e->getMessage();
+        return [];
     }
 }
 
@@ -65,17 +57,15 @@ function getTransactionIcon($description)
         // Keyword         => [icon, color]
         'airtime'        => ['ni-mobile-button', 'text-primary'],
         'data'           => ['ni-wifi', 'text-info'],
-        'deposit'        => ['ni-money-coins', 'text-success'],
+        'deposit'        => ['ni-credit-card', 'text-success'],
         'withdrawal'     => ['ni-briefcase-24', 'text-danger'],
         'transfer'       => ['ni-send', 'text-warning'],
         'bill'           => ['ni-credit-card', 'text-info'],
         'electricity'    => ['ni-bulb-61', 'text-warning'],
         'tv'             => ['ni-tv-2', 'text-primary'],
         'reward'         => ['ni-gift', 'text-success'],
-        'loan'           => ['ni-bank', 'text-info'],
         'failed'         => ['ni-fat-remove', 'text-danger'],
         'success'        => ['ni-check-bold', 'text-success'],
-        // Add more as needed
     ];
 
     $desc = strtolower($description);
