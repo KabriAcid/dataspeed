@@ -25,7 +25,7 @@ if (isset($_GET['success'])) {
 </script>
 
 <body>
-    <main class="container-fluid py-4 mb-5">
+    <main class="container-fluid py-5 mb-5">
         <?php
         if ($success == 1) {
             echo "<script>showToasted('Login Successful', 'success')</script>";

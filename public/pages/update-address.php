@@ -26,7 +26,15 @@ try {
         $stmt = $pdo->prepare("UPDATE users SET w_bank_name = ?, w_account_number = ? WHERE user_id = ?");
         $stmt->execute([$bank, $account, $user_id]);
 
-        echo json_encode(['success' => true, 'message' => 'Account updated.']);
+        // Push notification for bank account update
+        $title = "Bank Account Updated";
+        $message = "Your withdrawal bank account details were updated successfully.";
+        $type = "profile";
+        $icon = "ni-building";
+        $color = "text-info";
+        pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
+
+        echo json_encode(['success' => true, 'message' => 'Bank Account updated.']);
         exit;
 
     } elseif ($step === 'address') {
@@ -41,7 +49,15 @@ try {
         $stmt = $pdo->prepare("UPDATE users SET state = ?, city = ?, address = ? WHERE user_id = ?");
         $stmt->execute([$state, $lga, $address, $user_id]);
 
-        echo json_encode(['success' => true, 'message' => 'Address updated.']);
+        // Push notification for address update
+        $title = "Address Updated";
+        $message = "Your address details were updated successfully.";
+        $type = "profile";
+        $icon = "ni-pin-3";
+        $color = "text-primary";
+        pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
+
+        echo json_encode(['success' => true, 'message' => 'Home Address updated.']);
         exit;
 
     } elseif ($step === 'biodata') {

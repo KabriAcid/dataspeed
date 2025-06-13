@@ -37,6 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'user_id' => $user_id
             ]);
 
+            // Push notification for password change
+            $title = "Password Changed";
+            $message = "Your account password was changed successfully.";
+            $type = "security";
+            $icon = "ni-lock-circle-open";
+            $color = "text-primary";
+            pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
+
             echo json_encode(['success' => true, 'message' => 'Password updated successfully.']);
             exit;
         }
@@ -58,6 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'pin' => $hashedPin,
                 'user_id' => $user_id
             ]);
+
+            // Push notification for PIN change
+            $title = "PIN Changed";
+            $message = "Your transaction PIN was changed successfully.";
+            $type = "security";
+            $icon = "ni-key-25";
+            $color = "text-warning";
+            pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 
             echo json_encode(['success' => true, 'message' => 'PIN updated successfully.']);
             exit;

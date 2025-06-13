@@ -71,18 +71,22 @@ try {
 
     // Log transaction in transactions table
     $service_id = 5;
-    $type = 'Deposit';
+    $type = 'deposit';
     $status = 'success';
     $insertTxn = $pdo->prepare("INSERT INTO transactions (user_id, service_id, type, amount, email, status, reference) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $insertTxn->execute([$userId, $service_id, $type, $amount, $email, $status, $reference]);
 
     // Push notification
+
     $title = "Deposit Received";
     $msg = "₦" . number_format($amount, 2) . " credited to your wallet from $sender.";
+    $type = "deposit";
     $icon = "ni-money-coins";
-    $notifType = "deposit";
-    $pdo->prepare("INSERT INTO notifications (user_id, title, message, type, icon) VALUES (?, ?, ?, ?, ?)")
-        ->execute([$userId, $title, $msg, $notifType, $icon]);
+    $color = "text-dark"; // Bootstrap green for successful deposit
+
+    pushNotification($pdo, $userId, $title, $msg, $type, $icon, $color, '0');
+    $pdo->prepare("INSERT INTO notifications (user_id, title, message, type, color, icon) VALUES (?, ?, ?, ?, ?, ?)")
+        ->execute([$userId, $title, $msg, $type, $color, $icon]);
 
     $pdo->commit();
 

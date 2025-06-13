@@ -10,7 +10,7 @@ $groupedNotifications = groupNotificationsByDate($notifications);
 ?>
 
 <body>
-    <main class="container-fluid py-4">
+    <main class="container py-4">
         <!-- Header Section -->
         <header>
             <div class="page-header mb-4 text-center">
@@ -24,35 +24,30 @@ $groupedNotifications = groupNotificationsByDate($notifications);
 
         <!-- Notifications List -->
         <div class="d-flex justify-content-center notifications-container">
-            <div class="card h-100 p-0">
-                <div class="card-header pb-0">
-                    <h6>Orders overview</h6>
-                    <i class="fa fa-home"></i>
-                    <p class="text-sm">
-                        <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                        <span class="font-weight-bold">24%</span> this month
+            <div class="card h-100 p-0" style="max-width: 600px;width: 600px;">
+                <div class="card-header pb-0 mb-0">
+                    <p class="text-sm mb-0">
+                        <span class="font-weight-bold">Today</span>
                     </p>
                 </div>
                 <div class="notifications-date-group">
-                    <div class="notifications-date-header">
-                        <i class="fa fa-clock clock-icon"></i>
-                        <span><?= $date ?? '' ?></span>
-                    </div>
                     <div class="card-body p-3">
                         <div class="timeline timeline-one-side">
                             <?php if (!empty($notifications)): ?>
                                 <?php foreach ($notifications as $note): ?>
                                     <div class="timeline-block mb-3">
                                         <span class="timeline-step">
-                                            <i class="ni <?= htmlspecialchars($note['icon']) ?> <?= htmlspecialchars($note['icon_color'] ?? '') ?> text-gradient"></i>
+                                            <i class="ni <?= htmlspecialchars($note['icon']) ?> <?= htmlspecialchars($note['color'] ?? '') ?> text-gradient"></i>
                                         </span>
                                         <div class="timeline-content">
-                                            <h6 class="text-dark text-sm font-weight-bold mb-0">
-                                                <?= htmlspecialchars($note['title']) ?>
-                                            </h6>
-                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                <?= date('d M g:i A', strtotime($note['created_at'])) ?>
-                                            </p>
+                                            <div class="">
+                                                <p class="text-dark text-sm font-weight-bold mb-0">
+                                                    <?= htmlspecialchars($note['title']) ?>
+                                                </p>
+                                                <span class="text-secondary font-weight-bold text-xs mt-1 mb-0" style="position: absolute;right: 0;top: 5px;">
+                                                    <?= date('g:i A', strtotime($note['created_at'])) ?>
+                                                </span>
+                                            </div>
                                             <?php if (!empty($note['message'])): ?>
                                                 <div class="text-xs mt-1"><?= htmlspecialchars($note['message']) ?></div>
                                             <?php endif; ?>

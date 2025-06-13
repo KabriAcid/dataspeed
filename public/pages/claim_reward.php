@@ -58,10 +58,12 @@ try {
     $user = getUserInfo($pdo, $referral['user_id']);
 
     // Push notification (outside transaction is okay)
-    $title = 'Referral Reward';
+    $title = 'Referral Reward Claimed';
     $message = 'Congratulations! You have successfully claimed your ₦' . number_format($reward, 2) . ' referral bonus.';
-    // pushNotification($pdo, $user_id, $title, $message, 'referral_bonus', 'fa-referral', false);
-
+    $type = 'referral';
+    $icon = 'ni-trophy';
+    $color = 'text-danger';
+    pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
     // Send JSON response
     echo json_encode([
         'success' => true,

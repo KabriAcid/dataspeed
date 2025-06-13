@@ -222,13 +222,18 @@ try {
     // Insert notification for user in the db
     $title = 'Virtual Account Created';
     $message = 'Congratulations! Your virtual account has been created successfully.';
-    pushNotification($pdo, $user_id, $title, $message, 'virtual_account', 'fa-account', false);
-
+    $type = 'virtual_account';
+    $icon = 'ni-bank';
+    $color = 'text-success';
+    pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
+    
     // Insert notification for PIN not set
     $pinTitle = 'Set Your Transaction PIN';
     $pinMessage = 'For your security, please set your transaction PIN to enable transactions.';
-    pushNotification($pdo, $user_id, $pinTitle, $pinMessage, 'security', 'fa-key', false);
-
+    $pinType = 'security';
+    $pinIcon = 'ni-key-25';
+    $pinColor = 'text-warning';
+    pushNotification($pdo, $user_id, $pinTitle, $pinMessage, $pinType, $pinIcon, $pinColor, '0');
 
 
     // Handle referral logic (optional)
@@ -246,6 +251,13 @@ try {
                 100,
                 'pending'
             ]);
+            // Push notification for referral reward
+            $title = "Referral Reward Earned";
+            $message = "You have earned a referral reward! Go to your rewards page to claim it.";
+            $type = "referral";
+            $icon = "ni-gift";
+            $color = "text-success";
+            pushNotification($pdo, $referrerId, $title, $message, $type, $icon, $color, '0');
         }
 
         unset($_SESSION['referral_code']);

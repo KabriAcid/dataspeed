@@ -5,8 +5,43 @@
 - Finding relevant icons for transactions.
 
 --- FEATURES ---
-- Adding action buttons for e.g Transfer to Friend
 
+- Adding action buttons (e.g., Transfer to Friend)
 
-body bgcolor - #F8FAFF
-content bgcolor #FFFFFF
+--- DESIGN ---
+
+- body bgcolor: #F8FAFF
+- content bgcolor: #FFFFFF
+
+--- NOTIFICATION MODULES ---
+
+1. **Transactions**
+   - Deposits (successful, failed) ✔️
+   - Withdrawals (initiated, successful, failed)
+   - Transfers (sent, received, failed)
+   - Payments (bills, airtime, data, TV, etc.)
+
+2. **Account Security**
+   - Login (new device/location)
+   - Password change ✔️
+   - PIN set or changed ✔️
+   - KYC status updates (submitted, approved, rejected)
+   - Profile updates (email, phone, photo) ✔️
+
+3. **Referrals & Rewards**
+   - Referral reward earned ✔️
+   - Referral status changed (pending, approved, rejected) ✔️
+
+4. **System & Promotions**
+   - System announcements 
+   - Promotional offers
+   - Maintenance alerts
+
+5. **Bank Account Actions**
+   - Virtual account created ✔️
+   - Bank account linked/unlinked 
+   - Failed account verification
+
+7. **General Errors or Alerts**
+   - Failed actions (e.g., failed transaction, failed KYC)
+   - Unusual activity detected
