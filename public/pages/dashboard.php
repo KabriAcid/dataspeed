@@ -211,7 +211,7 @@ if (isset($_GET['success'])) {
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">
-                <a href="invitation.php" class="action-grid-btn d-flex flex-column align-items-center">
+                <a href="referrals.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
@@ -219,7 +219,7 @@ if (isset($_GET['success'])) {
                             <path d="M2 20C2 16.6863 7.33333 15 12 15C16.6667 15 22 16.6863 22 20" stroke="var(--primary)" stroke-width="1.5" />
                         </svg>
                     </span>
-                    <span class="action-grid-label">Invitation</span>
+                    <span class="action-grid-label">Referrals</span>
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">
