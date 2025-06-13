@@ -20,7 +20,7 @@ require __DIR__ . '/../partials/header.php';
 
         <div class="text-center">
             <p class="text-sm text-secondary mb-0">Your available balance:</p>
-            <h3>&#8358;<?= getUserBalance($pdo, $user_id) ?></h3>
+            <h2>&#8358;<span id="user-balance"><?= getUserBalance($pdo, $user_id) ?></span></h2>
         </div>
         <div class="text-center">
             <p class="text-secondary mb-3 text-sm text-center">Transfer money to another user on Dataspeed</p>
@@ -42,17 +42,112 @@ require __DIR__ . '/../partials/header.php';
                     </div>
                 </div>
                 <div class="mb-3">
-                    <button type="button" id="transfer-button" class="btn primary-btn w-100">Transfer Money</button>
+                    <button type="button" id="transfer-button" class="btn primary-btn w-100">Transfer <i class="ms-1 ni ni-send"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Modal -->
+        <div id="confirmModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Transfer</h5>
+                    <button class="close-btn" id="closeConfirm">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-sm text-secondary mb-1 text-center">Send to</p>
+                    <div id="confirm-email" class="fw-bold fs-5 primary text-center mb-2">example@email.com</div>
+                    <div class="info-row">
+                        <span>Amount:</span>
+                        <span id="confirm-amount" class="fw-bolder primary fs-6">₦0</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="pay-btn" id="payBtn">Send</button>
                 </div>
             </div>
         </div>
 
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
+        <?php require __DIR__ . '/../partials/pinpad_modal.php' ?>
     </main>
 
     <footer class="my-4 text-center text-secondary small">
         &copy; Dreamcodes 2025. All rights reserved.
     </footer>
+    <script src="../assets/js/ajax.js"></script>
+    <script src="../assets/js/pin-events.js"></script>
+    <script src="../assets/js/pin-pad.js"></script>
+    <script>
+        // Place this in a <script> tag or your JS file after DOMContentLoaded
+        const emailInput = document.getElementById('email');
+        const amountInput = document.getElementById('amount');
+        const transferBtn = document.getElementById('transfer-button');
+        const availableBalance = parseFloat(document.getElementById('user-balance').textContent);
+        const currentUserEmail = "<?= htmlspecialchars($user['email'] ?? '') ?>";
+
+        function validateForm() {
+            const email = emailInput.value.trim();
+            const amount = amountInput.value.trim();
+            transferBtn.disabled = !(email && amount && !isNaN(amount) && Number(amount) > 0);
+        }
+
+        emailInput.addEventListener('input', validateForm);
+        amountInput.addEventListener('input', validateForm);
+        validateForm(); // Initial state
+
+        transferBtn.onclick = function() {
+            const email = emailInput.value.trim();
+            const amount = amountInput.value.trim();
+
+            // Fill modal fields
+            document.getElementById('confirm-email').textContent = email;
+            document.getElementById('confirm-amount').textContent = '₦' + Number(amount).toLocaleString() + '.00';
+
+            // Show modal
+            document.getElementById('confirmModal').style.display = 'flex';
+        };
+
+        document.getElementById('payBtn').onclick = function() {
+            const email = emailInput.value.trim();
+            const amount = amountInput.value.trim();
+            const availableBalance = parseFloat(document.getElementById('user-balance').textContent.replace(/,/g, ''));
+
+            if (email.toLowerCase() === currentUserEmail.toLowerCase()) {
+                showToasted('You cannot transfer money to yourself.', 'error');
+                return;
+            }
+
+            if (Number(amount) < 100) {
+                showToasted('Minimum transfer amount is ₦100.', 'error');
+                return;
+            }
+
+            if (Number(amount) > 500000) {
+                showToasted('Maximum transfer amount is ₦500,000.', 'error');
+                return;
+            }
+
+            if (Number(amount) > availableBalance) {
+                showToasted('Insufficient balance.', 'error');
+                return;
+            }
+
+            // Hide confirm modal and show pin pad modal
+            document.getElementById('confirmModal').style.display = 'none';
+            const pinpadModal = document.getElementById('pinpadModal');
+            pinpadModal.style.display = 'flex';
+
+            // Store transfer details in pinpadModal dataset for use after PIN entry
+            pinpadModal.dataset.email = email;
+            pinpadModal.dataset.amount = amount;
+            pinpadModal.dataset.action = 'transfer';
+
+        };
+        document.getElementById('closeConfirm').onclick = function() {
+            document.getElementById('confirmModal').style.display = 'none';
+        };
+    </script>
 
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>

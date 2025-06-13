@@ -89,7 +89,7 @@ try {
     $provider_id = null; // You may want to map $network to provider_id
     $plan_id = null; // If you have a plan, set it
     $status = "success";
-    
+
     $stmt = $pdo->prepare("SELECT email FROM users WHERE user_id = ?");
     $stmt->execute([$user_id]);
     $email = $stmt->fetch();
@@ -108,12 +108,14 @@ try {
         $status
     ]);
 
-    if($pdo->commit()){
-        // Insert notification for user in the db
+    if ($pdo->commit()) {
         $title = 'Airtime Purchase Successful';
-        $message = 'You have purchased airtime for ' . $amount;
-        pushNotification($pdo, $user_id, $title, $message, 'airtime_purchase', 'fa-check', false);
-    
+        $message = "You have purchased ₦" . number_format($amount, 2) . " airtime for $phone on $network.";
+        $type = 'airtime_purchase';
+        $icon = 'ni-mobile-button';
+        $color = 'text-success';
+        pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
+
         echo json_encode([
             "success" => true,
             "message" => "Purchase successful!",
