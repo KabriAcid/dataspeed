@@ -3,8 +3,7 @@
   <div class="pin-container">
     <div class="pin-header text-center">
       <img src="<?= $user['photo']; ?>" alt="avatar" class="pinpad-avatar">
-      <h6><?= $user['first_name']; ?></h6>
-      <h3>Welcome Back</h3>
+      <h3><?= $user['first_name']; ?></h3>
     </div>
     <div class="pin-field">
       <div class="icon-section text-center">

@@ -243,11 +243,12 @@ try {
         $referrerId = $stmt->fetchColumn();
 
         if ($referrerId) {
-            $insertReferral = $pdo->prepare("INSERT INTO referral_reward (user_id, reward, status, created_at) 
-                VALUES (?, ?, ?, NOW())");
+            $insertReferral = $pdo->prepare("INSERT INTO referral_reward (user_id, referee_email, reward, status, created_at) 
+                VALUES (?, ?, ?, ?, NOW())");
 
             $insertReferral->execute([
                 $referrerId,
+                $email,
                 100,
                 'pending'
             ]);

@@ -67,8 +67,8 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 
                 <div class="tab-content active" id="pending">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped mb-0">
-                            <thead class="table-light">
+                        <table class="table table-striped mb-0">
+                            <thead class="table-white">
                                 <tr>
                                     <th>Reward</th>
                                     <th>User</th>
@@ -87,7 +87,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                                         <tr>
                                             <td><strong>&#8358;<?= htmlspecialchars($referral['reward']); ?></strong></td>
 
-                                            <td><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></td>
+                                            <td><?= htmlspecialchars($referral['referee_email']); ?></td>
                                             <td class="text-warning">
                                                 <?= htmlspecialchars(ucfirst($referral['status'])); ?></td>
                                             <td><?= $formattedDate; ?></td>
@@ -146,7 +146,6 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                     </div>
                 </div>
             </div>
-
 
             <div class="row mt-5">
                 <div class="col-lg-6 col-12">

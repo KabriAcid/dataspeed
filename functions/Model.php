@@ -37,6 +37,12 @@ function showBalance($pdo, $user_id)
     return number_format($balance['wallet_balance'], 2);
 }
 
+function getUserInfoByEmail($pdo, $email) {
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 function getTransactions($pdo, $user_id)
 {
     try {
@@ -155,11 +161,11 @@ function getUserAccountDetails($pdo, $user_id)
  * @param string $message Notification body
  * @return bool Success status
  */
-function pushNotification(PDO $pdo, int $user_id, string $title, string $message = '', string $type = "default", string $icon = 'default', string $is_read = '0'): bool
+function pushNotification(PDO $pdo, int $user_id, string $title, string $message = '', string $type = "default", string $icon = 'default', string $color = 'text-info', string $is_read = '0'): bool
 {
     try {
-        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, title, message, type, icon, is_read) VALUES (?, ?, ?, ?, ?, ?)");
-        return $stmt->execute([$user_id, $title, $message, $type, $icon, $is_read]);
+        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, title, message, type, icon, color, is_read) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        return $stmt->execute([$user_id, $title, $message, $type, $icon, $color, $is_read]);
     } catch (Exception $e) {
         error_log("Notification Error: " . $e->getMessage());
         return false;
