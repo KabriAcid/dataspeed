@@ -57,12 +57,14 @@ try {
     $description = 'referral';
     $icon = 'ni-money-coins';
     $color = 'text-info';
+    $direction = 'credit';
 
-    $insertTxn = $pdo->prepare("INSERT INTO transactions (user_id, service_id, type, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $insertTxn = $pdo->prepare("INSERT INTO transactions (user_id, service_id, type, direction, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $insertTxn->execute([
         $user_id,
         $service_id,
         $type,
+        $direction,
         $reward,
         $status,
         $description,

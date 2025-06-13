@@ -19,11 +19,11 @@ require __DIR__ . '/../partials/header.php';
         </header>
 
         <!-- Transaction body -->
-        <div class="main-body">
+        <div class="transaction-main-body">
             <p class="text-muted fw-bold">Today</p>
             <div class="transaction-list">
                 <?php
-                $transactions = getTransactions($pdo, $user_id);
+                $transactions = getTransactions($pdo, $user_id, 50);
 
                 // var_dump($transactions);
 

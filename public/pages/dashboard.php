@@ -25,7 +25,7 @@ if (isset($_GET['success'])) {
 </script>
 
 <body>
-    <main class="container-fluid py-5 mb-5">
+    <main class="container-fluid py-4 mb-5">
         <?php
         if ($success == 1) {
             echo "<script>showToasted('Login Successful', 'success')</script>";
@@ -252,10 +252,10 @@ if (isset($_GET['success'])) {
                 } else {
                     foreach ($transactions as $transaction) {
                         $icon = "<i class='ni {$transaction['icon']} {$transaction['color']}'></i>";
-                        $textColor = $transaction['color'] ?? 'text-danger';
+                        $textColor = $transaction['direction'] === 'credit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
                         $date = date("M d, Y H:m", strtotime($transaction['created_at']));
-                        $prefix = ($transaction['type'] === 'Deposit') ? '+₦' : '-₦';
+                        $prefix = $transaction['direction'] === 'credit' ? '+₦' : '-₦';
 
                         if ($transactions) {
                 ?>

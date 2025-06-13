@@ -62,10 +62,10 @@ try {
     $colorSender = 'text-warning';
     $colorRecipient = 'text-success';
 
-    $pdo->prepare("INSERT INTO transactions (user_id, type, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?)")
-        ->execute([$user_id, 'Money Transfer', $amount, 'success', $descSender, $icon, $colorSender]);
-    $pdo->prepare("INSERT INTO transactions (user_id, type, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?)")
-        ->execute([$recipient_id, 'Money Transfer', $amount, 'success', $descRecipient, $icon, $colorRecipient]);
+    $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+        ->execute([$user_id, 'Money Transfer', 'debit', $amount, 'success', $descSender, $icon, $colorSender]);
+    $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+        ->execute([$recipient_id, 'Money Transfer', 'credit', $amount, 'success', $descRecipient, $icon, $colorRecipient]);
 
     // Push notifications
     pushNotification($pdo, $user_id, "Transfer Sent", "You sent ₦" . number_format($amount, 2) . " to {$recipient}.", "Money Transferred", $icon, $colorSender, '0');

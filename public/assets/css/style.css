@@ -814,7 +814,14 @@ select.select-lga {
   background: #ffffff;
   box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
 }
-
+.transaction-main-body {
+  max-width: 600px;
+  margin: auto;
+  background-color: white;
+  box-shadow: var(--shadow);
+  padding: 10px 24px;
+  border-radius: 9px;
+}
 .icon-container {
   border-radius: 8px;
   padding: 12px 16px;

@@ -95,14 +95,16 @@ try {
     $email = $stmt->fetch();
 
     $email = $email['email'];
+    $direction = 'debit';
 
-    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, amount, email, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, direction, amount, email, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([
         $user_id,
         $service_id,
         $provider_id,
         $plan_id,
         $type,
+        $direction,
         $amount,
         $email,
         $status

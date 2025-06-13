@@ -43,10 +43,11 @@ function getUserInfoByEmail($pdo, $email) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function getTransactions($pdo, $user_id)
+function getTransactions($pdo, $user_id, $limit = 5)
 {
     try {
-        $stmt = $pdo->prepare("SELECT id, user_id, service_id, type, amount, status, created_at, icon, color, description FROM transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT 10");
+        $limit = (int)$limit;
+        $stmt = $pdo->prepare("SELECT id, user_id, service_id, type, direction, amount, status, created_at, icon, color, description FROM transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT $limit");
         $stmt->execute([$user_id]);
         $transactions = $stmt->fetchAll();
 

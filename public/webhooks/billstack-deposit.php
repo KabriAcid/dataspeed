@@ -73,8 +73,9 @@ try {
     $service_id = 5;
     $type = 'deposit';
     $status = 'success';
-    $insertTxn = $pdo->prepare("INSERT INTO transactions (user_id, service_id, type, amount, email, status, reference) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $insertTxn->execute([$userId, $service_id, $type, $amount, $email, $status, $reference]);
+    $direction = 'credit';
+    $insertTxn = $pdo->prepare("INSERT INTO transactions (user_id, service_id, type, direction, amount, email, status, reference) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $insertTxn->execute([$userId, $service_id, $type, $direction, $amount, $email, $status, $reference]);
 
     // Push notification
 
