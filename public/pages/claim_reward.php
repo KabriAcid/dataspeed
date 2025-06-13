@@ -36,7 +36,7 @@ try {
     $pdo->beginTransaction();
 
     // Update referral status
-    $stmt = $pdo->prepare("UPDATE referrals SET status = 'claimed' WHERE referral_id = ? AND user_id = ?");
+    $stmt = $pdo->prepare("UPDATE referral_reward SET status = 'claimed' WHERE referral_id = ? AND user_id = ?");
     $stmt->execute([$referral_id, $user_id]);
 
     if ($stmt->rowCount() === 0) {
@@ -49,6 +49,26 @@ try {
     // Update wallet balance
     $stmt = $pdo->prepare("UPDATE account_balance SET wallet_balance = wallet_balance + ? WHERE user_id = ?");
     $stmt->execute([$reward, $user_id]);
+
+    // Insert into transactions table
+    $service_id = 5;
+    $type = 'Referral Reward';
+    $status = 'success';
+    $description = 'referral';
+    $icon = 'ni-money-coins';
+    $color = 'text-info';
+
+    $insertTxn = $pdo->prepare("INSERT INTO transactions (user_id, service_id, type, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $insertTxn->execute([
+        $user_id,
+        $service_id,
+        $type,
+        $reward,
+        $status,
+        $description,
+        $icon,
+        $color
+    ]);
 
     // Commit transaction
     $pdo->commit();

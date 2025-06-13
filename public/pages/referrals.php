@@ -67,11 +67,11 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 
                 <div class="tab-content active" id="pending">
                     <div class="table-responsive">
-                        <table class="table table-striped mb-0">
+                        <table class="table mb-0">
                             <thead class="table-white">
                                 <tr>
                                     <th>Reward</th>
-                                    <th>User</th>
+                                    <th>Referee</th>
                                     <th>Status</th>
                                     <th>Timestamp</th>
                                     <th>Action</th>
@@ -81,7 +81,6 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                                 <?php if (!empty($pendingReferrals)) : ?>
                                     <?php foreach ($pendingReferrals as $referral) : ?>
                                         <?php
-                                        $user = getUserInfo($pdo, $referral['user_id']);
                                         $formattedDate = date("M j, Y g:i A", strtotime($referral['created_at']));
                                         ?>
                                         <tr>
