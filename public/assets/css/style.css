@@ -1,7 +1,7 @@
 @import url("variables.css");
 @import url("print.css");
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@100;200;300;400;500;600;700;800;900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
 * {
   padding: 0;
@@ -11,7 +11,6 @@
 
 body {
   background-color: var(--primary-light);
-  padding-bottom: 80px;
   font-family: "Quicksand", "Segoe UI" !important;
 }
 
@@ -22,7 +21,7 @@ body {
 
 /* Add this to your custom CSS or in a <style> tag */
 .ni {
-  font-family: 'NucleoIcons' !important;
+  font-family: "NucleoIcons" !important;
   font-style: normal;
   font-weight: normal;
   display: inline-block;
@@ -37,7 +36,7 @@ input[type="number"],
 .pin-dot,
 [data-digit],
 [data-type="digit"] {
-  font-family: 'Quicksand', 'Segoe UI', sans-serif !important;
+  font-family: "Quicksand", "Segoe UI", sans-serif !important;
   letter-spacing: 0.04em;
 }
 
@@ -53,8 +52,12 @@ input[type="number"],
   left: -50px;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.2), transparent),
-              radial-gradient(circle at 70% 70%, rgba(236,72,153,0.2), transparent);
+  background: radial-gradient(
+      circle at 30% 30%,
+      rgba(186, 187, 255, 0.2),
+      transparent
+    ),
+    radial-gradient(circle at 70% 70%, rgba(255, 201, 228, 0.2), transparent);
   z-index: 0;
   filter: blur(100px);
   pointer-events: none;
@@ -62,12 +65,32 @@ input[type="number"],
 
 .navbar {
   transition: box-shadow 0.3s ease;
+  box-shadow: none;
+  background: linear-gradient(120deg, #f8fafd 60%, #f1f4ff 100%);
 }
 
 .navbar.scrolled {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
+/* Hero wrapper improvements */
+.hero-wrapper {
+  padding: 3rem 0 2rem 0;
+  min-height: 60vh;
+  background: linear-gradient(120deg, #f8fafd 60%, #f1f4ff 100%);
+}
+.hero-wrapper h1 {
+  font-size: 2.2rem;
+}
+@media (max-width: 576px) {
+  .hero-wrapper h1 {
+    font-size: 1.4rem;
+  }
+  .hero-wrapper p {
+    font-size: 1rem;
+  }
+}
 
 /* Generic: All digits inside any element */
 *:not(code):not(pre) {
@@ -108,7 +131,6 @@ section:not(.jumbotoron) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
 
 .invisible {
@@ -128,7 +150,7 @@ section:not(.jumbotoron) {
 .primary-btn:hover {
   transform: translateY(-2px);
   background-color: var(--primary-dark) !important;
-  color: white;
+  color: white!important;
 }
 
 .secondary-btn {
@@ -440,7 +462,7 @@ button:disabled {
 }
 
 .d-none {
-  display: none!important;
+  display: none !important;
 }
 
 .spinner-icon {
@@ -601,13 +623,13 @@ button:disabled {
 .action-grid-btn:active,
 .action-grid-btn:focus,
 .action-grid-btn:hover {
-  background: var(--primary-light, #FBF0F6);
-  box-shadow: 0 2px 8px rgba(148,36,30,0.08);
+  background: var(--primary-light, #fbf0f6);
+  box-shadow: 0 2px 8px rgba(148, 36, 30, 0.08);
   transform: translateY(-2px) scale(1.04);
 }
 
 .action-grid-icon {
-  background: rgba(148,36,30,0.10); /* Soft primary color */
+  background: rgba(148, 36, 30, 0.1); /* Soft primary color */
   border-radius: 50%;
   width: 54px;
   height: 54px;
@@ -626,9 +648,16 @@ button:disabled {
 }
 
 @media (max-width: 600px) {
-  .action-grid-btn { width: 64px; }
-  .action-grid-icon { width: 44px; height: 44px; }
-  .action-grid-label { font-size: 0.85rem; }
+  .action-grid-btn {
+    width: 64px;
+  }
+  .action-grid-icon {
+    width: 44px;
+    height: 44px;
+  }
+  .action-grid-label {
+    font-size: 0.85rem;
+  }
 }
 
 /* UDPATE PROFILE */
@@ -637,8 +666,9 @@ button:disabled {
   justify-content: center;
   align-items: center;
 }
-select.select-state, select.select-lga {
-  padding-right: 20px!important;
+select.select-state,
+select.select-lga {
+  padding-right: 20px !important;
 }
 .input[disabled] {
   background-color: #e9ecef;
@@ -1234,7 +1264,7 @@ select.select-state, select.select-lga {
 .tab-content {
   display: none;
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(.4,0,.2,1);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab-content.active {
@@ -1283,7 +1313,8 @@ th {
 }
 
 /* REFERRALS PAGE */
-.referral-code, .referral-link {
+.referral-code,
+.referral-link {
   min-width: 180px;
   min-height: 45px;
 }
@@ -1488,19 +1519,18 @@ th {
 .plan-card .data-volume {
   font-size: 1.2rem;
   letter-spacing: 1.1px;
-  margin-bottom: 0!important;
+  margin-bottom: 0 !important;
   font-weight: 700;
 }
 .plan-card .data-validity {
   font-size: 0.75rem;
-  margin-bottom: 0!important;
+  margin-bottom: 0 !important;
 }
 .plan-card .data-price {
   font-size: 0.9rem;
-  margin-bottom: 0!important;
+  margin-bottom: 0 !important;
   font-weight: 500;
 }
-
 
 /* BUY AIRTIME */
 .amount-btn {

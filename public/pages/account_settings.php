@@ -6,7 +6,7 @@ require __DIR__ . '/../partials/header.php';
 ?>
 
 <body>
-    <main class="container-fluid py-4">
+    <main class="container-fluid py-5">
         <!-- Header Section -->
         <header>
             <div class="page-header mb-4 text-center">
@@ -235,9 +235,9 @@ require __DIR__ . '/../partials/header.php';
                 </a>
             </div>
         </div>
-        <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
     </main>
-    <footer class="my-4">
+    <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
+    <footer class="my-5">
         <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All rights reserved.</p>
     </footer>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>

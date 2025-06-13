@@ -40,7 +40,7 @@ function set_title($title = null)
 </head>
 
 <body>
-    <nav class="bg-light navbar fixed-top">
+    <nav class="navbar fixed-top">
         <div class="d-flex justify-content-between align-items-center w-100">
             <div>
                 <a href="index.php" class="d-block fw-bold"><img src="/dataspeed/public/favicon.png" alt="" class="favicon"></a>
@@ -52,16 +52,20 @@ function set_title($title = null)
         </div>
     </nav>
 
-    <main class="pt-5">
-        <section>
-            <div class="hero-wrapper" style="position: relative; overflow: hidden;">
-                <div class="hero-blur-bg"></div>
-                <!-- Your hero content here -->
-                <h1>The cheapest and most affordable <span class="primary">airtime</span> data plug.</h1>
-                <p id="lead">Convert your airtime to cash, make & receive payments, instant airtime and data
-                    delivery, make bill payments with <span class="primary">DataSpeed</span>. The all-in-one payments app.
+    <main class="pt-5" style="position: relative; overflow: hidden;">
+        <!--  -->
+        <section class="hero-wrapper">
+            <div class="container-fluid">
+                <h1 class="fw-bolder mb-3" style="font-size:2.2rem;">
+                    Seamless <span class="primary">Payments</span>,<br>
+                    <span class="primary">Affordable Data</span> & Secure Solutions.
+                </h1>
+                <p class="lead mb-4" style="max-width: 500px;">
+                    Fast, reliable, and secure payments. Instant settlements, wallet funding, and bill payments in real time.
                 </p>
-                <a href="" class="btn primary-btn">Get Started</a>
+                <div class="">
+                    <a href="public/pages/register.php" class="btn primary-btn m-0">Get Started</a>
+                </div>
             </div>
         </section>
         <!--  -->
@@ -256,15 +260,14 @@ function set_title($title = null)
 
         </div>
     </footer>
+    <script src="public/assets/js/navbar.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- Popper.js (for tooltips and popovers) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="public/assets/js/navbar.js"></script>
 </body>
 
 </html>
