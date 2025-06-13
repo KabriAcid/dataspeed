@@ -87,6 +87,16 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      // Checking network before any AJAX
+      if (!navigator.onLine) {
+        showToasted(
+          "No internet connection. Please connect and try again.",
+          "error"
+        );
+        done();
+        return;
+      }
+
       sendAjaxRequest(
         "validate-email.php",
         "POST",
@@ -100,11 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const registration_id = response.registration_id;
             sessionStorage.setItem("registration_id", registration_id);
 
+            // Check network again before sending OTP
             if (!navigator.onLine) {
               showToasted(
                 "Couldn't send email. Please check your internet connection.",
                 "error"
               );
+              done();
               return;
             }
 
@@ -120,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   setTimeout(() => {
                     goToStep(2);
                     done();
-                    showToasted(response.message, "success");
+                    showToasted(otpResponse.message, "success");
                   }, TIMEOUT);
                 } else {
                   showToasted(otpResponse.message, "error");
