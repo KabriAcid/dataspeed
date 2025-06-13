@@ -47,6 +47,27 @@ input[type="number"],
   border-radius: 50%;
 }
 
+.hero-blur-bg {
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.2), transparent),
+              radial-gradient(circle at 70% 70%, rgba(236,72,153,0.2), transparent);
+  z-index: 0;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.navbar {
+  transition: box-shadow 0.3s ease;
+}
+
+.navbar.scrolled {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 
 /* Generic: All digits inside any element */
 *:not(code):not(pre) {

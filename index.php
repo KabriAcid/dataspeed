@@ -53,12 +53,16 @@ function set_title($title = null)
     </nav>
 
     <main class="pt-5">
-        <section class="jumbotoron" id="sectionI">
-            <h1>The cheapest and most affordable <span class="primary">airtime</span> data plug.</h1>
-            <p id="lead">Convert your airtime to cash, make & receive payments, instant airtime and data
-                delivery, make bill payments with <span class="primary">DataSpeed</span>. The all-in-one payments app.
-            </p>
-            <a href="" class="btn primary-btn">Get Started</a>
+        <section>
+            <div class="hero-wrapper" style="position: relative; overflow: hidden;">
+                <div class="hero-blur-bg"></div>
+                <!-- Your hero content here -->
+                <h1>The cheapest and most affordable <span class="primary">airtime</span> data plug.</h1>
+                <p id="lead">Convert your airtime to cash, make & receive payments, instant airtime and data
+                    delivery, make bill payments with <span class="primary">DataSpeed</span>. The all-in-one payments app.
+                </p>
+                <a href="" class="btn primary-btn">Get Started</a>
+            </div>
         </section>
         <!--  -->
         <section id="sectionII">
