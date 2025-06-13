@@ -181,16 +181,27 @@ function set_title($title = null)
     </main>
 </body>
 <script>
-    function showOverlay() {
-        document.getElementById('overlay-loader').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('overlay-loader').style.display = 'none';
-        }, 3000);
-    }
+    // Reset registration
     document.getElementById('registration_reset').addEventListener('click', function() {
         sessionStorage.clear();
         window.location.href = 'register.php';
     });
+
+    // Change referral submit button text based on input
+    const referralInput = document.getElementById('referral-code');
+    const referralSubmitBtn = document.getElementById('referral-submit');
+
+    function updateReferralBtnText() {
+        if (referralInput.value.trim().length > 0) {
+            referralSubmitBtn.innerText = 'Continue';
+        } else {
+            referralSubmitBtn.innerText = 'Skip';
+        }
+    }
+
+    referralInput.addEventListener('input', updateReferralBtnText);
+    // Set initial state on page load
+    updateReferralBtnText();
 </script>
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/toggle-password.js"></script>

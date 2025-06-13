@@ -348,56 +348,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  function withOverlay(handler) {
+    document.getElementById("overlay").style.display = "block";
+    handler(() => {
+      document.getElementById("overlay").style.display = "none";
+    });
+  }
+
   // Step 5: Password
   const passwordInput = document.getElementById("password");
   const confirmPasswordInput = document.getElementById("confirm-password");
   const passwordSubmit = document.getElementById("password-submit");
 
   passwordSubmit.addEventListener("click", () => {
-    function showOverlay() {
-      document.getElementById("overlay").style.display = "block";
-      const timeout = 1000;
-      setTimeout(() => {
-        document.getElementById("overlay").style.display = "none";
-      }, timeout);
-    }
+    withOverlay(hideOverlay => {
+      handleButtonClick(passwordSubmit, done => {
+        const password = passwordInput.value.trim();
+        const confirmPassword = confirmPasswordInput.value.trim();
 
-    handleButtonClick(passwordSubmit, done => {
-      const password = passwordInput.value.trim();
-      const confirmPassword = confirmPasswordInput.value.trim();
-
-      if (password.length < 8 || password !== confirmPassword) {
-        showToasted(
-          "Passwords must match and be at least 8 characters.",
-          "error"
-        );
-        done();
-        return;
-      }
-
-      const registration_id = sessionStorage.getItem("registration_id");
-      sendAjaxRequest(
-        "validate-password.php",
-        "POST",
-        `password=${encodeURIComponent(
-          password
-        )}&registration_id=${encodeURIComponent(registration_id)}`,
-        response => {
-          if (response.success) {
-            setTimeout(() => {
-              showOverlay();
-              sessionStorage.clear();
-              window.location.href = "login.php?success=1";
-            }, TIMEOUT);
-          } else {
-            showToasted(
-              JSON.stringify(response.api_response, null, 2),
-              "error"
-            );
-            done();
-          }
+        if (!password || !confirmPassword) {
+          showToasted("Both password fields are required.", "error");
+          hideOverlay();
+          done();
+          return;
         }
-      );
+        if (password !== confirmPassword) {
+          showToasted("Passwords does not match.", "error");
+          hideOverlay();
+          done();
+          return;
+        }
+        if (password.length < 8) {
+          showToasted("Passwords must be at least 8 characters.", "error");
+          hideOverlay();
+          done();
+          return;
+        }
+
+        const registration_id = sessionStorage.getItem("registration_id");
+        sendAjaxRequest(
+          "validate-password.php",
+          "POST",
+          `password=${encodeURIComponent(
+            password
+          )}&registration_id=${encodeURIComponent(registration_id)}`,
+          response => {
+            if (response.success) {
+              setTimeout(() => {
+                sessionStorage.clear();
+                window.location.href = "login.php?success=1";
+              }, 3000);
+            } else {
+              hideOverlay();
+              showToasted(response.message || "Registration failed.", "error");
+            }
+          }
+        );
+      });
     });
   });
 
