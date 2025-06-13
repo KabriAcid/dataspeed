@@ -41,7 +41,7 @@ function set_title($title = null)
     <nav class="navbar fixed-top">
         <div class="d-flex justify-content-between align-items-center w-100">
             <div>
-                <a href="index.php" class="d-block fw-bold"><img src="/dataspeed/public/favicon.png" alt="" class="favicon"></a>
+                <a href="index.php" class="d-block fw-bold"><img src="public/favicon.png" alt="" class="favicon"></a>
             </div>
             <div class="d-flex align-items-center">
                 <a href="public/pages/login.php" class="secondary-btn m-0 me-2">LOGIN</a>
