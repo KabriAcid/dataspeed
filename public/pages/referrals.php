@@ -12,7 +12,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 ?>
 
 <body>
-    <main class="container-fluid py-4">
+    <main class="container-fluid py-5">
         <!-- Header Section -->
         <header>
             <div class="page-header mb-4 text-center">
@@ -110,11 +110,11 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 
                 <div class="tab-content" id="completed">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped mb-0">
-                            <thead class="table-light">
+                        <table class="table mb-0">
+                            <thead class="">
                                 <tr>
                                     <th>Reward</th>
-                                    <th>User</th>
+                                    <th>Referee</th>
                                     <th>Status</th>
                                     <th>Timestamp</th>
                                 </tr>
@@ -123,14 +123,13 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                                 <?php if (!empty($completedReferrals)) : ?>
                                     <?php foreach ($completedReferrals as $referral) : ?>
                                         <?php
-                                        $user = getUserInfo($pdo, $referral['user_id']);
                                         $formattedDate = date("M j, Y g:i A", strtotime($referral['created_at']));
                                         ?>
                                         <tr>
                                             <td><strong>&#8358;<?= htmlspecialchars($referral['reward']); ?></strong></td>
 
-                                            <td><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></td>
-                                            <td class="text-warning"><?= htmlspecialchars(ucfirst($referral['status'])); ?></td>
+                                            <td><?= htmlspecialchars($referral['referee_email']); ?></td>
+                                            <td class="text-success"><?= htmlspecialchars(ucfirst($referral['status'])); ?></td>
                                             <td><?= $formattedDate; ?></td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -280,7 +279,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                         if (response.success) {
                             button.textContent = "Claimed";
                             button.classList.remove("bg-success");
-                            button.classList.add("btn-secondary");
+                            button.classList.add("bg-secondary");
                             button.disabled = true;
                             showToasted('Reward Claimed Successfully!', 'success')
 

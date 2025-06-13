@@ -100,6 +100,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const registration_id = response.registration_id;
             sessionStorage.setItem("registration_id", registration_id);
 
+            if (!navigator.onLine) {
+              showToasted(
+                "Couldn't send email. Please check your internet connection.",
+                "error"
+              );
+              return;
+            }
+
             sendAjaxRequest(
               "send-otp.php",
               "POST",

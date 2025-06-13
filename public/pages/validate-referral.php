@@ -16,9 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
         if ($referral_code !== "") {
             // if referral code is provided, check if it exists in the database
-            $stmt = $pdo->prepare("SELECT referral_code FROM users WHERE referral_code = ? AND registration_status = 'complete'");
+            $stmt = $pdo->prepare("SELECT referral_code, registration_status FROM users WHERE referral_code = ?");
             $stmt->execute([$referral_code]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user['registration_status'] != 'complete') {
+                echo json_encode(["success" => false, "message" => "Referrer registration incomplete."]);
+                exit;
+            }
 
             if (!$user) {
                 echo json_encode(["success" => false, "message" => "Invalid referral code."]);

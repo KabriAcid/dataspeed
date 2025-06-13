@@ -17,7 +17,7 @@ function getUserInfo(PDO $pdo, int $userd): array|false
 }
 
 
-function showBalance($pdo, $user_id)
+function getUserBalance($pdo, $user_id)
 {
     $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ?");
     $stmt->execute([$user_id]);
