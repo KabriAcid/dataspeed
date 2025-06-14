@@ -153,6 +153,8 @@ try {
     // Generate referral code for user
     $referralCode = generateReferralCode($pdo);
 
+    $referralLink = "https://dataspeed.com.ng/public/pages/register.php?referral_code=" . $referralCode;
+
     // Hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -161,10 +163,6 @@ try {
         virtual_account = ?, bank_name = ?, account_name = ?, billstack_ref = ? WHERE registration_id = ?");
 
     $referralLink = null;
-
-    if (isset($_SESSION['referral_code'])) {
-        $referralLink = "https://dataspeed.com.ng/public/pages/register.php?referral_code=" . $_SESSION['referral_code'];
-    }
 
     $updateSuccess = $stmt->execute([
         $hashedPassword,
