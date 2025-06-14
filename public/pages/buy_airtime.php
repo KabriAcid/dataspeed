@@ -303,6 +303,10 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 let network = document.querySelector('.network-tab.selected-network').getAttribute('data-network');
                 let type = document.querySelector('.tab-content.active').dataset.tab === "self" ? "airtime_self" : "airtime_others";
 
+                if (phone.length === 10) {
+                    phone = '0' + phone;
+                }
+
                 // Set data attributes for the PIN pad modal
                 pinpadModal.dataset.amount = rawAmount;
                 pinpadModal.dataset.phone = phone;
@@ -321,9 +325,9 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             });
 
 
-            closePinpad.addEventListener("click", function() {
-                pinpadModal.style.display = "none";
-            });
+            // closePinpad.addEventListener("click", function() {
+            //     pinpadModal.style.display = "none";
+            // });
 
             // Optional: Hide pinpad when clicking outside modal-content
             pinpadModal.addEventListener("click", function(e) {

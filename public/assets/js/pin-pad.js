@@ -7,6 +7,42 @@ document.addEventListener("DOMContentLoaded", function () {
   const forgotBtn = pinpadModal.querySelector("#pin-forgot-btn");
   let pin = "";
 
+  function processPinEntry(pin) {
+    const pinpadModal = document.getElementById("pinpadModal");
+    const pinpadOverlay = document.getElementById("pinpadOverlay");
+    const amount = pinpadModal.dataset.amount;
+    const phone = pinpadModal.dataset.phone;
+    const network = pinpadModal.dataset.network;
+    const type = pinpadModal.dataset.type;
+
+    const data = `pin=${encodeURIComponent(pin)}&amount=${encodeURIComponent(
+      amount
+    )}&phone=${encodeURIComponent(phone)}&network=${encodeURIComponent(
+      network
+    )}&type=${encodeURIComponent(type)}`;
+
+    // Show dim overlay
+    pinpadOverlay.style.display = "flex";
+
+    sendAjaxRequest("process-purchase.php", "POST", data, function (response) {
+      // Hide overlay regardless of result
+      pinpadOverlay.style.display = "none";
+
+      if (response.success) {
+        console.log("Transaction successful:", response.vtpass_response);
+        showToasted(response.message, "success");
+        pinpadModal.style.display = "none";
+        setTimeout(function () {
+          window.location.href = "transaction-successful.php";
+        }, 1200);
+      } else {
+        showToasted(response.message, "error");
+      }
+    });
+  }
+
+  // Call processPinEntry(pin) when 4 digits are entered
+
   // Utility: Update PIN dots
   function updateDots() {
     pinDots.forEach((dot, idx) => {
@@ -29,41 +65,14 @@ document.addEventListener("DOMContentLoaded", function () {
       pin += digit;
       updateDots();
       updateBackspace();
-      
+
       // If PIN is complete (4 digits), process the transaction
       if (pin.length === 4) {
         setTimeout(() => {
-          // Collect all data attributes
-          const rawAmount = pinpadModal.dataset.amount;
-          const phone = pinpadModal.dataset.phone;
-          const network = pinpadModal.dataset.network;
-          const type = pinpadModal.dataset.type;
-
-          // Build data string
-          const data = `pin=${encodeURIComponent(
-            pin
-          )}&amount=${encodeURIComponent(rawAmount)}&phone=${encodeURIComponent(
-            phone
-          )}&network=${encodeURIComponent(network)}&type=${encodeURIComponent(
-            type
-          )}`;
-
-          sendAjaxRequest(
-            "process_transaction.php",
-            "POST",
-            data,
-            function (response) {
-              if (response.success) {
-                showToasted(response.message, "success");
-                pinpadModal.style.display = "none";
-              } else {
-                showToasted(response.message, "error");
-              }
-              pin = "";
-              updateDots();
-              updateBackspace();
-            }
-          );
+          processPinEntry(pin);
+          pin = ""; // Reset PIN after processing
+          updateDots();
+          updateBackspace();
         }, 200);
       }
     }

@@ -50,4 +50,9 @@
       <button type="button" id="pin-forgot-btn"><i class="fa fa-question-mark"></i> Forgot PIN</button>
     </div>
   </div>
+
+  <!-- Overlay -->
+  <div id="pinpadOverlay" class="pinpad-overlay" style="display: none;">
+    <div class="pinpad-spinner"></div>
+  </div>
 </div>
