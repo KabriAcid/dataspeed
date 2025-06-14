@@ -361,9 +361,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function withOverlay(handler) {
-    document.getElementById("overlay").style.display = "block";
+    document.getElementById("bodyOverlay").style.display = "block";
     handler(() => {
-      document.getElementById("overlay").style.display = "none";
+      document.getElementById("bodyOverlay").style.display = "none";
     });
   }
 

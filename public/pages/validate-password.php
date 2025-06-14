@@ -194,11 +194,10 @@ try {
     $wallet_balance = 0;
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO account_balance (user_id, wallet_balance, registration_id, email, phone_number) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO account_balance (user_id, wallet_balance, email, phone_number) VALUES (?, ?, ?, ?)");
         $stmt->execute([
             $user_id,
             $wallet_balance,
-            $registration_id,
             $user['email'],
             $user['phone_number']
         ]);
@@ -263,7 +262,7 @@ try {
         "api_response" => $virtualAccount['api_response']
     ]);
     exit;
-    
+
 } catch (Exception $e) {
     file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Exception: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
     echo json_encode([

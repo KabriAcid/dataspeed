@@ -54,7 +54,7 @@ try {
         $message = "Your address details were updated successfully.";
         $type = "profile";
         $icon = "ni-pin-3";
-        $color = "text-primary";
+        $color = "text-dark";
         pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 
         echo json_encode(['success' => true, 'message' => 'Home Address updated.']);

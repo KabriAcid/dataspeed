@@ -173,10 +173,10 @@ function set_title($title = null)
             </form>
 
         </div>
-        <div id="bodyOverlay" class="body-overlay" style="display: none;">
-            <div class="overlay-spinner"></div>
-        </div>
     </main>
+    <div id="bodyOverlay" class="body-overlay" style="display: none;">
+        <div class="overlay-spinner"></div>
+    </div>
 </body>
 <script>
     // Reset registration

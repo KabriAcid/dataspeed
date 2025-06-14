@@ -21,3 +21,8 @@
 [2025-06-14 21:27:31] User's existing virtual account: None
 [2025-06-14 21:27:31] Generated reference: ref_9896966e-cb48-4ccb-8f13-d7e0a16e1353 for user boze@gmail.com
 [2025-06-14 21:27:41] DB Update Successful for user boze@gmail.com
+[2025-06-14 21:42:25] User's existing virtual account: 5761865848
+[2025-06-14 21:59:06] User's existing virtual account: None
+[2025-06-14 21:59:06] Generated reference: ref_f0b089dd-ff26-4d4f-b167-078a587ed7e2 for user coci@gmail.com
+[2025-06-14 21:59:13] DB Update Successful for user coci@gmail.com
+[2025-06-14 22:15:48] User's existing virtual account: 6652566487

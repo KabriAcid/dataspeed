@@ -27,6 +27,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Nigerian phone number validation (should be 10 digits after sanitization)
     $phonePattern = '/^\d{10}$/';
 
+    // Always store with leading zero
+    $phone = '0' . $phone;
+
     if (!preg_match($phonePattern, $phone)) {
         echo json_encode(["success" => false, "message" => "Enter a valid Nigerian phone number."]);
         exit;
