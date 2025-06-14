@@ -15,6 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(["success" => false, "message" => "Phone number is required."]);
         exit;
     }
+
+    // Check if phone number is too short
+    if (strlen(preg_replace('/\D/', '', $phone)) <= 9) {
+        echo json_encode(["success" => false, "message" => "Phone number is too short. Enter at least 10 digits."]);
+        exit;
+    }
     
     if (preg_match('/^(\+234|234)/', $phone)) {
         echo json_encode(["success" => false, "message" => "Remove the country code."]);
@@ -24,16 +30,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Sanitize input to remove leading zero if present
     $phone = preg_replace('/^0/', '', $phone);
 
-    // Nigerian phone number validation (should be 10 digits after sanitization)
-    $phonePattern = '/^\d{10}$/';
+    // Validate: must be exactly 10 digits now
+    if (!preg_match('/^\d{10}$/', $phone)) {
+        echo json_encode(["success" => false, "message" => "Enter a valid Nigerian phone number (10 digits, no leading 0)."]);
+        exit;
+    }
 
     // Always store with leading zero
     $phone = '0' . $phone;
-
-    if (!preg_match($phonePattern, $phone)) {
-        echo json_encode(["success" => false, "message" => "Enter a valid Nigerian phone number."]);
-        exit;
-    }
 
     try {
         // Check if the phone number already exists and its registration status
