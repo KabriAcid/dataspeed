@@ -173,7 +173,7 @@ if (isset($_GET['success'])) {
                             <circle cx="12" cy="12" r="4" fill="var(--primary)" fill-opacity="0.12" />
                         </svg>
                     </span>
-                    <span class="action-grid-label">Transfer Money</span>
+                    <span class="action-grid-label">Transfer</span>
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">

@@ -211,7 +211,7 @@ try {
     $title = 'Virtual Account Created';
     $message = 'Congratulations! Your virtual account has been created successfully.';
     $type = 'virtual_account';
-    $icon = 'ni-bank';
+    $icon = 'ni-building';
     $color = 'text-success';
     pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 

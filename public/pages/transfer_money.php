@@ -133,6 +133,10 @@ require __DIR__ . '/../partials/header.php';
                 return;
             }
 
+            document.getElementById('closeConfirm').onclick = function() {
+                document.getElementById('confirmModal').style.display = 'none';
+            };
+
             // Hide confirm modal and show pin pad modal
             document.getElementById('confirmModal').style.display = 'none';
             const pinpadModal = document.getElementById('pinpadModal');
