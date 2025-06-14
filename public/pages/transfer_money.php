@@ -51,15 +51,27 @@ require __DIR__ . '/../partials/header.php';
         <div id="confirmModal" class="modal-overlay" style="display: none;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirm Transfer</h5>
+                    <h5 class="modal-title">Transfer Details</h5>
                     <button class="close-btn" id="closeConfirm">&times;</button>
                 </div>
                 <div class="modal-body">
                     <p class="text-sm text-secondary mb-1 text-center">Send to</p>
                     <div id="confirm-email" class="fw-bold fs-5 primary text-center mb-2">example@email.com</div>
                     <div class="info-row">
+                        <span>Name:</span>
+                        <span id="confirm-name" class="fw-bold fs-6"></span>
+                    </div>
+                    <div class="info-row">
+                        <span>Phone Number:</span>
+                        <span id="confirm-phone" class="fs-6"></span>
+                    </div>
+                    <div class="info-row">
+                        <span>City:</span>
+                        <span id="confirm-city" class="fs-6"></span>
+                    </div>
+                    <div class="info-row">
                         <span>Amount:</span>
-                        <span id="confirm-amount" class="fw-bolder primary fs-6">₦0</span>
+                        <span id="confirm-amount" class="fw-bolder primary fs-6"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -100,12 +112,22 @@ require __DIR__ . '/../partials/header.php';
             const email = emailInput.value.trim();
             const amount = amountInput.value.trim();
 
-            // Fill modal fields
-            document.getElementById('confirm-email').textContent = email;
-            document.getElementById('confirm-amount').textContent = '₦' + Number(amount).toLocaleString() + '.00';
+            sendAjaxRequest("fetch-user.php", "POST", `email=${email}`, function(response) {
+                if (response.success) {
+                    // Fill modal fields
+                    document.getElementById('confirm-email').textContent = response.data.email;
+                    document.getElementById('confirm-name').textContent = response.data.first_name + " " + response.data.last_name;
+                    document.getElementById('confirm-city').textContent = response.data.city ? response.data.city : 'N/A';
+                    document.getElementById('confirm-phone').textContent = response.data.phone_number;
+                    document.getElementById('confirm-amount').textContent = '₦' + Number(amount).toLocaleString() + '.00';
 
-            // Show modal
-            document.getElementById('confirmModal').style.display = 'flex';
+                    // Show modal
+                    document.getElementById('confirmModal').style.display = 'flex';
+                } else {
+                    showToasted(response.message, "error");
+                }
+            });
+
         };
 
         document.getElementById('payBtn').onclick = function() {

@@ -36,8 +36,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                             <?php
                             $color = ($rewards['pending'] > 0) ? 'text-warning' : 'text-dark'
                             ?>
-                            <h4 id="pendingAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358;
-                                <?= number_format($rewards['pending'], 2) ?></h4>
+                            <h4 id="pendingAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358;                                <?= number_format($rewards['pending'], 2) ?></h4>
                         </div>
                     </div>
                 </div>
@@ -51,8 +50,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                             <?php
                             $color = ($rewards['claimed'] > 0) ? 'text-success' : 'text-dark'
                             ?>
-                            <h4 id="claimedAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358;
-                                <?= number_format($rewards['claimed'], 2) ?></h4>
+                            <h4 id="claimedAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358;                                <?= number_format($rewards['claimed'], 2) ?></h4>
                         </div>
                     </div>
                 </div>
@@ -67,7 +65,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 
                 <div class="tab-content active" id="pending">
                     <div class="table-responsive">
-                        <table class="table mb-0">
+                        <table class="table mb-0" style="overflow-x: scroll;">
                             <thead class="table-white">
                                 <tr>
                                     <th>Reward</th>
@@ -91,7 +89,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                                                 <?= htmlspecialchars(ucfirst($referral['status'])); ?></td>
                                             <td><?= $formattedDate; ?></td>
                                             <td>
-                                                <button class="btn badge bg-success claim-btn"
+                                                <button class="border-0 shadow-sm badge bg-success claim-btn"
                                                     data-id="<?= $referral['referral_id']; ?>">Claim</button>
                                             </td>
 
@@ -279,6 +277,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                         if (response.success) {
                             button.textContent = "Claimed";
                             button.classList.remove("bg-success");
+                            button.classList.add("badge");
                             button.classList.add("bg-secondary");
                             button.disabled = true;
                             showToasted('Reward Claimed Successfully!', 'success')
@@ -290,6 +289,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                         } else {
                             button.disabled = false;
                             button.textContent = "Claim";
+                            showToasted("Failed to claim reward.", 'error');
                             console.log(response.message || "Failed to claim reward.");
                         }
                     });

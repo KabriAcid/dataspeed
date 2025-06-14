@@ -58,6 +58,51 @@ function getTransactions($pdo, $user_id, $limit = 5)
     }
 }
 
+/**
+ * Returns an array with:
+ *  - 'percent': float (percentage change, positive or negative)
+ *  - 'direction': 'credit' or 'debit'
+ *  - 'valid': bool (true if at least two balances exist)
+ */
+function getRecentBalanceChangePercent(PDO $pdo, int $user_id): array
+{
+    // 1. Get current balance from account_balance
+    $currentBalance = (float)getUserBalance($pdo, $user_id);
+
+    // 2. Get the most recent transaction
+    $stmt = $pdo->prepare("SELECT amount, direction FROM transactions WHERE user_id = ? ORDER BY created_at DESC, id DESC LIMIT 1");
+    $stmt->execute([$user_id]);
+    $lastTxn = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$lastTxn) {
+        return ['percent' => 0, 'direction' => 'credit', 'valid' => false];
+    }
+
+    $amount = (float)$lastTxn['amount'];
+    $direction = $lastTxn['direction'];
+
+    // 3. Estimate previous balance
+    if ($direction === 'credit') {
+        $previousBalance = $currentBalance - $amount;
+    } else {
+        $previousBalance = $currentBalance + $amount;
+    }
+
+    if ($previousBalance == 0) {
+        return ['percent' => 0, 'direction' => $direction, 'valid' => false];
+    }
+
+    // 4. Calculate percentage change
+    $change = $currentBalance - $previousBalance;
+    $percent = ($change / $previousBalance) * 100;
+
+    return [
+        'percent' => round($percent, 2),
+        'direction' => $direction,
+        'valid' => true
+    ];
+}
+
 function getTransactionIcon($description)
 {
     $map = [

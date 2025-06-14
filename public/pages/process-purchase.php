@@ -111,7 +111,7 @@ $postData = [
 ];
 $vtpass_api_key = $_ENV['VTPASS_API_KEY'];
 $vtpass_secret_key = $_ENV['VTPASS_SECRET_KEY'];
-$vtpass_url = $_ENV['VTPASS_API_URL'] ?? 'https://sandbox.vtpass.com/api/pay';
+$vtpass_url = $_ENV['VTPASS_SANDBOX_URL'] ?? 'https://sandbox.vtpass.com/api/pay';
 
 // 7. Begin Transaction
 try {
@@ -151,7 +151,7 @@ try {
         $direction = 'debit';
         $icon = 'ni ni-mobile-button';
         $color = 'text-danger';
-        $description = "Airtime purchase of ₦" . number_format($amount, 2) . " for $phone on " . strtoupper($network) . " failed. Reason: $errorMsg";
+        $description = "Airtime purchase of ₦" . number_format($amount, 2) . " for $phone on " . strtoupper($network) . " failed.";
 
         $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
         $stmt->execute([
@@ -189,7 +189,7 @@ try {
     $direction = 'debit';
     $icon = 'ni ni-mobile-button';
     $color = 'text-success';
-    $description = "You have purchased ₦" . number_format($amount, 2) . " airtime for $phone on " . strtoupper($network) . ".";
+    $description = "You have purchased <b>₦" . number_format($amount, 2) . "</b> airtime for $phone on " . strtoupper($network) . ".";
 
     $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([

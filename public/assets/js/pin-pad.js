@@ -47,6 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
        }, 1200);
      } else {
        showToasted(response.message, "error");
+       setTimeout(function () {
+         window.location.href = "dashboard.php";
+       }, 1200);
      }
    });
  }

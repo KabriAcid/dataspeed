@@ -57,23 +57,26 @@ if (isset($_GET['success'])) {
         </header>
 
         <!-- Balance Section -->
-        <div>
-            <p class="text-secondary mb-0 text-sm">Total Balance</p>
-            <div class="d-flex align-items-center">
-                <h2 class="display-5 fw-bold mb-0 digit" id="balanceAmount"><?= "&#8358;" . getUserBalance($pdo, $user_id) ?></h2>
-                <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
-                <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
-                    <span id="balanceEye">
-                        <!-- Default Eye-On SVG -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 13C6.6 5 17.4 5 21 13M9 14C9 15.6569 10.3431 17 12 17C13.6569 17 15 15.6569 15 14C15 12.3431 13.6569 11 12 11C10.3431 11 9 12.3431 9 14Z"
-                                stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                </button>
-            </div>
+        <?php
+        $balanceChange = getRecentBalanceChangePercent($pdo, $user_id);
+        ?>
+        <div class="d-flex align-items-center">
+            <h2 class="display-5 fw-bold mb-0 digit m-0" id="balanceAmount"><?= "&#8358;" . getUserBalance($pdo, $user_id) ?><span class="m-0"><?php if ($balanceChange['valid']): ?><small class="fw-bold text-xs <?= $balanceChange['direction'] === 'debit' ? 'text-danger' : 'text-success' ?>">
+                            <?= ($balanceChange['percent'] > 0 ? ($balanceChange['direction'] === 'credit' ? '+' : '') : '') . $balanceChange['percent'] ?>%</small>
+                    <?php endif; ?>
+                </span></h2>
+            <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
+            <!-- <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
+                <span id="balanceEye">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 13C6.6 5 17.4 5 21 13M9 14C9 15.6569 10.3431 17 12 17C13.6569 17 15 15.6569 15 14C15 12.3431 13.6569 11 12 11C10.3431 11 9 12.3431 9 14Z"
+                            stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+            </button> -->
         </div>
+        <!--  -->
 
 
         <!-- TRANSACTION PIN NOT SET -->

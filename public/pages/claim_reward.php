@@ -84,7 +84,7 @@ try {
     $message = 'Congratulations! You have successfully claimed your ₦' . number_format($reward, 2) . ' referral bonus.';
     $type = 'referral';
     $icon = 'ni-trophy';
-    $color = 'text-danger';
+    $color = 'text-info';
     pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
     // Send JSON response
     echo json_encode([
