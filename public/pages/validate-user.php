@@ -23,6 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
             // Sanitize and format phone number
             $user = preg_replace('/^(\+234|234|0)/', '', $user);
+
+            // Ensure leading zero and 11 digits
+            if (strlen($user) === 10) {
+                $user = '0' . $user;
+            }
+            
             $stmt = $pdo->prepare("SELECT * FROM users WHERE phone_number = ?");
         }
 
