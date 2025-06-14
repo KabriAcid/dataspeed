@@ -138,14 +138,15 @@ require __DIR__ . '/../partials/header.php';
             const pinpadModal = document.getElementById('pinpadModal');
             pinpadModal.style.display = 'flex';
 
-            // Store transfer details in pinpadModal dataset for use after PIN entry
+            // Set required attributes for transfer
             pinpadModal.dataset.email = email;
             pinpadModal.dataset.amount = amount;
             pinpadModal.dataset.action = 'transfer';
 
-        };
-        document.getElementById('closeConfirm').onclick = function() {
-            document.getElementById('confirmModal').style.display = 'none';
+            // Clear any previous purchase-related attributes
+            delete pinpadModal.dataset.phone;
+            delete pinpadModal.dataset.network;
+            delete pinpadModal.dataset.type;
         };
     </script>
 

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Success - Receipt</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .receipt-container {
+        background: #2d3748;
+        border-radius: 24px;
+        padding: 40px 32px;
+        max-width: 400px;
+        width: 100%;
+        position: relative;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        background: #48bb78;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        position: relative;
+        top: -40px;
+        box-shadow: 0 8px 20px rgba(72, 187, 120, 0.3);
+      }
+
+      .success-icon::before {
+        content: "✓";
+        color: white;
+        font-size: 32px;
+        font-weight: bold;
+      }
+
+      .title {
+        color: white;
+        font-size: 32px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 12px;
+        margin-top: -20px;
+      }
+
+      .subtitle {
+        color: #a0aec0;
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 32px;
+        line-height: 1.5;
+      }
+
+      .divider {
+        height: 1px;
+        background: #4a5568;
+        margin: 32px 0;
+      }
+
+      .amount-section {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .amount-label {
+        color: #a0aec0;
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      .amount-value {
+        color: white;
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: -1px;
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .detail-item {
+        background: #4a5568;
+        padding: 20px;
+        border-radius: 12px;
+      }
+
+      .detail-label {
+        color: #a0aec0;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+
+      .detail-value {
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        word-break: break-all;
+      }
+
+      .download-btn {
+        background: transparent;
+        border: 2px solid #4a5568;
+        color: #a0aec0;
+        padding: 16px 24px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .download-btn:hover {
+        border-color: #48bb78;
+        color: #48bb78;
+        transform: translateY(-2px);
+      }
+
+      .download-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .perforated-edge {
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 0 0 24px 24px;
+      }
+
+      .perforated-edge::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: radial-gradient(
+          circle at 10px 10px,
+          transparent 8px,
+          #2d3748 8px
+        );
+        background-size: 20px 20px;
+        background-position: 0 0;
+      }
+
+      @media (max-width: 480px) {
+        .receipt-container {
+          padding: 32px 24px;
+        }
+
+        .title {
+          font-size: 28px;
+        }
+
+        .amount-value {
+          font-size: 36px;
+        }
+
+        .details-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="receipt-container">
+      <div class="success-icon"></div>
+
+      <h1 class="title">Payment Success!</h1>
+      <p class="subtitle">Your payment has been successfully done.</p>
+
+      <div class="divider"></div>
+
+      <div class="amount-section">
+        <div class="amount-label">Total Payment</div>
+        <div class="amount-value">IDR 1,000,000</div>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <div class="detail-label">Ref Number</div>
+          <div class="detail-value">000085752257</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Payment Time</div>
+          <div class="detail-value">25 Feb 2023, 13:22</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Payment Method</div>
+          <div class="detail-value">Bank Transfer</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Sender Name</div>
+          <div class="detail-value">Antonio Roberto</div>
+        </div>
+      </div>
+
+      <a href="#" class="download-btn">
+        <svg class="download-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+        </svg>
+        Get PDF Receipt
+      </a>
+
+      <div class="perforated-edge"></div>
+    </div>
+  </body>
+</html>

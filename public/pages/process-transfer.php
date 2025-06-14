@@ -55,6 +55,14 @@ try {
     $pdo->prepare("UPDATE account_balance SET wallet_balance = wallet_balance + ? WHERE user_id = ?")
         ->execute([$amount, $recipient_id]);
 
+    // Fetch sender email
+    $stmt = $pdo->prepare("SELECT email FROM users WHERE user_id = ?");
+    $stmt->execute([$user_id]);
+    $senderEmail = $stmt->fetchColumn();
+
+    // Fetch recipient email (already available as $recipient)
+    $recipientEmail = $recipient;
+
     // Log transactions for both users
     $descSender = "Transfer to {$recipient}";
     $descRecipient = "Received transfer from user $user_id";
@@ -62,10 +70,12 @@ try {
     $colorSender = 'text-warning';
     $colorRecipient = 'text-success';
 
-    $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-        ->execute([$user_id, 'Money Transfer', 'debit', $amount, 'success', $descSender, $icon, $colorSender]);
-    $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-        ->execute([$recipient_id, 'Money Transfer', 'credit', $amount, 'success', $descRecipient, $icon, $colorRecipient]);
+    $reference = uniqid('transfer_', true);
+
+    $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color, reference, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        ->execute([$user_id, 'Money Transfer', 'debit', $amount, 'success', $descSender, $icon, $colorSender, $reference, $senderEmail]);
+    $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color, reference, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        ->execute([$recipient_id, 'Money Transfer', 'credit', $amount, 'success', $descRecipient, $icon, $colorRecipient, $reference, $recipientEmail]);
 
     // Push notifications
     pushNotification($pdo, $user_id, "Transfer Sent", "You sent ₦" . number_format($amount, 2) . " to {$recipient}.", "Money Transferred", $icon, $colorSender, '0');
@@ -77,7 +87,12 @@ try {
     $stmt->execute([$user_id]);
     $new_balance = $stmt->fetchColumn();
 
-    echo json_encode(['success' => true, 'message' => 'Transfer successful!', 'new_balance' => $new_balance]);
+    echo json_encode([
+        'success' => true,
+        'message' => 'Transfer successful!',
+        'new_balance' => $new_balance,
+        'reference' => $reference // <-- Add this line
+    ]);
     exit;
 } catch (Exception $e) {
     $pdo->rollBack();

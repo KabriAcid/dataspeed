@@ -7,43 +7,49 @@ document.addEventListener("DOMContentLoaded", function () {
   const forgotBtn = pinpadModal.querySelector("#pin-forgot-btn");
   let pin = "";
 
-  function processPinEntry(pin) {
-    const pinpadModal = document.getElementById("pinpadModal");
-    const pinpadOverlay = document.getElementById("pinpadOverlay");
-    const amount = pinpadModal.dataset.amount;
-    const phone = pinpadModal.dataset.phone;
-    const network = pinpadModal.dataset.network;
-    const type = pinpadModal.dataset.type;
+ function processPinEntry(pin) {
+   const pinpadModal = document.getElementById("pinpadModal");
+   const pinpadOverlay = document.getElementById("pinpadOverlay");
+   const action = pinpadModal.dataset.action;
 
-    const data = `pin=${encodeURIComponent(pin)}&amount=${encodeURIComponent(
-      amount
-    )}&phone=${encodeURIComponent(phone)}&network=${encodeURIComponent(
-      network
-    )}&type=${encodeURIComponent(type)}`;
+   let data = `pin=${encodeURIComponent(pin)}`;
+   let endpoint;
 
-    // Show dim overlay
-    pinpadOverlay.style.display = "flex";
+   if (action === "transfer") {
+     data += `&email=${encodeURIComponent(
+       pinpadModal.dataset.email
+     )}&amount=${encodeURIComponent(
+       pinpadModal.dataset.amount
+     )}&action=transfer`;
+     endpoint = "process-transfer.php";
+   } else {
+     data += `&amount=${encodeURIComponent(
+       pinpadModal.dataset.amount
+     )}&phone=${encodeURIComponent(
+       pinpadModal.dataset.phone
+     )}&network=${encodeURIComponent(
+       pinpadModal.dataset.network
+     )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
+     endpoint = "process-purchase.php";
+   }
 
-    sendAjaxRequest("process-purchase.php", "POST", data, function (response) {
-      // Hide overlay regardless of result
-      pinpadOverlay.style.display = "none";
+   pinpadOverlay.style.display = "flex";
 
-      if (response.success) {
-        console.log("Transaction successful:", response.vtpass_response);
-        showToasted(response.message, "success");
-        pinpadModal.style.display = "none";
-        setTimeout(function () {
-           window.location.href =
-             "transaction-successful.php?ref=" +
-             encodeURIComponent(response.reference);
-        }, 1200);
-      } else {
-        showToasted(response.message, "error");
-      }
-    });
-  }
-
-  // Call processPinEntry(pin) when 4 digits are entered
+   sendAjaxRequest(endpoint, "POST", data, function (response) {
+     pinpadOverlay.style.display = "none";
+     if (response.success) {
+       showToasted(response.message, "success");
+       pinpadModal.style.display = "none";
+       setTimeout(function () {
+         window.location.href =
+           "transaction-successful.php?ref=" +
+           encodeURIComponent(response.reference);
+       }, 1200);
+     } else {
+       showToasted(response.message, "error");
+     }
+   });
+ }
 
   // Utility: Update PIN dots
   function updateDots() {

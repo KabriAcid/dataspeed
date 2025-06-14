@@ -90,7 +90,7 @@ if (preg_match('/for (\d{11})/', $txn['description'], $matches)) {
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="" class="secondary-btn d-block text-center shadow">Share Receipt</a>
+                            <a href="share-receipt.php?ref=<?= urlencode($txn['reference']) ?>" class="text-center">Share Receipt</a>
                             <a href="dashboard.php" class="btn-link btn shadow">Exit</a>
                         </div>
                     </div>
