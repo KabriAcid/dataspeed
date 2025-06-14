@@ -45,3 +45,13 @@
 7. **General Errors or Alerts**
    - Failed actions (e.g., failed transaction, failed KYC)
    - Unusual activity detected
+
+
+--- SECURITY ISSUES -----
+
+General Security
+CSRF Protection: Use CSRF tokens for all AJAX POSTs.
+Replay Protection: Ensure each transaction/request ID is unique and not reused.
+Strict CORS Policy: Only allow requests from your own domain.
+Session Management: Invalidate sessions on logout or after inactivity.
+Error Handling: Never leak sensitive info in error messages.

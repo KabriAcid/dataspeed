@@ -29,14 +29,17 @@ document.addEventListener("DOMContentLoaded", function () {
       pin += digit;
       updateDots();
       updateBackspace();
+      
+      // If PIN is complete (4 digits), process the transaction
       if (pin.length === 4) {
         setTimeout(() => {
-          // --- BEGIN: AJAX PIN verify logic using data attributes ---
+          // Collect all data attributes
           const rawAmount = pinpadModal.dataset.amount;
           const phone = pinpadModal.dataset.phone;
           const network = pinpadModal.dataset.network;
           const type = pinpadModal.dataset.type;
 
+          // Build data string
           const data = `pin=${encodeURIComponent(
             pin
           )}&amount=${encodeURIComponent(rawAmount)}&phone=${encodeURIComponent(
@@ -45,34 +48,22 @@ document.addEventListener("DOMContentLoaded", function () {
             type
           )}`;
 
-          function onPinSuccess(pin) {
-            const event = new CustomEvent("pinAuthenticated", {
-              detail: { pin },
-            });
-            window.dispatchEvent(event);
-            pinpadModal.style.display = "none";
-          }
-
           sendAjaxRequest(
-            "verify-pin.php",
+            "process_transaction.php",
             "POST",
-            `pin=${encodeURIComponent(pin)}`,
+            data,
             function (response) {
               if (response.success) {
                 showToasted(response.message, "success");
-                onPinSuccess(pin);
+                pinpadModal.style.display = "none";
               } else {
                 showToasted(response.message, "error");
-                pin = "";
-                updateDots();
-                updateBackspace();
               }
               pin = "";
               updateDots();
               updateBackspace();
             }
           );
-          // --- END: AJAX PIN verify logic ---
         }, 200);
       }
     }

@@ -296,23 +296,27 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             });
 
             // PIN PAD functionality
-
             payBtn.addEventListener("click", function() {
-
                 let amountText = document.getElementById('confirm-amount').textContent;
-                let rawAmount = amountText.replace(/[^\d]/g, ''); // keep only digitsa
+                let rawAmount = amountText.replace(/[^\d]/g, '');
+                let phone = document.getElementById('customer-phone').getAttribute('data-raw');
+                let network = document.querySelector('.network-tab.selected-network').getAttribute('data-network');
+                let type = document.querySelector('.tab-content.active').dataset.tab === "self" ? "airtime_self" : "airtime_others";
+
+                // Set data attributes for the PIN pad modal
+                pinpadModal.dataset.amount = rawAmount;
+                pinpadModal.dataset.phone = phone;
+                pinpadModal.dataset.network = network;
+                pinpadModal.dataset.type = type;
 
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
-                        // Show pinpad modal
-                        // showToasted(response.message, "success");
                         pinpadModal.style.display = "flex";
                     } else {
                         showToasted(response.message, "error");
                     }
                 });
 
-                // Hide confirm modal
                 confirmModal.style.display = "none";
             });
 
