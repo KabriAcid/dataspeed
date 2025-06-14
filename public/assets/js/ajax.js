@@ -1,5 +1,5 @@
 // Constants and reusable functions
-const TIMEOUT_DURATION = 10000;
+const TIMEOUT_DURATION = 30000;
 
 function sendAjaxRequest(url, method, data, callback) {
   if (!navigator.onLine) {

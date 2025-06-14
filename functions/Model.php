@@ -276,3 +276,10 @@ function getUserIdByAccount($accountNumber)
     $row = $stmt->fetch();
     return $row ? $row['user_id'] : null;
 }
+
+// Add this helper before your try-catch block
+function safeRollback($pdo) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+}

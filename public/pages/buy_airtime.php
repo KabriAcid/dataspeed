@@ -1,5 +1,9 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
+
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../partials/header.php';
@@ -135,7 +139,6 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
     </main>
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/pin-events.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
     <script>
         // Set network SVG in confirm modal
@@ -371,7 +374,13 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
         // **Format Phone Number**
         function formatPhoneNumber(num) {
-            return num.length === 10 ? "0" + num.substring(0, 3) + " " + num.substring(3, 7) + " " + num.substring(7) : num;
+            if (num.length === 11 && num.startsWith('0')) {
+                return num.substring(0, 4) + " " + num.substring(4, 7) + " " + num.substring(7);
+            }
+            if (num.length === 10) {
+                return num.substring(0, 3) + " " + num.substring(3, 6) + " " + num.substring(6);
+            }
+            return num;
         }
 
         function formattedAmount(amount) {

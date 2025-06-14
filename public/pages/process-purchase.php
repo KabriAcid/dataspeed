@@ -20,7 +20,7 @@ $user_id = $_SESSION['user_id'];
 $pin    = trim($_POST['pin'] ?? '');
 $amount = trim($_POST['amount'] ?? '');
 $phone  = trim($_POST['phone'] ?? '');
-$network= trim($_POST['network'] ?? '');
+$network = trim($_POST['network'] ?? '');
 $type   = trim($_POST['type'] ?? '');
 
 if (!is_numeric($amount) || $amount <= 0) {
@@ -79,7 +79,7 @@ if ($balance < $amount) {
     exit;
 }
 
-// 5. Provider ID Mapping
+// 5. Provider & Service Mapping
 $providerMap = [
     'mtn'      => 1,
     'airtel'   => 2,
@@ -88,6 +88,17 @@ $providerMap = [
     '9mobile'  => 4
 ];
 $provider_id = $providerMap[$network];
+
+$serviceMap = [
+    'airtime_self'   => 1,
+    'airtime_others' => 1,
+    'data_self'      => 2,
+    'data_others'    => 2,
+    'electricity'    => 3,
+    'tv'             => 4
+];
+$service_id = $serviceMap[$type] ?? 1;
+
 
 // 6. Prepare VTpass API Call
 $serviceID = $network === '9mobile' ? 'etisalat' : $network; // VTpass uses 'etisalat' for 9mobile
@@ -106,11 +117,7 @@ $vtpass_url = $_ENV['VTPASS_API_URL'] ?? 'https://sandbox.vtpass.com/api/pay';
 try {
     $pdo->beginTransaction();
 
-    // Deduct balance
-    $stmt = $pdo->prepare("UPDATE account_balance SET wallet_balance = wallet_balance - ? WHERE user_id = ?");
-    $stmt->execute([$amount, $user_id]);
-
-    // Call VTpass API
+    // Call VTpass API first (do NOT deduct balance yet)
     $ch = curl_init($vtpass_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -129,42 +136,84 @@ try {
 
     // Check VTpass response
     if ($api_http_code !== 200 || !isset($api_result['code']) || $api_result['code'] !== '000') {
-        $pdo->rollBack();
-        $errorMsg = $api_result['response_description'] ?? 'Airtime purchase failed.';
+        safeRollback($pdo);
+
+        // Custom message for duplicate transaction
+        if (isset($api_result['code']) && $api_result['code'] === '019') {
+            $errorMsg = "This transaction appears to be a duplicate. Please check your transaction history before retrying.";
+        } else {
+            $errorMsg = $api_result['response_description'] ?? 'Airtime purchase failed.';
+        }
+
+        // Log failed transaction
+        $plan_id = null;
+        $status = "failed";
+        $direction = 'debit';
+        $icon = 'ni ni-mobile-button';
+        $color = 'text-danger';
+        $description = "Airtime purchase of ₦" . number_format($amount, 2) . " for $phone on " . strtoupper($network) . " failed. Reason: $errorMsg";
+
+        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->execute([
+            $user_id,
+            $service_id,
+            $provider_id,
+            $plan_id,
+            ucfirst(str_replace('_', ' ', $type)),
+            $icon,
+            $color,
+            $direction,
+            $description,
+            $amount,
+            $user['email'],
+            $request_id,
+            $status
+        ]);
+
+        // Send failed notification
+        $title = 'Airtime Purchase Failed';
+        $type = 'airtime_purchase_failed';
+        pushNotification($pdo, $user_id, $title, $description, $type, $icon, $color, '0');
+
         echo json_encode(["success" => false, "message" => $errorMsg]);
         exit;
     }
 
-    // Log transaction
-    $service_id = 2; // 2 for Airtime (from your services table)
+    // Only deduct balance if VTpass was successful
+    $stmt = $pdo->prepare("UPDATE account_balance SET wallet_balance = wallet_balance - ? WHERE user_id = ?");
+    $stmt->execute([$amount, $user_id]);
+
+    // Log successful transaction
     $plan_id = null;
     $status = "success";
     $direction = 'debit';
+    $icon = 'ni ni-mobile-button';
+    $color = 'text-success';
+    $description = "You have purchased ₦" . number_format($amount, 2) . " airtime for $phone on " . strtoupper($network) . ".";
 
-    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, direction, amount, email, status, external_ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([
         $user_id,
         $service_id,
         $provider_id,
         $plan_id,
-        ucfirst(str_replace('_', ' ', $type)), // e.g. 'Airtime Self'
+        ucfirst(str_replace('_', ' ', $type)),
+        $icon,
+        $color,
         $direction,
+        $description,
         $amount,
         $user['email'],
-        $status,
-        $request_id
+        $request_id,
+        $status
     ]);
 
-    // Commit transaction
     $pdo->commit();
 
     // Send notification
     $title = 'Airtime Purchase Successful';
-    $message = "You have purchased ₦" . number_format($amount, 2) . " airtime for $phone on " . strtoupper($network) . ".";
-    $notif_type = 'airtime_purchase';
-    $icon = 'ni ni-mobile-button';
-    $color = 'text-success';
-    pushNotification($pdo, $user_id, $title, $message, $notif_type, $icon, $color, '0');
+    $type = 'airtime_purchase';
+    pushNotification($pdo, $user_id, $title, $description, $type, $icon, $color, '0');
 
     echo json_encode([
         "success" => true,
@@ -173,6 +222,6 @@ try {
         "vtpass_response" => $api_result
     ]);
 } catch (PDOException $e) {
-    $pdo->rollBack();
+    safeRollback($pdo);
     echo json_encode(["success" => false, "message" => "Transaction failed: " . $e->getMessage()]);
 }
