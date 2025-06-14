@@ -170,11 +170,11 @@ function set_title($title = null)
                     </button>
                 </div>
 
-                <div id="overlay-loader">
-                    <div class="loader"></div>
-                </div>
             </form>
 
+        </div>
+        <div id="bodyOverlay" class="body-overlay" style="display: none;">
+            <div class="overlay-spinner"></div>
         </div>
     </main>
 </body>

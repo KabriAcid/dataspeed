@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
  function processPinEntry(pin) {
    const pinpadModal = document.getElementById("pinpadModal");
-   const pinpadOverlay = document.getElementById("pinpadOverlay");
+   const bodyOverlay = document.getElementById("bodyOverlay");
    const action = pinpadModal.dataset.action;
 
    let data = `pin=${encodeURIComponent(pin)}`;
@@ -33,10 +33,10 @@ document.addEventListener("DOMContentLoaded", function () {
      endpoint = "process-purchase.php";
    }
 
-   pinpadOverlay.style.display = "flex";
+   bodyOverlay.style.display = "flex";
 
    sendAjaxRequest(endpoint, "POST", data, function (response) {
-     pinpadOverlay.style.display = "none";
+     bodyOverlay.style.display = "none";
      if (response.success) {
        showToasted(response.message, "success");
        pinpadModal.style.display = "none";

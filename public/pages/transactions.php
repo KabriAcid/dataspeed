@@ -20,7 +20,9 @@ require __DIR__ . '/../partials/header.php';
 
         <!-- Transaction body -->
         <div class="transaction-main-body">
-            <p class="text-muted fw-bold">Today</p>
+            <p class="text-sm mb-2">
+                <span class="font-weight-bold">Today</span>
+            </p>
             <div class="transaction-list">
                 <?php
                 $transactions = getTransactions($pdo, $user_id, 50);
@@ -35,7 +37,7 @@ require __DIR__ . '/../partials/header.php';
                         $textColor = $transaction['type'] == 'Deposit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
                         $date = date("M d, Y H:m", strtotime($transaction['created_at']));
-                        $prefix = ($transaction['type'] === 'Deposit') ? '+' : '-';
+                        $prefix = ($transaction['type'] === 'Deposit') ? '+₦' : '-₦';
 
                         if ($transactions) {
                 ?>

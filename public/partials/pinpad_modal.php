@@ -52,7 +52,7 @@
   </div>
 
   <!-- Overlay -->
-  <div id="pinpadOverlay" class="pinpad-overlay" style="display: none;">
-    <div class="pinpad-spinner"></div>
+  <div id="bodyOverlay" class="body-overlay" style="display: none;">
+    <div class="overlay-spinner"></div>
   </div>
 </div>

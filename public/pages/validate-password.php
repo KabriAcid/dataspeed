@@ -186,14 +186,6 @@ try {
         file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] DB Update Successful for user $email" . PHP_EOL, FILE_APPEND);
     }
 
-    echo json_encode([
-        "success" => true,
-        "message" => "Registration complete. Virtual account created.",
-        "account_number" => $virtualAccount['account_number'],
-        "bank_name" => $virtualAccount['bank_name'],
-        "api_response" => $virtualAccount['api_response']
-    ]);
-
     // Get user ID from registration ID in the users table
     $stmt = $pdo->prepare("SELECT user_id FROM users WHERE registration_id = ?");
     $stmt->execute([$registration_id]);
@@ -218,7 +210,6 @@ try {
         exit;
     }
 
-
     // Insert notification for user in the db
     $title = 'Virtual Account Created';
     $message = 'Congratulations! Your virtual account has been created successfully.';
@@ -226,7 +217,7 @@ try {
     $icon = 'ni-bank';
     $color = 'text-success';
     pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
-    
+
     // Insert notification for PIN not set
     $pinTitle = 'Set Your Transaction PIN';
     $pinMessage = 'For your security, please set your transaction PIN to enable transactions.';
@@ -234,7 +225,6 @@ try {
     $pinIcon = 'ni-key-25';
     $pinColor = 'text-warning';
     pushNotification($pdo, $user_id, $pinTitle, $pinMessage, $pinType, $pinIcon, $pinColor, '0');
-
 
     // Handle referral logic (optional)
     if (isset($_SESSION['referral_code']) && !empty($_SESSION['referral_code'])) {
@@ -263,6 +253,17 @@ try {
 
         unset($_SESSION['referral_code']);
     }
+
+    // FINAL SUCCESS RESPONSE (only here!)
+    echo json_encode([
+        "success" => true,
+        "message" => "Registration complete. Virtual account created.",
+        "account_number" => $virtualAccount['account_number'],
+        "bank_name" => $virtualAccount['bank_name'],
+        "api_response" => $virtualAccount['api_response']
+    ]);
+    exit;
+    
 } catch (Exception $e) {
     file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Exception: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
     echo json_encode([

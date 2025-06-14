@@ -3,10 +3,13 @@
 - Fixing the primary, secondary btn classes.
 - Fixing the balance toggle functionality.
 - Finding relevant icons for transactions.
+- Eye toggle icon in the forgot password page and also the resend timeout.
 
 --- FEATURES ---
 
-- Adding action buttons (e.g., Transfer to Friend)
+- Adding action buttons (e.g., Transfer to Friend)✔️
+- Animation for account balance.
+- Username step in registration form.
 
 --- DESIGN ---
 
