@@ -94,7 +94,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                         <img src="../assets/img/ng.png" alt=""> +234
                     </span>
                     <input type="tel" id="phone-number" name="phone_number" maxlength="10"
-                        placeholder="Phone Number" class="input phone-input" required>
+                        placeholder="Phone Number" class="input phone-input" required value="8011111111">
                 </div>
                 <button type="submit" class="btn w-100 mt-3 primary-btn purchase-btn" disabled>Purchase</button>
             </div>

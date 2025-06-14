@@ -218,6 +218,7 @@ try {
     echo json_encode([
         "success" => true,
         "message" => "Purchase successful!",
+        "reference" => $request_id,
         "new_balance" => $balance - $amount,
         "vtpass_response" => $api_result
     ]);

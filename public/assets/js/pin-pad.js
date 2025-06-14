@@ -33,7 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
         showToasted(response.message, "success");
         pinpadModal.style.display = "none";
         setTimeout(function () {
-          window.location.href = "transaction-successful.php";
+           window.location.href =
+             "transaction-successful.php?ref=" +
+             encodeURIComponent(response.reference);
         }, 1200);
       } else {
         showToasted(response.message, "error");

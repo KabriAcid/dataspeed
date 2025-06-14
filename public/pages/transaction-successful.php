@@ -3,13 +3,52 @@ session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../partials/header.php';
+
+// Get latest successful transaction for this user
+$user_id = $_SESSION['user_id'] ?? null;
+if (!$user_id) {
+    header("Location: login.php");
+    exit;
+}
+
+// Optionally, get a specific transaction by reference (if passed via GET)
+$reference = $_GET['ref'] ?? null;
+
+if ($reference) {
+    $stmt = $pdo->prepare("SELECT * FROM transactions WHERE user_id = ? AND reference = ? AND status = 'success' ORDER BY created_at DESC LIMIT 1");
+    $stmt->execute([$user_id, $reference]);
+} else {
+    $stmt = $pdo->prepare("SELECT * FROM transactions WHERE user_id = ? AND status = 'success' ORDER BY created_at DESC LIMIT 1");
+    $stmt->execute([$user_id]);
+}
+$txn = $stmt->fetch();
+
+if (!$txn) {
+    echo "<h2 class='text-center mt-5'>No successful transaction found.</h2>";
+    exit;
+}
+
+// Network icon mapping
+$networkIcons = [
+    1 => "../assets/img/icons/mtn.png",
+    2 => "../assets/img/icons/airtel.png",
+    3 => "../assets/img/icons/glo.png",
+    4 => "../assets/img/icons/9mobile.png"
+];
+$networkIcon = $networkIcons[$txn['provider_id']] ?? "../assets/img/icons/mtn.png";
+
+// Format date
+$date = date("F j, Y, g:i a", strtotime($txn['created_at']));
+
+// Format amount
+$amount = "₦" . number_format($txn['amount'], 2);
+
+// Recipient (phone or email, depending on service)
+$recipient = $txn['description'];
+if (preg_match('/for (\d{11})/', $txn['description'], $matches)) {
+    $recipient = $matches[1];
+}
 ?>
-<script>
-    // After 6 seconds, redirect to dashboard
-    // setTimeout(function() {
-    //     window.location.href = "dashboard.php";
-    // }, 6000);
-</script>
 
 <body>
     <main class="container-fluid py-4">
@@ -17,10 +56,10 @@ require __DIR__ . '/../partials/header.php';
             <div class="row justify-content-center">
                 <div class="">
                     <div class="avatar-sm m-auto d-flex justify-content-center">
-                        <img src="../assets/img/icons/mtn.png" alt="" srcset="">
+                        <img src="<?= htmlspecialchars($networkIcon) ?>" alt="Network" style="height:40px;">
                     </div>
                     <div class="">
-                        <h1 class="text-center my-3">₦5,000.00</h1>
+                        <h1 class="text-center my-3"><?= $amount ?></h1>
                     </div>
                     <div class="">
                         <div class="lottie-center">
@@ -35,15 +74,15 @@ require __DIR__ . '/../partials/header.php';
                         <div class="row px-4">
                             <div class="col-12 info-row">
                                 <div class="label">Transaction ID</div>
-                                <div class="value">TXN-99338477</div>
+                                <div class="value"><?= htmlspecialchars($txn['reference']) ?></div>
                             </div>
                             <div class="col-12 info-row">
                                 <div class="label">Recipient</div>
-                                <div class="value">090685456788</div>
+                                <div class="value"><?= htmlspecialchars($recipient) ?></div>
                             </div>
                             <div class="col-12 info-row">
                                 <div class="label">Date</div>
-                                <div class="value">June 10, 2025</div>
+                                <div class="value"><?= htmlspecialchars($date) ?></div>
                             </div>
                             <div class="col-12 info-row">
                                 <div class="label">Status</div>
@@ -52,7 +91,7 @@ require __DIR__ . '/../partials/header.php';
                         </div>
                         <div class="d-flex justify-content-between mt-4">
                             <a href="" class="secondary-btn d-block text-center shadow">Share Receipt</a>
-                            <a href="" class="btn-link btn shadow">Exit</a>
+                            <a href="dashboard.php" class="btn-link btn shadow">Exit</a>
                         </div>
                     </div>
                 </div>
