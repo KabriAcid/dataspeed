@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION['referral_code'] = $referral_code !== "" ? $referral_code : null;
         
         
-        if ($referral_code !== "") {
+        if ($referral_code) {
             // if referral code is provided, check if it exists in the database
             $stmt = $pdo->prepare("SELECT referral_code, registration_status FROM users WHERE referral_code = ?");
             $stmt->execute([$referral_code]);

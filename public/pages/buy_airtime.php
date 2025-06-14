@@ -373,15 +373,21 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
         });
 
         // **Format Phone Number**
+        // ...existing code...
         function formatPhoneNumber(num) {
+            // Remove all non-digits
+            num = num.replace(/\D/g, '');
+
+            // Ensure leading zero
+            if (num.length === 10) num = '0' + num;
+
+            // Format as 080 8483 4953
             if (num.length === 11 && num.startsWith('0')) {
-                return num.substring(0, 4) + " " + num.substring(4, 7) + " " + num.substring(7);
-            }
-            if (num.length === 10) {
-                return num.substring(0, 3) + " " + num.substring(3, 6) + " " + num.substring(6);
+                return `${num.substring(0, 3)} ${num.substring(3, 7)} ${num.substring(7, 11)}`;
             }
             return num;
         }
+        // ...existing code...
 
         function formattedAmount(amount) {
             return amount ? `₦${Number(amount).toLocaleString()}` : "";
