@@ -173,7 +173,7 @@ if (isset($_GET['success'])) {
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">
-                <a href="tv.php" class="action-grid-btn d-flex flex-column align-items-center">
+                <a href="tv_subscription.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <rect x="4" y="7" width="16" height="10" rx="2" stroke="var(--primary)" stroke-width="1.5" />
