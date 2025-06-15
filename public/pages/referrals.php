@@ -36,7 +36,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                             <?php
                             $color = ($rewards['pending'] > 0) ? 'text-warning' : 'text-dark'
                             ?>
-                            <h4 id="pendingAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358;                                <?= number_format($rewards['pending'], 2) ?></h4>
+                            <h4 id="pendingAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358; <?= number_format($rewards['pending'], 2) ?></h4>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                             <?php
                             $color = ($rewards['claimed'] > 0) ? 'text-success' : 'text-dark'
                             ?>
-                            <h4 id="claimedAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358;                                <?= number_format($rewards['claimed'], 2) ?></h4>
+                            <h4 id="claimedAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358; <?= number_format($rewards['claimed'], 2) ?></h4>
                         </div>
                     </div>
                 </div>
@@ -319,6 +319,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
         });
     </script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
+    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 </body>
 
 </html>

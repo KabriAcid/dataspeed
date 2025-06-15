@@ -394,6 +394,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
         }
     </script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
+    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 </body>
 
 </html>

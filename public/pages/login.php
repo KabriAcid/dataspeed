@@ -111,5 +111,6 @@ function set_title($title = null)
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/auth.js"></script>
 <?php require __DIR__ . '/../partials/scripts.php'; ?>
+<?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 
 </html>

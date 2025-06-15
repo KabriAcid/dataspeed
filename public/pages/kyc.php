@@ -191,6 +191,7 @@ require __DIR__ . '/../partials/header.php';
         });
     </script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
+    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 </body>
 
 </html>

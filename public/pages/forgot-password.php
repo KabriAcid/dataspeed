@@ -139,5 +139,6 @@ function set_title($title = null)
 </script>
 <script src="../assets/js/password-reset.js"></script>
 <?php require __DIR__ . '/../partials/scripts.php'; ?>
+<?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 
 </html>

@@ -205,5 +205,6 @@ function set_title($title = null)
 <script src="../assets/js/toggle-password.js"></script>
 <script src="../assets/js/multi-step.js"></script>
 <?php require __DIR__ . '/../partials/scripts.php'; ?>
+<?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 
 </html>

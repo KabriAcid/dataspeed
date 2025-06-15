@@ -259,6 +259,7 @@ require __DIR__ . '/../partials/header.php';
         <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All rights reserved.</p>
     </footer>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
+    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 </body>
 
 </html>

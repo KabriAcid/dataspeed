@@ -66,6 +66,7 @@ require __DIR__ . '/../partials/header.php';
 
     </main>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
+    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 </body>
 
 </html>

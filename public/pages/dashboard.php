@@ -319,6 +319,7 @@ if (isset($_GET['success'])) {
         });
     </script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
+    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
 </body>
 
 </html>
