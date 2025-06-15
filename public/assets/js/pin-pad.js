@@ -7,80 +7,80 @@ document.addEventListener("DOMContentLoaded", function () {
   const forgotBtn = pinpadModal.querySelector("#pin-forgot-btn");
   let pin = "";
 
- function processPinEntry(pin) {
-   const pinpadModal = document.getElementById("pinpadModal");
-   const bodyOverlay = document.getElementById("bodyOverlay");
-   const action = pinpadModal.dataset.action;
+  function processPinEntry(pin) {
+    const pinpadModal = document.getElementById("pinpadModal");
+    const bodyOverlay = document.getElementById("bodyOverlay");
+    const action = pinpadModal.dataset.action;
 
-   let data = `pin=${encodeURIComponent(pin)}`;
-   let endpoint;
+    let data = `pin=${encodeURIComponent(pin)}`;
+    let endpoint;
 
-   switch (action) {
-     case "transfer":
-       data += `&email=${encodeURIComponent(
-         pinpadModal.dataset.email
-       )}&amount=${encodeURIComponent(
-         pinpadModal.dataset.amount
-       )}&action=transfer`;
-       endpoint = "process-transfer.php";
-       break;
+    switch (action) {
+      case "transfer":
+        data += `&email=${encodeURIComponent(
+          pinpadModal.dataset.email
+        )}&amount=${encodeURIComponent(
+          pinpadModal.dataset.amount
+        )}&action=transfer`;
+        endpoint = "process-transfer.php";
+        break;
 
-     case "airtime":
-       data += `&amount=${encodeURIComponent(
-         pinpadModal.dataset.amount
-       )}&phone=${encodeURIComponent(
-         pinpadModal.dataset.phone
-       )}&network=${encodeURIComponent(
-         pinpadModal.dataset.network
-       )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
-       endpoint = "airtime-purchase.php";
-       break;
+      case "airtime":
+        data += `&amount=${encodeURIComponent(
+          pinpadModal.dataset.amount
+        )}&phone=${encodeURIComponent(
+          pinpadModal.dataset.phone
+        )}&network=${encodeURIComponent(
+          pinpadModal.dataset.network
+        )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
+        endpoint = "airtime-purchase.php";
+        break;
 
-     case "data":
-       data +=
-         `&amount=${encodeURIComponent(pinpadModal.dataset.amount)}` +
-         `&phone=${encodeURIComponent(pinpadModal.dataset.phone)}` +
-         `&network=${encodeURIComponent(pinpadModal.dataset.network)}` +
-         `&type=${encodeURIComponent(pinpadModal.dataset.type)}` +
-         `&plan_id=${encodeURIComponent(pinpadModal.dataset.plan_id)}`;
-       endpoint = "data-purchase.php";
-       break;
+      case "data":
+        data +=
+          `&amount=${encodeURIComponent(pinpadModal.dataset.amount)}` +
+          `&phone=${encodeURIComponent(pinpadModal.dataset.phone)}` +
+          `&network=${encodeURIComponent(pinpadModal.dataset.network)}` +
+          `&type=${encodeURIComponent(pinpadModal.dataset.type)}` +
+          `&plan_id=${encodeURIComponent(pinpadModal.dataset.plan_id)}`;
+        endpoint = "data-purchase.php";
+        break;
 
-     case "electricity":
-       data += `&amount=${encodeURIComponent(
-         pinpadModal.dataset.amount
-       )}&meter=${encodeURIComponent(
-         pinpadModal.dataset.meter
-       )}&disco=${encodeURIComponent(
-         pinpadModal.dataset.disco
-       )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
-       endpoint = "electricity-purchase.php";
-       break;
+      case "electricity":
+        data += `&amount=${encodeURIComponent(
+          pinpadModal.dataset.amount
+        )}&meter=${encodeURIComponent(
+          pinpadModal.dataset.meter
+        )}&disco=${encodeURIComponent(
+          pinpadModal.dataset.disco
+        )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
+        endpoint = "electricity-purchase.php";
+        break;
 
-     // Add more services as needed
-     default:
-       showToasted("Unknown service type", "error");
-       return;
-   }
+      // Add more services as needed
+      default:
+        showToasted("Unknown service type", "error");
+        return;
+    }
 
+    bodyOverlay.style.display = "flex";
 
-   bodyOverlay.style.display = "flex";
-
-   sendAjaxRequest(endpoint, "POST", data, function (response) {
-     bodyOverlay.style.display = "none";
-     if (response.success) {
-       showToasted(response.message, "success");
-       pinpadModal.style.display = "none";
-       setTimeout(function () {
-         window.location.href =
-           "transaction-successful.php?ref=" +
-           encodeURIComponent(response.reference);
-       }, 1200);
-     } else {
-       showToasted(response.message, "error");
-     }
-   });
- }
+    sendAjaxRequest(endpoint, "POST", data, function (response) {
+      bodyOverlay.style.display = "none";
+      if (response.success) {
+        showToasted(response.message, "success");
+        console.log(response.phone);
+        pinpadModal.style.display = "none";
+        setTimeout(function () {
+          window.location.href =
+            "transaction-successful.php?ref=" +
+            encodeURIComponent(response.reference);
+        }, 1200);
+      } else {
+        showToasted(response.message, "error");
+      }
+    });
+  }
 
   // Utility: Update PIN dots
   function updateDots() {
