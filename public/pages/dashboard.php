@@ -5,6 +5,7 @@ require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../partials/session-lock.php';
 require __DIR__ . '/../partials/header.php';
 
+
 $success = null;
 if (isset($_GET['success'])) {
     $success = $_GET['success'];
