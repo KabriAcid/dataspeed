@@ -79,11 +79,7 @@ require __DIR__ . '/../partials/header.php';
             const payBtn = document.getElementById("payBtn");
 
             // Event Listeners
-<<<<<<< Updated upstream
-            [iucInput, phoneInput, planSelect].forEach(el =>
-=======
             [iucInput, planSelect].forEach(el =>
->>>>>>> Stashed changes
                 el.addEventListener("input", validatePurchaseButton)
             );
             planSelect.addEventListener("change", validatePurchaseButton);
@@ -91,10 +87,6 @@ require __DIR__ . '/../partials/header.php';
             purchaseBtn.addEventListener("click", function(e) {
                 e.preventDefault();
                 const iuc = iucInput.value.trim();
-<<<<<<< Updated upstream
-                const phone = phoneInput.value.trim();
-=======
->>>>>>> Stashed changes
                 const selectedPlan = planSelect.options[planSelect.selectedIndex];
 
                 document.getElementById('confirm-network').innerHTML = selectedPlan.dataset.icon || '';
@@ -143,19 +135,13 @@ require __DIR__ . '/../partials/header.php';
                 purchaseBtn.disabled = !(iuc && plan);
             }
 
-<<<<<<< Updated upstream
-            function formatPhoneNumber(num) {
-                num = num.replace(/\D/g, '');
-                if (num.length === 10) num = '0' + num;
-                return num.length === 11 ? `${num.substring(0, 3)} ${num.substring(3, 7)} ${num.substring(7, 11)}` : num;
-            }
-
-=======
->>>>>>> Stashed changes
             function formattedAmount(amount) {
                 return amount ? `₦${Number(amount).toLocaleString()}` : "";
             }
         });
     </script>
 
+
 </body>
+
+</html>
