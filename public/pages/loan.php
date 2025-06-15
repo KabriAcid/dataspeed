@@ -41,6 +41,11 @@ if (isset($_GET['success'])) {
         font-size: 80px;
         color: #dc3545;
     }
+
+    .btn {
+        background-color: #722f37;
+        color: white
+    }
     </style>
 </head>
 
@@ -52,7 +57,7 @@ if (isset($_GET['success'])) {
         <h1 class="mb-3">Loan Page Under Maintenance</h1>
         <p class="lead">We're currently updating the <strong>Loan</strong> section. Please check back shortly while we
             make improvements.</p>
-        <a href="dashboard.php" class="btn btn-primary mt-4">Go Back Home</a>
+        <a href="dashboard.php" class="btn">Go Back Home</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
