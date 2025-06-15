@@ -140,7 +140,7 @@ require __DIR__ . '/../partials/header.php';
                             </div>
                             <div>
                                 <p class="m-0 mx-3 fw-semibold">Password & PIN</p>
-                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">Change password and PIN.</span>
+                                <span class="m-0 mx-3 text-sm text-secondary text-center">Change your password or PIN.</span>
                             </div>
                         </div>
                         <div>
@@ -170,7 +170,7 @@ require __DIR__ . '/../partials/header.php';
                             </div>
                             <div>
                                 <p class="m-0 mx-3 fw-semibold">Security Settings</p>
-                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">Change password and PIN.</span>
+                                <span class="m-0 mx-3 text-sm text-secondary">Biometrics, hide balance, security.</span>
                             </div>
                         </div>
                         <div>

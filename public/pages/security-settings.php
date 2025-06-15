@@ -32,7 +32,7 @@ require __DIR__ . '/../partials/header.php';
                         </div>
                         <div class="">
                             <h6 class="m-0 mx-3 fw-semibold">Biometrics</h6>
-                            <span class="m-0 mx-3 text-sm text-secondary">Choose to sign in with biometrics.</span>
+                            <span class="m-0 mx-3 text-sm text-secondary text-wrap">Choose to sign in with biometrics.</span>
                         </div>
                     </div>
                     <div>
