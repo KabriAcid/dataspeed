@@ -4,6 +4,14 @@ if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
 
+if (isset($_GET['expired'])) {
+    $expired = $_GET['expired'];
+    if ($expired == 1) {
+        echo "<script>showToasted('Your session has expired. Please login again.', 'error')</script>";
+    }
+}
+
+
 
 function set_title($title = null)
 {
