@@ -37,13 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
        break;
 
      case "data":
-       data += `&amount=${encodeURIComponent(
-         pinpadModal.dataset.amount
-       )}&phone=${encodeURIComponent(
-         pinpadModal.dataset.phone
-       )}&network=${encodeURIComponent(
-         pinpadModal.dataset.network
-       )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
+       data +=
+         `&amount=${encodeURIComponent(pinpadModal.dataset.amount)}` +
+         `&phone=${encodeURIComponent(pinpadModal.dataset.phone)}` +
+         `&network=${encodeURIComponent(pinpadModal.dataset.network)}` +
+         `&type=${encodeURIComponent(pinpadModal.dataset.type)}` +
+         `&plan_id=${encodeURIComponent(pinpadModal.dataset.plan_id)}`;
        endpoint = "data-purchase.php";
        break;
 

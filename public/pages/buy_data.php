@@ -201,7 +201,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             function loadPlans(forModal = false) {
                 if (!selectedProviderId || !selectedSub) return;
                 const container = forModal ? allPlanCards : planCardsContainer;
-                container.innerHTML = '<div class="text-center py-4">Loading plans...</div>';
+                container.innerHTML = '<div class="text-center py-4 loading-spinner"></div>';
                 sendAjaxRequest(
                     "fetch-plans.php",
                     "POST",
@@ -308,6 +308,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 pinpadModal.dataset.network = selectedNetwork;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
+                pinpadModal.dataset.plan_id =  selectedPlan.plan_id;
                 pinpadModal.style.display = "flex";
             });
 

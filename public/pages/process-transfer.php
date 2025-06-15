@@ -84,7 +84,7 @@ try {
     $iconRecipient = 'ni ni-money-coins';
 
 
-    $colorSender = 'text-warning';
+    $colorSender = 'text-success';
     $colorRecipient = 'text-success';
 
     $reference = uniqid('transfer_', true);
