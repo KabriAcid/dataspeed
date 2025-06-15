@@ -2,27 +2,14 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../partials/session-lock.php';
 require __DIR__ . '/../partials/header.php';
-
-// check if get success superglobal variable is = 1 then call the showToasted function
 
 $success = null;
 if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
 ?>
-<script>
-    window.addEventListener("load", () => {
-        // Create a new URL object based on the current location
-        const url = new URL(window.location);
-
-        // Remove 'success' parameter from the URL
-        url.searchParams.delete("success");
-
-        // Update the URL in the browser without reloading
-        window.history.replaceState(null, null, url.pathname + url.search);
-    });
-</script>
 
 <body>
     <main class="container-fluid py-4 mb-5">
@@ -318,8 +305,21 @@ if (isset($_GET['success'])) {
             });
         });
     </script>
-    <?php require __DIR__ . '/../partials/scripts.php'; ?>
-    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
+    <script>
+        window.addEventListener("load", () => {
+            // Create a new URL object based on the current location
+            const url = new URL(window.location);
+
+            // Remove 'success' parameter from the URL
+            url.searchParams.delete("success");
+
+            // Update the URL in the browser without reloading
+            window.history.replaceState(null, null, url.pathname + url.search);
+        });
+    </script>
+    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+    <?php require __DIR__ . '/../partials/scripts.php';
+    $_SESSION['reauth_required'] = false; ?>
 </body>
 
 </html>

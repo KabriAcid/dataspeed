@@ -43,7 +43,7 @@ $names = $_SESSION['user_id']['first_name'] . " " . $_SESSION['user_id']['last_n
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
 
         <?php require __DIR__ . '/../partials/scripts.php'; ?>
-        <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
+        <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
         <script src="https://checkout.flutterwave.com/v3.js"></script>
 
         <script>

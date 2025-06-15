@@ -94,8 +94,28 @@ require __DIR__ . '/../partials/header.php';
         &copy; Dreamcodes 2025. All rights reserved.
     </footer>
 
+    <script src="../assets/js/ajax.js"></script>
+    <script>
+        document.getElementById('sessionExpirySwitch').addEventListener('change', function() {
+            const enabled = this.checked ? 1 : 0;
+            sendAjaxRequest(
+                'update-security-settings.php',
+                'POST',
+                'setting=session_expiry_enabled&value=' + enabled,
+                function(response) {
+                    if (response.success) {
+                        showToasted('Session expiry setting updated.', 'success');
+
+
+                    } else {
+                        showToasted('Failed to update setting.', 'error');
+                    }
+                }
+            );
+        });
+    </script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
-    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
+    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
 </body>
 
 </html>

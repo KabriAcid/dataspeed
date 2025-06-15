@@ -325,7 +325,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
     <!-- FontAwesome CDN -->
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
-    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
+    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
 </body>
 
 </html>

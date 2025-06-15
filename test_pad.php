@@ -133,7 +133,7 @@ session_start();
   </script>
 
   <?php require __DIR__ . '/../partials/scripts.php'; ?>
-  <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
+  <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
 </body>
 
 </html>

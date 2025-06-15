@@ -99,7 +99,7 @@ if (preg_match('/for (\d{11})/', $txn['description'], $matches)) {
         </div>
     </main>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
-    <?php require __DIR__ . '/../partials/session-unlock.php'; ?>
+    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
 </body>
 
 </html>

@@ -4,13 +4,6 @@ if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
 
-if (isset($_GET['expired'])) {
-    $expired = $_GET['expired'];
-    if ($expired == 1) {
-        echo "<script>showToasted('Your session has expired. Please login again.', 'error')</script>";
-    }
-}
-
 
 
 function set_title($title = null)
@@ -68,6 +61,14 @@ function set_title($title = null)
         echo "<script>window.location.href='login.php';</script>";
         exit;
     }
+    if (isset($_GET['expired'])) {
+        $expired = $_GET['expired'];
+        if ($expired == 1) {
+            echo "<script>
+            showToasted('Your session has expired. Please login again.', 'error')
+            </script>";
+        }
+    }
     ?>
     <div class="form-container text-center">
         <div class="form-top-container">
@@ -107,10 +108,11 @@ function set_title($title = null)
         </form>
     </div>
 </main>
+
 <script src="../assets/js/toggle-password.js"></script>
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/auth.js"></script>
 <?php require __DIR__ . '/../partials/scripts.php'; ?>
-<?php require __DIR__ . '/../partials/session-unlock.php'; ?>
+<?php require __DIR__ . '/../partials/auth-modal.php'; ?>
 
 </html>
