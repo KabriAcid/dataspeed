@@ -21,6 +21,9 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
+$stmt = $pdo->prepare("SELECT session_expiry_enabled FROM user_settings WHERE user_id = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$userSettings = $stmt->fetch();
 
 // Session expiry check (10 minutes = 600 seconds)
 if (session_status() === PHP_SESSION_ACTIVE || session_status() === PHP_SESSION_NONE) {
@@ -52,4 +55,3 @@ if (session_status() === PHP_SESSION_ACTIVE || session_status() === PHP_SESSION_
         }
     }
 }
-// ...existing code...

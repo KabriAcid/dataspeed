@@ -79,7 +79,8 @@ require __DIR__ . '/../partials/header.php';
                     </div>
                     <div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input mt-1" type="checkbox" id="withBiometrics" tabindex="3">
+                            <input class="form-check-input mt-1" type="checkbox" id="sessionExpirySwitch"
+                                <?= ($userSettings['session_expiry_enabled'] ?? 1) ? 'checked' : '' ?>>
                         </div>
                     </div>
                 </div>

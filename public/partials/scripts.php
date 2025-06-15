@@ -48,6 +48,24 @@
         if (!handleAjaxResponse(response)) return;
         // ...your normal success/error handling...
     });
+
+    document.getElementById('sessionExpirySwitch').addEventListener('change', function() {
+        const enabled = this.checked ? 1 : 0;
+        sendAjaxRequest(
+            'update-securiy-settings.php',
+            'POST',
+            'setting=session_expiry_enabled&value=' + enabled,
+            function(response) {
+                if (response.success) {
+                    showToasted('Session expiry setting updated.', 'success');
+                } else {
+                    showToasted('Failed to update setting.', 'error');
+                }
+            }
+        );
+    });
+
+    // ...existing code...
 </script>
 <script src="../assets/js/bootstrap.js"></script>
 <script src="../assets/js/popper.js"></script>
