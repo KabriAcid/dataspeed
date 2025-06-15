@@ -82,7 +82,7 @@ try {
     $title = "Deposit Received";
     $msg = "₦" . number_format($amount, 2) . " credited to your wallet from $sender.";
     $type = "deposit";
-    $icon = "ni-money-coins";
+    $icon = "ni ni-money-coins";
     $color = "text-dark"; // Bootstrap green for successful deposit
 
     pushNotification($pdo, $userId, $title, $msg, $type, $icon, $color, '0');

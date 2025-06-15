@@ -19,7 +19,7 @@ require __DIR__ . '/../partials/header.php';
         </header>
 
         <!-- Transaction body -->
-        <div class="transaction-main-body">
+        <div>
             <p class="text-sm mb-2">
                 <span class="font-weight-bold">Today</span>
             </p>
@@ -36,7 +36,7 @@ require __DIR__ . '/../partials/header.php';
                         $icon = getTransactionIcon($transaction['type']);
                         $textColor = $transaction['type'] == 'Deposit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
-                        $date = date("M d, Y H:m", strtotime($transaction['created_at']));
+                        $date = date("h:i A . d F, Y.", strtotime($transaction['created_at']));
                         $prefix = ($transaction['type'] === 'Deposit') ? '+₦' : '-₦';
 
                         if ($transactions) {
@@ -65,8 +65,8 @@ require __DIR__ . '/../partials/header.php';
 
 
     </main>
-    <?php require __DIR__ . '/../partials/scripts.php'; ?>
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

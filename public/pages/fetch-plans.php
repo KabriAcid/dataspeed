@@ -1,4 +1,5 @@
 <?php
+//fetch-plans.php
 session_start();
 require __DIR__ . '/../../config/config.php';
 header('Content-Type: application/json');
@@ -33,7 +34,7 @@ try {
 
     // Fetch plans
     $plansStmt = $pdo->prepare("
-        SELECT id AS plan_id, price, api_id, volume, validity 
+        SELECT id AS plan_id, price, volume, validity 
         FROM service_plans 
         WHERE service_id = ? 
         AND provider_id = ? 

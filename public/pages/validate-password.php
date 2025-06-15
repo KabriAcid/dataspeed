@@ -211,7 +211,7 @@ try {
     $title = 'Virtual Account Created';
     $message = 'Congratulations! Your virtual account has been created successfully.';
     $type = 'virtual_account';
-    $icon = 'ni-building';
+    $icon = 'ni ni-building';
     $color = 'text-success';
     pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 
@@ -219,7 +219,7 @@ try {
     $pinTitle = 'Set Your Transaction PIN';
     $pinMessage = 'For your security, please set your transaction PIN to enable transactions.';
     $pinType = 'security';
-    $pinIcon = 'ni-key-25';
+    $pinIcon = 'ni ni-key-25';
     $pinColor = 'text-warning';
     pushNotification($pdo, $user_id, $pinTitle, $pinMessage, $pinType, $pinIcon, $pinColor, '0');
 
@@ -243,8 +243,8 @@ try {
             $title = "Referral Reward Earned";
             $message = "You have earned a referral reward! Go to your rewards page to claim it.";
             $type = "referral";
-            $icon = "ni-gift";
-            $color = "text-success";
+            $icon = "ni ni-diamond";
+            $color = "text-info";
             pushNotification($pdo, $referrerId, $title, $message, $type, $icon, $color, '0');
         }
 

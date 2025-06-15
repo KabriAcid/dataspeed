@@ -64,8 +64,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     <span class="input-group-prefix text-xs">
                         <img src="../assets/img/ng.png" alt=""> +234
                     </span>
-                    <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="10"
-                        placeholder="Phone Number" class="input phone-input" required>
+                    <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
+                        placeholder="Phone Number" class="input phone-input" required value="08011111111">
                 </div>
 
                 <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
@@ -84,8 +84,9 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     <p class="text-sm text-secondary mb-1 text-center">Send to</p>
                     <div id="customer-phone" data-raw=""></div>
                     <div class="info-row"><span>Network:</span><span id="confirmNetwork"></span></div>
-                    <div class="info-row"><span>Plan:</span><span id="confirmPlan" class="fw-bold"></span></div>
-                    <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bolder primary fs-6"></span></div>
+                    <div class="info-row"><span>Plan:</span><span id="confirmPlan" class="fw-bolder primary fs-6"></span></div>
+                    <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bold"></span></div>
+                    <div class="info-row"><span>Validity:</span><span id="confirmValidity" class="fw-bold"></span></div>
                     <div class="info-row">
                         <span>Product</span>
                         <span>
@@ -94,7 +95,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                                     <path d="M12 19.51L12.01 19.4989M2 8C8 3.5 16 3.5 22 8M5 12C9 8.99999 15 9 19 12M8.5 15.5C10.7504 14.1 13.2498 14.0996 15.5001 15.5"
                                         stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
-                            </i> Internet Data
+                            </i>&nbsp; Internet Data
                         </span>
                     </div>
                 </div>
@@ -110,7 +111,6 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
     </main>
 
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/pin-events.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
     <script>
         const networkSVGs = {
@@ -135,6 +135,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             const confirmNetwork = document.getElementById("confirmNetwork");
             const confirmPlan = document.getElementById("confirmPlan");
             const confirmAmount = document.getElementById("confirmAmount");
+            const confirmValidity = document.getElementById("confirmValidity");
             const payBtn = document.getElementById("payBtn");
             const airtelLogo = document.querySelector(".airtel-logo");
             const allPlanCards = document.getElementById("allPlanCards");
@@ -167,7 +168,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     tabBtns.forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
                     buyFor = btn.dataset.tab;
-                    recipientPhoneWrap.style.display = buyFor === "others" ? "block" : "none";
+                    recipientPhoneWrap.style.display = buyFor === "others" ? "flex" : "none";
                     selectedPlan = null;
                     highlightSelectedPlan();
                     purchaseBtn.disabled = true;
@@ -289,8 +290,9 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 const networkKey = selectedNetwork?.toUpperCase() || "MTN";
                 confirmNetwork.innerHTML = networkSVGs[networkKey] || "";
 
-                confirmPlan.textContent = `${selectedPlan.volume} (${selectedPlan.validity})`;
+                confirmPlan.textContent = `${selectedPlan.volume}`;
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
+                confirmValidity.textContent = `${selectedPlan.validity}`;
                 confirmModal.style.display = "flex";
             });
 
@@ -300,12 +302,23 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 pinpadModal.dataset.phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
                 pinpadModal.dataset.network = selectedNetwork;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
+                pinpadModal.dataset.action = "data";
                 pinpadModal.style.display = "flex";
             });
 
             // **Format Phone Number**
             function formatPhoneNumber(num) {
-                return num.length === 10 ? "0" + num.substring(0, 3) + " " + num.substring(3, 7) + " " + num.substring(7) : num;
+                // Remove all non-digits
+                num = num.replace(/\D/g, '');
+
+                // Ensure leading zero
+                if (num.length === 10) num = '0' + num;
+
+                // Format as 080 8483 4953
+                if (num.length === 11 && num.startsWith('0')) {
+                    return `${num.substring(0, 3)} ${num.substring(3, 7)} ${num.substring(7, 11)}`;
+                }
+                return num;
             }
 
             // --- Close confirm modal ---
@@ -324,8 +337,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
     </script>
 
     <!-- FontAwesome CDN -->
-    <?php require __DIR__ . '/../partials/scripts.php'; ?>
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

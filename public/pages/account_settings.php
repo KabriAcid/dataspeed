@@ -258,8 +258,8 @@ require __DIR__ . '/../partials/header.php';
     <footer class="my-5">
         <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All rights reserved.</p>
     </footer>
-    <?php require __DIR__ . '/../partials/scripts.php'; ?>
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

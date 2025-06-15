@@ -31,7 +31,7 @@ if ($user_id && $setting === 'session_expiry_enabled') {
         ? "Session expiry is now enabled. Your account will require re-authentication after 10 minutes of inactivity."
         : "Session expiry is now disabled. You will remain logged in unless you log out.";
     $type = 'security';
-    $icon = 'ni-lock-circle-open';
+    $icon = 'ni ni-lock-circle-open';
     $color = $value ? 'text-success' : 'text-warning';
 
     pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, 0);

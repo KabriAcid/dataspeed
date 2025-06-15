@@ -30,7 +30,7 @@ try {
         $title = "Bank Account Updated";
         $message = "Your withdrawal bank account details were updated successfully.";
         $type = "profile";
-        $icon = "ni-building";
+        $icon = "ni ni-building";
         $color = "text-info";
         pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 
@@ -53,7 +53,7 @@ try {
         $title = "Address Updated";
         $message = "Your address details were updated successfully.";
         $type = "profile";
-        $icon = "ni-pin-3";
+        $icon = "ni ni-pin-3";
         $color = "text-dark";
         pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 

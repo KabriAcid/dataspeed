@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = "Password Changed";
             $message = "Your account password was changed successfully.";
             $type = "security";
-            $icon = "ni-lock-circle-open";
+            $icon = "ni ni-lock-circle-open";
             $color = "text-primary";
             pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = "PIN Changed";
             $message = "Your transaction PIN was changed successfully.";
             $type = "security";
-            $icon = "ni-key-25";
+            $icon = "ni ni-key-25";
             $color = "text-warning";
             pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 

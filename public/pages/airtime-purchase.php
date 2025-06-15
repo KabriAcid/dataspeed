@@ -189,7 +189,7 @@ try {
     $direction = 'debit';
     $icon = 'ni ni-mobile-button';
     $color = 'text-success';
-    $description = "You have purchased <b>₦" . number_format($amount, 2) . "</b> airtime for $phone on " . strtoupper($network) . ".";
+    $description = "You have purchased ₦" . number_format($amount, 2) . " airtime for $phone on " . strtoupper($network) . ".";
 
     $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([

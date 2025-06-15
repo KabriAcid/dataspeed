@@ -37,7 +37,7 @@ $groupedNotifications = groupNotificationsByDate($notifications);
                                 <?php foreach ($notifications as $note): ?>
                                     <div class="timeline-block mb-3">
                                         <span class="timeline-step">
-                                            <i class="ni <?= htmlspecialchars($note['icon']) ?> <?= htmlspecialchars($note['color'] ?? '') ?> text-gradient"></i>
+                                            <i class="<?= htmlspecialchars($note['icon']) ?> <?= htmlspecialchars($note['color'] ?? '') ?> text-gradient"></i>
                                         </span>
                                         <div class="timeline-content">
                                             <div class="">
@@ -70,8 +70,8 @@ $groupedNotifications = groupNotificationsByDate($notifications);
         &copy; Dreamcodes 2025. All rights reserved.
     </footer>
 
-    <?php require __DIR__ . '/../partials/scripts.php'; ?>
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

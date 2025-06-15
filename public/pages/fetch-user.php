@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $title = "Money Transfer failed";
             $message = $userName . " " . "must complete registration before receiving any funds.";
             $type = 'transfer_fail';
-            $icon = 'ni-fat-remove';
+            $icon = 'ni ni-fat-remove';
             $color = 'text-warning';
             
             pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');

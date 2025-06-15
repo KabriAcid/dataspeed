@@ -66,33 +66,31 @@ function getTransactions($pdo, $user_id, $limit = 5)
  */
 function getRecentBalanceChangePercent(PDO $pdo, int $user_id): array
 {
-    // 1. Get current balance from account_balance
+    // 1. Get current wallet balance
     $currentBalance = (float)getUserBalance($pdo, $user_id);
 
-    // 2. Get the most recent transaction
+    // 2. Fetch most recent transaction
     $stmt = $pdo->prepare("SELECT amount, direction FROM transactions WHERE user_id = ? ORDER BY created_at DESC, id DESC LIMIT 1");
     $stmt->execute([$user_id]);
-    $lastTxn = $stmt->fetch(PDO::FETCH_ASSOC);
+    $txn = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$lastTxn) {
+    if (!$txn) {
         return ['percent' => 0, 'direction' => 'credit', 'valid' => false];
     }
 
-    $amount = (float)$lastTxn['amount'];
-    $direction = $lastTxn['direction'];
+    $amount = (float)$txn['amount'];
+    $direction = $txn['direction'];
 
     // 3. Estimate previous balance
-    if ($direction === 'credit') {
-        $previousBalance = $currentBalance - $amount;
-    } else {
-        $previousBalance = $currentBalance + $amount;
-    }
+    $previousBalance = $direction === 'debit'
+        ? $currentBalance + $amount
+        : $currentBalance - $amount;
 
-    if ($previousBalance == 0) {
+    if ($previousBalance <= 0) {
         return ['percent' => 0, 'direction' => $direction, 'valid' => false];
     }
 
-    // 4. Calculate percentage change
+    // 4. Calculate change and percent
     $change = $currentBalance - $previousBalance;
     $percent = ($change / $previousBalance) * 100;
 
@@ -102,6 +100,7 @@ function getRecentBalanceChangePercent(PDO $pdo, int $user_id): array
         'valid' => true
     ];
 }
+
 
 function getTransactionIcon($description)
 {

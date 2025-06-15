@@ -315,6 +315,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 pinpadModal.dataset.phone = phone;
                 pinpadModal.dataset.network = network;
                 pinpadModal.dataset.type = type;
+                pinpadModal.dataset.action = 'airtime';
+
 
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
@@ -373,7 +375,6 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
         });
 
         // **Format Phone Number**
-        // ...existing code...
         function formatPhoneNumber(num) {
             // Remove all non-digits
             num = num.replace(/\D/g, '');
@@ -393,8 +394,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             return amount ? `₦${Number(amount).toLocaleString()}` : "";
         }
     </script>
-    <?php require __DIR__ . '/../partials/scripts.php'; ?>
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

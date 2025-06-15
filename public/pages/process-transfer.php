@@ -66,7 +66,7 @@ try {
     // Log transactions for both users
     $descSender = "Transfer to {$recipient}";
     $descRecipient = "Received transfer from user $user_id";
-    $icon = 'ni-send';
+    $icon = 'ni ni-send';
     $colorSender = 'text-warning';
     $colorRecipient = 'text-success';
 

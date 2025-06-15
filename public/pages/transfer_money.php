@@ -88,7 +88,6 @@ require __DIR__ . '/../partials/header.php';
         &copy; Dreamcodes 2025. All rights reserved.
     </footer>
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/pin-events.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
     <script>
         // Place this in a <script> tag or your JS file after DOMContentLoaded
@@ -176,8 +175,8 @@ require __DIR__ . '/../partials/header.php';
         };
     </script>
 
-    <?php require __DIR__ . '/../partials/scripts.php'; ?>
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

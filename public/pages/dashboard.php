@@ -10,11 +10,11 @@ if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
 
-if (isset($_SESSION['reauth_required']) && !empty($_SESSION['reauth_required'])) {
-    require __DIR__ . '/public/partials/auth-modal.php';
-    echo "<script>document.addEventListener('DOMContentLoaded', function(){ showReauthModal(); });</script>";
-    exit;
-}
+// if (isset($_SESSION['reauth_required']) && !empty($_SESSION['reauth_required'])) {
+//     require __DIR__ . '/../partials/auth-modal.php';
+//     echo "<script>document.addEventListener('DOMContentLoaded', function(){ showReauthModal(); });</script>";
+//     exit;
+// }
 ?>
 
 <body>
@@ -247,7 +247,7 @@ if (isset($_SESSION['reauth_required']) && !empty($_SESSION['reauth_required']))
                     echo '<p class="text-center text-muted">No transactions yet.</p>';
                 } else {
                     foreach ($transactions as $transaction) {
-                        $icon = "<i class='ni {$transaction['icon']} {$transaction['color']}'></i>";
+                        $icon = "<i class='{$transaction['icon']} {$transaction['color']}'></i>";
                         $textColor = $transaction['direction'] === 'credit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
                         $date = date("M d, Y H:m", strtotime($transaction['created_at']));

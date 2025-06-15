@@ -15,23 +15,55 @@ document.addEventListener("DOMContentLoaded", function () {
    let data = `pin=${encodeURIComponent(pin)}`;
    let endpoint;
 
-   if (action === "transfer") {
-     data += `&email=${encodeURIComponent(
-       pinpadModal.dataset.email
-     )}&amount=${encodeURIComponent(
-       pinpadModal.dataset.amount
-     )}&action=transfer`;
-     endpoint = "process-transfer.php";
-   } else {
-     data += `&amount=${encodeURIComponent(
-       pinpadModal.dataset.amount
-     )}&phone=${encodeURIComponent(
-       pinpadModal.dataset.phone
-     )}&network=${encodeURIComponent(
-       pinpadModal.dataset.network
-     )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
-     endpoint = "process-purchase.php";
+   switch (action) {
+     case "transfer":
+       data += `&email=${encodeURIComponent(
+         pinpadModal.dataset.email
+       )}&amount=${encodeURIComponent(
+         pinpadModal.dataset.amount
+       )}&action=transfer`;
+       endpoint = "process-transfer.php";
+       break;
+
+     case "airtime":
+       data += `&amount=${encodeURIComponent(
+         pinpadModal.dataset.amount
+       )}&phone=${encodeURIComponent(
+         pinpadModal.dataset.phone
+       )}&network=${encodeURIComponent(
+         pinpadModal.dataset.network
+       )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
+       endpoint = "airtime-purchase.php";
+       break;
+
+     case "data":
+       data += `&amount=${encodeURIComponent(
+         pinpadModal.dataset.amount
+       )}&phone=${encodeURIComponent(
+         pinpadModal.dataset.phone
+       )}&network=${encodeURIComponent(
+         pinpadModal.dataset.network
+       )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
+       endpoint = "data-purchase.php";
+       break;
+
+     case "electricity":
+       data += `&amount=${encodeURIComponent(
+         pinpadModal.dataset.amount
+       )}&meter=${encodeURIComponent(
+         pinpadModal.dataset.meter
+       )}&disco=${encodeURIComponent(
+         pinpadModal.dataset.disco
+       )}&type=${encodeURIComponent(pinpadModal.dataset.type)}`;
+       endpoint = "electricity-purchase.php";
+       break;
+
+     // Add more services as needed
+     default:
+       showToasted("Unknown service type", "error");
+       return;
    }
+
 
    bodyOverlay.style.display = "flex";
 
@@ -47,9 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
        }, 1200);
      } else {
        showToasted(response.message, "error");
-       setTimeout(function () {
-         window.location.href = "dashboard.php";
-       }, 1200);
      }
    });
  }
