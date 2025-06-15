@@ -31,7 +31,7 @@ if (strlen($pin) !== 4 || !ctype_digit($pin)) {
 }
 
 if (!preg_match('/^0\d{10}$/', $phone)) {
-    echo json_encode(["success" => false, "message" => "Invalid phone number."]);
+    echo json_encode(["success" => false, "message" => "Invalid phone number.", "phone" => $phone]);
     exit;
 }
 

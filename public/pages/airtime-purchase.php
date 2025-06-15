@@ -28,7 +28,7 @@ if (!is_numeric($amount) || $amount <= 0) {
     exit;
 }
 if (!preg_match('/^0\d{10}$/', $phone)) {
-    echo json_encode(["success" => false, "message" => "Invalid phone number.", "phone" => $phone]);
+    echo json_encode(["success" => false, "message" => "Invalid phone number.", "phone"]);
     exit;
 }
 if (!in_array($network, ['mtn', 'airtel', 'glo', 'etisalat', '9mobile'])) {
