@@ -1670,6 +1670,16 @@ th {
   font-size: 16px;
 }
 
+/* TV SUBSCRIPTION */
+.subscription-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
 /* PINPAD MODAL */
 .pin-container {
   width: 100%;

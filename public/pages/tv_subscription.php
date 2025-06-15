@@ -4,7 +4,6 @@ session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../partials/header.php';
-$loggedInPhone = $user['phone_number'] ?? '';
 ?>
 
 <body>
@@ -31,7 +30,10 @@ $loggedInPhone = $user['phone_number'] ?? '';
                     <img src="../assets/icons/gotv.svg" alt="GOTV"><span>GOTV</span>
                 </div>
                 <div class="network-tab" data-provider="startimes" style="--brand-color: #f9a825;">
-                    <img src="../assets/icons/startimes.svg" alt="Startimes"><span>Startimes</span>
+                    <img src="../assets/icons/startimes.png" alt="Startimes"><span>Startimes</span>
+                </div>
+                <div class="network-tab" data-provider="showmax" style="--brand-color: #f9a825;">
+                    <img src="../assets/icons/showmax.svg" alt="showmax"><span>Showmax</span>
                 </div>
             </div>
         </div>
@@ -77,7 +79,11 @@ $loggedInPhone = $user['phone_number'] ?? '';
             const payBtn = document.getElementById("payBtn");
 
             // Event Listeners
+<<<<<<< Updated upstream
             [iucInput, phoneInput, planSelect].forEach(el =>
+=======
+            [iucInput, planSelect].forEach(el =>
+>>>>>>> Stashed changes
                 el.addEventListener("input", validatePurchaseButton)
             );
             planSelect.addEventListener("change", validatePurchaseButton);
@@ -85,7 +91,10 @@ $loggedInPhone = $user['phone_number'] ?? '';
             purchaseBtn.addEventListener("click", function(e) {
                 e.preventDefault();
                 const iuc = iucInput.value.trim();
+<<<<<<< Updated upstream
                 const phone = phoneInput.value.trim();
+=======
+>>>>>>> Stashed changes
                 const selectedPlan = planSelect.options[planSelect.selectedIndex];
 
                 document.getElementById('confirm-network').innerHTML = selectedPlan.dataset.icon || '';
@@ -109,7 +118,6 @@ $loggedInPhone = $user['phone_number'] ?? '';
                 const plan = planSelect.value;
 
                 pinpadModal.dataset.amount = amount;
-                pinpadModal.dataset.phone = phone;
                 pinpadModal.dataset.iuc = iuc;
                 pinpadModal.dataset.plan = plan;
                 pinpadModal.dataset.action = 'tv';
@@ -135,12 +143,15 @@ $loggedInPhone = $user['phone_number'] ?? '';
                 purchaseBtn.disabled = !(iuc && plan);
             }
 
+<<<<<<< Updated upstream
             function formatPhoneNumber(num) {
                 num = num.replace(/\D/g, '');
                 if (num.length === 10) num = '0' + num;
                 return num.length === 11 ? `${num.substring(0, 3)} ${num.substring(3, 7)} ${num.substring(7, 11)}` : num;
             }
 
+=======
+>>>>>>> Stashed changes
             function formattedAmount(amount) {
                 return amount ? `₦${Number(amount).toLocaleString()}` : "";
             }
