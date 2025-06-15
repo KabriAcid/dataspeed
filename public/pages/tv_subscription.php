@@ -43,14 +43,6 @@ $loggedInPhone = $user['phone_number'] ?? '';
                 <input type="text" class="input" id="iuc-number" placeholder="Enter Smart Card/IUC Number">
             </div>
 
-            <!-- Phone Number Input (optional) -->
-            <div class="input-group-container mb-3">
-                <span class="input-group-prefix text-xs">
-                    <img src="../assets/img/ng.png" alt=""> +234
-                </span>
-                <input type="tel" class="input phone-input" id="customer-phone" maxlength="10" placeholder="Phone Number (Optional)">
-            </div>
-
             <!-- Plan Selection -->
             <div class="input-group-container mb-3">
                 <select class="input" id="tv-plan">
@@ -71,5 +63,88 @@ $loggedInPhone = $user['phone_number'] ?? '';
 
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
-    <script src="../assets/js/tv-subscription.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Elements
+            const planSelect = document.getElementById("tv-plan");
+            const iucInput = document.getElementById("iuc-number");
+            const purchaseBtn = document.querySelector(".purchase-btn");
+
+            // Modals
+            const confirmModal = document.getElementById("confirmModal");
+            const pinpadModal = document.getElementById("pinpadModal");
+            const closeConfirmBtn = document.getElementById("closeConfirm");
+            const payBtn = document.getElementById("payBtn");
+
+            // Event Listeners
+            [iucInput, phoneInput, planSelect].forEach(el =>
+                el.addEventListener("input", validatePurchaseButton)
+            );
+            planSelect.addEventListener("change", validatePurchaseButton);
+
+            purchaseBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                const iuc = iucInput.value.trim();
+                const phone = phoneInput.value.trim();
+                const selectedPlan = planSelect.options[planSelect.selectedIndex];
+
+                document.getElementById('confirm-network').innerHTML = selectedPlan.dataset.icon || '';
+                document.getElementById('confirm-plan').textContent = selectedPlan.text;
+                document.getElementById('confirm-amount').textContent = formattedAmount(selectedPlan.dataset.amount);
+
+                confirmModal.style.display = "flex";
+            });
+
+            closeConfirmBtn.addEventListener("click", () => {
+                confirmModal.style.display = "none";
+            });
+
+            confirmModal.addEventListener("click", (e) => {
+                if (e.target === confirmModal) confirmModal.style.display = "none";
+            });
+
+            payBtn.addEventListener("click", () => {
+                const amount = document.getElementById('confirm-amount').textContent.replace(/[^\d]/g, '');
+                const iuc = iucInput.value.trim();
+                const plan = planSelect.value;
+
+                pinpadModal.dataset.amount = amount;
+                pinpadModal.dataset.phone = phone;
+                pinpadModal.dataset.iuc = iuc;
+                pinpadModal.dataset.plan = plan;
+                pinpadModal.dataset.action = 'tv';
+
+                sendAjaxRequest("check-balance.php", "POST", `amount=${amount}`, function(response) {
+                    if (response.success) {
+                        pinpadModal.style.display = "flex";
+                    } else {
+                        showToasted(response.message, "error");
+                    }
+                });
+
+                confirmModal.style.display = "none";
+            });
+
+            pinpadModal.addEventListener("click", function(e) {
+                if (e.target === pinpadModal) pinpadModal.style.display = "none";
+            });
+
+            function validatePurchaseButton() {
+                const iuc = iucInput.value.trim();
+                const plan = planSelect.value;
+                purchaseBtn.disabled = !(iuc && plan);
+            }
+
+            function formatPhoneNumber(num) {
+                num = num.replace(/\D/g, '');
+                if (num.length === 10) num = '0' + num;
+                return num.length === 11 ? `${num.substring(0, 3)} ${num.substring(3, 7)} ${num.substring(7, 11)}` : num;
+            }
+
+            function formattedAmount(amount) {
+                return amount ? `₦${Number(amount).toLocaleString()}` : "";
+            }
+        });
+    </script>
+
 </body>
