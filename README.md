@@ -56,3 +56,7 @@ https://www.figma.com/proto/b4pCL3Rx5monu7krNL0n8c/PAYMENT-APP%2F-Fintech%2FBNPL
 
 ## KYC API Links
 https://developers.korapay.com/docs/nigeria-nin
+
+
+## Codepen
+https://codepen.io/Abdullahi-Kabri/pen/GgJGazV
