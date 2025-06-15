@@ -9,6 +9,12 @@ $success = null;
 if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
+
+if (isset($_SESSION['reauth_required']) && !empty($_SESSION['reauth_required'])) {
+    require __DIR__ . '/public/partials/auth-modal.php';
+    echo "<script>document.addEventListener('DOMContentLoaded', function(){ showReauthModal(); });</script>";
+    exit;
+}
 ?>
 
 <body>
@@ -318,8 +324,7 @@ if (isset($_GET['success'])) {
         });
     </script>
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
-    <?php require __DIR__ . '/../partials/scripts.php';
-    $_SESSION['reauth_required'] = false; ?>
+    <?php require __DIR__ . '/../partials/scripts.php';?>
 </body>
 
 </html>
