@@ -8,10 +8,13 @@ if (isset($_SESSION['user_id'])) {
     exit; // Always exit after redirect!
 }
 
-function set_title($title = null)
+function set_header($page_header = 'Dataspeed')
 {
-    $default = "DataSpeed";
-    return htmlspecialchars($title ?: $default);
+    return $page_header = htmlspecialchars($page_header);
+}
+function set_title($title = 'Dataspeed')
+{
+    return $title = htmlspecialchars($title);
 }
 ?>
 <!DOCTYPE html>
@@ -30,16 +33,16 @@ function set_title($title = null)
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet">
     <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet">
-    
+
     <!-- Lottie Animations -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <!-- <script src="../assets/js/lottie-player.js"></script> -->
-    
+
     <!-- Toasted JS for notifications -->
     <link rel="stylesheet" href="../assets/css/toasted.css" />
     <script src="../assets/js/toasted.js"></script>
-    
+
     <link rel="stylesheet" href="../assets/css/soft-design-system-pro.min3f71.css">
     <link rel="stylesheet" href="../assets/css/style.css">
-    
+
 </head>

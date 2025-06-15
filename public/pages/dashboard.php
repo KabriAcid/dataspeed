@@ -39,11 +39,7 @@ if (isset($_GET['success'])) {
             <!-- Right Content: Notification -->
             <div class="notification-icon">
                 <a href="notifications.php">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M13.73 20C13.5542 20.3031 13.3019 20.5547 12.9982 20.7295C12.6946 20.9044 12.3504 20.9965 12 20.9965C11.6496 20.9965 11.3054 20.9044 11.0018 20.7295C10.6982 20.5547 10.4458 20.3031 10.27 20M17.3333 9C17.3333 7.4087 16.7714 5.88258 15.7712 4.75736C14.771 3.63214 13.4145 3 12 3C10.5855 3 9.22896 3.63214 8.22876 4.75736C7.22857 5.88258 6.66667 7.4087 6.66667 9C6.66667 16 4 17.5 4 17.5H20C20 17.5 17.3333 16 17.3333 9Z"
-                            stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
+                    <i class="ni ni-bell-55 fs-5 text-gradient text-dark"></i>
                     <span class="notification-badge"></span>
                 </a>
             </div>
@@ -55,7 +51,7 @@ if (isset($_GET['success'])) {
         ?>
         <div class="d-flex align-items-center">
             <h2 class="display-5 fw-bold mb-0 digit m-0" id="balanceAmount"><?= "&#8358;" . getUserBalance($pdo, $user_id) ?><span class="m-0"><?php if ($balanceChange['valid']): ?><small class="fw-bold text-xs <?= $balanceChange['direction'] === 'debit' ? 'text-danger' : 'text-success' ?>">
-                            <?= ($balanceChange['percent'] > 0 ? ($balanceChange['direction'] === 'credit' ? '+' : '') : '') . $balanceChange['percent'] ?>%</small>
+                        <?= ($balanceChange['percent'] > 0 ? ($balanceChange['direction'] === 'credit' ? '+' : '') : '') . $balanceChange['percent'] ?>%</small>
                     <?php endif; ?>
                 </span></h2>
             <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>

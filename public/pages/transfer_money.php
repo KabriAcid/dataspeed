@@ -117,7 +117,7 @@ require __DIR__ . '/../partials/header.php';
                     document.getElementById('confirm-email').textContent = response.data.email;
                     document.getElementById('confirm-name').textContent = response.data.first_name + " " + response.data.last_name;
                     document.getElementById('confirm-city').textContent = response.data.city ? response.data.city : 'N/A';
-                    document.getElementById('confirm-phone').textContent = response.data.phone_number;
+                    document.getElementById('confirm-phone').textContent = formatPhoneNumber(response.data.phone_number || 'N/A');
                     document.getElementById('confirm-amount').textContent = '₦' + Number(amount).toLocaleString() + '.00';
 
                     // Show modal
@@ -173,6 +173,20 @@ require __DIR__ . '/../partials/header.php';
             delete pinpadModal.dataset.network;
             delete pinpadModal.dataset.type;
         };
+
+        function formatPhoneNumber(num) {
+            // Remove all non-digits
+            num = num.replace(/\D/g, '');
+
+            // Ensure leading zero
+            if (num.length === 10) num = '0' + num;
+
+            // Format as 080 8483 4953
+            if (num.length === 11 && num.startsWith('0')) {
+                return `${num.substring(0, 3)} ${num.substring(3, 7)} ${num.substring(7, 11)}`;
+            }
+            return num;
+        }
     </script>
 
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>

@@ -20,7 +20,12 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                     <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <h5 class="fw-bold">Referrals</h5>
-                <span></span>
+                <div class="notification-icon">
+                    <a href="notifications.php">
+                        <i class="ni ni-bell-55 fs-5 text-gradient text-dark"></i>
+                        <span class="notification-badge"></span>
+                    </a>
+                </div>
             </div>
         </header>
 

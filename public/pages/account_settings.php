@@ -14,7 +14,12 @@ require __DIR__ . '/../partials/header.php';
                     <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <h5 class="fw-bold">Profile</h5>
-                <span></span>
+                <div class="notification-icon">
+                    <a href="notifications.php">
+                        <i class="ni ni-bell-55 fs-5 text-gradient text-dark"></i>
+                        <span class="notification-badge"></span>
+                    </a>
+                </div>
             </div>
         </header>
 
@@ -38,7 +43,7 @@ require __DIR__ . '/../partials/header.php';
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="icon-container">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M4.271 18.3457C4.271 18.3457 6.50002 15.5 12 15.5C17.5 15.5 19.7291 18.3457 19.7291 18.3457M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15 9C15 10.6569 13.6569 12 12 12C10.3431 12 9 10.6569 9 9C9 7.34315 10.3431 6 12 6C13.6569 6 15 7.34315 15 9Z"
                                         stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -68,7 +73,7 @@ require __DIR__ . '/../partials/header.php';
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="icon-container">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M21.1679 8C19.6248 4.46819 16.1006 2 12 2C6.81465 2 2.5511 5.94668 2.04938 11M22 3V7.4C22 7.73137 21.7314 8 21.4 8H17M2.88146 16C4.42458 19.5318 7.94874 22 12.0494 22C17.2347 22 21.4983 18.0533 22 13M2.04932 21V16.6C2.04932 16.2686 2.31795 16 2.64932 16H7.04932"
@@ -99,12 +104,8 @@ require __DIR__ . '/../partials/header.php';
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="icon-container">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M22 9V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V9ZM22 9H6"
-                                        stroke="#94241E" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17 10H20M20 10H23M20 10V7M20 10V13M1 20V19C1 15.134 4.13401 12 8 12M15 20V19C15 15.134 11.866 12 8 12M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </div>
                             <div class="">
@@ -129,12 +130,9 @@ require __DIR__ . '/../partials/header.php';
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="icon-container">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M16 12H17.4C17.7314 12 18 12.2686 18 12.6V19.4C18 19.7314 17.7314 20 17.4 20H6.6C6.26863 20 6 19.7314 6 19.4V12.6C6 12.2686 6.26863 12 6.6 12H8M16 12V8C16 6.66667 15.2 4 12 4C8.8 4 8 6.66667 8 8V12M16 12H8"
-                                        stroke="#94241E" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 12C10 14.2091 8.20914 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C8.20914 8 10 9.79086 10 12ZM10 12H22V15" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M18 12V15" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
 
                             </div>

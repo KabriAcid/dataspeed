@@ -482,8 +482,17 @@ button:disabled {
 .icon-container {
   border-radius: 8px;
   padding: 12px 16px;
-  background: #f1effa;
+  background: #fff;
+  max-width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-shadow: var(--shadow);
+}
+.icon-container svg {
+  width: 24px!important;
+  height: 44px!important;
 }
 
 /* OTP */
@@ -587,13 +596,9 @@ button:disabled {
   align-items: center;
   justify-content: center;
   width: 40px;
+  margin-top: 10px;
   height: 40px;
   border-radius: 50%;
-}
-
-.notification-icon img {
-  width: 20px;
-  height: 20px;
 }
 
 .notification-badge {
@@ -604,6 +609,7 @@ button:disabled {
   height: 10px;
   background-color: green;
   border-radius: 50%;
+  z-index: 100;
   border: 2px solid white;
 }
 
@@ -813,11 +819,6 @@ select.select-lga {
   align-items: center;
   background: #ffffff;
   box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-}
-
-.icon-container {
-  border-radius: 8px;
-  padding: 12px 16px;
 }
 
 /* footer */
@@ -1679,6 +1680,44 @@ th {
   border-radius: 10px;
   box-shadow: var(--shadow);
 }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 350px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#planList {
+  list-style: none;
+  padding: 0;
+}
+
+#planList li {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #f3f3f3;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#planList li:hover {
+  background-color: var(--brand-color, #007bff);
+  color: white;
+}
+
 
 /* PINPAD MODAL */
 .pin-container {
