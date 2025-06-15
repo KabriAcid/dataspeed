@@ -250,7 +250,7 @@ if (isset($_GET['success'])) {
                         $icon = "<i class='{$transaction['icon']} {$transaction['color']}'></i>";
                         $textColor = $transaction['direction'] === 'credit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
-                        $date = date("M d, Y H:m", strtotime($transaction['created_at']));
+                        $date = date("h:i A . d F, Y.", strtotime($transaction['created_at']));
                         $prefix = $transaction['direction'] === 'credit' ? '+₦' : '-₦';
 
                         if ($transactions) {

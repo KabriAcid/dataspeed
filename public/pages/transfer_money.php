@@ -59,15 +59,15 @@ require __DIR__ . '/../partials/header.php';
                     <div id="confirm-email" class="fw-bold fs-5 primary text-center mb-2">example@email.com</div>
                     <div class="info-row">
                         <span>Name:</span>
-                        <span id="confirm-name" class="fw-bold fs-6"></span>
+                        <span id="confirm-name" class="fw-bold"></span>
                     </div>
                     <div class="info-row">
                         <span>Phone Number:</span>
-                        <span id="confirm-phone" class="fs-6"></span>
+                        <span id="confirm-phone"></span>
                     </div>
                     <div class="info-row">
                         <span>City:</span>
-                        <span id="confirm-city" class="fs-6"></span>
+                        <span id="confirm-city"></span>
                     </div>
                     <div class="info-row">
                         <span>Amount:</span>

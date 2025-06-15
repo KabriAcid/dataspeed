@@ -63,23 +63,40 @@ try {
     // Fetch recipient email (already available as $recipient)
     $recipientEmail = $recipient;
 
+    // Fetch sender name
+    $stmt = $pdo->prepare("SELECT first_name, last_name FROM users WHERE user_id = ?");
+    $stmt->execute([$user_id]);
+    $sender = $stmt->fetch(PDO::FETCH_ASSOC);
+    $senderName = $sender ? $sender['first_name'] . ' ' . $sender['last_name'] : 'Unknown User';
+
+    // Fetch recipient name
+    $stmt = $pdo->prepare("SELECT first_name, last_name FROM users WHERE user_id = ?");
+    $stmt->execute([$recipient_id]);
+    $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
+    $recipientName = $recipient ? $recipient['first_name'] . ' ' . $recipient['last_name'] : 'Unknown User';
+
+
     // Log transactions for both users
-    $descSender = "Transfer to {$recipient}";
-    $descRecipient = "Received transfer from user $user_id";
-    $icon = 'ni ni-send';
+    $descSender = "Transfer to {$recipientName}";
+    $descRecipient = "Received transfer from {$senderName}";
+
+    $iconSender = 'ni ni-send';
+    $iconRecipient = 'ni ni-money-coins';
+
+
     $colorSender = 'text-warning';
     $colorRecipient = 'text-success';
 
     $reference = uniqid('transfer_', true);
 
     $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color, reference, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-        ->execute([$user_id, 'Money Transfer', 'debit', $amount, 'success', $descSender, $icon, $colorSender, $reference, $senderEmail]);
+        ->execute([$user_id, 'Money Transfer', 'debit', $amount, 'success', $descSender, $iconSender, $colorSender, $reference, $senderEmail]);
     $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color, reference, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-        ->execute([$recipient_id, 'Money Transfer', 'credit', $amount, 'success', $descRecipient, $icon, $colorRecipient, $reference, $recipientEmail]);
+        ->execute([$recipient_id, 'Money Received', 'credit', $amount, 'success', $descRecipient, $iconRecipient, $colorRecipient, $reference, $recipientEmail]);
 
     // Push notifications
-    pushNotification($pdo, $user_id, "Transfer Sent", "You sent ₦" . number_format($amount, 2) . " to {$recipient}.", "Money Transferred", $icon, $colorSender, '0');
-    pushNotification($pdo, $recipient_id, "Transfer Received", "You received ₦" . number_format($amount, 2) . " from user $recipient.", "Money Received", $icon, $colorRecipient, '0');
+    pushNotification($pdo, $user_id, "Transfer Sent", "You sent ₦" . number_format($amount, 2) . " to {$recipientName}.", "Money Transferred", $iconSender, $colorSender, '0');
+    pushNotification($pdo, $recipient_id, "Transfer Received", "You received ₦" . number_format($amount, 2) . " from {$senderName}.", "Money Received", $iconRecipient, $colorRecipient, '0');
 
     $pdo->commit();
 

@@ -26,3 +26,6 @@
 [2025-06-14 21:59:06] Generated reference: ref_f0b089dd-ff26-4d4f-b167-078a587ed7e2 for user coci@gmail.com
 [2025-06-14 21:59:13] DB Update Successful for user coci@gmail.com
 [2025-06-14 22:15:48] User's existing virtual account: 6652566487
+[2025-06-15 04:58:49] User's existing virtual account: None
+[2025-06-15 04:58:49] Generated reference: ref_1fff7796-3d9a-4755-b81d-71ce7afa123b for user abdullahikabri@gmail.com
+[2025-06-15 04:58:56] DB Update Successful for user abdullahikabri@gmail.com

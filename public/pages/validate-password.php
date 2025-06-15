@@ -207,6 +207,19 @@ try {
         exit;
     }
 
+
+    // Insert user settings along with ip address
+    $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
+    $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometric_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?)");
+    $stmt->execute([
+        $user_id,
+        0,
+        0,
+        1, // Default to enabled
+        $ipAddress
+    ]);
+    
+
     // Insert notification for user in the db
     $title = 'Virtual Account Created';
     $message = 'Congratulations! Your virtual account has been created successfully.';
