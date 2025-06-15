@@ -5,7 +5,6 @@ function set_title($title = null)
     $default = "DataSpeed";
     return htmlspecialchars($title ?: $default);
 }
-echo password_hash('sadik419', PASSWORD_DEFAULT); // Example usage, remove in production
 ?>
 <!DOCTYPE html>
 <html lang="en">
