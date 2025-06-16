@@ -57,6 +57,7 @@ function set_title($title = null)
                     <span class="page"></span>
                     <span class="page"></span>
                     <span class="page"></span>
+                    <span class="page"></span>
                 </div>
 
             </div>
@@ -72,7 +73,7 @@ function set_title($title = null)
                             placeholder="Referral code (optional)" class="input"
                             value="<?php echo isset($referral_code) ? $referral_code : ''; ?>" autocomplete="off">
                         <button type="button" class="btn primary-btn mt-3" id="referral-submit">
-                            Continue
+                            Proceed
                         </button>
                     </div>
                 </div>
@@ -89,7 +90,7 @@ function set_title($title = null)
                                 Back
                             </button>
                             <button type="button" class="btn primary-btn mt-3" id="email-submit">
-                                Continue
+                                Proceed
                             </button>
                         </div>
                     </div>
@@ -138,7 +139,7 @@ function set_title($title = null)
                                 Back
                             </button>
                             <button type="button" class="btn primary-btn mt-3" id="phone-submit">
-                                Continue
+                                Proceed
                             </button>
                         </div>
                     </div>
@@ -154,9 +155,34 @@ function set_title($title = null)
                         <input type="text" name="first_name" id="first_name" placeholder="First Name" class="input">
                         <div class="my-3"></div>
                         <input type="text" name="last_name" id="last_name" placeholder="Last Name" class="input">
-                        <button type="button" class="btn primary-btn mt-3" id="names-submit">
-                            Continue
-                        </button>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn bg-light mt-3 prev-button">
+                                Back
+                            </button>
+                            <button type="button" class="btn primary-btn mt-3" id="names-submit">
+                                Proceed
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- USERNAME -->
+                <div class="form-step d-none">
+                    <div class="form-step-header">
+                        <h4>What's your username?</h3>
+                            <p class="text-sm">Enter your favorite username.</p>
+                    </div>
+                    <div class="form-field">
+                        <input type="text" name="username" id="username" placeholder="User Name" class="input">
+                        <div class="my-3"></div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn bg-light mt-3 prev-button">
+                                Back
+                            </button>
+                            <button type="button" class="btn primary-btn mt-3" id="username-submit">
+                                Proceed
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -173,17 +199,25 @@ function set_title($title = null)
                         <input type="password" class="input" id="confirm-password" name="confirm_password"
                             placeholder="Password">
                     </div>
-                    <button type="button" class="btn primary-btn" id="password-submit">
-                        Finish
-                    </button>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn bg-light mt-3 prev-button">
+                            Back
+                        </button>
+                        <button type="button" class="btn primary-btn mt-3" id="password-submit">
+                            Finish
+                        </button>
+                    </div>
                 </div>
 
             </form>
 
         </div>
+
+        <!-- Overlay -->
         <div id="bodyOverlay" class="body-overlay" style="display: none;">
             <div class="overlay-spinner"></div>
         </div>
+
     </main>
 </body>
 <script>
@@ -219,7 +253,7 @@ function set_title($title = null)
 
     function updateReferralBtnText() {
         if (referralInput.value.trim().length > 0) {
-            referralSubmitBtn.innerText = 'Continue';
+            referralSubmitBtn.innerText = 'Proceed';
         } else {
             referralSubmitBtn.innerText = 'Skip';
         }

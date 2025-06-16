@@ -38,10 +38,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // if current step is 0, hide the registration reset button
-  if(currentStep == 0){
-    document.getElementById('registration')
-  }
+  // if (currentStep == 0) {
+  //   document.getElementById("reset-registration").style.visibility = "hidden";
+  // } else {
+  //   document.getElementById("reset-registration").style.visibility = "visible";
+  // }
 
   // Step 0: Referral Code
   const referralInput = document.getElementById("referral-code");
@@ -80,9 +81,13 @@ document.addEventListener("DOMContentLoaded", function () {
   backButton.forEach(button => {
     button.addEventListener("click", () => {
       if (currentStep > 0) {
-        currentStep--;
-        showStep(currentStep);
-        sessionStorage.setItem("currentStep", currentStep);
+        if (currentStep != 2) {
+          currentStep--;
+          showStep(currentStep);
+          sessionStorage.setItem("currentStep", currentStep);
+        } else {
+          currentStep -= 2;
+        }
       }
     });
   });
@@ -104,14 +109,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Checking network before any AJAX
-      if (!navigator.onLine) {
-        showToasted(
-          "No internet connection. Please connect and try again.",
-          "error"
-        );
-        done();
-        return;
-      }
+      // if (!navigator.onLine) {
+      //   showToasted(
+      //     "No internet connection. Please connect and try again.",
+      //     "error"
+      //   );
+      //   done();
+      //   return;
+      // }
 
       sendAjaxRequest(
         "validate-email.php",
@@ -127,14 +132,14 @@ document.addEventListener("DOMContentLoaded", function () {
             sessionStorage.setItem("registration_id", registration_id);
 
             // Check network again before sending OTP
-            if (!navigator.onLine) {
-              showToasted(
-                "Couldn't send email. Please check your internet connection.",
-                "error"
-              );
-              done();
-              return;
-            }
+            // if (!navigator.onLine) {
+            //   showToasted(
+            //     "Couldn't send email. Please check your internet connection.",
+            //     "error"
+            //   );
+            //   done();
+            //   return;
+            // }
 
             sendAjaxRequest(
               "send-otp.php",
@@ -291,6 +296,11 @@ document.addEventListener("DOMContentLoaded", function () {
     handleButtonClick(phoneSubmit, done => {
       let phone = phoneInput.value.trim().replace(/^0/, "");
 
+      if (phone == "") {
+        showToasted("Phone number is required.", "error");
+        done();
+        return;
+      }
       if (/^(\+234|234)/.test(phoneInput.value)) {
         showToasted("Remove the country code.", "error");
         done();
@@ -313,6 +323,7 @@ document.addEventListener("DOMContentLoaded", function () {
         )}&registration_id=${encodeURIComponent(registration_id)}`,
         response => {
           if (response.success) {
+            showToasted(response.message, "success");
             completedSteps.add(3);
             setTimeout(() => {
               goToStep(4);
@@ -362,6 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
         )}&registration_id=${encodeURIComponent(registration_id)}`,
         response => {
           if (response.success) {
+            showToasted(response.message, "success");
             completedSteps.add(4);
             setTimeout(() => {
               goToStep(5);
@@ -376,14 +388,58 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // Step 5: Username
+  const userNameInput = document.getElementById("username");
+  const userNameSubmit = document.getElementById("username-submit");
+
+  userNameSubmit.addEventListener("click", () => {
+    handleButtonClick(userNameSubmit, done => {
+      const userName = userNameInput.value.trim();
+
+      if (!userName) {
+        showToasted("Username is required.", "error");
+        done();
+        return;
+      }
+      if (userName.length <= 4 || userName.length > 20) {
+        showToasted("Username length is invalid.", "error");
+        done();
+        return;
+      }
+
+      const registration_id = sessionStorage.getItem("registration_id");
+
+      sendAjaxRequest(
+        "validate-username.php",
+        "POST",
+        `user_name=${encodeURIComponent(
+          userName
+        )}&registration_id=${encodeURIComponent(registration_id)}`,
+        response => {
+          if (response.success) {
+            showToasted(response.message, "success");
+            completedSteps.add(5);
+            setTimeout(() => {
+              goToStep(6);
+              done();
+            }, TIMEOUT);
+          } else {
+            showToasted(response.message, "error");
+            done();
+          }
+        }
+      );
+    });
+  });
+
   function withOverlay(handler) {
-    document.getElementById("bodyOverlay").style.display = "block";
+    document.getElementById("bodyOverlay").style.display = "flex";
     handler(() => {
       document.getElementById("bodyOverlay").style.display = "none";
     });
   }
 
-  // Step 5: Password
+  // Step 6: Password
   const passwordInput = document.getElementById("password");
   const confirmPasswordInput = document.getElementById("confirm-password");
   const passwordSubmit = document.getElementById("password-submit");
@@ -422,6 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
           )}&registration_id=${encodeURIComponent(registration_id)}`,
           response => {
             if (response.success) {
+              showToasted(response.message, "success");
               setTimeout(() => {
                 sessionStorage.clear();
                 window.location.href = "login.php?success=1";
@@ -429,6 +486,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
               hideOverlay();
               showToasted(response.message || "Registration failed.", "error");
+              done();
             }
           }
         );

@@ -40,8 +40,8 @@ require __DIR__ . '/../partials/header.php';
             <p class="text-muted fw-bold">Account Settings</p>
             <div class="mb-3">
                 <a href="profile.php">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-top">
+                        <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -50,9 +50,9 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <div class="">
-                                <p class="m-0 mx-3 fw-semibold">Profile Setting</p>
-                                <span class="m-0 mx-3 text-sm text-secondary">Profile update and biodata.</span>
+                            <div class="mx-3">
+                                <p class="m-0 fw-semibold">Profile Setting</p>
+                                <span class="m-0 text-sm text-secondary">Profile update and biodata.</span>
                             </div>
                         </div>
                         <div>
@@ -70,8 +70,8 @@ require __DIR__ . '/../partials/header.php';
 
             <div class="mb-3">
                 <a href="transactions.php">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-top">
+                        <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -82,9 +82,9 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <div class="">
-                                <p class="m-0 mx-3 fw-semibold">Transaction History</p>
-                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">View all history of transactions.</span>
+                            <div class="mx-3">
+                                <p class="m-0 fw-semibold">Transaction History</p>
+                                <span class="m-0 text-sm text-secondary">View all history of transactions.</span>
                             </div>
                         </div>
                         <div>
@@ -101,16 +101,16 @@ require __DIR__ . '/../partials/header.php';
 
             <div class="mb-3">
                 <a href="referrals.php">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-top">
+                        <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17 10H20M20 10H23M20 10V7M20 10V13M1 20V19C1 15.134 4.13401 12 8 12M15 20V19C15 15.134 11.866 12 8 12M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </div>
-                            <div class="">
-                                <p class="m-0 mx-3 fw-semibold">Referrals</p>
-                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">Claim pending referrals rewards.</span>
+                            <div class="mx-3">
+                                <p class="m-0 fw-semibold">Referrals</p>
+                                <span class="m-0 text-sm text-secondary">Claim pending referrals rewards.</span>
                             </div>
                         </div>
                         <div>
@@ -127,8 +127,8 @@ require __DIR__ . '/../partials/header.php';
 
             <div class="mb-3">
                 <a href="password-pin-settings.php?tab=password">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-top">
+                        <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 12C10 14.2091 8.20914 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C8.20914 8 10 9.79086 10 12ZM10 12H22V15" stroke="#94241E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -136,9 +136,9 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <div>
-                                <p class="m-0 mx-3 fw-semibold">Password & PIN</p>
-                                <span class="m-0 mx-3 text-sm text-secondary text-center">Change your password or PIN.</span>
+                            <div class="mx-3">
+                                <p class="m-0 fw-semibold">Password & PIN</p>
+                                <span class="m-0 text-sm text-secondary text-center">Change your password or PIN.</span>
                             </div>
                         </div>
                         <div>
@@ -154,8 +154,8 @@ require __DIR__ . '/../partials/header.php';
             </div>
             <div class="mb-3">
                 <a href="security-settings.php">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-top">
+                        <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -166,9 +166,9 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <div>
-                                <p class="m-0 mx-3 fw-semibold">Security Settings</p>
-                                <span class="m-0 mx-3 text-sm text-secondary">Biometrics, hide balance, security.</span>
+                            <div class="mx-3">
+                                <p class="m-0 fw-semibold">Security Settings</p>
+                                <span class="m-0 text-sm text-secondary">Biometrics, hide balance, security.</span>
                             </div>
                         </div>
                         <div>
@@ -186,8 +186,8 @@ require __DIR__ . '/../partials/header.php';
             <p class="text-muted fw-bold mt-4">Others</p>
             <div class="mb-3">
                 <a href="faq.php">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-top">
+                        <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -219,9 +219,9 @@ require __DIR__ . '/../partials/header.php';
                                 </svg>
 
                             </div>
-                            <div class="">
-                                <p class="m-0 mx-3 fw-semibold">FAQ & Help</p>
-                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">See frequently asked questions.</span>
+                            <div class="mx-3">
+                                <p class="m-0 fw-semibold">FAQ & Help</p>
+                                <span class="m-0 text-sm text-secondary">See frequently asked questions.</span>
                             </div>
                         </div>
                         <div>
@@ -237,8 +237,8 @@ require __DIR__ . '/../partials/header.php';
             </div>
             <div class="mb-3">
                 <a href="logout.php">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-top">
+                        <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">
                                 <svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <title>spaceship</title>
@@ -256,9 +256,9 @@ require __DIR__ . '/../partials/header.php';
                                     </g>
                                 </svg>
                             </div>
-                            <div class="">
-                                <p class="m-0 mx-3 fw-semibold">Sign out</p>
-                                <span class="m-0 mx-3 text-sm text-secondary no-wrap">Log out of your account.</span>
+                            <div class="mx-3">
+                                <p class="m-0 fw-semibold">Sign out</p>
+                                <span class="m-0 text-sm text-secondary">Log out of your account.</span>
                             </div>
                         </div>
                     </div>

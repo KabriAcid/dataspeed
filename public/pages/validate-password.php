@@ -1,10 +1,10 @@
 <?php
 
+session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 
 header("Content-Type: application/json");
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     echo json_encode(["success" => false, "message" => "Invalid request method."]);
@@ -136,7 +136,6 @@ try {
     }
 
     $reference = 'ref_' . generateUUIDv4();
-    file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Generated reference: $reference for user $email" . PHP_EOL, FILE_APPEND);
 
     // Call API to create virtual account
     $virtualAccount = createVirtualAccount($email, $reference, $firstName, $lastName, $phone_number);
@@ -180,8 +179,6 @@ try {
         file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] DB Update Error: " . print_r($errorInfo, true) . PHP_EOL, FILE_APPEND);
         echo json_encode(["success" => false, "message" => "Failed to update user data."]);
         exit;
-    } else {
-        file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] DB Update Successful for user $email" . PHP_EOL, FILE_APPEND);
     }
 
     // Get user ID from registration ID in the users table
@@ -199,6 +196,7 @@ try {
             $user['email'],
             $user['phone_number']
         ]);
+        
     } catch (PDOException $th) {
         echo json_encode([
             "success" => false,
@@ -207,18 +205,25 @@ try {
         exit;
     }
 
+    try {
+        // Insert user settings along with ip address
+        $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
+        $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometrics_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?)");
+        $stmt->execute([
+            $user_id,
+            0,
+            0,
+            1, // Default to enabled
+            $ipAddress
+        ]);
+    } catch (PDOException $th) {
+        echo json_encode([
+            "success" => false,
+            "message" => "User settings failed to update.",
+        ]);
+        exit;
+    }
 
-    // Insert user settings along with ip address
-    $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
-    $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometric_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?)");
-    $stmt->execute([
-        $user_id,
-        0,
-        0,
-        1, // Default to enabled
-        $ipAddress
-    ]);
-    
 
     // Insert notification for user in the db
     $title = 'Virtual Account Created';
@@ -267,13 +272,12 @@ try {
     // FINAL SUCCESS RESPONSE (only here!)
     echo json_encode([
         "success" => true,
-        "message" => "Registration complete. Virtual account created.",
+        "message" => "Registration complete.",
         "account_number" => $virtualAccount['account_number'],
         "bank_name" => $virtualAccount['bank_name'],
         "api_response" => $virtualAccount['api_response']
     ]);
     exit;
-
 } catch (Exception $e) {
     file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Exception: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
     echo json_encode([

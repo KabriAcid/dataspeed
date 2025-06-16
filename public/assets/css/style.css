@@ -3,6 +3,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
+@font-face {
+  font-family: 'Quicksand';
+  src: url(../fonts/static/Quicksand-Regular.ttf);
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -19,6 +24,7 @@ body {
 :is(body, *) {
   font-variant-numeric: lining-nums; /* Optional: for better digit alignment */
 }
+
 
 /* Add this to your custom CSS or in a <style> tag */
 .ni {
@@ -821,8 +827,8 @@ select.select-lga {
   border-radius: 8px;
   width: 50px;
   height: 50px;
-  max-height: 50px;
-  max-width: 50px;
+  min-width: 50px;
+  min-height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1235,6 +1241,7 @@ select.select-lga {
   width: 100%;
   margin: 20px auto;
   overflow: hidden;
+  padding: 0 5px;
 }
 
 /* On large screens tabs should have max-width */
@@ -1798,7 +1805,7 @@ th {
 
 .body-overlay {
   position: absolute;
-  z-index: 1000000;
+  z-index: 100000;
   align-items: center;
   justify-content: center;
   width: 100%;

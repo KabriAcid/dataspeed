@@ -252,10 +252,10 @@ if (isset($_GET['success'])) {
 
                         if ($transactions) {
                 ?>
-                            <div class='d-flex justify-content-between align-items-start mb-3 pb-2'>
-                                <div class='d-flex align-items-center gap-3'>
+                            <div class='d-flex justify-content-between align-items-top mb-3 pb-2'>
+                                <div class='d-flex align-items-top'>
                                     <div class='transaction-icon'><?= $icon ?></div>
-                                    <div>
+                                    <div class="mx-3">
                                         <h6 class='mb-0 text-capitalize'><?= $transaction['type'] ?></h6>
                                         <p class='text-sm text-secondary mb-0'><?= $date ?></p>
                                     </div>

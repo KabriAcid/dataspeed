@@ -96,7 +96,7 @@ try {
 
     // Push notifications
     pushNotification($pdo, $user_id, "Transfer Sent", "You sent ₦" . number_format($amount, 2) . " to {$recipientName}.", "Money Transferred", $iconSender, $colorSender, '0');
-    pushNotification($pdo, $recipient_id, "Transfer Received", "You received ₦" . number_format($amount, 2) . " from {$senderName}.", "Money Received", $iconRecipient, $colorRecipient, '0');
+    pushNotification($pdo, $recipient_id, "Transfer Received", "You have received ₦" . number_format($amount, 2) . " from {$senderName}.", "Money Received", $iconRecipient, $colorRecipient, '0');
 
     $pdo->commit();
 

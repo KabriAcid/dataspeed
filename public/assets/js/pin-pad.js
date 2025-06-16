@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
       bodyOverlay.style.display = "none";
       if (response.success) {
         showToasted(response.message, "success");
-        console.log(response.phone);
         pinpadModal.style.display = "none";
         setTimeout(function () {
           window.location.href =
@@ -77,6 +76,12 @@ document.addEventListener("DOMContentLoaded", function () {
             encodeURIComponent(response.reference);
         }, 1200);
       } else {
+        if (response.redirect) {
+         setTimeout(() => {
+          window.location.href =
+            "password-pin-settings.php?tab=pin&prev_page=buy_airtime.php";
+         }, 1200);
+        }
         showToasted(response.message, "error");
       }
     });

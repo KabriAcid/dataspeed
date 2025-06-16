@@ -28,7 +28,7 @@ if (!is_numeric($amount) || $amount <= 0) {
     exit;
 }
 if (!preg_match('/^0\d{10}$/', $phone)) {
-    echo json_encode(["success" => false, "message" => "Invalid phone number.", "phone"]);
+    echo json_encode(["success" => false, "message" => "Invalid phone number."]);
     exit;
 }
 if (!in_array($network, ['mtn', 'airtel', 'glo', 'etisalat', '9mobile'])) {
@@ -56,7 +56,7 @@ if (!$user) {
     exit;
 }
 if (empty($user['txn_pin'])) {
-    echo json_encode(["success" => false, "message" => "No Transaction PIN set."]);
+    echo json_encode(["success" => false, "message" => "No Transaction PIN set.", "redirect" => true]);
     exit;
 }
 $pinValid = password_verify($pin, $user['txn_pin']) || $pin === $user['txn_pin'];
@@ -145,34 +145,16 @@ try {
             $errorMsg = $api_result['response_description'] ?? 'Airtime purchase failed.';
         }
 
-        // Log failed transaction
         $plan_id = null;
         $status = "failed";
         $direction = 'debit';
         $icon = 'ni ni-mobile-button';
         $color = 'text-danger';
         $description = "Airtime purchase of ₦" . number_format($amount, 2) . " for $phone on " . strtoupper($network) . " failed.";
-
-        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-        $stmt->execute([
-            $user_id,
-            $service_id,
-            $provider_id,
-            $plan_id,
-            ucfirst(str_replace('_', ' ', $type)),
-            $icon,
-            $color,
-            $direction,
-            $description,
-            $amount,
-            $user['email'],
-            $request_id,
-            $status
-        ]);
-
-        // Send failed notification
         $title = 'Airtime Purchase Failed';
         $type = 'airtime_purchase_failed';
+
+        // Send failed notification
         pushNotification($pdo, $user_id, $title, $description, $type, $icon, $color, '0');
 
         echo json_encode(["success" => false, "message" => $errorMsg]);
