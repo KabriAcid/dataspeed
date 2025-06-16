@@ -126,7 +126,7 @@ require __DIR__ . '/../partials/header.php';
             </div>
 
             <div class="mb-3">
-                <a href="password-pin-settings.php?tab=password">
+                <a href="password_pin_setting.php?tab=password">
                     <div class="d-flex justify-content-between align-items-top">
                         <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">
@@ -153,7 +153,7 @@ require __DIR__ . '/../partials/header.php';
                 </a>
             </div>
             <div class="mb-3">
-                <a href="security-settings.php">
+                <a href="security_setting.php">
                     <div class="d-flex justify-content-between align-items-top">
                         <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">

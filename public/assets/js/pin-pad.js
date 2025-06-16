@@ -77,10 +77,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1200);
       } else {
         if (response.redirect) {
-         setTimeout(() => {
-          window.location.href =
-            "password-pin-settings.php?tab=pin&prev_page=buy_airtime.php";
-         }, 1200);
+          setTimeout(() => {
+            window.location.href =
+              "password_pin_setting.php?tab=pin&prev_page=buy_airtime.php";
+          }, 1200);
         }
         showToasted(response.message, "error");
       }

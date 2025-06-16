@@ -27,22 +27,22 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             </div>
         </header>
 
-        <!-- Network Selection -->
-        <div class="network-section ">
-            <div class="network-tabs">
-                <div class="network-tab selected-network" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #ffcc00;">
+        <!-- Service Selection -->
+        <div class="service-section ">
+            <div class="service-tabs">
+                <div class="service-tab selected-tab" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #FFCB05;">
                     <img src="../assets/icons/mtn_logo.svg" alt="MTN">
                     <span>MTN</span>
                 </div>
-                <div class="network-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
+                <div class="service-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
                     <img src="../assets/icons/airtel-logo-1.svg" alt="Airtel" class="airtel-logo">
                     <span>Airtel</span>
                 </div>
-                <div class="network-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
+                <div class="service-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
                     <img src="../assets/icons/glo_logo.svg" alt="Glo">
                     <span>Glo</span>
                 </div>
-                <div class="network-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
+                <div class="service-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
                     <img src="../assets/icons/9mobile_logo.svg" alt="9Mobile">
                     <span>9Mobile</span>
                 </div>
@@ -113,7 +113,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 <div class="modal-body">
                     <p class="text-sm text-secondary mb-1 text-center">Send to</p>
                     <div id="customer-phone" data-raw="">080********</div>
-                    <div class="info-row"><span>Network:</span><span id="confirm-network" class="">N/A</span></div>
+                    <div class="info-row"><span>Service:</span><span id="confirm-network" class="">N/A</span></div>
                     <div class="info-row"><span>Type:</span><span id="confirm-plan" class="fw-bold">Self</span></div>
                     <div class="info-row"><span>Amount:</span><span id="confirm-amount" class="fw-bolder primary fs-6">₦0</span></div>
                     <div class="info-row">
@@ -137,7 +137,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
         <!-- Bottom navigation -->
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
-        <?php require __DIR__ . '/../partials/pinpad_modal.php' ?>
+        <?php require __DIR__ . '/../partials/pinpad.php' ?>
 
     </main>
     <script src="../assets/js/ajax.js"></script>
@@ -152,10 +152,10 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:25px;">`
             };
 
-            let selectedNetwork = null;
+            let selectedTab = null;
             let selectedAmount = null;
 
-            const networkTabs = document.querySelectorAll(".network-tab");
+            const networkTabs = document.querySelectorAll(".service-tab");
             const amountButtons = document.querySelectorAll(".amount-btn");
             const tabButtons = document.querySelectorAll(".tab-btn");
             const tabContents = document.querySelectorAll(".tab-content");
@@ -182,20 +182,20 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 });
             });
 
-            // --- Network Selection ---
+            // --- Service Selection ---
             networkTabs.forEach(tab => {
                 tab.addEventListener("click", () => {
-                    networkTabs.forEach(t => t.classList.remove("selected-network"));
-                    tab.classList.add("selected-network");
-                    selectedNetwork = tab.getAttribute("data-network");
+                    networkTabs.forEach(t => t.classList.remove("selected-tab"));
+                    tab.classList.add("selected-tab");
+                    selectedTab = tab.getAttribute("data-network");
                     let brandColor = getComputedStyle(tab).getPropertyValue("--brand-color");
                     networkTabs.forEach(t => {
-                        t.style.backgroundColor = t.classList.contains("selected-network") ? brandColor : "";
-                        t.style.color = t.classList.contains("selected-network") ? "#fff" : "";
-                        t.style.fontWeight = t.classList.contains("selected-network") ? "bold" : "normal";
+                        t.style.backgroundColor = t.classList.contains("selected-tab") ? brandColor : "";
+                        t.style.color = t.classList.contains("selected-tab") ? "#fff" : "";
+                        t.style.fontWeight = t.classList.contains("selected-tab") ? "bold" : "normal";
                     });
                     airtelLogo.src = "../assets/icons/airtel-logo-1.svg";
-                    if (selectedNetwork === "airtel") airtelLogo.src = "../assets/icons/airtel-logo-2.svg";
+                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-logo-2.svg";
                     // Highlight selected amount button if any
                     const activeAmountBtn = document.querySelector(".amount-btn.selected-amount");
                     if (activeAmountBtn) {
@@ -214,7 +214,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             // --- Amount Selection ---
             amountButtons.forEach(btn => {
                 btn.addEventListener("click", function() {
-                    if (!selectedNetwork) {
+                    if (!selectedTab) {
                         showToasted("Please select a network first.", 'error');
                         this.classList.remove("selected-amount");
                         getActiveAmountInput().value = "";
@@ -233,7 +233,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     this.classList.add("selected-amount");
                     selectedAmount = input.value;
                     // Brand color
-                    this.style.backgroundColor = getComputedStyle(document.querySelector(".selected-network")).getPropertyValue("--brand-color");
+                    this.style.backgroundColor = getComputedStyle(document.querySelector(".selected-tab")).getPropertyValue("--brand-color");
                     this.style.color = "#fff";
                     validatePurchaseButton();
                 });
@@ -267,8 +267,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     }
 
                     // Get selected network
-                    const selectedNetworkTab = document.querySelector('.network-tab.selected-network');
-                    const network = selectedNetworkTab ? selectedNetworkTab.getAttribute('data-network').toUpperCase() : '';
+                    const selectedTabTab = document.querySelector('.service-tab.selected-tab');
+                    const network = selectedTabTab ? selectedTabTab.getAttribute('data-network').toUpperCase() : '';
 
                     // Determine phone number for summary
                     let phone;
@@ -305,7 +305,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 let amountText = document.getElementById('confirm-amount').textContent;
                 let rawAmount = amountText.replace(/[^\d]/g, '');
                 let phone = document.getElementById('customer-phone').getAttribute('data-raw');
-                let network = document.querySelector('.network-tab.selected-network').getAttribute('data-network');
+                let network = document.querySelector('.service-tab.selected-tab').getAttribute('data-network');
                 let type = document.querySelector('.tab-content.active').dataset.tab === "self" ? "airtime_self" : "airtime_others";
 
                 if (phone.length === 10) {

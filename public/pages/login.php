@@ -95,7 +95,7 @@ function set_title($title = null)
                         <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
                     </div>
 
-                    <p class="text-end"><a href="forgot-password.php" class="text-secondary text-sm">Forgot
+                    <p class="text-end"><a href="forgot_password.php" class="text-secondary text-sm">Forgot
                             password?</a></p>
                     <button type="submit" class="btn primary-btn mt-3" name="login" id="login">
                         Login

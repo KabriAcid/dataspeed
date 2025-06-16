@@ -52,7 +52,7 @@ if (isset($_GET['success'])) {
         ?>
         <div class="d-flex align-items-center">
             <h2 class="display-5 fw-bold mb-0 digit m-0" id="balanceAmount"><?= "&#8358;" . getUserBalance($pdo, $user_id) ?><span class="m-0"><?php if ($balanceChange['valid']): ?><small class="fw-bold text-xs <?= $balanceChange['direction'] === 'debit' ? 'text-danger' : 'text-success' ?>">
-                        <?= ($balanceChange['percent'] > 0 ? ($balanceChange['direction'] === 'credit' ? '+' : '') : '') . $balanceChange['percent'] ?>%</small>
+                            <?= ($balanceChange['percent'] > 0 ? ($balanceChange['direction'] === 'credit' ? '+' : '') : '') . $balanceChange['percent'] ?>%</small>
                     <?php endif; ?>
                 </span></h2>
             <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
@@ -73,7 +73,7 @@ if (isset($_GET['success'])) {
         <?php
         if (!$user['txn_pin']) {
         ?>
-            <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='password-pin-settings.php?tab=pin'">
+            <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='password_pin_setting.php?tab=pin'">
                 <div class="d-flex align-items-center">
                     <img src="../assets/img/icons/cyber-security.png" alt="" class="avatar-sm" style="max-width:50px;">
                     <div class="ms-4">
@@ -321,7 +321,7 @@ if (isset($_GET['success'])) {
         });
     </script>
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
-    <?php require __DIR__ . '/../partials/scripts.php';?>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>

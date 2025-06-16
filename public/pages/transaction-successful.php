@@ -28,7 +28,7 @@ if (!$txn) {
     exit;
 }
 
-// Network icon mapping
+// Service icon mapping
 $networkIcons = [
     1 => "../assets/img/icons/mtn.png",
     2 => "../assets/img/icons/airtel.png",
@@ -56,7 +56,7 @@ if (preg_match('/for (\d{11})/', $txn['description'], $matches)) {
             <div class="row justify-content-center">
                 <div class="">
                     <div class="avatar-sm m-auto d-flex justify-content-center">
-                        <img src="<?= htmlspecialchars($networkIcon) ?>" alt="Network" style="height:40px;">
+                        <img src="<?= htmlspecialchars($networkIcon) ?>" alt="Service" style="height:40px;">
                     </div>
                     <div class="">
                         <h1 class="text-center my-3"><?= $amount ?></h1>

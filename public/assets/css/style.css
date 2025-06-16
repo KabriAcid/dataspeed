@@ -4,7 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
 @font-face {
-  font-family: 'Quicksand';
+  font-family: "Quicksand";
   src: url(../fonts/static/Quicksand-Regular.ttf);
 }
 
@@ -24,7 +24,6 @@ body {
 :is(body, *) {
   font-variant-numeric: lining-nums; /* Optional: for better digit alignment */
 }
-
 
 /* Add this to your custom CSS or in a <style> tag */
 .ni {
@@ -506,8 +505,8 @@ button:disabled {
   box-shadow: var(--shadow);
 }
 .icon-container svg {
-  width: 24px!important;
-  height: 44px!important;
+  width: 24px !important;
+  height: 44px !important;
 }
 
 /* OTP */
@@ -1441,7 +1440,7 @@ th {
 }
 
 /* BUY DATA */
-.network-tabs {
+.service-tabs {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1450,7 +1449,7 @@ th {
   max-width: 600px;
 }
 
-.network-tab {
+.service-tab {
   padding: 5px 10px;
   border-radius: 8px;
   box-shadow: 3px 4px 22px #eee;
@@ -1467,29 +1466,29 @@ th {
   justify-content: center;
 }
 
-.network-tab span {
+.service-tab span {
   margin-top: 5px;
   font-weight: 600;
   text-transform: uppercase;
   font-size: 0.75rem;
 }
-.network-tab img {
+.service-tab img {
   max-width: 40px;
   max-height: 40px;
 
   min-width: none;
   min-height: 40px;
 }
-.network-tab.active {
+.service-tab.active {
   background-color: var(--brand-color);
   color: white;
   font-weight: 600;
 }
 
-.network-tab {
+.service-tab {
   transition: background-color 0.3s ease-in-out, transform 0.3s ease;
 }
-.selected-network {
+.selected-tab {
   transform: scale(1.05); /* Slight zoom effect when selected */
 }
 
@@ -1699,7 +1698,7 @@ th {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1712,7 +1711,7 @@ th {
   padding: 20px;
   width: 90%;
   max-width: 350px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #planList {
@@ -1733,7 +1732,6 @@ th {
   background-color: var(--brand-color, #007bff);
   color: white;
 }
-
 
 /* PINPAD MODAL */
 .pin-container {
@@ -1924,4 +1922,3 @@ th {
   color: #27ae60;
   font-weight: 700;
 }
-

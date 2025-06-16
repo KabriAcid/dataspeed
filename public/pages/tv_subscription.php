@@ -25,19 +25,19 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </header>
 
-        <!-- Network Selection -->
-        <div class="network-section">
-            <div class="network-tabs">
-                <div class="network-tab selected-network" data-provider="dstv" style="--brand-color: #00206C;">
+        <!-- Service Selection -->
+        <div class="service-section">
+            <div class="service-tabs">
+                <div class="service-tab selected-tab" data-provider="dstv" style="--brand-color: #00206C;">
                     <img src="../assets/icons/dstv.svg" alt="DSTV"><span>DSTV</span>
                 </div>
-                <div class="network-tab" data-provider="gotv" style="--brand-color: #A1C823;">
+                <div class="service-tab" data-provider="gotv" style="--brand-color: #A1C823;">
                     <img src="../assets/icons/gotv.svg" alt="GOTV"><span>GOTV</span>
                 </div>
-                <div class="network-tab" data-provider="startimes" style="--brand-color: #f9a825;">
+                <div class="service-tab" data-provider="startimes" style="--brand-color: #f9a825;">
                     <img src="../assets/icons/startimes.png" alt="Startimes"><span>Startimes</span>
                 </div>
-                <div class="network-tab" data-provider="showmax" style="--brand-color: #f9a825;">
+                <div class="service-tab" data-provider="showmax" style="--brand-color: #f9a825;">
                     <img src="../assets/icons/showmax.svg" alt="Showmax"><span>Showmax</span>
                 </div>
             </div>
@@ -78,7 +78,7 @@ require __DIR__ . '/../partials/header.php';
 
 
         <?php require __DIR__ . '/../partials/bottom-nav.php'; ?>
-        <?php require __DIR__ . '/../partials/pinpad_modal.php'; ?>
+        <?php require __DIR__ . '/../partials/pinpad.php'; ?>
 
     </main>
 
@@ -87,7 +87,7 @@ require __DIR__ . '/../partials/header.php';
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const networkTabs = document.querySelectorAll(".network-tab");
+            const networkTabs = document.querySelectorAll(".service-tab");
             const planSelect = document.getElementById("tv-plan");
             const iucInput = document.getElementById("iuc-number");
             const purchaseBtn = document.querySelector(".purchase-btn");
@@ -103,48 +103,12 @@ require __DIR__ . '/../partials/header.php';
             const planList = document.getElementById("planList");
             const planSelectHidden = document.getElementById("tv-plan");
 
-            // Dummy plans
-            const plans = [{
-                    id: "basic",
-                    label: "Basic Plan",
-                    amount: 2500
-                },
-                {
-                    id: "premium",
-                    label: "Premium Plan",
-                    amount: 5800
-                }
-            ];
 
-            openPlanModalBtn.addEventListener("click", () => {
-                planList.innerHTML = '';
-                plans.forEach(plan => {
-                    const li = document.createElement("li");
-                    li.className = "list-group-item list-group-item-action";
-                    li.textContent = `${plan.label} - ₦${plan.amount.toLocaleString()}`;
-                    li.dataset.planId = plan.id;
-                    li.dataset.amount = plan.amount;
-
-                    li.addEventListener("click", () => {
-                        selectedPlanText.textContent = li.textContent;
-                        planSelectHidden.value = plan.id;
-                        planSelectHidden.dataset.amount = plan.amount;
-                        validatePurchaseButton();
-                        planModal.hide();
-                    });
-
-                    planList.appendChild(li);
-                });
-
-                planModal.show();
-            });
-
-
-            // Select Network Tab
+            // Select Service Tab
             networkTabs.forEach(tab => {
                 tab.addEventListener("click", () => {
-                    networkTabs.forEach(t => t.classList.remove("selected-network"));
-                    tab.classList.add("selected-network");
+                    networkTabs.forEach(t => t.classList.remove("selected-tab"));
+                    tab.classList.add("selected-tab");
 
                     const provider = tab.dataset.provider;
                     const brandColor = getComputedStyle(tab).getPropertyValue('--brand-color');
@@ -217,7 +181,7 @@ require __DIR__ . '/../partials/header.php';
             }
 
             // Trigger first tab click by default (DSTV)
-            document.querySelector(".network-tab.selected-network")?.click();
+            document.querySelector(".service-tab.selected-tab")?.click();
         });
     </script>
 </body>

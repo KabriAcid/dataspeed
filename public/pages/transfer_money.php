@@ -81,7 +81,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
 
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
-        <?php require __DIR__ . '/../partials/pinpad_modal.php' ?>
+        <?php require __DIR__ . '/../partials/pinpad.php' ?>
     </main>
 
     <footer class="my-4 text-center text-secondary small">

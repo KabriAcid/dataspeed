@@ -1,166 +1,164 @@
 :root {
+  --primary: #94241e;
+  --primary-light: #fbf5f9;
+  --primary-dark: #2c0d0b;
 
-  
-    --primary: #94241E;
-    --primary-light: #fbf5f9;
-    --primary-dark: #2c0d0b;
+  --accent-gradient-dark: linear-gradient(310deg, #2c0d0b, #94241e);
 
-    --accent-gradient-dark: linear-gradient(310deg, #2c0d0b, #94241E);
+  --secondary: #e6e6e6;
 
-    --secondary: #e6e6e6;
+  --success: #44c07e;
+  --success-dark: #3a9a68;
+  --success-light: #f3fcf7;
 
-    --success: #44C07E;
-    --success-dark: #3A9A68;
-    --success-light: #F3FCF7;
+  --warning: #e6a300;
+  --warning-dark: #b68400;
+  --warning-light: #fff3cd;
 
-    --warning: #E6A300;
-    --warning-dark: #B68400;
-    --warning-light: #FFF3CD;
+  --danger: #d9534f;
+  --danger-dark: #6a0000;
+  --danger-light: #fdecea;
 
-    --danger: #D9534F;
-    --danger-dark: #6a0000;
-    --danger-light: #FDECEA;
+  --info: #3498db;
+  --info-dark: #217dbb;
+  --info-light: #d6eaf8;
 
-    --info: #3498db;
-    --info-dark: #217dbb;
-    --info-light: #D6EAF8;
+  /* 🌑 Neutral Grays */
+  --gray-900: #1a1a1a;
+  /* Very Dark Gray */
+  --gray-800: #2e2e2e;
+  --gray-700: #4a4a4a;
+  --gray-600: #6b6b6b;
+  --gray-500: #8b9398;
+  /* Medium Gray (used for text) */
+  --gray-400: #b0b8c0;
+  --gray-300: #d9d9d9;
+  /* Light Gray Background */
+  --gray-200: #eaecef;
+  --gray-100: #f2f4f6;
+  /* Softest Gray */
 
-    /* 🌑 Neutral Grays */
-    --gray-900: #1A1A1A;
-    /* Very Dark Gray */
-    --gray-800: #2E2E2E;
-    --gray-700: #4A4A4A;
-    --gray-600: #6B6B6B;
-    --gray-500: #8B9398;
-    /* Medium Gray (used for text) */
-    --gray-400: #B0B8C0;
-    --gray-300: #D9D9D9;
-    /* Light Gray Background */
-    --gray-200: #EAECEF;
-    --gray-100: #F2F4F6;
-    /* Softest Gray */
+  /* 🎨 Background & UI */
+  --body-bg: #f5f5f5;
+  /* Page background */
+  --light: #f2f4f6;
+  /* Light background */
+  --dark: #110009;
+  /* Darkest text */
 
-    /* 🎨 Background & UI */
-    --body-bg: #F5F5F5;
-    /* Page background */
-    --light: #F2F4F6;
-    /* Light background */
-    --dark: #110009;
-    /* Darkest text */
+  /* NETWORK BRAND COLORS */
+  --mtn-color: #ffcb05;
+  --airtel-color: #eb1922;
+  --glo-color: #50b651;
+  --9mobile-color: #d6e806;
 
-    /* NETWORK BRAND COLORS */
-    --mtn-color: #FFCC00;
-    --airtel-color: #EB1922;
-    --glo-color: #50B651;
-    --9mobile-color: #D6E806;
+  /* Font Weights */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
 
-    /* Font Weights */
-    --fw-light: 300;
-    --fw-regular: 400;
-    --fw-medium: 500;
-    --fw-bold: 700;
+  --mb-1: 16px;
+  --mb-2: 32px;
+  --mb-3: 64px;
 
-    --mb-1: 16px;
-    --mb-2: 32px;
-    --mb-3: 64px;
+  /* Font Sizes */
+  --fs-h1: 3.5rem;
+  --fs-h2: 2rem;
+  --fs-h3: 1.75rem;
+  --fs-h4: 1.5rem;
+  --fs-h5: 1.25rem;
+  --fs-h6: 1rem;
+  --fs-p: 1rem;
 
-    /* Font Sizes */
-    --fs-h1: 3.5rem;
-    --fs-h2: 2rem;
-    --fs-h3: 1.75rem;
-    --fs-h4: 1.5rem;
-    --fs-h5: 1.25rem;
-    --fs-h6: 1rem;
-    --fs-p: 1rem;
+  --fs-1: 3rem;
+  --fs-2: 1.75rem;
+  --fs-3: 1.25rem;
+  --fs-small: 0.9rem;
 
-    --fs-1: 3rem;
-    --fs-2: 1.75rem;
-    --fs-3: 1.25rem;
-    --fs-small: 0.9rem;
+  /* Font Weights */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
 
-    /* Font Weights */
-    --fw-light: 300;
-    --fw-regular: 400;
-    --fw-medium: 500;
-    --fw-bold: 700;
+  /* Line Heights */
+  --lh-heading: 1.2;
+  --lh-text: 1.6;
 
-    /* Line Heights */
-    --lh-heading: 1.2;
-    --lh-text: 1.6;
+  /* Spacing */
+  --mb-1: 16px;
+  --mb-2: 32px;
+  --mb-3: 48px;
+  /* Line Heights */
+  --lh-heading: 1.2;
+  --lh-text: 1.6;
 
-    /* Spacing */
-    --mb-1: 16px;
-    --mb-2: 32px;
-    --mb-3: 48px;
-    /* Line Heights */
-    --lh-heading: 1.2;
-    --lh-text: 1.6;
+  /* Letter spacing */
+  --ls-1: 0.9px;
+  /* Spacing */
+  --spacing-1: 8px;
+  --spacing-2: 16px;
+  --spacing-3: 24px;
+  --spacing-4: 32px;
+  --spacing-5: 48px;
 
-    /* Letter spacing */
-    --ls-1: .9px;
-    /* Spacing */
-    --spacing-1: 8px;
-    --spacing-2: 16px;
-    --spacing-3: 24px;
-    --spacing-4: 32px;
-    --spacing-5: 48px;
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-pill: 50px;
 
-    /* Border Radius */
-    --radius-sm: 4px;
-    --radius-md: 6px;
-    --radius-lg: 12px;
-    --radius-pill: 50px;
+  /* Shadows */
+  --shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  --shadow: 0px 0px 44px 0px rgba(45, 45, 45, 0.15);
 
-    /* Shadows */
-    --shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0px 4px 8px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0px 6px 12px rgba(0, 0, 0, 0.2);
-    --shadow: 0px 0px 44px 0px rgba(45, 45, 45, 0.15);
+  /* Transitions */
+  --transition-fast: 0.2s ease-in-out;
+  --transition-medium: 0.4s ease-in-out;
+  --transition-normal: 0.5s ease-in-out;
+  --transition-slow: 0.6s ease-in-out;
 
-    /* Transitions */
-    --transition-fast: 0.2s ease-in-out;
-    --transition-medium: 0.4s ease-in-out;
-    --transition-normal: 0.5s ease-in-out;
-    --transition-slow: 0.6s ease-in-out;
+  /* Paddings */
+  --pd-1: 4px;
+  --pd-2: 6px;
+  --pd-3: 8px;
 
-    /* Paddings */
-    --pd-1: 4px;
-    --pd-2: 6px;
-    --pd-3: 8px;
-    
-    /* Paddings */
-    --pd-1: 4px;
-    --pd-2: 6px;
-    --pd-3: 8px;
+  /* Paddings */
+  --pd-1: 4px;
+  --pd-2: 6px;
+  --pd-3: 8px;
 
-    /* Font Sizes */
-    --fs-h1: 2.5rem;
-    /* Adjust based on design */
-    --fs-h2: 2rem;
-    --fs-h3: 1.75rem;
-    --fs-p: 1rem;
+  /* Font Sizes */
+  --fs-h1: 2.5rem;
+  /* Adjust based on design */
+  --fs-h2: 2rem;
+  --fs-h3: 1.75rem;
+  --fs-p: 1rem;
 
-    /* Font Weights */
-    --fw-bold: 700;
-    --fw-regular: 400;
+  /* Font Weights */
+  --fw-bold: 700;
+  --fw-regular: 400;
 
-    /* Line Heights */
-    --lh-heading: 1.2;
-    --lh-text: 1.5;
+  /* Line Heights */
+  --lh-heading: 1.2;
+  --lh-text: 1.5;
 
   /* Color system */
   --color-primary: #0066cc;
   --color-primary-light: #0080ff;
   --color-primary-dark: #004d99;
-  
+
   --color-secondary: #6c757d;
   --color-secondary-light: #868e96;
   --color-secondary-dark: #495057;
-  
+
   --color-accent: #28a745;
   --color-accent-light: #34ce57;
   --color-accent-dark: #1e7e34;
-  
+
   --color-neutral-50: #f8f9fa;
   --color-neutral-100: #f1f3f5;
   --color-neutral-200: #e9ecef;
@@ -171,10 +169,12 @@
   --color-neutral-700: #495057;
   --color-neutral-800: #343a40;
   --color-neutral-900: #212529;
-  
+
   /* Typography */
-  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  
+  --font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+
   /* Spacing system (8px increments) */
   --space-1: 0.5rem;
   --space-2: 1rem;
@@ -182,17 +182,17 @@
   --space-4: 2rem;
   --space-5: 2.5rem;
   --space-6: 3rem;
-  
+
   /* Animation */
   --transition-fast: 150ms;
   --transition-normal: 250ms;
   --transition-slow: 350ms;
-  
+
   /* Elevation */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.05);
-  
+
   /* Border radius */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -200,4 +200,3 @@
   --radius-xl: 1rem;
   --radius-full: 9999px;
 }
-

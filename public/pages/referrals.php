@@ -277,7 +277,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 
                     button.disabled = true;
 
-                    sendAjaxRequest("claim_reward.php", "POST", `referral_id=${referralId}`, (
+                    sendAjaxRequest("claim-reward.php", "POST", `referral_id=${referralId}`, (
                         response) => {
                         if (response.success) {
                             button.textContent = "Claimed";

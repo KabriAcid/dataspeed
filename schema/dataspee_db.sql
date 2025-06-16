@@ -282,7 +282,7 @@ CREATE TABLE `service_providers` (
 --
 
 INSERT INTO `service_providers` (`id`, `service_id`, `name`, `code`, `brand_color`, `slug`) VALUES
-(1, 1, 'MTN', 1001, '#FFCC00', 'mtn'),
+(1, 1, 'MTN', 1001, '#FFCB05', 'mtn'),
 (2, 1, 'Airtel', 1002, '#ED1C24', 'airtel'),
 (3, 1, 'Glo', 1003, '#1DBA54', 'glo'),
 (4, 1, '9mobile', 1004, '#B5D334', '9mobile');

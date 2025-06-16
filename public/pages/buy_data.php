@@ -25,22 +25,22 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             </div>
         </header>
 
-        <!-- Network Selection -->
-        <div class="network-section ">
-            <div class="network-tabs">
-                <div class="network-tab selected-network active" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #ffcc00;">
+        <!-- Service Selection -->
+        <div class="service-section ">
+            <div class="service-tabs">
+                <div class="service-tab selected-tab active" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #FFCB05;">
                     <img src="../assets/icons/mtn_logo.svg" alt="MTN">
                     <span>MTN</span>
                 </div>
-                <div class="network-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
+                <div class="service-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
                     <img src="../assets/icons/airtel-logo-1.svg" alt="Airtel" class="airtel-logo">
                     <span>Airtel</span>
                 </div>
-                <div class="network-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
+                <div class="service-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
                     <img src="../assets/icons/glo_logo.svg" alt="Glo">
                     <span>Glo</span>
                 </div>
-                <div class="network-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
+                <div class="service-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
                     <img src="../assets/icons/9mobile_logo.svg" alt="9Mobile">
                     <span>9Mobile</span>
                 </div>
@@ -88,7 +88,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 <div class="modal-body">
                     <p class="text-sm text-secondary mb-1 text-center">Send to</p>
                     <div id="customer-phone" data-raw=""></div>
-                    <div class="info-row"><span>Network:</span><span id="confirmNetwork"></span></div>
+                    <div class="info-row"><span>Service:</span><span id="confirmService"></span></div>
                     <div class="info-row"><span>Plan:</span><span id="confirmPlan" class="fw-bolder primary fs-6"></span></div>
                     <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bold"></span></div>
                     <div class="info-row"><span>Validity:</span><span id="confirmValidity" class="fw-bold"></span></div>
@@ -112,7 +112,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
         <!-- Bottom navigation -->
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
-        <?php require __DIR__ . '/../partials/pinpad_modal.php' ?>
+        <?php require __DIR__ . '/../partials/pinpad.php' ?>
     </main>
 
     <script src="../assets/js/ajax.js"></script>
@@ -127,7 +127,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
         document.addEventListener("DOMContentLoaded", function() {
             // --- Element references ---
-            const networkTabs = document.querySelectorAll(".network-tab");
+            const networkTabs = document.querySelectorAll(".service-tab");
             const tabBtns = document.querySelectorAll(".tab-btn");
             const subTabBtns = document.querySelectorAll(".sub-tab-btn");
             const planCardsContainer = document.getElementById("planCards");
@@ -137,7 +137,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             const confirmModal = document.getElementById("confirmModal");
             const closeConfirm = document.getElementById("closeConfirm");
             const customerPhone = document.getElementById("customer-phone");
-            const confirmNetwork = document.getElementById("confirmNetwork");
+            const confirmService = document.getElementById("confirmService");
             const confirmPlan = document.getElementById("confirmPlan");
             const confirmAmount = document.getElementById("confirmAmount");
             const confirmValidity = document.getElementById("confirmValidity");
@@ -147,22 +147,22 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
 
             // --- State ---
-            let selectedNetwork = "mtn";
+            let selectedTab = "mtn";
             let selectedProviderId = "1";
             let selectedPlan = null;
             let selectedSub = document.querySelector(".sub-tab-btn.active")?.dataset.sub || "daily";
             let buyFor = "self";
 
-            // --- Network selection ---
+            // --- Service selection ---
             networkTabs.forEach(tab => {
                 tab.addEventListener("click", function() {
-                    networkTabs.forEach(t => t.classList.remove("selected-network", "active"));
-                    tab.classList.add("selected-network", "active");
-                    selectedNetwork = tab.dataset.network;
+                    networkTabs.forEach(t => t.classList.remove("selected-tab", "active"));
+                    tab.classList.add("selected-tab", "active");
+                    selectedTab = tab.dataset.network;
                     selectedProviderId = tab.dataset.providerId;
 
                     airtelLogo.src = "../assets/icons/airtel-logo-1.svg";
-                    if (selectedNetwork === "airtel") airtelLogo.src = "../assets/icons/airtel-logo-2.svg";
+                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-logo-2.svg";
                     loadPlans();
                 });
             });
@@ -243,8 +243,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                         });
                         this.classList.add("selected-plan");
                         // Set background to network color, text to white
-                        const selectedNetworkTab = document.querySelector('.network-tab.selected-network');
-                        const brandColor = selectedNetworkTab ? getComputedStyle(selectedNetworkTab).getPropertyValue('--brand-color') : '#ffcc00';
+                        const selectedTabTab = document.querySelector('.service-tab.selected-tab');
+                        const brandColor = selectedTabTab ? getComputedStyle(selectedTabTab).getPropertyValue('--brand-color') : '#FFCB05';
                         this.style.backgroundColor = brandColor;
                         this.style.color = "#fff";
                         this.querySelectorAll('*').forEach(el => el.style.color = "#fff");
@@ -292,8 +292,8 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 customerPhone.setAttribute("data-raw", phone);
 
                 // Insert network SVG
-                const networkKey = selectedNetwork?.toUpperCase() || "MTN";
-                confirmNetwork.innerHTML = networkSVGs[networkKey] || "";
+                const networkKey = selectedTab?.toUpperCase() || "MTN";
+                confirmService.innerHTML = networkSVGs[networkKey] || "";
 
                 confirmPlan.textContent = `${selectedPlan.volume}`;
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
@@ -305,7 +305,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 const pinpadModal = document.getElementById("pinpadModal");
                 pinpadModal.dataset.amount = selectedPlan.price;
                 pinpadModal.dataset.phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
-                pinpadModal.dataset.network = selectedNetwork;
+                pinpadModal.dataset.network = selectedTab;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
