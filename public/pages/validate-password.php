@@ -208,7 +208,7 @@ try {
     try {
         // Insert user settings along with ip address
         $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
-        $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometrics_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometrics_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([
             $user_id,
             0,

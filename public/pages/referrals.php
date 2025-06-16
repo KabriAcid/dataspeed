@@ -172,7 +172,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                         $referralLink = $referrals['referral_link'] ?? '';
                         ?>
                         <div class="referral-link rounded mx-3 py-2">
-                            <input type="text" id="referralLinkInput" value="<?= htmlspecialchars($referralLink) ?>"
+                            <input type="hidden" id="referralLinkInput" value="<?= htmlspecialchars($referralLink) ?>"
                                 readonly hidden>
                             <button type="button" id="shareButton" class="btn mb-0 primary-btn py-3 w-100 h-100">Share
                                 Link</button>

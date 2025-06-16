@@ -87,7 +87,7 @@ try {
     $colorSender = 'text-success';
     $colorRecipient = 'text-success';
 
-    $reference = uniqid('transfer_', true);
+    $reference = uniqid('tf_', true);
 
     $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color, reference, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
         ->execute([$user_id, 'Money Transfer', 'debit', $amount, 'success', $descSender, $iconSender, $colorSender, $reference, $senderEmail]);

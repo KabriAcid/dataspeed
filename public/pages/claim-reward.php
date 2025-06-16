@@ -55,7 +55,7 @@ try {
     $type = 'Referral Reward';
     $status = 'success';
     $description = 'referral';
-    $icon = 'ni-money-coins';
+    $icon = 'ni ni-money-coins';
     $color = 'text-info';
     $direction = 'credit';
 
