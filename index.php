@@ -205,7 +205,7 @@ function set_title($title = null)
 
             <!-- Links -->
             <div style="flex: 1 1 180px; margin: 10px 0;">
-                <h3 style="font-size: 16px; margin-bottom: 10px;">Links</h3>
+                <h3 style="font-size: 20px; margin-bottom: 10px;">Links</h3>
                 <p><a href="index.php" style="color: #ccc; text-decoration: none;">Home</a></p>
                 <p><a href="about.php" style="color: #ccc; text-decoration: none;">About</a></p>
                 <p><a href="#" style="color: #ccc; text-decoration: none;">Blog</a></p>
@@ -215,24 +215,23 @@ function set_title($title = null)
 
             <!-- Blog -->
             <div style="flex: 1 1 180px; margin: 10px 0;">
-                <h3 style="font-size: 16px; margin-bottom: 10px;">Blog</h3>
+                <h3 style="font-size: 20px; margin-bottom: 10px;">Blog</h3>
                 <p><a href="#" style="color: #ccc; text-decoration: none;">UI / UX</a></p>
                 <p><a href="#" style="color: #ccc; text-decoration: none;">CodePens</a></p>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">Codedamn</a></p>
                 <p><a href="#" style="color: #ccc; text-decoration: none;">Figma</a></p>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">Oracle EBS</a></p>
+               
             </div>
 
             <!-- Contact / Policy -->
             <div style="flex: 1 1 180px; margin: 10px 0;">
-                <h3 style="font-size: 16px; margin-bottom: 10px;">Contact</h3>
+                <h3 style="font-size: 20px; margin-bottom: 10px;">Contact</h3>
                 <p><a href="#" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
                 <p><a href="#" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
             </div>
 
             <!-- Social Links -->
             <div style="flex: 1 1 200px; margin: 10px 0;">
-                <h3 style="font-size: 16px; margin-bottom: 10px;">Follow Me</h3>
+                <h3 style="font-size: 20px; margin-bottom: 10px;">Follow Me</h3>
                 <div style="display: flex; gap: 15px;">
             <!-- YouTube  -->
                 <a href="https://www.youtube.com/examplechannel" target="_blank">
