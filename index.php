@@ -76,11 +76,12 @@ function set_title($title = null)
                 <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <div class="d-flex justify-content-center align-items-center">
-                            <img src="public/assets/img/icons/airtime-to-cash.png" alt="icon" class="card-icon">
+                            <img src="https://img.icons8.com/ios-filled/100/000000/retro-tv.png" alt="TV Logo" class="card-icon">
+
                         </div>
-                        <h6 class="primary">Instant airtime to cash</h6>
-                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.
-                        </p>
+                        <h6 class="primary">Instant TV subscriptions </h6>
+                        <p> Stay entertained with affordable subscriptions for DStv, GOtv, and StarTimes. 
+                            Enjoy competitive rates and exclusive savings on every subscription renewal!</p>
                     </div>
                 </div>
 
@@ -91,7 +92,8 @@ function set_title($title = null)
                             <img src="public/assets/img/icons/airtime.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Airtime top up</h6>
-                        <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
+                        <p>Stay connected with affordable top-ups for MTN, Glo, 9mobile, 
+                            and Airtel. Enjoy competitive rates and exclusive savings on every recharge!</p>
                     </div>
                 </div>
 
@@ -102,7 +104,8 @@ function set_title($title = null)
                             <img src="public/assets/img/icons/data.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Data purchase</h6>
-                        <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
+                        <p> Empower your connectivity with the best data deals across all Nigerian networks.
+                             Choose plans that suit your needs and stay online effortlessly!</p>
                     </div>
                 </div>
                 <!-- Card 1 -->
@@ -112,7 +115,8 @@ function set_title($title = null)
                             <img src="public/assets/img/icons/bills.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Bill payments</h6>
-                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.
+                        <p> Simplify your finances with our enhanced airtime-to-cash solution. 
+                            Pay bills quickly and reliably with just a few taps!
                         </p>
                     </div>
                 </div>
@@ -124,7 +128,8 @@ function set_title($title = null)
                             <img src="public/assets/img/icons/nairapin.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Airtime payments</h6>
-                        <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
+                        <p>Streamline your transactions with seamless airtime payments for MTN, Glo, 9mobile, and Airtel. 
+                            Benefit from unbeatable rates and instant processing!</p>
                     </div>
                 </div>
             </div>
@@ -181,8 +186,8 @@ function set_title($title = null)
         <section id="sectionIV">
             <div class="text-center">
                 <h4>Newsletter</h4>
-                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. At aut neque consectetur nihil
-                    sint excepturi omnis adipisci possimus!</p>
+                <p class="mb-4">"Unleash your potential with DataSpeed: 
+                    chase your goals, master every challenge, and achieve it all with lightning-fast performance!"</p>
                 <form action="" method="post" class="d-flex" style="width: 50%;margin: auto;">
                     <input type="email" name="email" class="input" placeholder="Your email address">
                     <button type="submit" name="submit" class="btn primary-btn ms-3">SUBSCRIBE</button>
