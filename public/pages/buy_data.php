@@ -70,7 +70,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                         <img src="../assets/img/ng.png" alt=""> +234
                     </span>
                     <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
-                        placeholder="Phone Number" class="input phone-input" required value="08011111111">
+                        placeholder="Phone Number" class="input phone-input" required value="8011111111">
                 </div>
 
                 <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
@@ -201,7 +201,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             function loadPlans(forModal = false) {
                 if (!selectedProviderId || !selectedSub) return;
                 const container = forModal ? allPlanCards : planCardsContainer;
-                container.innerHTML = '<div class="text-center py-4 loading-spinner"></div>';
+                container.innerHTML = '<div class="d-flex justify-content-center py-4"><span class="loading-spinner"></span></div>';
                 sendAjaxRequest(
                     "fetch-plans.php",
                     "POST",
@@ -308,7 +308,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 pinpadModal.dataset.network = selectedNetwork;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
-                pinpadModal.dataset.plan_id =  selectedPlan.plan_id;
+                pinpadModal.dataset.plan_id = selectedPlan.plan_id;
                 pinpadModal.style.display = "flex";
             });
 

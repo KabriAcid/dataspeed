@@ -118,7 +118,7 @@ try {
     if ($http_code !== 200 || ($api_result['code'] ?? '') !== '000') {
         safeRollback($pdo);
         $errorMsg = $api_result['response_description'] ?? "Data purchase failed.";
-        $icon = 'ni ni-cart';
+        $icon = 'ni ni-mobile-button';
         $color = 'text-danger';
         $desc = "Data purchase of ₦" . number_format($amount, 2) . " for $phone on " . strtoupper($network) . " failed.";
 
@@ -135,7 +135,7 @@ try {
     $stmt->execute([$amount, $user_id]);
 
     // Log transaction
-    $icon = 'ni ni-wifi';
+    $icon = 'ni ni-check-bold';
     $color = 'text-success';
     $desc = "You purchased ₦" . number_format($amount, 2) . " data for $phone on " . strtoupper($network) . ".";
 
