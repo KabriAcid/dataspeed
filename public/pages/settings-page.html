@@ -1,295 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account Security Settings</title>
-  <style>
-    /* Font import */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Security Settings</title>
+    <style>
+      /* Font import */
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
-    /* Reset and base styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+      /* Reset and base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: #f5f5f7;
-      color: #1a1a1a;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background-color: #f5f5f7;
+        color: #1a1a1a;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
 
-    .container {
-      max-width: 500px;
-      width: 100%;
-    }
+      .container {
+        max-width: 500px;
+        width: 100%;
+      }
 
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      color: #000;
-    }
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #000;
+      }
 
-    /* Setting item styles */
-    .setting-item {
-      background-color: #fff;
-      border-radius: 14px;
-      padding: 16px 20px;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .setting-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .setting-item:active {
-      transform: translateY(0);
-    }
-
-    .icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 16px;
-      flex-shrink: 0;
-    }
-
-    .setting-content {
-      flex: 1;
-    }
-
-    .setting-title {
-      font-weight: 600;
-      font-size: 18px;
-      margin-bottom: 4px;
-      color: #000;
-    }
-
-    .setting-description {
-      font-size: 15px;
-      color: #666;
-      font-weight: 400;
-    }
-
-    .setting-action {
-      margin-left: 16px;
-      display: flex;
-      align-items: center;
-    }
-
-    .chevron {
-      color: #999;
-    }
-
-    /* Toggle switch styles */
-    .toggle-switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 28px;
-    }
-
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #e4e4e4;
-      transition: .4s;
-      border-radius: 34px;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 24px;
-      width: 24px;
-      left: 3px;
-      bottom: 2px;
-      background-color: white;
-      transition: .3s;
-      border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    input:checked + .slider {
-      background-color: #e4e4e4;
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(21px);
-      background-color: #fff;
-    }
-
-    .toggle-on .slider {
-      background-color: #3c72fe;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
+      /* Setting item styles */
       .setting-item {
-        padding: 14px 16px;
+        background-color: #fff;
+        border-radius: 14px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
       }
-      
-      .setting-title {
-        font-size: 16px;
+
+      .setting-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       }
-      
-      .setting-description {
-        font-size: 14px;
+
+      .setting-item:active {
+        transform: translateY(0);
       }
-      
+
       .icon {
-        width: 36px;
-        height: 36px;
-        margin-right: 12px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        flex-shrink: 0;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Security Settings</h1>
-    
-    <!-- Biometrics Setting -->
-    <div class="setting-item">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 14c0 3.9 3.1 7 7 7s7-3.1 7-7M3 14h14M16.8 4c-.4.9-.8 1.7-1.5 2.5M12 2a16.3 16.3 0 0 1 3 3m4.8-3a20.4 20.4 0 0 1-3 4.5M14 11.1c0 .2 0 .3-.1.4 0 0 0 0 0 0-.7 1.5-1.9 2.5-3.9 2.5-1.9 0-3.2-1-3.9-2.5 0 0 0 0 0 0 0-.1-.1-.2-.1-.4M6 6.5c.2.2.4.4.6.5M17.2 13.2c-.2-.2-.3-.2-.4-.2M10 11.1v-.2c0-1 .8-2.1 2-2.1s2 1 2 2.1v.2M17.8 9.7c-.2.4-.5.8-.8 1M17.4 6c-.2.4-.4.8-.6 1.1M20 9.5c-.2.3-.4.5-.6.8M19.3 13.1c-.1-.1-.2-.2-.3-.1"/>
-        </svg>
-      </div>
-      <div class="setting-content">
-        <div class="setting-title">Biometrics</div>
-        <div class="setting-description">Sign in with biometrics</div>
-      </div>
-      <div class="setting-action">
-        <label class="toggle-switch toggle-on">
-          <input type="checkbox" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-    
-    <!-- Account PIN Setting -->
-    <div class="setting-item">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          <circle cx="12" cy="16" r="1"/>
-        </svg>
-      </div>
-      <div class="setting-content">
-        <div class="setting-title">Account PIN</div>
-        <div class="setting-description">Protect yourself from intruders</div>
-      </div>
-      <div class="setting-action">
-        <span class="chevron">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m9 18 6-6-6-6"/>
-          </svg>
-        </span>
-      </div>
-    </div>
-    
-    <!-- Hide Balance Setting -->
-    <div class="setting-item">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
-          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
-          <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
-          <line x1="2" x2="22" y1="2" y2="22"/>
-        </svg>
-      </div>
-      <div class="setting-content">
-        <div class="setting-title">Hide Balance</div>
-        <div class="setting-description">Show or hide your balances</div>
-      </div>
-      <div class="setting-action">
-        <span class="chevron">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m9 18 6-6-6-6"/>
-          </svg>
-        </span>
-      </div>
-    </div>
-    
-    <!-- Confirm Transactions Setting -->
-    <div class="setting-item">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="m9 12 2 2 4-4"/>
-        </svg>
-      </div>
-      <div class="setting-content">
-        <div class="setting-title">Confirm Transactions</div>
-        <div class="setting-description">Choose to confirm transactions or not</div>
-      </div>
-      <div class="setting-action">
-        <span class="chevron">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m9 18 6-6-6-6"/>
-          </svg>
-        </span>
-      </div>
-    </div>
-  </div>
 
-  <script>
-    // Toggle switch functionality
-    document.querySelector('.toggle-switch input').addEventListener('change', function() {
-      const toggleContainer = this.parentElement;
-      if (this.checked) {
-        toggleContainer.classList.add('toggle-on');
-      } else {
-        toggleContainer.classList.remove('toggle-on');
+      .setting-content {
+        flex: 1;
       }
-    });
 
-    // Add click effect for setting items
-    document.querySelectorAll('.setting-item').forEach(item => {
-      item.addEventListener('click', function(e) {
-        // Prevent toggle from triggering navigation
-        if (e.target.closest('.toggle-switch')) {
-          e.stopPropagation();
-          return;
+      .setting-title {
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 4px;
+        color: #000;
+      }
+
+      .setting-description {
+        font-size: 15px;
+        color: #666;
+        font-weight: 400;
+      }
+
+      .setting-action {
+        margin-left: 16px;
+        display: flex;
+        align-items: center;
+      }
+
+      .chevron {
+        color: #999;
+      }
+
+      /* Toggle switch styles */
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 28px;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #e4e4e4;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 24px;
+        width: 24px;
+        left: 3px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      input:checked + .slider {
+        background-color: #e4e4e4;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(21px);
+        background-color: #fff;
+      }
+
+      .toggle-on .slider {
+        background-color: #3c72fe;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 480px) {
+        .setting-item {
+          padding: 14px 16px;
         }
-        
-        // Add visual feedback
-        this.style.opacity = '0.8';
-        setTimeout(() => {
-          this.style.opacity = '1';
-        }, 150);
+
+        .setting-title {
+          font-size: 16px;
+        }
+
+        .setting-description {
+          font-size: 14px;
+        }
+
+        .icon {
+          width: 36px;
+          height: 36px;
+          margin-right: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Security Settings</h1>
+
+      <!-- Biometrics Setting -->
+      <div class="setting-item">
+        <div class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M3 14c0 3.9 3.1 7 7 7s7-3.1 7-7M3 14h14M16.8 4c-.4.9-.8 1.7-1.5 2.5M12 2a16.3 16.3 0 0 1 3 3m4.8-3a20.4 20.4 0 0 1-3 4.5M14 11.1c0 .2 0 .3-.1.4 0 0 0 0 0 0-.7 1.5-1.9 2.5-3.9 2.5-1.9 0-3.2-1-3.9-2.5 0 0 0 0 0 0 0-.1-.1-.2-.1-.4M6 6.5c.2.2.4.4.6.5M17.2 13.2c-.2-.2-.3-.2-.4-.2M10 11.1v-.2c0-1 .8-2.1 2-2.1s2 1 2 2.1v.2M17.8 9.7c-.2.4-.5.8-.8 1M17.4 6c-.2.4-.4.8-.6 1.1M20 9.5c-.2.3-.4.5-.6.8M19.3 13.1c-.1-.1-.2-.2-.3-.1"
+            />
+          </svg>
+        </div>
+        <div class="setting-content">
+          <div class="setting-title">Biometrics</div>
+          <div class="setting-description">Sign in with biometrics</div>
+        </div>
+        <div class="setting-action">
+          <label class="toggle-switch toggle-on">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Account PIN Setting -->
+      <div class="setting-item">
+        <div class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            <circle cx="12" cy="16" r="1" />
+          </svg>
+        </div>
+        <div class="setting-content">
+          <div class="setting-title">Account PIN</div>
+          <div class="setting-description">Protect yourself from intruders</div>
+        </div>
+        <div class="setting-action">
+          <span class="chevron">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- Hide Balance Setting -->
+      <div class="setting-item">
+        <div class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+            <path
+              d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
+            />
+            <path
+              d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
+            />
+            <line x1="2" x2="22" y1="2" y2="22" />
+          </svg>
+        </div>
+        <div class="setting-content">
+          <div class="setting-title">Hide Balance</div>
+          <div class="setting-description">Show or hide your balances</div>
+        </div>
+        <div class="setting-action">
+          <span class="chevron">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- Confirm Transactions Setting -->
+      <div class="setting-item">
+        <div class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </div>
+        <div class="setting-content">
+          <div class="setting-title">Confirm Transactions</div>
+          <div class="setting-description">
+            Choose to confirm transactions or not
+          </div>
+        </div>
+        <div class="setting-action">
+          <span class="chevron">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Toggle switch functionality
+      document
+        .querySelector(".toggle-switch input")
+        .addEventListener("change", function () {
+          const toggleContainer = this.parentElement;
+          if (this.checked) {
+            toggleContainer.classList.add("toggle-on");
+          } else {
+            toggleContainer.classList.remove("toggle-on");
+          }
+        });
+
+      // Add click effect for setting items
+      document.querySelectorAll(".setting-item").forEach(item => {
+        item.addEventListener("click", function (e) {
+          // Prevent toggle from triggering navigation
+          if (e.target.closest(".toggle-switch")) {
+            e.stopPropagation();
+            return;
+          }
+
+          // Add visual feedback
+          this.style.opacity = "0.8";
+          setTimeout(() => {
+            this.style.opacity = "1";
+          }, 150);
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
