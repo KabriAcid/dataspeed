@@ -288,12 +288,12 @@ button:disabled {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: right;
-  height: 100vh;
 }
-
+.transaction-card {
+  min-height: 300px;
+}
 #sectionIV {
   background: #fef9fc;
-  height: 80vh;
 }
 
 /* REUSABLE CLASSES */

@@ -14,7 +14,7 @@ function set_header($page_header = 'Dataspeed')
 }
 function set_title($title = 'Dataspeed')
 {
-    return $title = htmlspecialchars($title);
+    return $title;
 }
 ?>
 <!DOCTYPE html>
