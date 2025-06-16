@@ -38,6 +38,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // if current step is 0, hide the registration reset button
+  if(currentStep == 0){
+    document.getElementById('registration')
+  }
+
   // Step 0: Referral Code
   const referralInput = document.getElementById("referral-code");
   const referralContinueBtn = document.getElementById("referral-submit");
@@ -70,6 +75,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Step 1: Email
   const emailInput = document.getElementById("email");
   const emailContinueBtn = document.getElementById("email-submit");
+  const backButton = document.querySelectorAll(".prev-button");
+
+  backButton.forEach(button => {
+    button.addEventListener("click", () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+        sessionStorage.setItem("currentStep", currentStep);
+      }
+    });
+  });
 
   emailContinueBtn.addEventListener("click", () => {
     handleButtonClick(emailContinueBtn, done => {
