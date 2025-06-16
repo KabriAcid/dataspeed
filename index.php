@@ -212,25 +212,25 @@ function set_title($title = null)
                 <h3 style="font-size: 20px; margin-bottom: 10px;">Links</h3>
                 <p><a href="index.php" style="color: #ccc; text-decoration: none;">Home</a></p>
                 <p><a href="about.php" style="color: #ccc; text-decoration: none;">About</a></p>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">Blog</a></p>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">Design</a></p>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">Documentation</a></p>
+                <p><a href="blog.php" style="color: #ccc; text-decoration: none;">Blog</a></p>
+                <p><a href="design.php" style="color: #ccc; text-decoration: none;">Design</a></p>
+                <p><a href="documentation.php" style="color: #ccc; text-decoration: none;">Documentation</a></p>
             </div>
 
             <!-- Blog -->
             <div style="flex: 1 1 180px; margin: 10px 0;">
                 <h3 style="font-size: 20px; margin-bottom: 10px;">Blog</h3>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">UI / UX</a></p>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">CodePens</a></p>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">Figma</a></p>
+                <p><a href="ux-ui.php" style="color: #ccc; text-decoration: none;">UI / UX</a></p>
+                <p><a href="codepens.php" style="color: #ccc; text-decoration: none;">CodePens</a></p>
+                <p><a href="figma.php" style="color: #ccc; text-decoration: none;">Figma</a></p>
                
             </div>
 
             <!-- Contact / Policy -->
             <div style="flex: 1 1 180px; margin: 10px 0;">
                 <h3 style="font-size: 20px; margin-bottom: 10px;">Contact</h3>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
-                <p><a href="#" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
+                <p><a href="privacy-policy.php" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
+                <p><a href="contact.php" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
             </div>
 
             <!-- Social Links -->
@@ -246,9 +246,11 @@ function set_title($title = null)
             <img width="30" src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram Alt" />
         </a>
         <!-- Twitter  -->
-        <a href="https://twitter.com/your-second-twitter" target="_blank">
-            <img width="24" src="https://img.icons8.com/color/48/twitter--v1.png" alt="Twitter Alt" />
-        </a>
+      <a href="https://x.com/your-second-twitter" target="_blank">
+    <img width="24" src="https://img.icons8.com/ios-filled/50/ffffff/x.png" alt="X Logo White" />
+
+</a>
+
         <!-- Facebook -->
         <a href="https://facebook.com/your-facebook" target="_blank">
             <img width="30" src="https://img.icons8.com/color/48/facebook--v1.png" alt="Facebook" />
