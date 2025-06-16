@@ -264,6 +264,30 @@ INSERT INTO `service_plans` (`id`, `service_id`, `provider_id`, `service_identif
 
 -- --------------------------------------------------------
 
+-- DStv Plans
+INSERT INTO service_plans (service_id, provider_id, service_identifier, volume, variation_code, price, validity, type, is_active, created_at, updated_at) VALUES
+(4, 10, 'dstv-tv', 'DStv Padi', 'dstv-padi', 2500.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 10, 'dstv-tv', 'DStv Yanga', 'dstv-yanga', 3500.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 10, 'dstv-tv', 'DStv Confam', 'dstv-confam', 5300.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 10, 'dstv-tv', 'DStv Compact', 'dstv-compact', 7900.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 10, 'dstv-tv', 'DStv Premium', 'dstv-premium', 18400.00, '30 Days', 'monthly', 1, NOW(), NOW());
+
+-- GOtv Plans
+INSERT INTO service_plans (service_id, provider_id, service_identifier, volume, variation_code, price, validity, type, is_active, created_at, updated_at) VALUES
+(4, 11, 'gotv-tv', 'GOtv Smallie', 'gotv-smallie', 1100.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 11, 'gotv-tv', 'GOtv Jinja', 'gotv-jinja', 2250.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 11, 'gotv-tv', 'GOtv Jolli', 'gotv-jolli', 3600.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 11, 'gotv-tv', 'GOtv Max', 'gotv-max', 4850.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 11, 'gotv-tv', 'GOtv Supa', 'gotv-supa', 6400.00, '30 Days', 'monthly', 1, NOW(), NOW());
+
+-- Showmax Plans
+INSERT INTO service_plans (service_id, provider_id, service_identifier, volume, variation_code, price, validity, type, is_active, created_at, updated_at) VALUES
+(4, 12, 'showmax-tv', 'Showmax Mobile', 'showmax-mobile', 1200.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 12, 'showmax-tv', 'Showmax Pro Mobile', 'showmax-pro-mobile', 3200.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 12, 'showmax-tv', 'Showmax Standard', 'showmax-standard', 2900.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 12, 'showmax-tv', 'Showmax Pro', 'showmax-pro', 6300.00, '30 Days', 'monthly', 1, NOW(), NOW()),
+(4, 12, 'showmax-tv', 'Showmax Bundle', 'showmax-bundle', 5000.00, '30 Days', 'monthly', 1, NOW(), NOW());
+
 --
 -- Table structure for table `service_providers`
 --

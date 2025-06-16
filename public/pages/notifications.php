@@ -10,7 +10,7 @@ $groupedNotifications = groupNotificationsByDate($notifications);
 ?>
 
 <body>
-    <main class="container py-4">
+    <main class="container py-5">
         <!-- Header Section -->
         <header>
             <div class="page-header mb-4 text-center">

@@ -8,14 +8,11 @@
 --- FEATURES ---
 
 - Adding action buttons (e.g., Transfer to Friend)✔️
-- Animation for account balance.
-- Username step in registration form.
+- Animation for account balance. 
+- Username step in registration form. ✔️
 - Add a subdomain for the admins.
 
 --- DESIGN ---
-
-- body bgcolor: #F8FAFF
-- content bgcolor: #FFFFFF
 
 --- NOTIFICATION MODULES ---
 

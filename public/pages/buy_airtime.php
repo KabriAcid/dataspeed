@@ -7,6 +7,7 @@ require __DIR__ . '/../partials/header.php';
 ?>
 <?php
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
+$providers = getProvidersByServiceSlug($pdo, 'network');
 ?>
 
 <body>
@@ -30,25 +31,17 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
         <!-- Service Selection -->
         <div class="service-section ">
             <div class="service-tabs">
-                <div class="service-tab selected-tab" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #FFCB05;">
-                    <img src="../assets/icons/mtn_logo.svg" alt="MTN">
-                    <span>MTN</span>
-                </div>
-                <div class="service-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
-                    <img src="../assets/icons/airtel-logo-1.svg" alt="Airtel" class="airtel-logo">
-                    <span>Airtel</span>
-                </div>
-                <div class="service-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
-                    <img src="../assets/icons/glo_logo.svg" alt="Glo">
-                    <span>Glo</span>
-                </div>
-                <div class="service-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
-                    <img src="../assets/icons/9mobile_logo.svg" alt="9Mobile">
-                    <span>9Mobile</span>
-                </div>
+                <?php foreach ($providers as $provider): ?>
+                    <div class="service-tab"
+                        data-network="<?= htmlspecialchars($provider['slug']) ?>"
+                        data-provider-id="<?= $provider['id'] ?>"
+                        style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
+                        <img src="../assets/icons/<?= htmlspecialchars($provider['logo_url']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                        <span><?= htmlspecialchars($provider['name']) ?></span>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
-
         <!-- Purchase Tabs -->
         <div class="tabs">
             <div class="tab-buttons">
@@ -195,7 +188,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                         t.style.fontWeight = t.classList.contains("selected-tab") ? "bold" : "normal";
                     });
                     airtelLogo.src = "../assets/icons/airtel-logo-1.svg";
-                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-logo-2.svg";
+                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-2.svg";
                     // Highlight selected amount button if any
                     const activeAmountBtn = document.querySelector(".amount-btn.selected-amount");
                     if (activeAmountBtn) {

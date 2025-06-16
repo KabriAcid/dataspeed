@@ -32,12 +32,13 @@ function getUserBalance($pdo, $user_id)
             return "0.00";
         }
     }
-    
+
 
     return number_format($balance['wallet_balance'], 2);
 }
 
-function getUserInfoByEmail($pdo, $email) {
+function getUserInfoByEmail($pdo, $email)
+{
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -142,7 +143,7 @@ function getUserReferralDetails($pdo, $user_id)
         if ($stmt->rowCount() === 0) {
             return [];
         }
-        
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -299,17 +300,17 @@ function updateWalletBalance(PDO $pdo, int $user_id, float $amount, string $type
     }
 }
 
-function fetchNigerianStates($pdo){
-   try {
-    $stmt = $pdo->prepare("SELECT * FROM nigerian_states;");
-    $stmt->execute();
-    $result = $stmt->fetchAll();
+function fetchNigerianStates($pdo)
+{
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM nigerian_states;");
+        $stmt->execute();
+        $result = $stmt->fetchAll();
 
-    return $result;
-
-   } catch (PDOException $e) {
+        return $result;
+    } catch (PDOException $e) {
         echo $e->getMessage();
-   }
+    }
 }
 
 function getUserIdByAccount($accountNumber)
@@ -322,8 +323,17 @@ function getUserIdByAccount($accountNumber)
 }
 
 // Add this helper before your try-catch block
-function safeRollback($pdo) {
+function safeRollback($pdo)
+{
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
+}
+
+function getProvidersByServiceSlug(PDO $pdo, string $category): array
+{
+    $category = strtolower(trim($category));
+    $stmt = $pdo->prepare("SELECT id, name, slug, logo_url, brand_color FROM providers WHERE category = ? AND is_active = 1    ");
+    $stmt->execute([$category]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
