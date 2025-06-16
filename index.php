@@ -277,9 +277,6 @@ function set_title($title = null)
         <!-- Bottom Info -->
         <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; font-size: 18px; color: #666;">
             <div>
-                Icons by <a href="https://icons8.com/" target="_blank" style="color: #666;">Icons8</a>
-            </div>
-            <div>
                 Designed & Created by dataspeed
             </div>
             <div>
