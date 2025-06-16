@@ -76,11 +76,12 @@ function set_title($title = null)
                 <div class="col-md-6 col-lg-4 col-12 mb-3">
                     <div class="card card-container text-md-start text-center">
                         <div class="d-flex justify-content-center align-items-center">
-                            <img src="public/assets/img/icons/airtime-to-cash.png" alt="icon" class="card-icon">
+                            <img src="https://img.icons8.com/ios-filled/100/000000/retro-tv.png" alt="TV Logo" class="card-icon">
+
                         </div>
-                        <h6 class="primary">Instant airtime to cash</h6>
-                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.
-                        </p>
+                        <h6 class="primary">Instant TV subscriptions </h6>
+                        <p> Stay entertained with affordable subscriptions for DStv, GOtv, and StarTimes. 
+                            Enjoy competitive rates and exclusive savings on every subscription renewal!</p>
                     </div>
                 </div>
 
@@ -91,7 +92,8 @@ function set_title($title = null)
                             <img src="public/assets/img/icons/airtime.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Airtime top up</h6>
-                        <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
+                        <p>Stay connected with affordable top-ups for MTN, Glo, 9mobile, 
+                            and Airtel. Enjoy competitive rates and exclusive savings on every recharge!</p>
                     </div>
                 </div>
 
@@ -102,7 +104,8 @@ function set_title($title = null)
                             <img src="public/assets/img/icons/data.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Data purchase</h6>
-                        <p>We offer the best rates on data purchase for all available networks in Nigeria.</p>
+                        <p> Empower your connectivity with the best data deals across all Nigerian networks.
+                             Choose plans that suit your needs and stay online effortlessly!</p>
                     </div>
                 </div>
                 <!-- Card 1 -->
@@ -112,7 +115,8 @@ function set_title($title = null)
                             <img src="public/assets/img/icons/bills.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Bill payments</h6>
-                        <p>Convert your airtime to cash in seconds using the new and improved Airtime to cash service.
+                        <p> Simplify your finances with our enhanced airtime-to-cash solution. 
+                            Pay bills quickly and reliably with just a few taps!
                         </p>
                     </div>
                 </div>
@@ -124,7 +128,8 @@ function set_title($title = null)
                             <img src="public/assets/img/icons/nairapin.png" alt="icon" class="card-icon">
                         </div>
                         <h6 class="primary">Airtime payments</h6>
-                        <p>Purchase airtime for MTN, Glo, 9mobile & Airtel at the best possible / discounted rates.</p>
+                        <p>Streamline your transactions with seamless airtime payments for MTN, Glo, 9mobile, and Airtel. 
+                            Benefit from unbeatable rates and instant processing!</p>
                     </div>
                 </div>
             </div>
@@ -138,40 +143,40 @@ function set_title($title = null)
                 <div class="col-xl-3 col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <i class="icon">xxx</i>
-                            <h6>Seamless Transcation</h6>
-                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using
-                                the DataSpeed app.</p>
+                            <i class="icon"></i>
+                            <h6>Stay connected with MTN & Airtel</h6>
+                            <p>Recharge airtime and data for MTN and Airtel anytime, 
+                                ensuring seamless communication with the DataSpeed app.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <i class="icon">xxx</i>
-                            <h6>Seamless Transcation</h6>
-                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using
-                                the DataSpeed app.</p>
+                            <i class="icon"></i>
+                            <h6>Enjoy TV with DStv, GOtv & Startimes</h6>
+                            <p>Pay for DStv, GOtv, and Startimes subscriptions easily and access your favorite
+                             channels via the DataSpeed app.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <i class="icon">xxx</i>
-                            <h6>Seamless Transcation</h6>
-                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using
-                                the DataSpeed app.</p>
+                            <i class="icon"></i>
+                            <h6>Power Your Home</h6>
+                            <p>Settle Internet and Electricity bills quickly and
+                                 conveniently using the DataSpeed app.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <i class="icon">xxx</i>
-                            <h6>Seamless Transcation</h6>
-                            <p>Pay for your Tv/Cable (Dstv, Gotv, etc.), Internet, Electricity & other merchants using
-                                the DataSpeed app.</p>
+                            <i class="icon"></i>
+                            <h6> Support Local Merchants</h6>
+                            <p>Make hassle-free payments to local merchants 
+                                and vendors with the DataSpeed app.</p>
                         </div>
                     </div>
                 </div>
@@ -181,8 +186,8 @@ function set_title($title = null)
         <section id="sectionIV">
             <div class="text-center">
                 <h4>Newsletter</h4>
-                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. At aut neque consectetur nihil
-                    sint excepturi omnis adipisci possimus!</p>
+                <p class="mb-4">"Unleash your potential with DataSpeed: 
+                    chase your goals, master every challenge, and achieve it all with lightning-fast performance!"</p>
                 <form action="" method="post" class="d-flex" style="width: 50%;margin: auto;">
                     <input type="email" name="email" class="input" placeholder="Your email address">
                     <button type="submit" name="submit" class="btn primary-btn ms-3">SUBSCRIBE</button>
@@ -190,81 +195,98 @@ function set_title($title = null)
             </div>
         </section>
     </main>
-    <footer>
-        <div style="height: 400px;"> </div>
-        <div class="dataspeed-footer">
-            <div class="dataspeed-footer-top">
 
-            </div>
-            <div class="dataspeed-footer-content">
-                <div class="dataspeed-footer-section">
-                    <h1 class="dataspeed-footer-heading">Dataspeed</h1>
-                </div>
-                <div class="dataspeed-footer-section">
-                    <ul class="d-footer-ul">
-                        <li class="d-footer-li-h"><b>Links</b></li>
-                        <li class="d-footer-li">Home</li>
-                        <li class="d-footer-li">About</li>
-                        <li class="d-footer-li">Blog</li>
-                        <li class="d-footer-li">Design</li>
-                        <li class="d-footer-li">Documentation</li>
-                    </ul>
-                </div>
-                <div class="dataspeed-footer-section">
-                    <ul class="d-footer-ul">
-                        <li class="d-footer-li-h"><b>Blog</b></li>
-                        <li class="d-footer-li">UI / UX</li>
-                        <li class="d-footer-li">CodePens</li>
-                        <li class="d-footer-li">Codedamn</li>
-                        <li class="d-footer-li">Figma</li>
-                        <li class="d-footer-li">Oracle EBS</li>
-                    </ul>
-                </div>
-                <div class="dataspeed-footer-section">
-                    <ul class="d-footer-ul">
-                        <li class="d-footer-li-h"><b>Privacy policy</b></li>
-                        <li class="d-footer-li-h"><b>Contact Us</b></li>
+       <footer style="background-color: #111; color: #fff; font-family: Arial, sans-serif; padding: 60px 20px;">
+    <div style="max-width: 1200px; margin: auto;">
+        <!-- Top Area -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #333; padding-bottom: 40px;">
 
-                    </ul>
-                </div>
-                <div class="dataspeed-footer-section">
-                    <div class="logo-head">
-                        <b>Follow me on</b>
-                    </div>
-                    <div class="logo">
-                        <a href="https://www.instagram.com/dark.soul.io/" target="_blank"><img width="30" height="30"
-                                src="https://img.icons8.com/ios-glyphs/100/instagram-new.png" alt="instagram-new" /></a>
-                        <a href="https://www.youtube.com/channel/UCooCOD2j8Q4Y9ysYZIFzI_w" target="_blank"><img
-                                width="30" height="30" src="https://img.icons8.com/ios-filled/100/youtube-squared.png"
-                                alt="youtube-squared" /></a>
-                        <a href="https://dribbble.com/dark-soul" target="_blank"><img width="25" height="25"
-                                src="https://img.icons8.com/offices/100/dribbble.png" alt="dribbble" /></a>
-                    </div>
-                </div>
-            </div>
-            <div class="dataspeed-footer-bottom">
-                <div class="dataspeed-footer-bottom-sec">
-                    <p>Icons by <a href="https://icons8.com/" target="_blank">Icons8</a></p>
-                </div>
-                <div class="dataspeed-footer-bottom-sec">
-                    <p>Designed & Created by dataspeed</p>
-                </div>
-                <div class="dataspeed-footer-bottom-sec">
-                    <p>&copy; 2024 dataspeed</p>
-                </div>
-
+            <!-- Logo & Info -->
+            <div style="flex: 1 1 180px; margin: 10px 0;">
+                <h2 style="font-size: 25px; font-weight: bold; margin-bottom: 10px;">Dataspeed</h2>
+                <p style="font-size: 14px; color: #ccc;">Your trusted tech insights and creative code solutions.</p>
             </div>
 
+            <!-- Links -->
+            <div style="flex: 1 1 180px; margin: 10px 0;">
+                <h3 style="font-size: 20px; margin-bottom: 10px;">Links</h3>
+                <p><a href="index.php" style="color: #ccc; text-decoration: none;">Home</a></p>
+                <p><a href="about.php" style="color: #ccc; text-decoration: none;">About</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Blog</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Design</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Documentation</a></p>
+            </div>
+
+            <!-- Blog -->
+            <div style="flex: 1 1 180px; margin: 10px 0;">
+                <h3 style="font-size: 20px; margin-bottom: 10px;">Blog</h3>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">UI / UX</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">CodePens</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Figma</a></p>
+               
+            </div>
+
+            <!-- Contact / Policy -->
+            <div style="flex: 1 1 180px; margin: 10px 0;">
+                <h3 style="font-size: 20px; margin-bottom: 10px;">Contact</h3>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
+            </div>
+
+            <!-- Social Links -->
+            <div style="flex: 1 1 200px; margin: 10px 0;">
+                <h3 style="font-size: 20px; margin-bottom: 10px;">Follow Me</h3>
+                <div style="display: flex; gap: 15px;">
+            <!-- YouTube  -->
+                <a href="https://www.youtube.com/examplechannel" target="_blank">
+            <img width="30" src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube-alt" /></a>
+                   
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/your-second-instagram/" target="_blank">
+            <img width="30" src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram Alt" />
+        </a>
+        <!-- Twitter  -->
+        <a href="https://twitter.com/your-second-twitter" target="_blank">
+            <img width="24" src="https://img.icons8.com/color/48/twitter--v1.png" alt="Twitter Alt" />
+        </a>
+        <!-- Facebook -->
+        <a href="https://facebook.com/your-facebook" target="_blank">
+            <img width="30" src="https://img.icons8.com/color/48/facebook--v1.png" alt="Facebook" />
+        </a>
+
+        <!-- Telegram -->
+        <a href="https://t.me/yourtelegram" target="_blank">
+            <img width="30" src="https://img.icons8.com/color/48/telegram-app--v1.png" alt="Telegram Alt" />
+        </a>
+
+        <!-- Email -->
+        <a href="mailto:your@email.com">
+            <img width="30" src="https://img.icons8.com/color/48/filled-message--v1.png" alt="Email" />
+        </a>
+</div>
+        <!-- Social Links -->
+    </div>
+</div>
+
+                </div>
+            </div>
         </div>
-    </footer>
-    <script src="public/assets/js/navbar.js"></script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Popper.js (for tooltips and popovers) -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- Bottom Info -->
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; font-size: 18px; color: #666;">
+            <div>
+                Icons by <a href="https://icons8.com/" target="_blank" style="color: #666;">Icons8</a>
+            </div>
+            <div>
+                Designed & Created by dataspeed
+            </div>
+            <div>
+                &copy; 2025 dataspeed
+            </div>
+        </div>
+    </div>
+</footer>
+
 </body>
 
 </html>
