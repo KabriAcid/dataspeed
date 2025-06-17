@@ -209,77 +209,30 @@ function set_title($title = null)
                     <h2 style="font-size: 25px; font-weight: bold; margin-bottom: 10px;">Dataspeed</h2>
                     <p style="font-size: 14px; color: #ccc;">Your trusted tech insights and creative code solutions.</p>
                 </div>
-            <!-- Links -->
-            <div style="flex: 1 1 180px; margin: 10px 0;">
-                <h3 style="font-size: 20px; margin-bottom: 10px;">Links</h3>
-                <p><a href="index.php" style="color: #ccc; text-decoration: none;">Home</a></p>
-                <p><a href="about.php" style="color: #ccc; text-decoration: none;">About</a></p>
-                <p><a href="blog.php" style="color: #ccc; text-decoration: none;">Blog</a></p>
-                <p><a href="design.php" style="color: #ccc; text-decoration: none;">Design</a></p>
-                <p><a href="documentation.php" style="color: #ccc; text-decoration: none;">Documentation</a></p>
-            </div>
+                <!-- Links -->
+                <div style="flex: 1 1 180px; margin: 10px 0;">
+                    <h3 style="font-size: 20px; margin-bottom: 10px;">Links</h3>
+                    <p><a href="index.php" style="color: #ccc; text-decoration: none;">Home</a></p>
+                    <p><a href="about.php" style="color: #ccc; text-decoration: none;">About</a></p>
+                    <p><a href="blog.php" style="color: #ccc; text-decoration: none;">Blog</a></p>
+                    <p><a href="design.php" style="color: #ccc; text-decoration: none;">Design</a></p>
+                    <p><a href="documentation.php" style="color: #ccc; text-decoration: none;">Documentation</a></p>
+                </div>
 
-            <!-- Blog -->
-            <div style="flex: 1 1 180px; margin: 10px 0;">
-                <h3 style="font-size: 20px; margin-bottom: 10px;">Blog</h3>
-                <p><a href="ux-ui.php" style="color: #ccc; text-decoration: none;">UI / UX</a></p>
-                <p><a href="codepens.php" style="color: #ccc; text-decoration: none;">CodePens</a></p>
-                <p><a href="figma.php" style="color: #ccc; text-decoration: none;">Figma</a></p>
-               
-            </div>
-
-            <!-- Contact / Policy -->
-            <div style="flex: 1 1 180px; margin: 10px 0;">
-                <h3 style="font-size: 20px; margin-bottom: 10px;">Contact</h3>
-                <p><a href="privacy-policy.php" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
-                <p><a href="contact.php" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
-            </div>
-
-            <!-- Social Links -->
-            <div style="flex: 1 1 200px; margin: 10px 0;">
-                <h3 style="font-size: 20px; margin-bottom: 10px;">Follow Me</h3>
-                <div style="display: flex; gap: 15px;">
-            <!-- YouTube  -->
-                <a href="https://www.youtube.com/examplechannel" target="_blank">
-            <img width="30" src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube-alt" /></a>
-                   
-        <!-- Instagram -->
-        <a href="https://www.instagram.com/your-second-instagram/" target="_blank">
-            <img width="30" src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram Alt" />
-        </a>
-        <!-- Twitter  -->
-      <a href="https://x.com/your-second-twitter" target="_blank">
-    <img width="24" src="https://img.icons8.com/ios-filled/50/ffffff/x.png" alt="X Logo White" />
-
-</a>
-
-        <!-- Facebook -->
-        <a href="https://facebook.com/your-facebook" target="_blank">
-            <img width="30" src="https://img.icons8.com/color/48/facebook--v1.png" alt="Facebook" />
-        </a>
-
-        <!-- Telegram -->
-        <a href="https://t.me/yourtelegram" target="_blank">
-            <img width="30" src="https://img.icons8.com/color/48/telegram-app--v1.png" alt="Telegram Alt" />
-        </a>
-
-        <!-- Email -->
-        <a href="mailto:your@email.com">
-            <img width="30" src="https://img.icons8.com/color/48/filled-message--v1.png" alt="Email" />
-        </a>
-</div>
-        <!-- Social Links -->
-    </div>
-</div>
->>>>>>> e6ec296d80b546d6a1589f7d1fb082c49e16596f
+                <!-- Blog -->
+                <div style="flex: 1 1 180px; margin: 10px 0;">
+                    <h3 style="font-size: 20px; margin-bottom: 10px;">Blog</h3>
+                    <p><a href="ux-ui.php" style="color: #ccc; text-decoration: none;">UI / UX</a></p>
+                    <p><a href="codepens.php" style="color: #ccc; text-decoration: none;">CodePens</a></p>
+                    <p><a href="figma.php" style="color: #ccc; text-decoration: none;">Figma</a></p>
 
                 </div>
 
                 <!-- Contact / Policy -->
                 <div style="flex: 1 1 180px; margin: 10px 0;">
                     <h3 style="font-size: 20px; margin-bottom: 10px;">Contact</h3>
-                    <p><a href="#" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
-                    <p><a href="#" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
+                    <p><a href="privacy-policy.php" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
+                    <p><a href="contact.php" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
                 </div>
 
                 <!-- Social Links -->
@@ -295,9 +248,10 @@ function set_title($title = null)
                             <img width="30" src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram Alt" />
                         </a>
                         <!-- Twitter  -->
-                        <a href="https://twitter.com/your-second-twitter" target="_blank">
-                            <img width="24" src="https://img.icons8.com/color/48/twitter--v1.png" alt="Twitter Alt" />
+                        <a href="https://x.com/your-second-twitter" target="_blank">
+                            <img width="24" src="https://img.icons8.com/ios-filled/50/ffffff/x.png" alt="X Logo White" />
                         </a>
+
                         <!-- Facebook -->
                         <a href="https://facebook.com/your-facebook" target="_blank">
                             <img width="30" src="https://img.icons8.com/color/48/facebook--v1.png" alt="Facebook" />
@@ -318,13 +272,11 @@ function set_title($title = null)
             </div>
 
         </div>
-        </div>
-        </div>
 
         <!-- Bottom Info -->
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; font-size: 18px; color: #666;">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; font-size: 14px; color: #666;">
             <div>
-                Designed & Created by dataspeed
+                Designed & Created by Dreamerscodes
             </div>
             <div>
                 &copy; 2025 dataspeed

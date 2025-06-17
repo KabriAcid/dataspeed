@@ -65,7 +65,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
         <footer class="my-4">
-            <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All rights reserved.</p>
+            <p class="text-xs text-center text-secondary">Copyright &copy; Dreamerscodes 2025. All rights reserved.</p>
         </footer>
 
 
