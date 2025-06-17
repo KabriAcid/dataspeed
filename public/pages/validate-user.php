@@ -25,8 +25,18 @@ if (filter_var($user, FILTER_VALIDATE_EMAIL)) {
     $value = strtolower($user);
 } elseif (preg_match('/^\+?234\d{10}$/', $user) || preg_match('/^0\d{10}$/', $user)) {
     // Normalize phone number to 11 digits starting with 0
-    $normalizedPhone = preg_replace('/^\+?234/', '0', $user); // +234 or 234 to 0
-    $normalizedPhone = preg_replace('/^0+/', '0', $normalizedPhone); // Remove extra leading zeros
+    // Remove all non-digits
+    $digits = preg_replace('/\D/', '', $user);
+    if (strlen($digits) === 13 && substr($digits, 0, 3) === '234') {
+        $normalizedPhone = '0' . substr($digits, 3);
+    } elseif (strlen($digits) === 11 && $digits[0] === '0') {
+        $normalizedPhone = $digits;
+    } else {
+        echo json_encode(["success" => false, "message" => "Invalid phone number format."]);
+        exit;
+    }
+    $field = 'phone_number';
+    $value = $normalizedPhone;
     if (strlen($normalizedPhone) !== 11) {
         echo json_encode(["success" => false, "message" => "Invalid phone number format."]);
         exit;
@@ -47,6 +57,13 @@ try {
         echo json_encode(["success" => false, "message" => "Invalid user or password."]);
         exit;
     }
+
+    // Check registration status
+    if (strtolower($userRow['registration_status']) !== 'complete') {
+        echo json_encode(["success" => false, "message" => "Account registration is not complete."]);
+        exit;
+    }
+
 
     // Check account status
     switch (strtolower($userRow['account_status'])) {
