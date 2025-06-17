@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 // Log raw input for debugging
 $payload = file_get_contents("php://input");

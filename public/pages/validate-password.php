@@ -3,6 +3,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 header("Content-Type: application/json");
 
@@ -193,7 +194,6 @@ try {
             $user['email'],
             $user['phone_number']
         ]);
-        
     } catch (PDOException $th) {
         echo json_encode([
             "success" => false,

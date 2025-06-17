@@ -3,10 +3,11 @@ session_start();
 
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
-?>
-<?php
+
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
+$networkProviders = getServiceProvider($pdo, 'network');
 ?>
 
 <body>
@@ -28,24 +29,18 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
         </header>
 
         <!-- Service Selection -->
-        <div class="service-section ">
+        <div class="service-section">
             <div class="service-tabs">
-                <div class="service-tab selected-tab" id="mtn-tab" data-network="mtn" data-provider-id="1" style="--brand-color: #FFCB05;">
-                    <img src="../assets/icons/mtn_logo.svg" alt="MTN">
-                    <span>MTN</span>
-                </div>
-                <div class="service-tab" id="airtel-tab" data-network="airtel" data-provider-id="2" style="--brand-color: #EB1922;">
-                    <img src="../assets/icons/airtel-logo-1.svg" alt="Airtel" class="airtel-logo">
-                    <span>Airtel</span>
-                </div>
-                <div class="service-tab" id="glo-tab" data-network="glo" data-provider-id="3" style="--brand-color: #4BB44E;">
-                    <img src="../assets/icons/glo_logo.svg" alt="Glo">
-                    <span>Glo</span>
-                </div>
-                <div class="service-tab" id="9mobile-tab" data-network="9mobile" data-provider-id="4" style="--brand-color: #D6E806;">
-                    <img src="../assets/icons/9mobile_logo.svg" alt="9Mobile">
-                    <span>9Mobile</span>
-                </div>
+                <?php foreach ($networkProviders as $i => $provider): ?>
+                    <div
+                        class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
+                        data-network="<?= htmlspecialchars($provider['slug']) ?>"
+                        data-provider-id="<?= (int)$provider['id'] ?>"
+                        style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
+                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                        <span><?= htmlspecialchars($provider['name']) ?></span>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -242,7 +237,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             // --- Input Listeners ---
             document.querySelectorAll(".amount-input").forEach(input => {
                 input.addEventListener("input", function() {
-                    selectedAmount = input.value.trim();
+                    selectedAmount = input.value.trim().replace(/[\s,.]/g, '');
                     // Clear quick amount highlights if user types
                     amountButtons.forEach(b => {
                         b.classList.remove("selected-amount");
@@ -252,7 +247,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     validatePurchaseButton();
                 });
             });
-            
+
             document.querySelectorAll(".phone-input").forEach(input => {
                 input.addEventListener("input", validatePurchaseButton);
             });
@@ -265,7 +260,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                     const activeTab = getActiveTab();
                     const amountInput = getActiveAmountInput();
                     const phoneInput = getActivePhoneInput();
-                    let amount = amountInput.value.trim();
+                    let amount = input.value.trim().replace(/[\s,.]/g, '');
 
                     // Get selected amount from button if present
                     const selectedBtn = activeTab.querySelector('.amount-btn.selected-amount');

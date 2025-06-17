@@ -3,7 +3,11 @@ session_start();
 
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
+
+$tvProviders = getServiceProvider($pdo, 'tv'); // Assumes your function from earlier
+
 ?>
 
 <body>
@@ -28,18 +32,17 @@ require __DIR__ . '/../partials/header.php';
         <!-- Service Selection -->
         <div class="service-section">
             <div class="service-tabs">
-                <div class="service-tab selected-tab" data-provider="dstv" style="--brand-color: #00206C;">
-                    <img src="../assets/icons/dstv.svg" alt="DSTV"><span>DSTV</span>
-                </div>
-                <div class="service-tab" data-provider="gotv" style="--brand-color: #A1C823;">
-                    <img src="../assets/icons/gotv.svg" alt="GOTV"><span>GOTV</span>
-                </div>
-                <div class="service-tab" data-provider="startimes" style="--brand-color: #f9a825;">
-                    <img src="../assets/icons/startimes.png" alt="Startimes"><span>Startimes</span>
-                </div>
-                <div class="service-tab" data-provider="showmax" style="--brand-color: #f9a825;">
-                    <img src="../assets/icons/showmax.svg" alt="Showmax"><span>Showmax</span>
-                </div>
+                <?php foreach ($tvProviders as $i => $provider): ?>
+                    <div
+                        class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
+                        data-provider="<?= htmlspecialchars($provider['slug']) ?>"
+                        data-service-id="<?= (int)$provider['service_id'] ?>"
+                        data-type="<?= htmlspecialchars($provider['type']) ?>"
+                        style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
+                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                        <span><?= htmlspecialchars($provider['name']) ?></span>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
 

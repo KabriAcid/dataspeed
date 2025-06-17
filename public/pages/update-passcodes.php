@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 header('Content-Type: application/json');
 
@@ -83,7 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         else {
             throw new Exception('Please fill in the required fields.');
         }
-
     } catch (Exception $e) {
         echo json_encode([
             'success' => false,

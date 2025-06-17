@@ -4,6 +4,7 @@ header('Content-Type: application/json');
 
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
@@ -36,7 +37,6 @@ try {
 
         echo json_encode(['success' => true, 'message' => 'Bank Account updated.']);
         exit;
-
     } elseif ($step === 'address') {
         $state = trim($_POST['state'] ?? '');
         $lga = trim($_POST['lga'] ?? '');
@@ -59,16 +59,13 @@ try {
 
         echo json_encode(['success' => true, 'message' => 'Home Address updated.']);
         exit;
-
     } elseif ($step === 'biodata') {
         // If this step should not allow updates, return an error
         echo json_encode(['success' => false, 'message' => 'Biodata is not editable.']);
         exit;
-
     } else {
         throw new Exception('Invalid step.');
     }
-
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     exit;

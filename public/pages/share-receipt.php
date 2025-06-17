@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 // Get transaction reference from GET
 $reference = $_GET['ref'] ?? null;
@@ -79,7 +80,7 @@ $sender = $txn['email'] ?? 'N/A';
         }
 
         .download-btn {
-            background-color: #94241E!important;
+            background-color: #94241E !important;
             color: #fff;
             border-radius: 8px;
             border: none;

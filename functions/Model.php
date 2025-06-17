@@ -9,7 +9,7 @@ function getUserInfo(PDO $pdo, int $userd): array|false
     }
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user['account_status'] != 'active') {
+    if ($user['account_status'] != ACCOUNT_STATUS_ACTIVE) {
         return false;
     }
 
@@ -68,6 +68,14 @@ function getTransactions($pdo, $user_id, $limit = 5)
         echo $e->getMessage();
         return [];
     }
+}
+
+function getServiceProvider(PDO $pdo, string $type): array
+{
+    $sql = "SELECT * FROM service_providers WHERE type = ? AND is_active = 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$type]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**

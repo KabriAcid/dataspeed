@@ -15,6 +15,7 @@
 - User's account setting failure.✔️
 - Forgot PIN functionality.
 - In transactions page use the icon of the service provider instead.
+- Sanitize inputs when using quick amount buttons.
 
 --- FEATURES ---
 
