@@ -2,10 +2,11 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
-$providers = getProvidersByServiceSlug($pdo, 'network');
+$networkProviders = getServiceProvider($pdo, 'network');
 ?>
 
 <body>
@@ -27,14 +28,15 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
         </header>
 
         <!-- Service Selection -->
-        <div class="service-section ">
+        <div class="service-section">
             <div class="service-tabs">
-                <?php foreach ($providers as $provider): ?>
-                    <div class="service-tab"
+                <?php foreach ($networkProviders as $i => $provider): ?>
+                    <div
+                        class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
                         data-network="<?= htmlspecialchars($provider['slug']) ?>"
-                        data-provider-id="<?= $provider['id'] ?>"
+                        data-provider-id="<?= (int)$provider['id'] ?>"
                         style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
-                        <img src="../assets/icons/<?= htmlspecialchars($provider['logo_url']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
                         <span><?= htmlspecialchars($provider['name']) ?></span>
                     </div>
                 <?php endforeach; ?>
@@ -155,7 +157,7 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
                     selectedTab = tab.dataset.network;
                     selectedProviderId = tab.dataset.providerId;
 
-                    airtelLogo.src = "../assets/icons/airtel-logo-1.svg";
+                    airtelLogo.src = "../assets/icons/airtel.svg";
                     if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-2.svg";
                     loadPlans();
                 });
@@ -204,7 +206,7 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
                         if (response.success && Array.isArray(response.plans)) {
                             renderPlans(response.plans, forModal);
                         } else {
-                            container.innerHTML = '<div class="text-danger text-sm fw-bold text-center py-4">No plans found.</div>';
+                            container.innerHTML = '<div class="text-danger text-center fw-bold text-sm py-4">No plans found.</div>';
                             showToasted(response.message, "error");
                             console.error("Error loading plans:", response.message);
                         }
@@ -220,12 +222,12 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
                     const card = document.createElement("div");
                     card.className = "col-4 mb-3";
                     card.innerHTML = `
-                        <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
-                            <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
-                            <div class="data-volume mb-1">${plan.volume}</div>
-                            <div class="data-validity mb-2">${plan.validity}</div>
-                        </div>
-                    `;
+    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
+        <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
+        <div class="data-volume mb-1">${plan.volume}</div>
+        <div class="data-validity mb-2">${plan.validity}</div>
+    </div>
+    `;
 
                     // Plan card click
                     card.querySelector(".plan-card").addEventListener("click", function() {
@@ -298,12 +300,16 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
             payBtn.addEventListener("click", function() {
                 const pinpadModal = document.getElementById("pinpadModal");
                 pinpadModal.dataset.amount = selectedPlan.price;
+
+                if (phone.length === 10) phone = '0' + phone;
                 pinpadModal.dataset.phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
+
                 pinpadModal.dataset.network = selectedTab;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
                 pinpadModal.style.display = "flex";
+
             });
 
             // **Format Phone Number**

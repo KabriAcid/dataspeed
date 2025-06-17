@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/session-lock.php';
 require __DIR__ . '/../partials/header.php';
 
@@ -39,28 +40,28 @@ try {
 
 
     <style>
-    body {
-        background-color: #f8f9fa;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
-    .maintenance-box {
-        max-width: 500px;
-    }
+        .maintenance-box {
+            max-width: 500px;
+        }
 
-    .maintenance-icon {
-        font-size: 80px;
-        color: #dc3545;
-    }
+        .maintenance-icon {
+            font-size: 80px;
+            color: #dc3545;
+        }
 
-    .btn {
-        background-color: #722f37;
-        color: white
-    }
+        .btn {
+            background-color: #722f37;
+            color: white
+        }
     </style>
 </head>
 

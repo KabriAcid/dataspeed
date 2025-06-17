@@ -193,11 +193,16 @@ function set_title($title = null)
                         <p class="text-sm">Make sure your password is strong.</p>
                     </div>
                     <div class="form-field">
-                        <input type="password" class="input" id="password" name="password" placeholder="Password">
+                        <div class="password-wrapper">
+                            <input type="password" id="password" class="input" placeholder="Enter your password" style="padding-right: 40px;" />
+                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                        </div>
                     </div>
                     <div class="form-field">
-                        <input type="password" class="input" id="confirm-password" name="confirm_password"
-                            placeholder="Password">
+                        <div class="password-wrapper">
+                            <input type="password" id="confirm-password" class="input" placeholder="Enter your password" style="padding-right: 40px;" />
+                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn bg-light mt-3 prev-button">

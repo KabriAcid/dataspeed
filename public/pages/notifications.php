@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 
 $notifications = getUserNotifications($pdo, $user_id, 20);
@@ -67,7 +68,7 @@ $groupedNotifications = groupNotificationsByDate($notifications);
     </main>
 
     <footer class="my-4 text-center text-secondary small">
-        &copy; Dreamcodes 2025. All rights reserved.
+        &copy; Dreamerscodes 2025. All rights reserved.
     </footer>
 
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>

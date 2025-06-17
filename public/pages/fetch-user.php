@@ -2,11 +2,12 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 header('Content-Type: application/json');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    
+
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(["success" => false, "message" => "Unauthorized access."]);
         exit;
@@ -30,26 +31,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         }
 
-        if($user['registration_status'] != 'complete'){
+        if ($user['registration_status'] != 'complete') {
 
             $userName  = $user['first_name'] . ' ' . $user['last_name'];
-            
+
             $title = "Money Transfer failed";
             $message = $userName . " " . "must complete registration before receiving any funds.";
             $type = 'transfer_fail';
             $icon = 'ni ni-fat-remove';
             $color = 'text-danger';
-            
+
             pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 
             echo json_encode(["success" => false, "message" => "User must complete registration."]);
             exit;
-        }
-        else {
+        } else {
             echo json_encode(["success" => true, "data" => $user]);
             exit;
         }
-
     } catch (PDOException $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }

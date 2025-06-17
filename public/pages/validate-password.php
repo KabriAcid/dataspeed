@@ -3,6 +3,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 header("Content-Type: application/json");
 
@@ -30,8 +31,6 @@ try {
         exit;
     }
 
-    // Log user's existing virtual account (if any)
-    file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] User's existing virtual account: " . ($user['virtual_account'] ?? 'None') . PHP_EOL, FILE_APPEND);
 
     // If virtual account already exists, return it without calling API again
     if (!empty($user['virtual_account'])) {
@@ -176,7 +175,6 @@ try {
 
     if (!$updateSuccess) {
         $errorInfo = $stmt->errorInfo();
-        file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] DB Update Error: " . print_r($errorInfo, true) . PHP_EOL, FILE_APPEND);
         echo json_encode(["success" => false, "message" => "Failed to update user data."]);
         exit;
     }
@@ -196,11 +194,29 @@ try {
             $user['email'],
             $user['phone_number']
         ]);
-        
     } catch (PDOException $th) {
         echo json_encode([
             "success" => false,
             "message" => "Account balance creation failed.",
+        ]);
+        exit;
+    }
+
+    try {
+        // Insert user settings along with ip address
+        $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
+        $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometrics_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $user_id,
+            0,
+            0,
+            1, // Default to enabled
+            $ipAddress
+        ]);
+    } catch (PDOException $th) {
+        echo json_encode([
+            "success" => false,
+            "message" => "User settings failed to update.",
         ]);
         exit;
     }
@@ -250,25 +266,6 @@ try {
         unset($_SESSION['referral_code']);
     }
 
-    try {
-        // Insert user settings along with ip address
-        $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
-        $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometrics_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?)");
-        $stmt->execute([
-            $user_id,
-            0,
-            0,
-            1, // Default to enabled
-            $ipAddress
-        ]);
-    } catch (PDOException $th) {
-        echo json_encode([
-            "success" => false,
-            "message" => "User settings failed to update.",
-        ]);
-        exit;
-    }
-
     // FINAL SUCCESS RESPONSE (only here!)
     echo json_encode([
         "success" => true,
@@ -279,7 +276,6 @@ try {
     ]);
     exit;
 } catch (Exception $e) {
-    file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Exception: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
     echo json_encode([
         "success" => false,
         "message" => "Server error: " . $e->getMessage()

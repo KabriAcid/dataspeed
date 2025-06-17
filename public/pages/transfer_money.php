@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -85,7 +86,7 @@ require __DIR__ . '/../partials/header.php';
     </main>
 
     <footer class="my-4 text-center text-secondary small">
-        &copy; Dreamcodes 2025. All rights reserved.
+        &copy; Dreamerscodes 2025. All rights reserved.
     </footer>
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/pin-pad.js"></script>

@@ -9,14 +9,25 @@ function getUserInfo(PDO $pdo, int $userd): array|false
     }
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user['account_status'] != 'Active') {
+    if ($user['account_status'] != ACCOUNT_STATUS_ACTIVE) {
         return false;
     }
 
     return $user;
 }
 
+//  A function to get user settings from the database
+function getUserSettings($pdo, int $user_id): array|false
+{
+    $stmt = $pdo->prepare("SELECT * FROM user_settings WHERE user_id = ?");
+    $stmt->execute([$user_id]);
 
+    if ($stmt->rowCount() === 0) {
+        return false;
+    }
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 function getUserBalance($pdo, $user_id)
 {
     $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ?");
@@ -57,6 +68,14 @@ function getTransactions($pdo, $user_id, $limit = 5)
         echo $e->getMessage();
         return [];
     }
+}
+
+function getServiceProvider(PDO $pdo, string $type): array
+{
+    $sql = "SELECT * FROM service_providers WHERE type = ? AND is_active = 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$type]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -328,12 +347,4 @@ function safeRollback($pdo)
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
-}
-
-function getProvidersByServiceSlug(PDO $pdo, string $category): array
-{
-    $category = strtolower(trim($category));
-    $stmt = $pdo->prepare("SELECT id, name, slug, logo_url, brand_color FROM providers WHERE category = ? AND is_active = 1    ");
-    $stmt->execute([$category]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

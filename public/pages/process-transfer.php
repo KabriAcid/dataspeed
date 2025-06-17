@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 header('Content-Type: application/json');
 
@@ -16,6 +17,24 @@ $amount = floatval($_POST['amount'] ?? 0);
 
 if (!$user_id || !$recipient || $amount <= 0) {
     echo json_encode(['success' => false, 'message' => 'All fields are required.']);
+    exit;
+}
+if ($amount <= 0) {
+    echo json_encode(['success' => false, 'message' => 'Invalid amount.']);
+    exit;
+}
+
+// Check if user has a transaction PIN set
+$stmt = $pdo->prepare("SELECT txn_pin FROM users WHERE user_id = ?");
+$stmt->execute([$user_id]);
+$userPin = $stmt->fetchColumn();
+
+if (!$userPin) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'You need to set a transaction PIN before making transfers.',
+        'redirect' => true
+    ]);
     exit;
 }
 
@@ -87,7 +106,7 @@ try {
     $colorSender = 'text-success';
     $colorRecipient = 'text-success';
 
-    $reference = uniqid('transfer_', true);
+    $reference = uniqid('tf_', true);
 
     $pdo->prepare("INSERT INTO transactions (user_id, type, direction, amount, status, description, icon, color, reference, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
         ->execute([$user_id, 'Money Transfer', 'debit', $amount, 'success', $descSender, $iconSender, $colorSender, $reference, $senderEmail]);
@@ -112,6 +131,6 @@ try {
     ]);
     exit;
 } catch (Exception $e) {
-    $pdo->rollBack();
+    safeRollback($pdo);
     echo json_encode(['success' => false, 'message' => 'Transfer failed.']);
 }

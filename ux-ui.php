@@ -107,7 +107,7 @@
         <p>UX Strategist & Co-Founder</p>
       </div>
       <div class="col-md-6 profile">
-        <img src="public/assets/img/acid.jpg" alt="Kabri Acid">
+        <img src="public/assets/img/avatar.jpg" alt="Kabri Acid">
         <h5>Kabri Acid</h5>
         <p>Lead UI Designer</p>
       </div>

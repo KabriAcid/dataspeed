@@ -1,6 +1,7 @@
 <?php
-require __DIR__ . '/../../../config/config.php';
-require __DIR__ . '/../../../functions/Model.php';
+require __DIR__ . '/../../config/config.php';
+require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 // Log raw input for debugging
 $payload = file_get_contents("php://input");
@@ -95,7 +96,7 @@ try {
     http_response_code(200);
     exit;
 } catch (Exception $e) {
-    $pdo->rollBack();
+    safeRollback($pdo);
     file_put_contents(__DIR__ . '/deposit-log.txt', "Error: " . $e->getMessage() . "\n", FILE_APPEND);
     http_response_code(500);
     exit;

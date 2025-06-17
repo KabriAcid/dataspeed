@@ -76,12 +76,13 @@ document.addEventListener("DOMContentLoaded", function () {
             encodeURIComponent(response.reference);
         }, 1200);
       } else {
-        if (response.redirect) {
-          setTimeout(() => {
-            window.location.href =
-              "password_pin_setting.php?tab=pin&prev_page=buy_airtime.php";
-          }, 1200);
-        }
+       if (response.redirect) {
+         setTimeout(() => {
+           window.location.href =
+             "password_pin_setting.php?tab=pin&prev_page=" +
+             encodeURIComponent(window.location.pathname.replace(/^\/+/, ""));
+         }, 1200);
+       }
         showToasted(response.message, "error");
       }
     });

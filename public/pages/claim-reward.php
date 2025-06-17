@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 header('Content-Type: application/json');
 
@@ -41,7 +42,7 @@ try {
 
     if ($stmt->rowCount() === 0) {
         // No rows updated, rollback and fail
-        $pdo->rollBack();
+        safeRollback($pdo);
         echo json_encode(['success' => false, 'message' => 'Failed to claim reward.']);
         exit;
     }
@@ -55,7 +56,7 @@ try {
     $type = 'Referral Reward';
     $status = 'success';
     $description = 'referral';
-    $icon = 'ni-money-coins';
+    $icon = 'ni ni-money-coins';
     $color = 'text-info';
     $direction = 'credit';
 
@@ -92,6 +93,6 @@ try {
         'message' => 'Reward claimed successfully!'
     ]);
 } catch (PDOException $e) {
-    $pdo->rollBack();
+    safeRollback($pdo);
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }

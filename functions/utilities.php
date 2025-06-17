@@ -13,6 +13,31 @@ function redirectToReferrer()
     exit();
 }
 
+function checkEnvVars($required_vars = null)
+{
+    if ($required_vars === null) {
+        $required_vars = [
+            'MAIL_HOST',
+            'MAIL_USERNAME',
+            'MAIL_PASSWORD',
+            'MAIL_PORT',
+            'MAIL_FROM_ADDRESS',
+            'MAIL_FROM_NAME',
+            'VTPASS_API_KEY',
+            'BILLSTACK_SECRET_KEY'
+        ];
+    }
+    $missing = [];
+    foreach ($required_vars as $var) {
+        // Try getenv, then $_ENV fallback
+        $value = getenv($var) ?: ($_ENV[$var] ?? null);
+        if (empty($value)) {
+            $missing[] = $var;
+        }
+    }
+    return $missing;
+}
+
 function sanitizeInput($input, $type = 'default')
 {
     $input = trim($input); // Trim spaces

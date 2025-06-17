@@ -5,7 +5,10 @@ date_default_timezone_set('Africa/Lagos');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-
+define('ACCOUNT_STATUS_ACTIVE', 101);
+define('ACCOUNT_STATUS_FROZEN', 102);
+define('ACCOUNT_STATUS_BANNED', 103);
+define('ACCOUNT_STATUS_INACTIVE', 104);
 
 require __DIR__ . '/../vendor/autoload.php';
 use Dotenv\Dotenv;

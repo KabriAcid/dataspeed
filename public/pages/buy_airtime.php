@@ -3,11 +3,11 @@ session_start();
 
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
-?>
-<?php
+
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
-$providers = getProvidersByServiceSlug($pdo, 'network');
+$networkProviders = getServiceProvider($pdo, 'network');
 ?>
 
 <body>
@@ -29,19 +29,21 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
         </header>
 
         <!-- Service Selection -->
-        <div class="service-section ">
+        <div class="service-section">
             <div class="service-tabs">
-                <?php foreach ($providers as $provider): ?>
-                    <div class="service-tab"
+                <?php foreach ($networkProviders as $i => $provider): ?>
+                    <div
+                        class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
                         data-network="<?= htmlspecialchars($provider['slug']) ?>"
-                        data-provider-id="<?= $provider['id'] ?>"
+                        data-provider-id="<?= (int)$provider['id'] ?>"
                         style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
-                        <img src="../assets/icons/<?= htmlspecialchars($provider['logo_url']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
                         <span><?= htmlspecialchars($provider['name']) ?></span>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
+
         <!-- Purchase Tabs -->
         <div class="tabs">
             <div class="tab-buttons">
@@ -188,7 +190,7 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
                         t.style.fontWeight = t.classList.contains("selected-tab") ? "bold" : "normal";
                     });
                     airtelLogo.src = "../assets/icons/airtel-logo-1.svg";
-                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-2.svg";
+                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-logo-2.svg";
                     // Highlight selected amount button if any
                     const activeAmountBtn = document.querySelector(".amount-btn.selected-amount");
                     if (activeAmountBtn) {
@@ -234,11 +236,18 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
 
             // --- Input Listeners ---
             document.querySelectorAll(".amount-input").forEach(input => {
-                input.addEventListener("input", () => {
-                    selectedAmount = input.value.trim();
+                input.addEventListener("input", function() {
+                    selectedAmount = input.value.trim().replace(/[\s,.]/g, '');
+                    // Clear quick amount highlights if user types
+                    amountButtons.forEach(b => {
+                        b.classList.remove("selected-amount");
+                        b.style.backgroundColor = "";
+                        b.style.color = "";
+                    });
                     validatePurchaseButton();
                 });
             });
+
             document.querySelectorAll(".phone-input").forEach(input => {
                 input.addEventListener("input", validatePurchaseButton);
             });
@@ -251,7 +260,7 @@ $providers = getProvidersByServiceSlug($pdo, 'network');
                     const activeTab = getActiveTab();
                     const amountInput = getActiveAmountInput();
                     const phoneInput = getActivePhoneInput();
-                    let amount = amountInput.value.trim();
+                    let amount = input.value.trim().replace(/[\s,.]/g, '');
 
                     // Get selected amount from button if present
                     const selectedBtn = activeTab.querySelector('.amount-btn.selected-amount');

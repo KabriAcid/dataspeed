@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 
 $referrals = getUserReferralDetails($pdo, $user_id);
@@ -172,7 +173,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                         $referralLink = $referrals['referral_link'] ?? '';
                         ?>
                         <div class="referral-link rounded mx-3 py-2">
-                            <input type="text" id="referralLinkInput" value="<?= htmlspecialchars($referralLink) ?>"
+                            <input type="hidden" id="referralLinkInput" value="<?= htmlspecialchars($referralLink) ?>"
                                 readonly hidden>
                             <button type="button" id="shareButton" class="btn mb-0 primary-btn py-3 w-100 h-100">Share
                                 Link</button>
@@ -184,7 +185,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
             <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
     </main>
     <footer class=" my-4">
-        <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All
+        <p class="text-xs text-center text-secondary">Copyright &copy; Dreamerscodes 2025. All
             rights reserved.</p>
     </footer>
     <script src="../assets/js/ajax.js"></script>

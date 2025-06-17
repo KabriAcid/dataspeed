@@ -2,7 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
-require __DIR__ . '/../partials/session-lock.php';
+require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 
 
@@ -16,6 +16,8 @@ if (isset($_GET['success'])) {
 //     echo "<script>document.addEventListener('DOMContentLoaded', function(){ showReauthModal(); });</script>";
 //     exit;
 // }
+
+$user_settings = getUserSettings($pdo, $user_id);
 ?>
 
 <body>
@@ -32,7 +34,7 @@ if (isset($_GET['success'])) {
                     <img src="<?= $user['photo'] ?>" alt="photo" class="profile-avatar">
                 </a>
                 <div class="ms-3">
-                    <h4 class="fs-4 fw-bold mb-0 text-capitalize"><?= $user['first_name'] ?? 'Guest'; ?></h4>
+                    <h4 class="fs-4 fw-bold mb-0 text-capitalize"><?= $user['user_name'] ?? 'Guest'; ?></h4>
                     <p class="text-secondary text-sm m-0">Welcome back,</p>
                 </div>
             </div>
@@ -48,15 +50,12 @@ if (isset($_GET['success'])) {
 
         <!-- Balance Section -->
         <?php
-        $balanceChange = getRecentBalanceChangePercent($pdo, $user_id);
+        $wallet_balance = getUserBalance($pdo, $user_id);
         ?>
         <div class="d-flex align-items-center">
-            <h2 class="display-5 fw-bold mb-0 digit m-0" id="balanceAmount"><?= "&#8358;" . getUserBalance($pdo, $user_id) ?><span class="m-0"><?php if ($balanceChange['valid']): ?><small class="fw-bold text-xs <?= $balanceChange['direction'] === 'debit' ? 'text-danger' : 'text-success' ?>">
-                            <?= ($balanceChange['percent'] > 0 ? ($balanceChange['direction'] === 'credit' ? '+' : '') : '') . $balanceChange['percent'] ?>%</small>
-                    <?php endif; ?>
-                </span></h2>
+            <h1 class="display-5 fw-bold text-center mb-0" id="balanceAmount"><?= "&#8358;" . getUserBalance($pdo, $user_id) ?></h1>
             <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
-            <!-- <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
+            <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
                 <span id="balanceEye">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -64,14 +63,15 @@ if (isset($_GET['success'])) {
                             stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </span>
-            </button> -->
+            </button>
         </div>
         <!--  -->
 
 
         <!-- TRANSACTION PIN NOT SET -->
         <?php
-        if (!$user['txn_pin']) {
+        if ($user && empty($user['txn_pin'])) {
+
         ?>
             <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='password_pin_setting.php?tab=pin'">
                 <div class="d-flex align-items-center">
@@ -87,7 +87,7 @@ if (isset($_GET['success'])) {
         ?>
         <!-- KYC NOT MADE -->
         <?php
-        if ($user['kyc_status'] == 'unverified') {
+        if ($user && isset($user['kyc_status']) && $user['kyc_status'] == 'unverified') {
         ?>
             <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='kyc.php'">
                 <div class="d-flex align-items-center">
@@ -271,7 +271,7 @@ if (isset($_GET['success'])) {
         </div>
 
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
-
+        <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
         <!-- FontAwesome CDN -->
     </main>
     <script src="../assets/js/toggle-number.js"></script>
@@ -320,7 +320,6 @@ if (isset($_GET['success'])) {
             window.history.replaceState(null, null, url.pathname + url.search);
         });
     </script>
-    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
