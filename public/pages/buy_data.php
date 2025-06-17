@@ -210,7 +210,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                         if (response.success && Array.isArray(response.plans)) {
                             renderPlans(response.plans, forModal);
                         } else {
-                            container.innerHTML = '<div class="text-danger text-center py-4">No plans found.</div>';
+                            container.innerHTML = '<div class="text-danger text-center fw-bold text-sm py-4">No plans found.</div>';
                             showToasted(response.message, "error");
                             console.error("Error loading plans:", response.message);
                         }
@@ -304,12 +304,16 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             payBtn.addEventListener("click", function() {
                 const pinpadModal = document.getElementById("pinpadModal");
                 pinpadModal.dataset.amount = selectedPlan.price;
+
+                if (phone.length === 10) phone = '0' + phone;
                 pinpadModal.dataset.phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
+                
                 pinpadModal.dataset.network = selectedTab;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
                 pinpadModal.style.display = "flex";
+
             });
 
             // **Format Phone Number**

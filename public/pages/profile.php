@@ -149,7 +149,7 @@ $states = fetchNigerianStates($pdo);
     </main>
 
     <footer class="my-4">
-        <p class="text-xs text-center text-secondary">Copyright &copy; Dreamcodes 2025. All rights reserved.</p>
+        <p class="text-xs text-center text-secondary">Copyright &copy; Dreamerscodes 2025. All rights reserved.</p>
     </footer>
 
     <script src="../assets/js/ajax.js"></script>

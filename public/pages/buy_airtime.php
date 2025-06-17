@@ -241,11 +241,18 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
             // --- Input Listeners ---
             document.querySelectorAll(".amount-input").forEach(input => {
-                input.addEventListener("input", () => {
+                input.addEventListener("input", function() {
                     selectedAmount = input.value.trim();
+                    // Clear quick amount highlights if user types
+                    amountButtons.forEach(b => {
+                        b.classList.remove("selected-amount");
+                        b.style.backgroundColor = "";
+                        b.style.color = "";
+                    });
                     validatePurchaseButton();
                 });
             });
+            
             document.querySelectorAll(".phone-input").forEach(input => {
                 input.addEventListener("input", validatePurchaseButton);
             });

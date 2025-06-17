@@ -103,7 +103,7 @@ function set_title($title = null)
                 </div>
                 <p class="text-center text-sm">Don't have an account? <a href="register.php" class="link">Register</a>
                 </p>
-                <p class="copyright text-xs">Copyright @DreamCodes</p>
+                <p class="copyright text-xs">Copyright @Dreamerscodes</p>
             </div>
         </form>
     </div>
