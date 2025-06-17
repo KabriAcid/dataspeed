@@ -6,11 +6,26 @@ require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/session-lock.php';
 require __DIR__ . '/../partials/header.php';
 
-$success = null;
-if (isset($_GET['success'])) {
-    $success = $_GET['success'];
-}
+$user_id = rand(2,33);
 
+try {
+    // Insert user settings along with ip address
+    $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
+    $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometrics_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?)");
+    $stmt->execute([
+        $user_id,
+        0,
+        0,
+        1, // Default to enabled
+        $ipAddress
+    ]);
+} catch (PDOException $th) {
+    echo json_encode([
+        "success" => false,
+        "message" => "User settings failed to update.",
+    ]);
+    exit;
+}
 
 ?>
 

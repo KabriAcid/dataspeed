@@ -1334,8 +1334,13 @@ th {
 .service-tab {
   transition: background-color 0.3s ease-in-out, transform 0.3s ease;
 }
-.selected-tab {
+
+.service-tab.selected-tab {
   transform: scale(1.05); /* Slight zoom effect when selected */
+  background: var(--brand-color, #f5f5f5);
+  color: #fff;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
 
 .amount-btn {
