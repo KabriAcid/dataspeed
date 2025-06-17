@@ -5,6 +5,16 @@
 - Finding relevant icons for transactions.
 - Eye toggle icon in the forgot password page and also the resend timeout.
 
+- Quick amount issues in buy airtime page.
+- No back to OTP page in the register page.
+- Fixing the email sent to...
+- Full fixes of TV subscription page.
+- Sanitizing and validating username field.
+- Also add the login with username functionality.
+- Notification sort by date fixes.
+- User's account setting failure.
+
+
 --- FEATURES ---
 
 - Adding action buttons (e.g., Transfer to Friend)✔️
