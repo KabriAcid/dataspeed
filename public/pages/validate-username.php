@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 require __DIR__ . '/../../config/config.php';
 
@@ -12,6 +13,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validate input
     if (empty($user_name)) {
         echo json_encode(["success" => false, "message" => "Username is required."]);
+        exit;
+    }
+
+    // Username must not start with a number, must not include spaces, and must not be more than 20 characters
+    if (preg_match('/^\d/', $user_name)) {
+        echo json_encode(["success" => false, "message" => "Username must not start with a number."]);
+        exit;
+    }
+    if (preg_match('/\s/', $user_name)) {
+        echo json_encode(["success" => false, "message" => "Username must not contain spaces."]);
+        exit;
+    }
+    if (strlen($user_name) > 20) {
+        echo json_encode(["success" => false, "message" => "Username must not be more than 20 characters."]);
         exit;
     }
 
