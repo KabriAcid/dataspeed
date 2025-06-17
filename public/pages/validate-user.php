@@ -1,5 +1,4 @@
 <?php
-// filepath: c:\xampp\htdocs\dataspeed\public\pages\validate-user.php
 session_start();
 require __DIR__ . '/../../config/config.php';
 

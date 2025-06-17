@@ -2,7 +2,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
-require __DIR__ . '/../../functions/utilities.php';
+// require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 
 
@@ -71,6 +71,7 @@ $user_settings = getUserSettings($pdo, $user_id);
         <!-- TRANSACTION PIN NOT SET -->
         <?php
         if (!$user['txn_pin']) {
+
         ?>
             <div class="bg-white border-0 rounded shadow-xl px-4 py-3 my-4 animate-fade-in cursor-pointer" onclick="location.href='password_pin_setting.php?tab=pin'">
                 <div class="d-flex align-items-center">
