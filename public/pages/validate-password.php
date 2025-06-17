@@ -30,8 +30,6 @@ try {
         exit;
     }
 
-    // Log user's existing virtual account (if any)
-    file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] User's existing virtual account: " . ($user['virtual_account'] ?? 'None') . PHP_EOL, FILE_APPEND);
 
     // If virtual account already exists, return it without calling API again
     if (!empty($user['virtual_account'])) {
@@ -176,7 +174,6 @@ try {
 
     if (!$updateSuccess) {
         $errorInfo = $stmt->errorInfo();
-        file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] DB Update Error: " . print_r($errorInfo, true) . PHP_EOL, FILE_APPEND);
         echo json_encode(["success" => false, "message" => "Failed to update user data."]);
         exit;
     }
@@ -279,7 +276,6 @@ try {
     ]);
     exit;
 } catch (Exception $e) {
-    file_put_contents('log.txt', "[" . date('Y-m-d H:i:s') . "] Exception: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
     echo json_encode([
         "success" => false,
         "message" => "Server error: " . $e->getMessage()
