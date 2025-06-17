@@ -86,7 +86,7 @@ $tvProviders = getServiceProvider($pdo, 'tv'); // Assumes your function from ear
     </main>
 
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/pin-pad.js"></script>
+    <script src="../assets/js/pinpad.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {

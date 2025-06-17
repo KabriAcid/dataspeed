@@ -7,7 +7,7 @@ require __DIR__ . '/../../config/config.php';
 header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $user_name = $_POST['user_name'] ?? '';
+    $user_name = ucwords($_POST['user_name']) ?? '';
     $registration_id = $_POST['registration_id'] ?? '';
 
     // Validate input

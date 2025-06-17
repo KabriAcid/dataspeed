@@ -89,7 +89,7 @@ require __DIR__ . '/../partials/header.php';
         &copy; Dreamerscodes 2025. All rights reserved.
     </footer>
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/pin-pad.js"></script>
+    <script src="../assets/js/pinpad.js"></script>
     <script>
         // Place this in a <script> tag or your JS file after DOMContentLoaded
         const emailInput = document.getElementById('email');

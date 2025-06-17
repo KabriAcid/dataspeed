@@ -38,6 +38,33 @@ if (!$userPin) {
     exit;
 }
 
+// Check if transaction pin is provided and valid
+$providedPin = $_POST['pin'] ?? '';
+if (empty($providedPin)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Transaction PIN is required.',
+        'pin' => $providedPin
+    ]);
+    exit;
+}
+// Check if PIN is numeric and 4-6 digits (adjust as needed)
+if (!ctype_digit($providedPin) || strlen($providedPin) < 4 || strlen($providedPin) > 6) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Transaction PIN must be a 4-6 digit number.'
+    ]);
+    exit;
+}
+
+if (!password_verify($providedPin, $userPin)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid transaction PIN.'
+    ]);
+    exit;
+}
+
 // Find recipient and check registration status
 $stmt = $pdo->prepare("SELECT user_id, first_name, last_name, registration_status FROM users WHERE email = ? AND registration_status = 'complete' LIMIT 1");
 $stmt->execute([$recipient]);
