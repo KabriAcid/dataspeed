@@ -48,15 +48,12 @@ if (isset($_GET['success'])) {
 
         <!-- Balance Section -->
         <?php
-        $balanceChange = getRecentBalanceChangePercent($pdo, $user_id);
+        $wallet_balance = getUserBalance($pdo, $user_id);
         ?>
         <div class="d-flex align-items-center">
-            <h2 class="display-5 fw-bold mb-0 digit m-0" id="balanceAmount"><?= "&#8358;" . getUserBalance($pdo, $user_id) ?><span class="m-0"><?php if ($balanceChange['valid']): ?><small class="fw-bold text-xs <?= $balanceChange['direction'] === 'debit' ? 'text-danger' : 'text-success' ?>">
-                            <?= ($balanceChange['percent'] > 0 ? ($balanceChange['direction'] === 'credit' ? '+' : '') : '') . $balanceChange['percent'] ?>%</small>
-                    <?php endif; ?>
-                </span></h2>
+            <h1 class="display-5 fw-bold text-center mb-0"><?= number_format($wallet_balance, 2); ?></h2>
             <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
-            <!-- <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
+            <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
                 <span id="balanceEye">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -64,7 +61,7 @@ if (isset($_GET['success'])) {
                             stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </span>
-            </button> -->
+            </button>
         </div>
         <!--  -->
 

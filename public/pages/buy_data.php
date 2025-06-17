@@ -304,7 +304,10 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             payBtn.addEventListener("click", function() {
                 const pinpadModal = document.getElementById("pinpadModal");
                 pinpadModal.dataset.amount = selectedPlan.price;
+
+                if (phone.length === 10) phone = '0' + phone;
                 pinpadModal.dataset.phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
+                
                 pinpadModal.dataset.network = selectedTab;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
