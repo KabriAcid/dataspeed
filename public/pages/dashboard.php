@@ -32,7 +32,7 @@ if (isset($_GET['success'])) {
                     <img src="<?= $user['photo'] ?>" alt="photo" class="profile-avatar">
                 </a>
                 <div class="ms-3">
-                    <h4 class="fs-4 fw-bold mb-0 text-capitalize"><?= $user['first_name'] ?? 'Guest'; ?></h4>
+                    <h4 class="fs-4 fw-bold mb-0 text-capitalize"><?= $user['user_name'] ?? 'Guest'; ?></h4>
                     <p class="text-secondary text-sm m-0">Welcome back,</p>
                 </div>
             </div>
