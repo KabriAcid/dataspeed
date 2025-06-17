@@ -51,7 +51,7 @@ if (isset($_GET['success'])) {
         $wallet_balance = getUserBalance($pdo, $user_id);
         ?>
         <div class="d-flex align-items-center">
-            <h1 class="display-5 fw-bold text-center mb-0"><?= number_format($wallet_balance, 2); ?></h2>
+            <h1 class="display-5 fw-bold text-center mb-0"><?= number_format((float)$wallet_balance, 2); ?></h1>
             <h2 class="display-5 fw-bold text-center d-none mb-0" id="hiddenBalance">*********</h2>
             <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="toggleBalance" type="button">
                 <span id="balanceEye">

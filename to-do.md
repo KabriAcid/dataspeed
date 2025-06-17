@@ -13,7 +13,7 @@
 - Also add the login with username functionality.
 - Notification sort by date fixes.
 - User's account setting failure.
-
+- Forgot PIN functionality.
 
 --- FEATURES ---
 
