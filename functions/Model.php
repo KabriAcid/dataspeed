@@ -9,7 +9,7 @@ function getUserInfo(PDO $pdo, int $userd): array|false
     }
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user['account_status'] != 'Active') {
+    if ($user['account_status'] != 'active') {
         return false;
     }
 

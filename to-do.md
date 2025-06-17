@@ -14,6 +14,7 @@
 - Notification sort by date fixes.
 - User's account setting failure.✔️
 - Forgot PIN functionality.
+- In transactions page use the icon of the service provider instead.
 
 --- FEATURES ---
 

@@ -5,7 +5,7 @@ if (isset($_SESSION['user_id'])) {
     $user = getUserInfo($pdo, $user_id);
 } else {
     header('Location: login.php');
-    exit; // Always exit after redirect!
+    exit;
 }
 
 function set_header($page_header = 'Dataspeed')
