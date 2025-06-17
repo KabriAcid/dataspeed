@@ -1,5 +1,5 @@
 <!-- Re-authentication Modal -->
-<!-- <div id="reauthModal" class="modal" style="display:none;position:fixed;z-index:9999999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
+<div id="reauthModal" class="modal">
     <div class="modal-dialog bg-white p-4 rounded shadow" style="max-width:350px;">
         <h5 class="mb-3 text-center">Session Locked</h5>
         <p class="text-sm mb-3 text-center">For your security, please re-enter your password to continue.</p>
@@ -9,4 +9,4 @@
             <button id="reauthSubmit" class="btn primary-btn mb-2">Unlock</button>
         </div>
     </div>
-</div> -->
+</div>

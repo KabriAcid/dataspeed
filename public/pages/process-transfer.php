@@ -18,6 +18,24 @@ if (!$user_id || !$recipient || $amount <= 0) {
     echo json_encode(['success' => false, 'message' => 'All fields are required.']);
     exit;
 }
+if ($amount <= 0) {
+    echo json_encode(['success' => false, 'message' => 'Invalid amount.']);
+    exit;
+}
+
+// Check if user has a transaction PIN set
+$stmt = $pdo->prepare("SELECT txn_pin FROM users WHERE user_id = ?");
+$stmt->execute([$user_id]);
+$userPin = $stmt->fetchColumn();
+
+if (!$userPin) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'You need to set a transaction PIN before making transfers.',
+        'redirect' => true
+    ]);
+    exit;
+}
 
 // Find recipient and check registration status
 $stmt = $pdo->prepare("SELECT user_id, first_name, last_name, registration_status FROM users WHERE email = ? AND registration_status = 'complete' LIMIT 1");
@@ -112,6 +130,6 @@ try {
     ]);
     exit;
 } catch (Exception $e) {
-    $pdo->rollBack();
+    safeRollback($pdo);
     echo json_encode(['success' => false, 'message' => 'Transfer failed.']);
 }

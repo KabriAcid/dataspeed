@@ -270,7 +270,7 @@ $user_settings = getUserSettings($pdo, $user_id);
         </div>
 
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
-
+        <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
         <!-- FontAwesome CDN -->
     </main>
     <script src="../assets/js/toggle-number.js"></script>
@@ -319,7 +319,6 @@ $user_settings = getUserSettings($pdo, $user_id);
             window.history.replaceState(null, null, url.pathname + url.search);
         });
     </script>
-    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 

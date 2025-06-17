@@ -363,33 +363,22 @@ button:disabled {
   font-size: 14px;
 }
 
-.d-flex {
-  display: flex;
-}
-
-.justify-content-between {
-  justify-content: space-between;
-}
-
-.align-items-center {
+/* AUTH MODAL */
+#reauthModal {
+  display: none;
+  position: fixed;
+  z-index: 9999999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
   align-items: center;
-}
-
-.flex-row {
-  flex-direction: row;
-}
-
-.gap-3 {
-  gap: 1rem;
-}
-
-.px-4 {
-  padding: 0 20px;
+  justify-content: center;
 }
 
 .card {
   background: white;
-  padding: var(--spacing-3);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--transition-fast);
@@ -835,7 +824,6 @@ select.select-lga {
   box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
 }
 
-
 .brand-name {
   color: var(--primary);
 }
@@ -905,7 +893,7 @@ select.select-lga {
   border-color: var(--color) var(--ghost-color) var(--ghost-color) var(--color);
   border-radius: 100%;
   z-index: 99999;
-  
+
   &::before,
   &::after {
     content: "";
@@ -915,12 +903,12 @@ select.select-lga {
     aspect-ratio: 1;
     border-radius: 100%;
   }
-  
+
   &::before {
     top: 0;
     right: 0;
   }
-  
+
   &::after {
     bottom: 0;
     left: 0;

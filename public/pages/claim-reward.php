@@ -41,7 +41,7 @@ try {
 
     if ($stmt->rowCount() === 0) {
         // No rows updated, rollback and fail
-        $pdo->rollBack();
+        safeRollback($pdo);
         echo json_encode(['success' => false, 'message' => 'Failed to claim reward.']);
         exit;
     }
@@ -92,6 +92,6 @@ try {
         'message' => 'Reward claimed successfully!'
     ]);
 } catch (PDOException $e) {
-    $pdo->rollBack();
+    safeRollback($pdo);
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }

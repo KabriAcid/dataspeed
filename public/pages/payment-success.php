@@ -74,7 +74,7 @@ if ($transaction['status'] == "success" && $transaction['data']['status'] == "su
             }, 1000);
         </script>";
     } catch (Exception $e) {
-        $pdo->rollBack();
+        safeRollback($pdo);
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
 } else {
