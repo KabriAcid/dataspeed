@@ -153,7 +153,7 @@ require __DIR__ . '/../partials/header.php';
                 </a>
             </div>
             <div class="mb-3">
-                <a href="security-setting.php">
+                <a href="security_setting.php">
                     <div class="d-flex justify-content-between align-items-top">
                         <div class="d-flex justify-content-between align-items-top">
                             <div class="icon-container">

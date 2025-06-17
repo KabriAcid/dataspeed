@@ -82,6 +82,9 @@ document.addEventListener("DOMContentLoaded", function () {
               "password_pin_setting.php?tab=pin&prev_page=buy_airtime.php";
           }, 1200);
         }
+        if (response.phone) {
+          console.log("Phone number:", response.phone);
+        }
         showToasted(response.message, "error");
       }
     });
