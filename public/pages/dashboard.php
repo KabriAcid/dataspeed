@@ -16,6 +16,8 @@ if (isset($_GET['success'])) {
 //     echo "<script>document.addEventListener('DOMContentLoaded', function(){ showReauthModal(); });</script>";
 //     exit;
 // }
+
+$user_settings = getUserSettings($pdo, $user_id);
 ?>
 
 <body>

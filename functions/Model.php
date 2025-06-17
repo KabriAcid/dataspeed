@@ -16,7 +16,18 @@ function getUserInfo(PDO $pdo, int $userd): array|false
     return $user;
 }
 
+//  A function to get user settings from the database
+function getUserSettings($pdo, int $user_id): array|false
+{
+    $stmt = $pdo->prepare("SELECT * FROM user_settings WHERE user_id = ?");
+    $stmt->execute([$user_id]);
 
+    if ($stmt->rowCount() === 0) {
+        return false;
+    }
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 function getUserBalance($pdo, $user_id)
 {
     $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ?");
@@ -32,12 +43,13 @@ function getUserBalance($pdo, $user_id)
             return "0.00";
         }
     }
-    
+
 
     return number_format($balance['wallet_balance'], 2);
 }
 
-function getUserInfoByEmail($pdo, $email) {
+function getUserInfoByEmail($pdo, $email)
+{
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -142,7 +154,7 @@ function getUserReferralDetails($pdo, $user_id)
         if ($stmt->rowCount() === 0) {
             return [];
         }
-        
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -299,17 +311,17 @@ function updateWalletBalance(PDO $pdo, int $user_id, float $amount, string $type
     }
 }
 
-function fetchNigerianStates($pdo){
-   try {
-    $stmt = $pdo->prepare("SELECT * FROM nigerian_states;");
-    $stmt->execute();
-    $result = $stmt->fetchAll();
+function fetchNigerianStates($pdo)
+{
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM nigerian_states;");
+        $stmt->execute();
+        $result = $stmt->fetchAll();
 
-    return $result;
-
-   } catch (PDOException $e) {
+        return $result;
+    } catch (PDOException $e) {
         echo $e->getMessage();
-   }
+    }
 }
 
 function getUserIdByAccount($accountNumber)
@@ -322,7 +334,8 @@ function getUserIdByAccount($accountNumber)
 }
 
 // Add this helper before your try-catch block
-function safeRollback($pdo) {
+function safeRollback($pdo)
+{
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }

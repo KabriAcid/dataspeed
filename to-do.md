@@ -1,18 +1,18 @@
 --- FIXES ---
 
 - Fixing the primary, secondary btn classes.
-- Fixing the balance toggle functionality.
-- Finding relevant icons for transactions.
-- Eye toggle icon in the forgot password page and also the resend timeout.
+- Fixing the balance toggle functionality.✔️
+- Finding relevant icons for transactions. ✔️
+- Eye toggle icon in the forgot password page and also the resend timeout. ✔️
 
-- Quick amount issues in buy airtime page.
+- Quick amount issues in buy airtime page.✔️
 - No back to OTP page in the register page.
 - Fixing the email sent to...
 - Full fixes of TV subscription page.
-- Sanitizing and validating username field.
-- Also add the login with username functionality.
+- Sanitizing and validating username field.✔️
+- Also add the login with username functionality.✔️
 - Notification sort by date fixes.
-- User's account setting failure.
+- User's account setting failure.✔️
 - Forgot PIN functionality.
 
 --- FEATURES ---
@@ -22,18 +22,13 @@
 - Username step in registration form.
 - Add a subdomain for the admins.
 
---- DESIGN ---
-
-- body bgcolor: #F8FAFF
-- content bgcolor: #FFFFFF
-
 --- NOTIFICATION MODULES ---
 
 1. **Transactions**
    - Deposits (successful, failed) ✔️
    - Withdrawals (initiated, successful, failed)
-   - Transfers (sent, received, failed)
-   - Payments (bills, airtime, data, TV, etc.)
+   - Transfers (sent, received, failed) ✔️
+   - Payments (bills, airtime, data, TV, etc.) ✔️
 
 2. **Account Security**
    - Login (new device/location)
