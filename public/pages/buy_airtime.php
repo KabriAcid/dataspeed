@@ -177,7 +177,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
             });
 
             selectedTab = tabButtons[0].dataset.tab;
-            
+
             // --- Service Selection (delegated) ---
             serviceTabsContainer.addEventListener("click", function(e) {
                 const tab = e.target.closest(".service-tab");
@@ -272,6 +272,11 @@ $networkProviders = getServiceProvider($pdo, 'network');
                     // Validate amount is a number and not empty
                     if (!amount || isNaN(amount)) {
                         showToasted("Please enter a valid amount.", "error");
+                        return;
+                    }
+
+                    if(amount > 1000000) {
+                        showToasted("Amount cannot exceed ₦1,000,000.", "error");
                         return;
                     }
 
