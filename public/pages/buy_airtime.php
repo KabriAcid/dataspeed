@@ -37,7 +37,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                         data-network="<?= htmlspecialchars($provider['slug']) ?>"
                         data-provider-id="<?= (int)$provider['id'] ?>"
                         style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
-                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>" class="<?= $provider['slug'] . '-logo'; ?>">
                         <span><?= htmlspecialchars($provider['name']) ?></span>
                     </div>
                 <?php endforeach; ?>
@@ -138,7 +138,6 @@ $networkProviders = getServiceProvider($pdo, 'network');
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/pinpad.js"></script>
     <script>
-        // Set network SVG in confirm modal
         document.addEventListener("DOMContentLoaded", () => {
             const networkSVGs = {
                 MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:25px;">`,
@@ -150,7 +149,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
             let selectedTab = null;
             let selectedAmount = null;
 
-            const networkTabs = document.querySelectorAll(".service-tab");
+            const serviceTabsContainer = document.querySelector(".service-tabs");
             const amountButtons = document.querySelectorAll(".amount-btn");
             const tabButtons = document.querySelectorAll(".tab-btn");
             const tabContents = document.querySelectorAll(".tab-content");
@@ -177,33 +176,38 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 });
             });
 
-            // --- Service Selection ---
-            networkTabs.forEach(tab => {
-                tab.addEventListener("click", () => {
-                    networkTabs.forEach(t => t.classList.remove("selected-tab"));
-                    tab.classList.add("selected-tab");
-                    selectedTab = tab.getAttribute("data-network");
-                    let brandColor = getComputedStyle(tab).getPropertyValue("--brand-color");
-                    networkTabs.forEach(t => {
-                        t.style.backgroundColor = t.classList.contains("selected-tab") ? brandColor : "";
-                        t.style.color = t.classList.contains("selected-tab") ? "#fff" : "";
-                        t.style.fontWeight = t.classList.contains("selected-tab") ? "bold" : "normal";
-                    });
-                    airtelLogo.src = "../assets/icons/airtel-logo-1.svg";
-                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-logo-2.svg";
-                    // Highlight selected amount button if any
-                    const activeAmountBtn = document.querySelector(".amount-btn.selected-amount");
-                    if (activeAmountBtn) {
-                        activeAmountBtn.style.backgroundColor = brandColor;
-                        activeAmountBtn.style.color = "#fff";
-                    } else {
-                        amountButtons.forEach(btn => {
-                            btn.style.backgroundColor = "";
-                            btn.style.color = "";
-                        });
-                    }
-                    validatePurchaseButton();
+            selectedTab = tabButtons[0].dataset.tab;
+            
+            // --- Service Selection (delegated) ---
+            serviceTabsContainer.addEventListener("click", function(e) {
+                const tab = e.target.closest(".service-tab");
+                if (!tab) return;
+                const networkTabs = serviceTabsContainer.querySelectorAll(".service-tab");
+                networkTabs.forEach(t => t.classList.remove("selected-tab"));
+                tab.classList.add("selected-tab");
+                selectedTab = tab.getAttribute("data-network");
+                let brandColor = getComputedStyle(tab).getPropertyValue("--brand-color");
+                networkTabs.forEach(t => {
+                    t.style.backgroundColor = t.classList.contains("selected-tab") ? brandColor : "";
+                    t.style.color = t.classList.contains("selected-tab") ? "#fff" : "";
+                    t.style.fontWeight = t.classList.contains("selected-tab") ? "bold" : "normal";
                 });
+                if (airtelLogo) {
+                    airtelLogo.src = "../assets/icons/airtel-1.png";
+                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-2.png";
+                }
+                // Highlight selected amount button if any
+                const activeAmountBtn = document.querySelector(".amount-btn.selected-amount");
+                if (activeAmountBtn) {
+                    activeAmountBtn.style.backgroundColor = brandColor;
+                    activeAmountBtn.style.color = "#fff";
+                } else {
+                    amountButtons.forEach(btn => {
+                        btn.style.backgroundColor = "";
+                        btn.style.color = "";
+                    });
+                }
+                validatePurchaseButton();
             });
 
             // --- Amount Selection ---
@@ -228,8 +232,11 @@ $networkProviders = getServiceProvider($pdo, 'network');
                     this.classList.add("selected-amount");
                     selectedAmount = input.value;
                     // Brand color
-                    this.style.backgroundColor = getComputedStyle(document.querySelector(".selected-tab")).getPropertyValue("--brand-color");
-                    this.style.color = "#fff";
+                    const selectedTabEl = document.querySelector(".service-tab.selected-tab");
+                    if (selectedTabEl) {
+                        this.style.backgroundColor = getComputedStyle(selectedTabEl).getPropertyValue("--brand-color");
+                        this.style.color = "#fff";
+                    }
                     validatePurchaseButton();
                 });
             });
@@ -254,14 +261,19 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
             // --- Purchase Button & Confirm Modal ---
             purchaseBtns.forEach(btn => {
-                alert('Clicked')
                 btn.addEventListener("click", function(e) {
                     e.preventDefault();
 
                     const activeTab = getActiveTab();
                     const amountInput = getActiveAmountInput();
                     const phoneInput = getActivePhoneInput();
-                    let amount = input.value.trim().replace(/[\s,.]/g, '');
+                    let amount = amountInput.value.trim().replace(/[\s,.]/g, '');
+
+                    // Validate amount is a number and not empty
+                    if (!amount || isNaN(amount)) {
+                        showToasted("Please enter a valid amount.", "error");
+                        return;
+                    }
 
                     // Get selected amount from button if present
                     const selectedBtn = activeTab.querySelector('.amount-btn.selected-amount');
@@ -322,7 +334,6 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 pinpadModal.dataset.type = type;
                 pinpadModal.dataset.action = 'airtime';
 
-
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
                         pinpadModal.style.display = "flex";
@@ -333,11 +344,6 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
                 confirmModal.style.display = "none";
             });
-
-
-            // closePinpad.addEventListener("click", function() {
-            //     pinpadModal.style.display = "none";
-            // });
 
             // Optional: Hide pinpad when clicking outside modal-content
             pinpadModal.addEventListener("click", function(e) {
