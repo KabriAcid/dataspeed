@@ -29,6 +29,11 @@ if (!$txn) {
 $date = date("F j, Y, g:i a", strtotime($txn['created_at']));
 $amount = "₦" . number_format($txn['amount'], 2);
 
+$recipient = $txn['description'];
+if (preg_match('/for (\d{11})/', $txn['description'], $matches)) {
+    $recipient = $matches[1];
+}
+
 // Fetch provider icon from service_providers table
 $providerIcon = null;
 if (!empty($txn['provider_id'])) {
@@ -66,9 +71,9 @@ $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode($tx
                 </div>
                 <div class="mb-3">
                     <?php if ($providerIcon): ?>
-                        <div class="d-flex align-items-center justify-content-center mb-3">
-                            <img src="../assets/icons/<?= htmlspecialchars($providerIcon) ?>" alt="<?= htmlspecialchars($providerName) ?>" style="height:36px; width:auto; margin-right:8px;">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
                             <span class="fw-semibold"><?= htmlspecialchars($providerName) ?></span>
+                            <img src="../assets/icons/<?= htmlspecialchars($providerIcon) ?>" alt="<?= htmlspecialchars($providerName) ?>" style="height:28px; width:auto; margin-right:8px;">
                         </div>
                     <?php endif; ?>
                     <div class="d-flex justify-content-between mb-3">
