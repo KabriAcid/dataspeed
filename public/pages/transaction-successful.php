@@ -28,9 +28,17 @@ if (!$txn) {
 
 $date = date("F j, Y, g:i a", strtotime($txn['created_at']));
 $amount = "₦" . number_format($txn['amount'], 2);
-$recipient = $txn['description'];
-if (preg_match('/for (\d{11})/', $txn['description'], $matches)) {
-    $recipient = $matches[1];
+
+// Fetch provider icon from service_providers table
+$providerIcon = null;
+if (!empty($txn['provider_id'])) {
+    $stmtIcon = $pdo->prepare("SELECT icon, name FROM service_providers WHERE id = ? LIMIT 1");
+    $stmtIcon->execute([$txn['provider_id']]);
+    $provider = $stmtIcon->fetch(PDO::FETCH_ASSOC);
+    if ($provider) {
+        $providerIcon = $provider['icon'];
+        $providerName = $provider['name'];
+    }
 }
 
 // Use PNG for QR code for html2canvas compatibility
@@ -57,6 +65,12 @@ $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode($tx
                     <div class="text-secondary small mb-2">Your transaction was completed successfully.</div>
                 </div>
                 <div class="mb-3">
+                    <?php if ($providerIcon): ?>
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <img src="../assets/icons/<?= htmlspecialchars($providerIcon) ?>" alt="<?= htmlspecialchars($providerName) ?>" style="height:36px; width:auto; margin-right:8px;">
+                            <span class="fw-semibold"><?= htmlspecialchars($providerName) ?></span>
+                        </div>
+                    <?php endif; ?>
                     <div class="d-flex justify-content-between mb-3">
                         <span class="fw-bold">Amount</span>
                         <span class="primary fw-bolder"><?= $amount ?></span>
