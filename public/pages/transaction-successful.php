@@ -5,16 +5,13 @@ require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 
-// Get latest successful transaction for this user
 $user_id = $_SESSION['user_id'] ?? null;
 if (!$user_id) {
     header("Location: login.php");
     exit;
 }
 
-// Optionally, get a specific transaction by reference (if passed via GET)
 $reference = $_GET['ref'] ?? null;
-
 if ($reference) {
     $stmt = $pdo->prepare("SELECT * FROM transactions WHERE user_id = ? AND reference = ? AND status = 'success' ORDER BY created_at DESC LIMIT 1");
     $stmt->execute([$user_id, $reference]);
@@ -29,84 +26,99 @@ if (!$txn) {
     exit;
 }
 
-// Service icon mapping
-$networkIcons = [
-    1 => "../assets/img/icons/mtn.png",
-    2 => "../assets/img/icons/airtel.png",
-    3 => "../assets/img/icons/glo.png",
-    4 => "../assets/img/icons/9mobile.png"
-];
-$networkIcon = $networkIcons[$txn['provider_id']] ?? "../assets/img/icons/mtn.png";
-
-// Format date
 $date = date("F j, Y, g:i a", strtotime($txn['created_at']));
-
-// Format amount
 $amount = "₦" . number_format($txn['amount'], 2);
-
-// Recipient (phone or email, depending on service)
 $recipient = $txn['description'];
 if (preg_match('/for (\d{11})/', $txn['description'], $matches)) {
     $recipient = $matches[1];
 }
+
+// Use PNG for QR code for html2canvas compatibility
+$qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode($txn['reference']) . "&size=120x120&format=png";
 ?>
 
 <body>
     <main class="container-fluid py-4">
         <div class="receipt-container">
-            <!-- Lottie Animation -->
-            <div class="d-flex justify-content-center">
-                <lottie-player
-                    src="../assets/gif/Lottie-Animation.json"
-                    background="transparent"
-                    speed="1"
-                    style="width: 180px; height: 180px;"
-                    autoplay>
-                </lottie-player>
-            </div>
-
             <!-- Receipt Card -->
-            <div class="receipt-card">
-                <div class="text-center mb-3">
-                    <i class="ni ni-checkmark text-success" style="font-size:2rem;"></i>
-                    <h4 class="fw-bold mt-2 mb-1">Payment Successful</h4>
+            <div id="receipt-section" class="receipt-card">
+                <!-- Lottie Animation -->
+                <div class="d-flex justify-content-center">
+                    <lottie-player
+                        src="../assets/gif/Lottie-Animation.json"
+                        background="transparent"
+                        speed="1"
+                        style="width: 180px; height: 180px;"
+                        autoplay>
+                    </lottie-player>
+                </div>
+                <div class="text-center mb-5">
+                    <h4 class="fw-bold mt-2 mb-1 primary">Payment Successful</h4>
                     <div class="text-secondary small mb-2">Your transaction was completed successfully.</div>
                 </div>
                 <div class="mb-3">
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex justify-content-between mb-3">
                         <span class="fw-bold">Amount</span>
-                        <span><?= $amount ?></span>
+                        <span class="primary fw-bolder"><?= $amount ?></span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex justify-content-between mb-3">
                         <span class="fw-bold">Status</span>
-                        <span class="text-success">Successful</span>
+                        <span class="">Successful</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex justify-content-between mb-3">
                         <span class="fw-bold">Recipient</span>
                         <span><?= htmlspecialchars($recipient) ?></span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex justify-content-between mb-3">
                         <span class="fw-bold">Date</span>
                         <span><?= htmlspecialchars($date) ?></span>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
-                        <span class="fw-bold">Transaction ID</span>
+                        <span class="fw-bold">Reference</span>
                         <span><?= htmlspecialchars($txn['reference']) ?></span>
                     </div>
-                    <!-- Fake Barcode -->
+                    <!-- Receipt cut -->
+                    <div class="receipt-cut-wrapper">
+                        <span class="receipt-cut receipt-cut-left"></span>
+                        <span class="receipt-dotted-line"></span>
+                        <span class="receipt-cut receipt-cut-right"></span>
+                    </div>
+                    <!-- PNG QR Code for html2canvas compatibility -->
                     <div class="d-flex justify-content-center mt-3">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?data=<?= urlencode($txn['reference']) ?>&size=120x40&format=svg" alt="barcode" style="height:40px;">
+                        <img src="<?= $qrCodeUrl ?>" alt="QR Code" style="height:60px;">
                     </div>
                 </div>
-                <div class="d-flex flex-column gap-2 mt-4">
-                    <a href="share-receipt.php?ref=<?= urlencode($txn['reference']) ?>" class="btn btn-dark w-100">Download Receipt</a>
-                    <a href="dashboard.php" class="btn btn-outline-secondary w-100">Back to Dashboard</a>
-                </div>
+            </div>
+            <!-- Buttons OUTSIDE the receipt-section so they are not included in the download -->
+            <div class="d-flex flex-column gap-2 mt-4">
+                <button
+                    type="button"
+                    class="btn primary-btn w-100"
+                    id="download-receipt">
+                    <i class="ni ni-cloud-download-95 me-2"></i> Download as PNG
+                </button>
+                <a href="dashboard.php" class="secondary-btn w-100">
+                    <i class="ni ni-bold-left me-2 p-0"></i> Back to Dashboard
+                </a>
             </div>
         </div>
     </main>
+
     <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('download-receipt').addEventListener('click', function() {
+                html2canvas(document.getElementById('receipt-section')).then(function(canvas) {
+                    const link = document.createElement('a');
+                    link.download = 'receipt-<?= htmlspecialchars($txn['reference']) ?>.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

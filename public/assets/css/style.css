@@ -1764,7 +1764,6 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
 }
 .value {
   color: #444;
@@ -1789,17 +1788,52 @@ th {
   position: relative;
   overflow: visible;
 }
-.receipt-card:before,
-.receipt-card:after {
+.receipt-cut-wrapper {
+  position: relative;
+  width: calc(100% + 48px); /* extend beyond card */
+  margin: 24px 0 16px -24px; /* negative margin to align with card edge */
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.receipt-dotted-line {
+  flex: 1;
+  height: 0;
+  z-index: 1;
+  position: relative;
+}
+.receipt-dotted-line::before {
   content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    to right,
+    #cdd0d5 0 8px,
+    transparent 8px 16px
+  );
   position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.receipt-cut {
   width: 24px;
   height: 24px;
   background: #f5f5f5;
   border-radius: 50%;
-  left: -12px;
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
 }
-.receipt-card:after {
-  right: -12px;
-  left: auto;
+
+.receipt-cut-left {
+  left: -10px;
+}
+
+.receipt-cut-right {
+  right: -10px;
 }
