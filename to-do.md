@@ -7,21 +7,21 @@
 
 - Quick amount issues in buy airtime page.✔️
 - No back to OTP page in the register page.
-- Fixing the email sent to...
-- Full fixes of TV subscription page.
-- Sanitizing and validating username field.✔️
 - Also add the login with username functionality.✔️
 - Notification sort by date fixes.
 - User's account setting failure.✔️
+- Sanitize inputs when using quick amount buttons. ✔️
+- Sanitizing and validating username field.✔️
+- Fixing the email sent to...
+- Full fixes of TV subscription page.
 - Forgot PIN functionality.
 - In transactions page use the icon of the service provider instead.
-- Sanitize inputs when using quick amount buttons.
 
 --- FEATURES ---
 
 - Adding action buttons (e.g., Transfer to Friend)✔️
 - Animation for account balance.
-- Username step in registration form.
+- Username step in registration form.✔️
 - Add a subdomain for the admins.
 
 --- NOTIFICATION MODULES ---

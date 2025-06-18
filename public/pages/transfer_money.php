@@ -53,7 +53,7 @@ require __DIR__ . '/../partials/header.php';
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Transfer Details</h5>
-                    <button class="close-btn" id="closeConfirm">&times;</button>
+                    <button class="close-btn" id="closeConfirm" type="button">&times;</button>
                 </div>
                 <div class="modal-body">
                     <p class="text-sm text-secondary mb-1 text-center">Send to</p>
@@ -97,6 +97,7 @@ require __DIR__ . '/../partials/header.php';
         const transferBtn = document.getElementById('transfer-button');
         const availableBalance = parseFloat(document.getElementById('user-balance').textContent);
         const currentUserEmail = "<?= htmlspecialchars($user['email'] ?? '') ?>";
+        const closeConfirm = document.getElementById("closeConfirm");
 
         function validateForm() {
             const email = emailInput.value.trim();
@@ -155,9 +156,10 @@ require __DIR__ . '/../partials/header.php';
                 return;
             }
 
-            document.getElementById('closeConfirm').onclick = function() {
-                document.getElementById('confirmModal').style.display = 'none';
-            };
+            // --- Close confirm modal ---
+            closeConfirm.addEventListener("click", function() {
+                confirmModal.style.display = "none";
+            });
 
             // Hide confirm modal and show pin pad modal
             document.getElementById('confirmModal').style.display = 'none';
