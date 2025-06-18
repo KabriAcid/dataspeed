@@ -1,7 +1,10 @@
 <?php
 $missing_env = checkEnvVars();
 if (!empty($missing_env)) {
-    $_SESSION['toast_error'] = "Service not configured. Missing: " . $missing_env;
+    // if missing is passwword
+    if (in_array('DB_PASS', $missing_env)) {
+        $_SESSION['toast_error'] = "Service not configured. Missing: " . $missing_env;
+    }
 }
 if (!empty($_SESSION['reauth_required'])): ?>
     <script>
