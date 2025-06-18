@@ -141,7 +141,7 @@ function set_title($title = null)
                 <h2 class="primary text-center">Transactions Made Easy!</h2>
             </div>
             <div class="row">
-                <div class="col-xl-3 col-lg-6">
+                <div class="col-xl-3 col-lg-6 mb-lg-0 mb-3">
                     <div class="card transaction-card p-0">
                         <div class="card-body">
                             <i class="icon"></i>
@@ -151,7 +151,7 @@ function set_title($title = null)
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-6">
+                <div class="col-xl-3 col-lg-6 mb-lg-0 mb-3">
                     <div class="card transaction-card p-0">
                         <div class="card-body">
                             <i class="icon"></i>
@@ -161,7 +161,7 @@ function set_title($title = null)
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-6">
+                <div class="col-xl-3 col-lg-6 mb-lg-0 mb-3">
                     <div class="card transaction-card p-0">
                         <div class="card-body">
                             <i class="icon"></i>
@@ -171,7 +171,7 @@ function set_title($title = null)
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-6">
+                <div class="col-xl-3 col-lg-6 mb-lg-0 mb-3">
                     <div class="card transaction-card p-0">
                         <div class="card-body">
                             <i class="icon"></i>

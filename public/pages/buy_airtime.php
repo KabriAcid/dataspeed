@@ -136,7 +136,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
     </main>
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/pin-pad.js"></script>
+    <script src="../assets/js/pinpad.js"></script>
     <script>
         // Set network SVG in confirm modal
         document.addEventListener("DOMContentLoaded", () => {

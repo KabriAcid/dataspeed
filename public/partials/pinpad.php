@@ -4,7 +4,7 @@
   <div class="pin-container">
     <div class="pin-header text-center">
       <img src="<?= $user['photo']; ?>" alt="avatar" class="pinpad-avatar">
-      <h3><?= $user['first_name']; ?></h3>
+      <h3><?= ucwords($user['user_name']); ?></h3>
     </div>
     <div class="pin-field">
       <div class="icon-section text-center">

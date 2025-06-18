@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
       bodyOverlay.style.display = "none";
       if (response.success) {
         showToasted(response.message, "success");
+        console.log(response.pin);
         pinpadModal.style.display = "none";
         setTimeout(function () {
           window.location.href =
