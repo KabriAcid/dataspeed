@@ -103,7 +103,7 @@ $service_id = $serviceMap[$type] ?? 1;
 
 // 6. Prepare VTpass API Call
 $serviceID = $network === '9mobile' ? 'etisalat' : $network; // VTpass uses 'etisalat' for 9mobile
-$request_id = uniqid('airtime_', true);
+$request_id = time() . rand(1000, 9999); // Unique request ID
 $postData = [
     'serviceID'   => $serviceID,
     'amount'      => $amount,
@@ -113,6 +113,13 @@ $postData = [
 $vtpass_api_key = $_ENV['VTPASS_API_KEY'];
 $vtpass_secret_key = $_ENV['VTPASS_SECRET_KEY'];
 $vtpass_url = $_ENV['VTPASS_SANDBOX_URL'] ?? 'https://sandbox.vtpass.com/api/pay';
+
+// If request ID exist in the db reshuffle it
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM transactions WHERE reference = ?");
+$stmt->execute([$request_id]);
+if ($stmt->fetchColumn() > 0) {
+    $request_id = time() . rand(1000, 9999); // Regenerate unique request ID
+}
 
 // 7. Begin Transaction
 try {

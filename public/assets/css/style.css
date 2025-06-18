@@ -1773,3 +1773,33 @@ th {
   color: #27ae60;
   font-weight: 700;
 }
+
+.receipt-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.receipt-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(20, 28, 37, 0.08);
+  max-width: 400px;
+  margin: 32px auto;
+  padding: 32px 24px 24px 24px;
+  position: relative;
+  overflow: visible;
+}
+.receipt-card:before,
+.receipt-card:after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: #f5f5f5;
+  border-radius: 50%;
+  left: -12px;
+}
+.receipt-card:after {
+  right: -12px;
+  left: auto;
+}

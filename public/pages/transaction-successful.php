@@ -53,48 +53,54 @@ if (preg_match('/for (\d{11})/', $txn['description'], $matches)) {
 
 <body>
     <main class="container-fluid py-4">
-        <div class="form-container">
-            <div class="row justify-content-center">
-                <div class="">
-                    <div class="avatar-sm m-auto d-flex justify-content-center">
-                        <img src="<?= htmlspecialchars($networkIcon) ?>" alt="Service" style="height:40px;">
+        <div class="receipt-container">
+            <!-- Lottie Animation -->
+            <div class="d-flex justify-content-center">
+                <lottie-player
+                    src="../assets/gif/Lottie-Animation.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 180px; height: 180px;"
+                    autoplay>
+                </lottie-player>
+            </div>
+
+            <!-- Receipt Card -->
+            <div class="receipt-card">
+                <div class="text-center mb-3">
+                    <i class="ni ni-checkmark text-success" style="font-size:2rem;"></i>
+                    <h4 class="fw-bold mt-2 mb-1">Payment Successful</h4>
+                    <div class="text-secondary small mb-2">Your transaction was completed successfully.</div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold">Amount</span>
+                        <span><?= $amount ?></span>
                     </div>
-                    <div class="">
-                        <h1 class="text-center my-3"><?= $amount ?></h1>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold">Status</span>
+                        <span class="text-success">Successful</span>
                     </div>
-                    <div class="">
-                        <div class="lottie-center">
-                            <lottie-player
-                                src="../assets/gif/Lottie-Animation.json"
-                                background="transparent"
-                                speed="1"
-                                style="width: 180px; height: 180px;"
-                                autoplay></lottie-player>
-                        </div>
-                        <h1 class="text-center status-success mb-2"><i class="ni ni-checkmark text-success"></i> Successful</h1>
-                        <div class="row px-4">
-                            <div class="col-12 info-row">
-                                <div class="label">Transaction ID</div>
-                                <div class="value"><?= htmlspecialchars($txn['reference']) ?></div>
-                            </div>
-                            <div class="col-12 info-row">
-                                <div class="label">Recipient</div>
-                                <div class="value"><?= htmlspecialchars($recipient) ?></div>
-                            </div>
-                            <div class="col-12 info-row">
-                                <div class="label">Date</div>
-                                <div class="value"><?= htmlspecialchars($date) ?></div>
-                            </div>
-                            <div class="col-12 info-row">
-                                <div class="label">Status</div>
-                                <div class="value status-success">Successful</div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between mt-4">
-                            <a href="share-receipt.php?ref=<?= urlencode($txn['reference']) ?>" class="text-center">Share Receipt</a>
-                            <a href="dashboard.php" class="btn-link btn shadow">Exit</a>
-                        </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold">Recipient</span>
+                        <span><?= htmlspecialchars($recipient) ?></span>
                     </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold">Date</span>
+                        <span><?= htmlspecialchars($date) ?></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="fw-bold">Transaction ID</span>
+                        <span><?= htmlspecialchars($txn['reference']) ?></span>
+                    </div>
+                    <!-- Fake Barcode -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?data=<?= urlencode($txn['reference']) ?>&size=120x40&format=svg" alt="barcode" style="height:40px;">
+                    </div>
+                </div>
+                <div class="d-flex flex-column gap-2 mt-4">
+                    <a href="share-receipt.php?ref=<?= urlencode($txn['reference']) ?>" class="btn btn-dark w-100">Download Receipt</a>
+                    <a href="dashboard.php" class="btn btn-outline-secondary w-100">Back to Dashboard</a>
                 </div>
             </div>
         </div>
