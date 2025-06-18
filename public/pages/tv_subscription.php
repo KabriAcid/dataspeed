@@ -109,7 +109,7 @@ $providers = getServiceProvider($pdo, 'TV');
     </main>
 
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/pin-pad.js"></script>
+    <script src="../assets/js/pinpad.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // --- Element references ---
@@ -271,7 +271,8 @@ $providers = getServiceProvider($pdo, 'TV');
                 if (selectedPlan.volume && selectedPlan.volume !== selectedPlan.name) {
                     planDisplay += ` (${selectedPlan.volume})`;
                 }
-                confirmPlan.textContent = planDisplay;
+
+                confirmPlan.textContent = selectedPlan ? selectedPlan.name : '';
 
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
                 confirmValidity.textContent = selectedPlan.validity;

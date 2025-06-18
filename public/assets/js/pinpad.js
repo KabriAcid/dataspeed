@@ -57,6 +57,17 @@ document.addEventListener("DOMContentLoaded", function () {
         endpoint = "electricity-purchase.php";
         break;
 
+      case "tv":
+        data +=
+          `&amount=${encodeURIComponent(pinpadModal.dataset.amount)}` +
+          `&phone=${encodeURIComponent(pinpadModal.dataset.phone)}` +
+          `&network=${encodeURIComponent(pinpadModal.dataset.network)}` +
+          `&type=${encodeURIComponent(pinpadModal.dataset.type)}` +
+          `&plan_id=${encodeURIComponent(pinpadModal.dataset.plan_id)}` +
+          `&iuc=${encodeURIComponent(pinpadModal.dataset.iuc)}`;
+        endpoint = "tv-purchase.php";
+        break;
+
       // Add more services as needed
       default:
         showToasted("Unknown service type", "error");
