@@ -42,7 +42,6 @@ $providers = getServiceProvider($pdo, 'TV');
             </div>
         </div>
 
-        <!-- Hellooo -->
         <!-- Purchase Tabs -->
         <div class="tabs mb-6">
             <div class="tab-buttons d-flex">
@@ -181,27 +180,28 @@ $providers = getServiceProvider($pdo, 'TV');
                     const card = document.createElement("div");
                     card.className = "col-4 mb-3";
                     card.innerHTML = `
-                <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
-                    <div class="fw-bold">${plan.name}</div>
-                    <div class="text-muted small">${plan.validity}</div>
-                    <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
-                </div>
-            `;
+            <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
+                <div class="fw-bold">${plan.name}</div>
+                <div class="text-muted small">${plan.validity}</div>
+                <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
+            </div>
+        `;
                     card.querySelector(".plan-card").addEventListener("click", function() {
-                        // Remove highlight from all plan cards
-                        document.querySelectorAll("#planCards .plan-card").forEach(c => c.classList.remove("selected-plan"));
+                        // Remove highlight from all plan cards in this container
+                        document.querySelectorAll("#planCards .plan-card").forEach(c => {
+                            c.classList.remove("selected-plan");
+                            c.style.backgroundColor = "";
+                            c.style.color = "";
+                            c.querySelectorAll('*').forEach(el => el.style.color = "");
+                        });
                         this.classList.add("selected-plan");
-
-                        // Get brand color from selected tab
-                        const selectedTabEl = document.querySelector('.service-tab.selected-tab');
-                        const brandColor = selectedTabEl ? getComputedStyle(selectedTabEl).getPropertyValue('--brand-color') : '#FFCB05';
-
-                        // Apply brand color to selected plan card
+                        // Set background to network color, text to white
+                        const selectedTabTab = document.querySelector('.service-tab.selected-tab');
+                        const brandColor = selectedTabTab ? getComputedStyle(selectedTabTab).getPropertyValue('--brand-color') : '#FFCB05';
                         this.style.backgroundColor = brandColor;
                         this.style.color = "#fff";
                         this.querySelectorAll('*').forEach(el => el.style.color = "#fff");
 
-                        // Set selected plan
                         selectedPlan = {
                             plan_id: plan.plan_id,
                             price: plan.price,
