@@ -82,7 +82,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
                 <div class="input-group-container mb-3">
                     <span class="input-group-prefix">₦</span>
-                    <input type="text" class="input amount-input" placeholder="Enter Amount">
+                    <input type="text" class="input amount-input" placeholder="Enter Amount" inputmode="numeric" required>
                 </div>
 
                 <!-- Phone Number Input -->
@@ -91,7 +91,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                         <img src="../assets/img/ng.png" alt=""> +234
                     </span>
                     <input type="tel" id="phone-number" name="phone_number" maxlength="10"
-                        placeholder="Phone Number" class="input phone-input" required value="8011111111">
+                        placeholder="Phone Number" class="input phone-input" required value="8011111111" inputmode="numeric">
                 </div>
                 <button type="submit" class="btn w-100 mt-3 primary-btn purchase-btn" disabled>Purchase</button>
             </div>
@@ -164,6 +164,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
             const payBtn = document.getElementById("payBtn");
             const pinpadModal = document.getElementById("pinpadModal");
             const closePinpad = document.getElementById("closePinpad");
+            
 
             // --- Tab Switching ---
             tabButtons.forEach(btn => {

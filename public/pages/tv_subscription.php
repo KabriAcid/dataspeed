@@ -56,8 +56,16 @@ $providers = getServiceProvider($pdo, 'TV');
 
                 <!-- IUC/Smartcard Number -->
                 <div class="mt-2" id="iucNumberWrap">
-                    <input type="text" id="iucNumber" name="iuc_number" maxlength="20"
-                        placeholder="IUC/Smartcard Number" class="input" required>
+                    <input
+                        type="text"
+                        id="iucNumber"
+                        name="iuc_number"
+                        maxlength="10"
+                        inputmode="numeric"
+                        pattern="\d*"
+                        placeholder="IUC/Smartcard Number"
+                        class="input"
+                        required>
                 </div>
 
                 <!-- Recipient Phone (for Pay For Others) -->
@@ -66,7 +74,7 @@ $providers = getServiceProvider($pdo, 'TV');
                         <img src="../assets/img/ng.png" alt=""> +234
                     </span>
                     <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
-                        placeholder="Phone Number" class="input phone-input" required>
+                        placeholder="Phone Number" id="phone-number" class="input phone-input" required>
                 </div>
 
                 <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
@@ -82,12 +90,12 @@ $providers = getServiceProvider($pdo, 'TV');
                 </div>
                 <div class="modal-body">
                     <p class="text-sm text-secondary mb-1 text-center">IUC/Smartcard</p>
-                    <div id="customer-iuc" data-raw=""></div>
-                    <div class="info-row"><span>Service:</span><span id="confirmService"></span></div>
-                    <div class="info-row"><span>Plan:</span><span id="confirmPlan" class="fw-bolder primary fs-6"></span></div>
-                    <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bold"></span></div>
+                    <div id="customer-iuc" class="fw-bold fs-3 primary text-center mb-3" data-raw=""></div>
+                    <div class="info-row"><span>Service:</span><span id="confirmService" class="fw-bold"></span></div>
+                    <div class="info-row"><span>Plan:</span><span id="confirmPlan" class="fw-bold"></span></div>
+                    <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bolder primary fs-6"></span></div>
                     <div class="info-row"><span>Validity:</span><span id="confirmValidity" class="fw-bold"></span></div>
-                    <div class="info-row"><span>Phone:</span><span id="confirmPhone"></span></div>
+                    <div class="info-row"><span>Phone:</span><span id="confirmPhone" class="fw-bold"></span></div>
                 </div>
                 <div class="modal-footer">
                     <button class="pay-btn" id="payBtn" type="button">Pay</button>
@@ -127,6 +135,12 @@ $providers = getServiceProvider($pdo, 'TV');
             let selectedProviderId = firstTab?.dataset.providerId || "";
             let selectedPlan = null;
             let buyFor = "self";
+
+            iucNumberInput.addEventListener("input", function(e) {
+                // Remove all non-digit characters
+                this.value = this.value.replace(/\D/g, '');
+                checkPurchaseReady();
+            });
 
             // --- Service selection ---
             networkTabs.forEach(tab => {
@@ -223,7 +237,7 @@ $providers = getServiceProvider($pdo, 'TV');
 
             // --- Enable/disable Purchase button ---
             function checkPurchaseReady() {
-                const iucValid = iucNumberInput.value.trim().length >= 6;
+                const iucValid = /^\d{10}$/.test(iucNumberInput.value.trim());
                 const phoneValid = buyFor === "self" || (buyFor === "others" && recipientPhoneInput.value.trim().length >= 10);
                 if (selectedPlan && iucValid && phoneValid) {
                     purchaseBtn.disabled = false;
@@ -240,10 +254,25 @@ $providers = getServiceProvider($pdo, 'TV');
             purchaseBtn.addEventListener("click", function() {
                 // Fill confirm modal
                 const phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
+                const selectedTabEl = document.querySelector('.service-tab.selected-tab');
+                const providerName = selectedTabEl ? selectedTabEl.querySelector('span').textContent : '';
+                const providerIcon = selectedTabEl ? selectedTabEl.querySelector('img').src : '';
+
+                // Show provider icon and name
+                confirmService.innerHTML = providerIcon ?
+                    `<img src="${providerIcon}" alt="${providerName}" style="height:22px;vertical-align:middle;">` :
+                    providerName;
+
                 customerIUC.textContent = iucNumberInput.value.trim();
                 customerIUC.setAttribute("data-raw", iucNumberInput.value.trim());
-                confirmService.innerHTML = ""; // You can add provider SVG here if needed
-                confirmPlan.textContent = selectedPlan.name;
+
+                // Show both plan name and volume if available
+                let planDisplay = selectedPlan.name;
+                if (selectedPlan.volume && selectedPlan.volume !== selectedPlan.name) {
+                    planDisplay += ` (${selectedPlan.volume})`;
+                }
+                confirmPlan.textContent = planDisplay;
+
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
                 confirmValidity.textContent = selectedPlan.validity;
                 confirmPhone.textContent = phone;
