@@ -30,8 +30,8 @@ $providers = getServiceProvider($pdo, 'TV');
         <!-- Service Selection -->
         <div class="service-section">
             <div class="service-tabs">
-                <?php foreach ($providers as $provider): ?>
-                    <div class="service-tab"
+                <?php foreach ($providers as $i => $provider): ?>
+                    <div class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
                         data-network="<?= htmlspecialchars($provider['slug']) ?>"
                         data-provider-id="<?= $provider['id'] ?>"
                         style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
@@ -104,16 +104,9 @@ $providers = getServiceProvider($pdo, 'TV');
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/pin-pad.js"></script>
     <script>
-        const networkSVGs = {
-            DSTV: `<img src="../assets/img/icons/dstv.png" alt="DSTV" style="height:32px;">`,
-            GOTV: `<img src="../assets/img/icons/gotv.png" alt="GOTV" style="height:32px;">`,
-            STARTIMES: `<img src="../assets/img/icons/startimes.png" alt="Startimes" style="height:32px;">`
-        };
-
         document.addEventListener("DOMContentLoaded", function() {
             // --- Element references ---
             const networkTabs = document.querySelectorAll(".service-tab");
-            const tabBtns = document.querySelectorAll(".tab-btn");
             const planCardsContainer = document.getElementById("planCards");
             const iucNumberInput = document.getElementById("iucNumber");
             const recipientPhoneWrap = document.getElementById("recipientPhoneWrap");
@@ -127,9 +120,12 @@ $providers = getServiceProvider($pdo, 'TV');
             const confirmAmount = document.getElementById("confirmAmount");
             const confirmValidity = document.getElementById("confirmValidity");
             const confirmPhone = document.getElementById("confirmPhone");
+            const payBtn = document.getElementById("payBtn");
+
             // --- State ---
-            let selectedTab = "dstv";
-            let selectedProviderId = "5";
+            const firstTab = document.querySelector(".service-tab");
+            let selectedTab = firstTab?.dataset.network || "";
+            let selectedProviderId = firstTab?.dataset.providerId || "";
             let selectedPlan = null;
             let buyFor = "self";
 
@@ -140,27 +136,23 @@ $providers = getServiceProvider($pdo, 'TV');
                     tab.classList.add("selected-tab", "active");
                     selectedTab = tab.dataset.network;
                     selectedProviderId = tab.dataset.providerId;
+                    selectedPlan = null;
+                    highlightSelectedPlan();
+                    purchaseBtn.disabled = true;
                     loadPlans();
                 });
             });
 
             // --- Tab selection (Pay for Self/Others) ---
-            tabBtns.forEach(btn => {
+            document.querySelectorAll(".tab-btn").forEach(btn => {
                 btn.addEventListener("click", function() {
-                    tabBtns.forEach(b => b.classList.remove("active"));
+                    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
                     buyFor = btn.dataset.tab;
                     recipientPhoneWrap.style.display = buyFor === "others" ? "flex" : "none";
                     selectedPlan = null;
                     highlightSelectedPlan();
                     purchaseBtn.disabled = true;
-
-                    // Animate tab-content
-                    const tabContent = document.querySelector('.tab-content');
-                    tabContent.classList.remove('active');
-                    setTimeout(() => {
-                        tabContent.classList.add('active');
-                    }, 10);
                 });
             });
 
@@ -189,30 +181,39 @@ $providers = getServiceProvider($pdo, 'TV');
                     const card = document.createElement("div");
                     card.className = "col-4 mb-3";
                     card.innerHTML = `
-            <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
-                <div class="fw-bold">${plan.name}</div>
-                <div class="text-muted small">${plan.validity}</div>
-                <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
-            </div>
-        `;
+                <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
+                    <div class="fw-bold">${plan.name}</div>
+                    <div class="text-muted small">${plan.validity}</div>
+                    <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
+                </div>
+            `;
                     card.querySelector(".plan-card").addEventListener("click", function() {
                         // Remove highlight from all plan cards
                         document.querySelectorAll("#planCards .plan-card").forEach(c => c.classList.remove("selected-plan"));
                         this.classList.add("selected-plan");
 
                         // Get brand color from selected tab
-                        const selectedTab = document.querySelector('.service-tab.selected-tab');
-                        const brandColor = selectedTab ? getComputedStyle(selectedTab).getPropertyValue('--brand-color') : '#FFCB05';
+                        const selectedTabEl = document.querySelector('.service-tab.selected-tab');
+                        const brandColor = selectedTabEl ? getComputedStyle(selectedTabEl).getPropertyValue('--brand-color') : '#FFCB05';
 
                         // Apply brand color to selected plan card
                         this.style.backgroundColor = brandColor;
                         this.style.color = "#fff";
                         this.querySelectorAll('*').forEach(el => el.style.color = "#fff");
 
-                        // ...your other logic (set selectedPlan, enable purchase button, etc.)...
+                        // Set selected plan
+                        selectedPlan = {
+                            plan_id: plan.plan_id,
+                            price: plan.price,
+                            name: plan.name,
+                            validity: plan.validity
+                        };
+                        checkPurchaseReady();
                     });
                     planCardsContainer.appendChild(card);
                 });
+                selectedPlan = null;
+                checkPurchaseReady();
             }
 
             // --- Highlight selected plan (reset) ---
@@ -241,7 +242,7 @@ $providers = getServiceProvider($pdo, 'TV');
                 const phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
                 customerIUC.textContent = iucNumberInput.value.trim();
                 customerIUC.setAttribute("data-raw", iucNumberInput.value.trim());
-                confirmService.innerHTML = networkSVGs[selectedTab?.toUpperCase()] || "";
+                confirmService.innerHTML = ""; // You can add provider SVG here if needed
                 confirmPlan.textContent = selectedPlan.name;
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
                 confirmValidity.textContent = selectedPlan.validity;

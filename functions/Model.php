@@ -72,18 +72,20 @@ function getTransactions($pdo, $user_id, $limit = 5)
 
 function getServiceProvider(PDO $pdo, string $type): array
 {
-    $sql = "SELECT * FROM service_providers WHERE type = ? AND is_active = 1";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$type]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $type = strtolower($type);
+
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM service_providers WHERE type = ?");
+        $stmt->execute([$type]);
+        $providers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $providers ?: [];
+    } catch (PDOException $th) {
+        echo $th->getMessage();
+        return [];
+    }
 }
 
-/**
- * Returns an array with:
- *  - 'percent': float (percentage change, positive or negative)
- *  - 'direction': 'credit' or 'debit'
- *  - 'valid': bool (true if at least two balances exist)
- */
 function getRecentBalanceChangePercent(PDO $pdo, int $user_id): array
 {
     // 1. Get current wallet balance
