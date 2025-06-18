@@ -35,13 +35,14 @@ $providers = getServiceProvider($pdo, 'TV');
                         data-network="<?= htmlspecialchars($provider['slug']) ?>"
                         data-provider-id="<?= $provider['id'] ?>"
                         style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
-                        <img src="../assets/icons/<?= htmlspecialchars($provider['logo_url']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
                         <span><?= htmlspecialchars($provider['name']) ?></span>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
 
+        <!-- Hellooo -->
         <!-- Purchase Tabs -->
         <div class="tabs mb-6">
             <div class="tab-buttons d-flex">

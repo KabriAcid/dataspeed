@@ -42,7 +42,6 @@ if (!empty($txn['provider_id'])) {
     $provider = $stmtIcon->fetch(PDO::FETCH_ASSOC);
     if ($provider) {
         $providerIcon = $provider['icon'];
-        $providerName = $provider['name'];
     }
 }
 
@@ -66,14 +65,14 @@ $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode($tx
                     </lottie-player>
                 </div>
                 <div class="text-center mb-5">
-                    <h4 class="fw-bold mt-2 mb-1 primary">Payment Successful</h4>
+                    <h3 class="fw-bold mt-2 mb-1 primary">Payment Successful</h3>
                     <div class="text-secondary small mb-2">Your transaction was completed successfully.</div>
                 </div>
                 <div class="mb-3">
                     <?php if ($providerIcon): ?>
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <span class="fw-semibold"><?= htmlspecialchars($providerName) ?></span>
-                            <img src="../assets/icons/<?= htmlspecialchars($providerIcon) ?>" alt="<?= htmlspecialchars($providerName) ?>" style="height:28px; width:auto; margin-right:8px;">
+                            <span class="fw-semibold">Vendor</span>
+                            <img src="../assets/icons/<?= htmlspecialchars($providerIcon) ?>" alt="<?= htmlspecialchars($providerName) ?>" style="height:28px; width:auto;">
                         </div>
                     <?php endif; ?>
                     <div class="d-flex justify-content-between mb-3">
@@ -137,6 +136,11 @@ $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode($tx
                 });
             });
         });
+    </script>
+    <script>
+        setTimeout(() => {
+           window.location.href = 'dashboard.php';
+        }, 20000);
     </script>
 </body>
 

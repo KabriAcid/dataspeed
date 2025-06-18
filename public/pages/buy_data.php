@@ -301,15 +301,16 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 const pinpadModal = document.getElementById("pinpadModal");
                 pinpadModal.dataset.amount = selectedPlan.price;
 
+                // Fix: define phone here
+                let phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
                 if (phone.length === 10) phone = '0' + phone;
-                pinpadModal.dataset.phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
+                pinpadModal.dataset.phone = phone;
 
                 pinpadModal.dataset.network = selectedTab;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
                 pinpadModal.style.display = "flex";
-
             });
 
             // **Format Phone Number**

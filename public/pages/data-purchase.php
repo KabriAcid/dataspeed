@@ -84,7 +84,7 @@ $service_id = 2; // Always 2 for data
 $serviceID = $network === '9mobile' ? 'etisalat' : $network;
 
 // 6. VTpass API Setup
-$request_id = uniqid('data_', true);
+$request_id = time() . rand(1000, 9999); // Unique request ID
 $postData = [
     'serviceID'  => $serviceID,
     'billersCode' => $phone,
@@ -93,6 +93,12 @@ $postData = [
     'phone'      => $phone,
     'request_id' => $request_id
 ];
+
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM transactions WHERE reference = ?");
+$stmt->execute([$request_id]);
+if ($stmt->fetchColumn() > 0) {
+    $request_id = time() . rand(1000, 9999); // Regenerate unique request ID
+}
 
 $vtpass_api_key = $_ENV['VTPASS_API_KEY'];
 $vtpass_secret_key = $_ENV['VTPASS_SECRET_KEY'];
