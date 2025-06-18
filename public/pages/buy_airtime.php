@@ -254,6 +254,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
             // --- Purchase Button & Confirm Modal ---
             purchaseBtns.forEach(btn => {
+                alert('Clicked')
                 btn.addEventListener("click", function(e) {
                     e.preventDefault();
 

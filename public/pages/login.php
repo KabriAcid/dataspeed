@@ -1,9 +1,9 @@
 <?php
+require __DIR__ . '/../../functions/utilities.php';
 $success = null;
 if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
-
 
 
 function set_title($title = null)

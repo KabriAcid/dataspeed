@@ -1,6 +1,7 @@
 <?php
-session_start();
 
+session_start();
+require __DIR__ . '/../../functions/utilities.php';
 // Check if user is being referred using GET METHOD
 if (isset($_GET['referral_code'])) {
     $_SESSION['referral_code'] = $_GET['referral_code'];
