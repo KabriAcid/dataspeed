@@ -11,8 +11,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         if ($context === "register") {
-            // Clear registration session or temp data if any
-            echo json_encode(["success" => true, "message" => "Registration reset."]);
+            $registration_id = $_POST['registration_id'] ?? '';
+            try {
+                // Check if token is valid
+                $stmt = $pdo->prepare("DELETE FROM users WHERE registration_id = ?");
+                $stmt->execute([$registration_id]);
+
+                echo json_encode(["success" => true, "message" => "Registration reset successful."]);
+            } catch (Exception $e) {
+                echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+            }
         } elseif ($context === "pin" && $email) {
             // Remove any PIN reset tokens for this email
             $stmt = $pdo->prepare("DELETE FROM forgot_pin WHERE email = ?");
@@ -31,3 +39,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     exit;
 }
+

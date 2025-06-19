@@ -533,9 +533,6 @@ button:disabled {
   color: #c7c7c7;
   cursor: not-allowed;
 }
-.disabled-link:hover {
-  color: #c7c7c7;
-}
 
 .active-link {
   color: #94241e;
@@ -545,7 +542,7 @@ button:disabled {
 
 #otp-timer {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .input-group-container {

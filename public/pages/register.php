@@ -1,8 +1,9 @@
 <?php
 
 session_start();
-require __DIR__ . '/../../functions/utilities.php';
-// Check if user is being referred using GET METHOD
+require __DIR__ . '/../../config/config.php';
+require __DIR__ . '/../../functions/Model.php';
+
 if (isset($_GET['referral_code'])) {
     $_SESSION['referral_code'] = $_GET['referral_code'];
     $referral_code = $_SESSION['referral_code'] ? $_SESSION['referral_code'] : '';
@@ -236,7 +237,7 @@ function set_title($title = null)
         resetBtn.addEventListener('click', function() {
             if (sessionStorage.getItem('registration_id')) {
                 const registration_id = sessionStorage.getItem('registration_id');
-                let context = "pin";
+                let context = "register";
                 sendAjaxRequest(
                     "reset-registration.php",
                     "POST",
