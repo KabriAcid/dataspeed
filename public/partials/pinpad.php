@@ -4,12 +4,12 @@
   <div class="pin-container">
     <div class="pin-header text-center">
       <img src="<?= $user['photo']; ?>" alt="avatar" class="pinpad-avatar">
-      <h3><?= ucwords($user['user_name']); ?></h3>
+      <h3><?= ucwords($user['user_name']) ?? $user['first_name']; ?></h3>
     </div>
     <div class="pin-field">
       <div class="icon-section text-center">
         <i class="nc-icon nc-check-circle check-icon fa-2x"></i>
-        <p class="mt-2 mb-0 fw-bold"><i class="ni ni-key-55"></i> Enter Transaction PIN</p>
+        <p class="mt-2 mb-0 fw-bold"><i class="ni ni-key-55 text-dark text-gradient"></i> Enter Transaction PIN</p>
       </div>
       <div class="pin-section">
         <div class="pin-dots">
