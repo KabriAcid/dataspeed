@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         tokenEmail.textContent = email;
       }
     }
-    
+
     sessionStorage.setItem("currentStep", step);
   }
 
@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   emailSubmit.addEventListener("click", function () {
     handleButtonClick(emailSubmit, done => {
       const email = emailInput.value.trim();
+      const type = "pin";
 
       if (email === "") {
         showToasted("Email address is required.", "error");
@@ -55,7 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
       sendAjaxRequest(
         "send-token.php",
         "POST",
-        "email=" + encodeURIComponent(email),
+        "email=" +
+          encodeURIComponent(email) +
+          "&type=" +
+          encodeURIComponent(type),
         function (response) {
           if (!response.success) {
             showToasted(response.message, "error");
@@ -79,12 +83,13 @@ document.addEventListener("DOMContentLoaded", function () {
   tokenSubmit.addEventListener("click", function () {
     handleButtonClick(tokenSubmit, done => {
       const token = tokenInput.value.trim();
+      const type = "password";
+      const email = sessionStorage.getItem("reset_email") || "";
 
       if (token === "") {
         showToasted("Token is required", "error");
         return done();
       }
-      const type = "password";
 
       sendAjaxRequest(
         "verify-token.php",
@@ -92,7 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
         "token=" +
           encodeURIComponent(token) +
           "&type=" +
-          encodeURIComponent(type),
+          encodeURIComponent(type) +
+          "&email=" +
+          encodeURIComponent(email),
         function (response) {
           if (!response.success) {
             showToasted(response.message, "error");

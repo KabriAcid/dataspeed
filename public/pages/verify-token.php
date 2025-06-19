@@ -9,25 +9,28 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $token = $_POST['token'] ?? '';
     $type = $_POST['type'] ?? 'password';
+    $email = $_POST['email'] ?? '';
 
     if (empty($token)) {
         echo json_encode(["success" => false, "message" => "Token is required."]);
         exit;
     }
+    if (empty($email)) {
+        echo json_encode(["success" => false, "message" => "Email is required."]);
+        exit;
+    }
 
-    // Choose table based on type
     $table = ($type === 'pin') ? 'forgot_pin' : 'forgot_password';
 
     try {
-        // Check if token is valid in the correct table
-        $stmt = $pdo->prepare("SELECT token FROM `$table` WHERE token = ?");
-        $stmt->execute([$token]);
+        $stmt = $pdo->prepare("SELECT token FROM `$table` WHERE token = ? AND email = ?");
+        $stmt->execute([$token, $email]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
             echo json_encode(["success" => true, "message" => "Token verified."]);
         } else {
-            echo json_encode(["success" => false, "message" => "Invalid token."]);
+            echo json_encode(["success" => false, "message" => "Invalid token or email."]);
         }
     } catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);

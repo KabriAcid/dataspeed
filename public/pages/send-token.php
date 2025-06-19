@@ -1,5 +1,4 @@
 <?php
-// MUST BE FIRST LINE — no space above this!
 ob_start();
 session_start();
 
@@ -11,6 +10,7 @@ require __DIR__ . '/../../functions/sendMail.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'] ?? '';
+    $type = $_POST['type'] ?? 'password'; // default to password
 
     // Generate token and expiration
     $token = md5(uniqid());
@@ -34,20 +34,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         }
 
+        // Choose table and email content based on type
+        if ($type === 'pin') {
+            $table = 'forgot_pin';
+            $subject = "PIN Reset Token";
+            $body = "<p>Your PIN reset token is:</p><br>
+                <div style='background-color:#eee;padding:12px;border-radius:8px;'>
+                    <h3 style='text-align:center'>$token</h3>
+                </div>";
+        } else {
+            $table = 'forgot_password';
+            $subject = "Password Reset Token";
+            $body = "<p>Your password reset token is:</p><br>
+                <div style='background-color:#eee;padding:12px;border-radius:8px;'>
+                    <h3 style='text-align:center'>$token</h3>
+                </div>";
+        }
+
         // Insert or update token
         $stmt = $pdo->prepare("
-            INSERT INTO forgot_password (email, token, expires_at)
+            INSERT INTO `$table` (email, token, expires_at)
             VALUES (?, ?, ?)
             ON DUPLICATE KEY UPDATE token = VALUES(token), expires_at = VALUES(expires_at)
         ");
         $stmt->execute([$email, $token, $tokenExpiry]);
-
-        // Email content
-        $subject = "Password Reset Token";
-        $body = "<p>Your password reset token is:</p><br>
-            <div style='background-color:#eee;padding:12px;border-radius:8px;'>
-                <h3 style='text-align:center'>$token</h3>
-            </div>";
 
         // Send email
         if (sendMail($email, $subject, $body)) {

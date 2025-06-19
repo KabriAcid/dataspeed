@@ -78,7 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
   emailSubmit.addEventListener("click", function () {
     handleButtonClick(emailSubmit, done => {
       const email = emailInput.value.trim();
-
+        const type = "pin";
+        
       if (email === "") {
         showToasted("Email address is required.", "error");
         return done();
@@ -92,7 +93,10 @@ document.addEventListener("DOMContentLoaded", function () {
       sendAjaxRequest(
         "send-token.php",
         "POST",
-        "email=" + encodeURIComponent(email),
+        "email=" +
+          encodeURIComponent(email) +
+          "&type=" +
+          encodeURIComponent(type),
         function (response) {
           if (!response.success) {
             showToasted(response.message, "error");
@@ -116,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
   tokenSubmit.addEventListener("click", function () {
     handleButtonClick(tokenSubmit, done => {
       const token = tokenInput.value.trim();
+      const type = "pin";
       const email = sessionStorage.getItem("reset_email") || "";
 
       if (token === "") {
@@ -123,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return done();
       }
 
-      const type = "pin";
 
       sendAjaxRequest(
         "verify-token.php",
