@@ -18,6 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
       el.classList.toggle("active", index === step);
     });
 
+    if (step === 2) {
+      // Token step
+      const email = sessionStorage.getItem("email") || "";
+      const userEmail = document.getElementById("user-email");
+      if (userEmail && email) {
+        userEmail.textContent = email;
+      }
+    }
+
     sessionStorage.setItem("currentStep", step);
   }
 

@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
       el.classList.toggle("active", index === step);
     });
 
-    if (step === 2) {
+    if (step === 1) {
       // Token step
       const tokenEmail = document.getElementById("token-email");
       const email = sessionStorage.getItem("reset_email") || "";

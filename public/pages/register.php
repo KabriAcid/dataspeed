@@ -100,7 +100,10 @@ function set_title($title = null)
                 <div class="form-step d-none">
                     <div class="form-step-header">
                         <h4>Verify Your OTP Code</h3>
-                            <p class="text-sm" id="user_email">Enter the 6-digit code sent to your email.</p>
+                            <p>
+                                Enter the 6 digit code that was sent to
+                                <span id="user-email" class="fw-bold"></span>
+                            </p>
                     </div>
                     <div class="form-field">
                         <div class="otp-container my-4">
@@ -233,10 +236,11 @@ function set_title($title = null)
         resetBtn.addEventListener('click', function() {
             if (sessionStorage.getItem('registration_id')) {
                 const registration_id = sessionStorage.getItem('registration_id');
+                let context = "pin";
                 sendAjaxRequest(
                     "reset-registration.php",
                     "POST",
-                    "registration_id=" + encodeURIComponent(registration_id),
+                    "context=" + encodeURIComponent(context) + "&registration_id=" + encodeURIComponent(registration_id),
                     function(response) {
                         if (!response.success) {
                             showToasted(response.message, "error");
