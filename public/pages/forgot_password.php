@@ -84,7 +84,8 @@ function set_title($title = null)
                         </button>
                     </div>
                     <div class="otp-timer-container">
-                        <p>Time remaining: <span id="otp-timer">10:00</span></p>
+                        <p>Time remaining: <span id="otp-timer">02:00</span></p>
+                        <button type="button" id="resend-otp-btn" class="btn secondary-btn mt-2" disabled>Resend Token</button>
                     </div>
                 </div>
                 <!-- PASSWORD -->
@@ -114,28 +115,44 @@ function set_title($title = null)
 <script>
     let countdown = 120;
     const timerDisplay = document.getElementById("otp-timer");
-    const verifyBtn = document.getElementById("verify-otp-btn");
+    const resendBtn = document.getElementById("resend-otp-btn");
 
     function updateTimer() {
         if (!timerDisplay) return;
-
         const minutes = Math.floor(countdown / 60);
         const seconds = countdown % 60;
-        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-        if (countdown === 0) {
-            timerDisplay.textContent = "OTP Expired! Request a new one.";
-            verifyBtn.disabled = true;
-            verifyBtn.classList.add('inactive-btn');
-            verifyBtn.style.cursor = 'not-allowed';
+        timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        if (countdown <= 0) {
+            timerDisplay.textContent = "00:00";
+            resendBtn.disabled = false;
+            resendBtn.classList.remove('inactive-btn');
             clearInterval(timerInterval);
         }
-
         countdown--;
     }
 
-    const timerInterval = setInterval(updateTimer, 1000);
-    
+    function startOtpTimer() {
+        countdown = 120;
+        resendBtn.disabled = true;
+        resendBtn.classList.add('inactive-btn');
+        timerDisplay.textContent = "02:00";
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    let timerInterval = setInterval(updateTimer, 1000);
+
+    // Call startOtpTimer() whenever you show the token step
+
+    // Resend button handler
+    resendBtn.addEventListener('click', function() {
+        // Your AJAX call to resend the token goes here
+        // After successful resend:
+        startOtpTimer();
+        showToasted("A new token has been sent to your email.", "success");
+    });
+
+
     document.addEventListener('DOMContentLoaded', function() {
         const resetBtn = document.getElementById('reset-registration');
         resetBtn.addEventListener('click', function() {
