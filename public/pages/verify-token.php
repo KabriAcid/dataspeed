@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($row) {
             echo json_encode(["success" => true, "message" => "Token verified."]);
         } else {
-            echo json_encode(["success" => false, "message" => "Invalid token or email."]);
+            echo json_encode(["success" => false, "message" => "Invalid or expired token."]);
         }
     } catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
