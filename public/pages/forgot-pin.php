@@ -118,12 +118,13 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
         document.addEventListener('DOMContentLoaded', function() {
             const resetBtn = document.getElementById('reset-registration');
             resetBtn.addEventListener('click', function() {
-                if (sessionStorage.getItem('email')) {
-                    const email = sessionStorage.getItem('email');
+                if (sessionStorage.getItem('reset_email')) {
+                    const reset_email = sessionStorage.getItem('reset_email');
+                    let context = "pin";
                     sendAjaxRequest(
                         "reset-registration.php",
                         "POST",
-                        "email=" + encodeURIComponent(email),
+                        "context=" + encodeURIComponent(context) + "&email=" + encodeURIComponent(email),
                         function(response) {
                             if (!response.success) {
                                 showToasted(response.message, "error");
@@ -131,7 +132,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                                 showToasted(response.message, "success");
                                 setTimeout(() => {
                                     sessionStorage.clear();
-                                    window.location.href = "register.php";
+                                    window.location.href = "dashboard.php";
                                 }, 2000);
                             }
                         }

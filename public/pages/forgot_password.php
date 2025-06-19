@@ -135,6 +135,32 @@ function set_title($title = null)
     }
 
     const timerInterval = setInterval(updateTimer, 1000);
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const resetBtn = document.getElementById('reset-registration');
+        resetBtn.addEventListener('click', function() {
+            if (sessionStorage.getItem('reset_email')) {
+                const reset_email = sessionStorage.getItem('reset_email');
+                let context = "pin";
+                sendAjaxRequest(
+                    "reset-registration.php",
+                    "POST",
+                    "context=" + encodeURIComponent(context) + "&email=" + encodeURIComponent(email),
+                    function(response) {
+                        if (!response.success) {
+                            showToasted(response.message, "error");
+                        } else {
+                            showToasted(response.message, "success");
+                            setTimeout(() => {
+                                sessionStorage.clear();
+                                window.location.href = "dashboard.php";
+                            }, 2000);
+                        }
+                    }
+                );
+            }
+        });
+    });
 </script>
 <script src="../assets/js/password-reset.js"></script>
 <?php require __DIR__ . '/../partials/scripts.php'; ?>
