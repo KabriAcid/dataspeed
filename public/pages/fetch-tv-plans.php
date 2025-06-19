@@ -18,7 +18,7 @@ if ($provider_id <= 0) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT id as plan_id, name, price, validity FROM service_plans WHERE provider_id = ? AND is_active = 1");
+    $stmt = $pdo->prepare("SELECT variation_code as plan_id, name, price, validity FROM service_plans WHERE provider_id = ? AND is_active = 1");
     $stmt->execute([$provider_id]);
     $plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

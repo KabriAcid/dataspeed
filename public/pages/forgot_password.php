@@ -97,7 +97,6 @@ function set_title($title = null)
                         <input type="password" class="input" id="confirm-password" name="confirm_password"
                             placeholder="Password">
                     </div>
-                    <label for="" class="error-label" id="password-error"></label>
                     <button type="button" class="btn primary-btn" id="password-submit">
                         Finish
                     </button>

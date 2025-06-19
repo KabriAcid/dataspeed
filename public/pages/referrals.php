@@ -149,7 +149,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                 </div>
             </div>
 
-            <div class="row mt-5">
+            <div class="row mt-5 px-3">
                 <div class="col-lg-6 col-12">
                     <div class="d-flex justify-content-center align-items-center">
                         <!-- Copy Code -->
@@ -178,7 +178,6 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
                             <button type="button" id="shareButton" class="btn mb-0 primary-btn py-3 w-100 h-100">Share
                                 Link</button>
                         </div>
-
                     </div>
                 </div>
             </div>

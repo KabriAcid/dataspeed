@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const backspaceBtn = pinpadModal.querySelector("#backspace");
   const exitBtn = pinpadModal.querySelector("#pin-exit-btn");
   const forgotBtn = pinpadModal.querySelector("#pin-forgot-btn");
+  
   let pin = "";
 
   function processPinEntry(pin) {
@@ -196,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   forgotBtn?.addEventListener("click", function () {
     // Implement your forgot PIN logic here
-    alert("Forgot PIN clicked!");
+    window.location.href = 'forgot-pin.php';
   });
 
   // Initialize state

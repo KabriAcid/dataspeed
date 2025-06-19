@@ -1837,3 +1837,6 @@ th {
 .receipt-cut-right {
   right: -10px;
 }
+footer a:hover {
+  color: var(--primary)!important;
+}

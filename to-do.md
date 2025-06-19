@@ -16,6 +16,9 @@
 - Full fixes of TV subscription page.
 - Forgot PIN functionality.
 - In transactions page use the icon of the service provider instead.
+- Handle response codes efficiently.
+- Use webhooks for updates.
+- Query to verify smartcard number.
 
 --- FEATURES ---
 

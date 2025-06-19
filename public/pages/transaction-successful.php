@@ -122,7 +122,6 @@ $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode($tx
         </div>
     </main>
 
-    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>

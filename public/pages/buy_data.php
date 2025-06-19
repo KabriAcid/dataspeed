@@ -199,7 +199,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 const container = forModal ? allPlanCards : planCardsContainer;
                 container.innerHTML = '<div class="d-flex justify-content-center py-4"><span class="loading-spinner"></span></div>';
                 sendAjaxRequest(
-                    "fetch-plans.php",
+                    "fetch-data-plans.php",
                     "POST",
                     `provider_id=${encodeURIComponent(selectedProviderId)}&type=${encodeURIComponent(selectedSub)}`,
                     function(response) {

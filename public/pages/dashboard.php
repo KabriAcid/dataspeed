@@ -5,7 +5,7 @@ require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 
-
+set_title('Dashboard');
 $success = null;
 if (isset($_GET['success'])) {
     $success = $_GET['success'];

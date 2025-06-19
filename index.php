@@ -145,7 +145,7 @@ function set_title($title = null)
                     <div class="card transaction-card p-0">
                         <div class="card-body">
                             <i class="icon"></i>
-                            <h6 class="text-center">Stay connected with MTN & Airtel</h6>
+                            <h6 class="text-center primary">Stay connected with MTN & Airtel</h6>
                             <p>Recharge airtime and data for MTN and Airtel anytime,
                                 ensuring seamless communication with the DataSpeed app.</p>
                         </div>
@@ -155,7 +155,7 @@ function set_title($title = null)
                     <div class="card transaction-card p-0">
                         <div class="card-body">
                             <i class="icon"></i>
-                            <h6 class="text-center">Enjoy TV with DStv, GOtv & Startimes</h6>
+                            <h6 class="text-center primary">Enjoy TV with DStv, GOtv & Startimes</h6>
                             <p>Pay for DStv, GOtv, and Startimes subscriptions easily and access your favorite
                                 channels via the DataSpeed app.</p>
                         </div>
@@ -165,7 +165,7 @@ function set_title($title = null)
                     <div class="card transaction-card p-0">
                         <div class="card-body">
                             <i class="icon"></i>
-                            <h6 class="text-center">Power Your Home</h6>
+                            <h6 class="text-center primary">Power Your Home</h6>
                             <p>Settle Internet and Electricity bills quickly and
                                 conveniently using the DataSpeed app.</p>
                         </div>
@@ -175,7 +175,7 @@ function set_title($title = null)
                     <div class="card transaction-card p-0">
                         <div class="card-body">
                             <i class="icon"></i>
-                            <h6 class="text-center"> Support Local Merchants</h6>
+                            <h6 class="text-center primary"> Support Local Merchants</h6>
                             <p>Make hassle-free payments to local merchants
                                 and vendors with the DataSpeed app.</p>
                         </div>
@@ -191,7 +191,7 @@ function set_title($title = null)
                     Stay ahead with DataSpeed!<br>
                     Get exclusive updates, tips, and offers delivered straight to your inbox.
                 </p>
-                <form action="" method="post" class="" style="width: 50%;margin: auto;">
+                <form action="" method="post" class="">
                     <input type="email" name="email" class="input" placeholder="Your email address">
                     <button type="submit" name="submit" class="btn primary-btn mt-3" id="news">SUBSCRIBE</button>
                 </form>

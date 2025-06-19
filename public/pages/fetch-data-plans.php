@@ -34,7 +34,7 @@ try {
 
     // Fetch plans
     $plansStmt = $pdo->prepare("
-        SELECT id AS plan_id, price, volume, validity 
+        SELECT variation_code AS plan_id, price, volume, validity 
         FROM service_plans 
         WHERE service_id = ? 
         AND provider_id = ? 
