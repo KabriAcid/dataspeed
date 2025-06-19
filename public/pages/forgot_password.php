@@ -116,6 +116,7 @@ function set_title($title = null)
     let countdown = 120;
     const timerDisplay = document.getElementById("otp-timer");
     const resendBtn = document.getElementById("resend-otp-btn");
+    const type = 'password';
 
     function updateTimer() {
         if (!timerDisplay) return;
@@ -142,14 +143,26 @@ function set_title($title = null)
 
     let timerInterval = setInterval(updateTimer, 1000);
 
-    // Call startOtpTimer() whenever you show the token step
-
-    // Resend button handler
     resendBtn.addEventListener('click', function() {
-        // Your AJAX call to resend the token goes here
-        // After successful resend:
-        startOtpTimer();
-        showToasted("A new token has been sent to your email.", "success");
+        resendBtn.disabled = true;
+        resendBtn.classList.add('inactive-btn');
+        // AJAX to resend token
+        sendAjaxRequest(
+            "send-token.php",
+            "POST",
+            "email=" + encodeURIComponent(email),
+            "type=" + encodeURIComponent(type),
+            function(response) {
+                if (response.success) {
+                    showToasted("A new token has been sent to your email.", "success");
+                    startOtpTimer();
+                } else {
+                    showToasted(response.message || "Failed to resend token.", "error");
+                    resendBtn.disabled = false;
+                    resendBtn.classList.remove('inactive-btn');
+                }
+            }
+        );
     });
 
 
