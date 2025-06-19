@@ -109,12 +109,12 @@ function set_title($title = null)
 </body>
 <script src="../assets/js/ajax.js"></script>
 <script>
-    let countdown = 600; // 10 minutes in seconds
+    let countdown = 120;
     const timerDisplay = document.getElementById("otp-timer");
     const verifyBtn = document.getElementById("verify-otp-btn");
 
     function updateTimer() {
-        if (!timerDisplay) return; // Avoid errors if element is missing
+        if (!timerDisplay) return;
 
         const minutes = Math.floor(countdown / 60);
         const seconds = countdown % 60;

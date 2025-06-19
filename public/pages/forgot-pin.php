@@ -75,7 +75,10 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                 <div class="form-step d-none">
                     <div class="form-step-header">
                         <h3>Enter generated token</h3>
-                        <p>Enter the token that was sent to your email</p>
+                        <p>
+                            Enter the token that was sent to
+                            <span id="token-email" class="fw-bold"></span>
+                        </p>
                     </div>
                     <div class="form-field">
                         <input type="text" name="token" id="token" placeholder="Insert your token" class="input">
@@ -84,7 +87,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
                         </button>
                     </div>
                     <div class="otp-timer-container">
-                        <p>Time remaining: <span id="otp-timer">10:00</span></p>
+                        <p>Time remaining: <span id="otp-timer">2:00</span></p>
                     </div>
                 </div>
                 <!-- PASSWORD (PIN) -->

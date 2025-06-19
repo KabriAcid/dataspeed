@@ -23,6 +23,15 @@ document.addEventListener("DOMContentLoaded", function () {
       el.classList.toggle("active", index === step);
     });
 
+    if (step === 2) {
+      // Token step
+      const tokenEmail = document.getElementById("token-email");
+      const email = sessionStorage.getItem("reset_email") || "";
+      if (tokenEmail && email) {
+        tokenEmail.textContent = email;
+      }
+    }
+    
     sessionStorage.setItem("currentStep", step);
   }
 
@@ -30,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const emailSubmit = document.getElementById("email-submit");
 
   emailSubmit.addEventListener("click", function () {
-    handleButtonClick(emailSubmit, (done) => {
+    handleButtonClick(emailSubmit, done => {
       const email = emailInput.value.trim();
 
       if (email === "") {
@@ -64,23 +73,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-
   const tokenInput = document.getElementById("token");
   const tokenSubmit = document.getElementById("token-submit");
 
   tokenSubmit.addEventListener("click", function () {
-    handleButtonClick(tokenSubmit, (done) => {
+    handleButtonClick(tokenSubmit, done => {
       const token = tokenInput.value.trim();
 
       if (token === "") {
         showToasted("Token is required", "error");
         return done();
       }
+      const type = "password";
 
       sendAjaxRequest(
         "verify-token.php",
         "POST",
-        "token=" + encodeURIComponent(token),
+        "token=" +
+          encodeURIComponent(token) +
+          "&type=" +
+          encodeURIComponent(type),
         function (response) {
           if (!response.success) {
             showToasted(response.message, "error");
@@ -97,13 +109,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-
   const passwordInput = document.getElementById("password");
   const confirmPasswordInput = document.getElementById("confirm-password");
   const passwordSubmit = document.getElementById("password-submit");
 
   passwordSubmit.addEventListener("click", function () {
-    handleButtonClick(passwordSubmit, (done) => {
+    handleButtonClick(passwordSubmit, done => {
       const password = passwordInput.value.trim();
       const confirmPassword = confirmPasswordInput.value.trim();
       const reset_email = sessionStorage.getItem("reset_email");

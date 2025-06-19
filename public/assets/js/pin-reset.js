@@ -23,6 +23,14 @@ document.addEventListener("DOMContentLoaded", function () {
       el.classList.toggle("active", index === step);
     });
 
+    if (step === 2) {
+      const tokenEmail = document.getElementById("token-email");
+      const email = sessionStorage.getItem("reset_email") || "";
+      if (tokenEmail && email) {
+        tokenEmail.textContent = email;
+      }
+    }
+
     sessionStorage.setItem("currentStep", step);
   }
 
@@ -32,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
   passwordSubmit.addEventListener("click", function () {
     handleButtonClick(passwordSubmit, done => {
       const password = passwordInput.value.trim();
-      const reset_email = sessionStorage.getItem("reset_email");
 
       if (password === "") {
         showToasted("Password field is required.", "error");
@@ -55,7 +62,10 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             setTimeout(() => {
               showToasted(response.message, "success");
+              currentStep = 1; // Move to next step
+              showStep(currentStep);
             }, TIMEOUT);
+            done();
           }
         }
       );
@@ -74,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return done();
       }
 
-      if (email.length <= 7) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         showToasted("Invalid email address.", "error");
         return done();
       }
@@ -90,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sessionStorage.setItem("reset_email", email);
             showToasted(response.message, "success");
             setTimeout(() => {
-              currentStep = 1;
+              currentStep = 2; // Move to token step
               showStep(currentStep);
             }, TIMEOUT);
           }
@@ -106,23 +116,31 @@ document.addEventListener("DOMContentLoaded", function () {
   tokenSubmit.addEventListener("click", function () {
     handleButtonClick(tokenSubmit, done => {
       const token = tokenInput.value.trim();
+      const email = sessionStorage.getItem("reset_email") || "";
 
       if (token === "") {
         showToasted("Token is required", "error");
         return done();
       }
 
+      const type = "pin";
+
       sendAjaxRequest(
         "verify-token.php",
         "POST",
-        "token=" + encodeURIComponent(token),
+        "token=" +
+          encodeURIComponent(token) +
+          "&type=" +
+          encodeURIComponent(type) +
+          "&email=" +
+          encodeURIComponent(email),
         function (response) {
           if (!response.success) {
             showToasted(response.message, "error");
           } else {
             setTimeout(() => {
               showToasted(response.message, "success");
-              currentStep = 2;
+              currentStep = 3; // Move to PIN reset step
               showStep(currentStep);
             }, TIMEOUT);
           }
@@ -131,52 +149,52 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     });
   });
-    
-    const pinInput = document.getElementById("pin");
-    const confirmPinInput = document.getElementById("confirm-pin");
-    const pinSubmit = document.getElementById("pin-submit");
 
-    pinSubmit.addEventListener("click", function () {
-      handleButtonClick(pinSubmit, done => {
-        const pin = pinInput.value.trim();
-        const confirmPin = confirmPinInput.value.trim();
-        const reset_email = sessionStorage.getItem("reset_email");
+  const pinInput = document.getElementById("pin");
+  const confirmPinInput = document.getElementById("confirm-pin");
+  const pinSubmit = document.getElementById("pin-submit");
 
-        if (pin === "" || confirmPin === "") {
-          showToasted("Both PIN fields are required.", "error");
-          return done();
-        }
-        if (!/^\d{4}$/.test(pin)) {
-          showToasted("PIN must be exactly 4 digits.", "error");
-          return done();
-        }
-        if (pin !== confirmPin) {
-          showToasted("PINs do not match.", "error");
-          return done();
-        }
+  pinSubmit.addEventListener("click", function () {
+    handleButtonClick(pinSubmit, done => {
+      const pin = pinInput.value.trim();
+      const confirmPin = confirmPinInput.value.trim();
+      const reset_email = sessionStorage.getItem("reset_email");
 
-        sendAjaxRequest(
-          "reset-pin.php",
-          "POST",
-          "pin=" +
-            encodeURIComponent(pin) +
-            "&reset_email=" +
-            encodeURIComponent(reset_email),
-          function (response) {
-            if (!response.success) {
-              showToasted(response.message, "error");
-            } else {
-              setTimeout(() => {
-                showToasted(response.message, "success");
-                sessionStorage.clear();
-                window.location.href = "dashboard.php?success=pin";
-              }, TIMEOUT);
-            }
-            done();
+      if (pin === "" || confirmPin === "") {
+        showToasted("Both PIN fields are required.", "error");
+        return done();
+      }
+      if (!/^\d{4}$/.test(pin)) {
+        showToasted("PIN must be exactly 4 digits.", "error");
+        return done();
+      }
+      if (pin !== confirmPin) {
+        showToasted("PINs do not match.", "error");
+        return done();
+      }
+
+      sendAjaxRequest(
+        "reset-pin.php",
+        "POST",
+        "pin=" +
+          encodeURIComponent(pin) +
+          "&reset_email=" +
+          encodeURIComponent(reset_email),
+        function (response) {
+          if (!response.success) {
+            showToasted(response.message, "error");
+          } else {
+            setTimeout(() => {
+              showToasted(response.message, "success");
+              sessionStorage.clear();
+              window.location.href = "dashboard.php?success=pin";
+            }, TIMEOUT);
           }
-        );
-      });
+          done();
+        }
+      );
     });
+  });
 
   showStep(currentStep);
 });
