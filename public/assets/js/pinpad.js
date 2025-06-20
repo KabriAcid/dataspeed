@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
       bodyOverlay.style.display = "none";
       if (response.success) {
         showToasted(response.message, "success");
-        console.log(response.pin);
         pinpadModal.style.display = "none";
         setTimeout(function () {
           window.location.href =
@@ -95,8 +94,12 @@ document.addEventListener("DOMContentLoaded", function () {
              "password_pin_setting.php?tab=pin&prev_page=" +
              encodeURIComponent(window.location.pathname.replace(/^\/+/, ""));
          }, 1200);
-       }
+        }
+        if (response.phone) {
+          console.log(response.phone);
+        }
         showToasted(response.message, "error");
+        pinpadModal.style.display = 'flex';
       }
     });
   }

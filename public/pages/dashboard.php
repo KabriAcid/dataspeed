@@ -6,10 +6,6 @@ require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 
 set_title('Dashboard');
-$success = null;
-if (isset($_GET['success'])) {
-    $success = $_GET['success'];
-}
 
 // if (isset($_SESSION['reauth_required']) && !empty($_SESSION['reauth_required'])) {
 //     require __DIR__ . '/../partials/auth-modal.php';
@@ -23,7 +19,7 @@ $user_settings = getUserSettings($pdo, $user_id);
 <body>
     <main class="container-fluid py-4 mb-5">
         <?php
-        if ($success == 1) {
+        if (isset($_GET['success'])) {
             echo "<script>showToasted('Login Successful', 'success')</script>";
         }
         ?>

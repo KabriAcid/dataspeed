@@ -12,14 +12,16 @@
 - User's account setting failure.✔️
 - Sanitize inputs when using quick amount buttons. ✔️
 - Sanitizing and validating username field.✔️
-- Fixing the email sent to...
+- Fixing the email sent to...✔️
 - Full fixes of TV subscription page.
-- Forgot PIN functionality.
+- Forgot PIN functionality. ✔️
 - In transactions page use the icon of the service provider instead.
 - Handle response codes efficiently.
 - Use webhooks for updates.
 - Query to verify smartcard number.
-
+- Acccount should be locked after 5 wrong PIN attempts.
+- An upload form for variations.
+- Username field for updates.
 --- FEATURES ---
 
 - Adding action buttons (e.g., Transfer to Friend)✔️
