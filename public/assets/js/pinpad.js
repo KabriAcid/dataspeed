@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pin = "";
     updateDots();
     updateBackspace();
-    window.location.href = "/dataspeed/public/pages/dashboard.php";
+    window.location.href = "../../pages/dashboard.php";
   });
 
   forgotBtn?.addEventListener("click", function () {
