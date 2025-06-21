@@ -5,6 +5,8 @@
 - Finding relevant icons for transactions. ✔️
 - Eye toggle icon in the forgot password page and also the resend timeout. ✔️
 
+--- FEATURES ---
+
 - Quick amount issues in buy airtime page.✔️
 - No back to OTP page in the register page.
 - Also add the login with username functionality.✔️
@@ -15,6 +17,8 @@
 - Fixing the email sent to...✔️
 - Full fixes of TV subscription page.
 - Forgot PIN functionality. ✔️
+- Username step in registration form.✔️
+- Adding action buttons (e.g., Transfer to Friend)✔️
 - In transactions page use the icon of the service provider instead.
 - Handle response codes efficiently.
 - Use webhooks for updates.
@@ -22,12 +26,9 @@
 - Acccount should be locked after 5 wrong PIN attempts.
 - An upload form for variations.
 - Username field for updates.
---- FEATURES ---
-
-- Adding action buttons (e.g., Transfer to Friend)✔️
 - Animation for account balance.
-- Username step in registration form.✔️
 - Add a subdomain for the admins.
+- A dashboard panel for admin
 
 --- NOTIFICATION MODULES ---
 

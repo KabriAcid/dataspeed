@@ -7,6 +7,7 @@ require __DIR__ . '/../partials/header.php';
 
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 $providers = getServiceProvider($pdo, 'TV');
+echo $loggedInPhone;
 ?>
 
 <body>

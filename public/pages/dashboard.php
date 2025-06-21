@@ -13,7 +13,6 @@ set_title('Dashboard');
 //     exit;
 // }
 
-$user_settings = getUserSettings($pdo, $user_id);
 ?>
 
 <body>
@@ -196,7 +195,7 @@ $user_settings = getUserSettings($pdo, $user_id);
                             <path d="M12 12V16" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
                     </span>
-                    <span class="action-grid-label">Loan</span>
+                    <span class="action-grid-label">Withdraw</span>
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">
@@ -212,7 +211,7 @@ $user_settings = getUserSettings($pdo, $user_id);
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">
-                <a href="more.php" class="action-grid-btn d-flex flex-column align-items-center">
+                <a href="Airtime2Cash.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="2" fill="var(--primary)" />
@@ -220,7 +219,7 @@ $user_settings = getUserSettings($pdo, $user_id);
                             <circle cx="12" cy="19" r="2" fill="var(--primary)" />
                         </svg>
                     </span>
-                    <span class="action-grid-label">More</span>
+                    <span class="action-grid-label">Airtime2Cash</span>
                 </a>
             </div>
         </div>

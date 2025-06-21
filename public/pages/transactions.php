@@ -31,7 +31,7 @@ require __DIR__ . '/../partials/header.php';
             </p>
             <div class="transaction-list">
                 <?php
-                $transactions = getTransactions($pdo, $user_id, 50);
+                $transactions = getTransactions($pdo, $user_id);
 
                 // var_dump($transactions);
 
@@ -39,19 +39,19 @@ require __DIR__ . '/../partials/header.php';
                     echo '<p class="text-center text-muted">No transactions yet.</p>';
                 } else {
                     foreach ($transactions as $transaction) {
-                        $icon = getTransactionIcon($transaction['type']);
-                        $textColor = $transaction['type'] == 'Deposit' ? 'text-success' : 'text-danger';
+                        $icon = "<i class='{$transaction['icon']} {$transaction['color']}'></i>";
+                        $textColor = $transaction['direction'] === 'credit' ? 'text-success' : 'text-danger';
                         $formattedAmount = number_format($transaction['amount'], 2);
                         $date = date("h:i A . d F, Y.", strtotime($transaction['created_at']));
-                        $prefix = ($transaction['type'] === 'Deposit') ? '+₦' : '-₦';
+                        $prefix = $transaction['direction'] === 'credit' ? '+₦' : '-₦';
 
                         if ($transactions) {
                 ?>
-                            <div class='d-flex justify-content-between align-items-start mb-3 pb-2'>
-                                <div class='d-flex align-items-center gap-3'>
-                                    <div class='transaction-icon p-2 text-white'><?= $icon ?></div>
-                                    <div>
-                                        <h6 class='mb-0'><?= $transaction['type'] ?></h6>
+                            <div class='d-flex justify-content-between align-items-top mb-3 pb-2'>
+                                <div class='d-flex align-items-top'>
+                                    <div class='transaction-icon'><?= $icon ?></div>
+                                    <div class="mx-3">
+                                        <h6 class='mb-0 text-capitalize'><?= $transaction['type'] ?></h6>
                                         <p class='text-sm text-secondary mb-0'><?= $date ?></p>
                                     </div>
                                 </div>
