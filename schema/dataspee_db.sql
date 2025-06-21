@@ -319,6 +319,12 @@ INSERT INTO `service_providers` (`id`, `service_id`, `name`, `slug`, `type`, `br
 (7, 3, 'Startimes', 'startimes', 'tv', '#f9a825', 'startimes.png', 1, '2025-06-17 17:10:16'),
 (8, 3, 'Showmax', 'showmax', 'tv', '#f9a825', 'showmax.svg', 1, '2025-06-17 17:10:16');
 
+INSERT INTO `services` (`id`, `name`, `slug`, `created_at`) VALUES
+(1, 'Data', 'data', '2025-05-15 21:12:19'),
+(2, 'Airtime', 'airtime', '2025-05-15 21:12:19'),
+(3, 'TV', 'tv', '2025-05-30 20:44:35'),
+(4, 'Electricity', 'electricity', '2025-05-30 20:44:35');
+
 -- --------------------------------------------------------
 
 --
