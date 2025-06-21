@@ -211,7 +211,7 @@ set_title('Dashboard');
                 </a>
             </div>
             <div class="col-3 text-center d-flex justify-content-center">
-                <a href="Airtime2Cash.php" class="action-grid-btn d-flex flex-column align-items-center">
+                <a href="airtime-2-cash.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="2" fill="var(--primary)" />
