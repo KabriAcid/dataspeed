@@ -6,9 +6,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $required_fields = [
     'service_id',
     'provider_id',
-    'service_name',
+    'vt_service_name',
+    'vt_service_id',
     'variation_code',
     'name',
+    'volume',
     'variation_amount',
     'fixed_price'
 ];
@@ -24,10 +26,12 @@ foreach ($required_fields as $field) {
 // Sanitize and validate inputs
 $service_id        = htmlspecialchars(trim($_POST['service_id']));
 $provider_id       = filter_var($_POST['provider_id'], FILTER_VALIDATE_INT);
-$service_name      = htmlspecialchars(trim($_POST['service_name']));
+$vt_service_name      = htmlspecialchars(trim($_POST['vt_service_name']));
+$vt_service_id      = htmlspecialchars(trim($_POST['vt_service_id']));
 $convenience_fee   = isset($_POST['convenience_fee']) ? htmlspecialchars(trim($_POST['convenience_fee'])) : null;
 $variation_code    = htmlspecialchars(trim($_POST['variation_code']));
 $name              = htmlspecialchars(trim($_POST['name']));
+$volume           = htmlspecialchars(strtoupper(trim($_POST['volume'])));
 $variation_amount  = filter_var($_POST['variation_amount'], FILTER_VALIDATE_FLOAT);
 $fixed_price       = ($_POST['fixed_price'] === "1") ? 1 : 0;
 $validity          = isset($_POST['validity']) ? htmlspecialchars(trim($_POST['validity'])) : null;
@@ -41,19 +45,21 @@ if ($provider_id === false || $variation_amount === false) {
 
 // Insert into database
 $sql = "INSERT INTO variations (
-            service_id, provider_id, service_name, convenience_fee,
-            variation_code, name, variation_amount, fixed_price, validity, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+            service_id, provider_id, vt_service_name, vt_service_id, convenience_fee,
+            variation_code, name, volume, variation_amount, fixed_price, validity, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
 try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         $service_id,
         $provider_id,
-        $service_name,
+        $vt_service_name,
+        $vt_service_id,
         $convenience_fee,
         $variation_code,
         $name,
+        $volume, 
         $variation_amount,
         $fixed_price,
         $validity
@@ -89,14 +95,11 @@ echo $message;
 
 <body>
     <h2>Manually Upload a VTpass Variation</h2>
-
-    <?php echo isset($message) ? $message : ''; ?>
-
     <form method="POST" action="">
         <label for="service_id">Service</label>
         <select id="service_id" name="service_id" required>
             <option value="">-- Select Service --</option>
-            <option value="1">Data</option>
+            <option value="1" selected>Data</option>
             <option value="3">TV</option>
             <option value="4">Electricity</option>
         </select>
@@ -104,7 +107,7 @@ echo $message;
         <label for="provider_id">Provider</label>
         <select id="provider_id" name="provider_id" required>
             <option value="">-- Select Provider --</option>
-            <option value="1">MTN</option>
+            <option value="1" selected>MTN</option>
             <option value="2">Airtel</option>
             <option value="3">Glo</option>
             <option value="4">9mobile</option>
@@ -114,17 +117,23 @@ echo $message;
             <option value="8">Showmax</option>
         </select>
 
-        <label for="service_name">Service Name</label>
-        <input type="text" id="service_name" name="service_name" required>
+        <label for="vt_service_name">Service Name</label>
+        <input type="text" id="vt_service_name" name="vt_service_name" value="MTN Data" required>
+        
+        <label for="vt_service_id">VT Service ID</label>
+        <input type="text" id="vt_service_id" name="vt_service_id" value="mtn-data" required>
 
         <label for="convenience_fee">Convenience Fee</label>
-        <input type="text" id="convenience_fee" name="convenience_fee">
+        <input type="text" id="convenience_fee" name="convenience_fee" value="0">
 
         <label for="variation_code">Variation Code</label>
         <input type="text" id="variation_code" name="variation_code" required>
 
         <label for="name">Variation Name</label>
         <input type="text" id="name" name="name" required>
+        
+        <label for="volume">Volume</label>
+        <input type="text" id="volume" name="volume" required>
 
         <label for="variation_amount">Variation Amount (₦)</label>
         <input type="number" step="0.01" id="variation_amount" name="variation_amount" required>
