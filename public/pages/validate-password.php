@@ -31,7 +31,6 @@ try {
         exit;
     }
 
-
     // If virtual account already exists, return it without calling API again
     if (!empty($user['virtual_account'])) {
         echo json_encode([
@@ -60,7 +59,6 @@ try {
         $secretKey = $_ENV['BILLSTACK_SECRET_KEY'];
 
         $bank_type = ["9PSB", "PALMPAY"];
-
         $random = floor(rand(0, 1));
 
         $data = [
@@ -77,7 +75,6 @@ try {
         $ch = curl_init('https://api.billstack.co/v2/thirdparty/generateVirtualAccount/');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Authorization: Bearer ' . $secretKey,
@@ -87,7 +84,6 @@ try {
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         curl_close($ch);
-
 
         if ($curlError) {
             return ["success" => false, "message" => "cURL Error: $curlError"];
@@ -160,8 +156,6 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET password = ?, referral_code = ?, referral_link = ?, registration_status = 'complete', 
         virtual_account = ?, bank_name = ?, account_name = ?, billstack_ref = ? WHERE registration_id = ?");
 
-    $referralLink = null;
-
     $updateSuccess = $stmt->execute([
         $hashedPassword,
         $referralCode,
@@ -175,7 +169,7 @@ try {
 
     if (!$updateSuccess) {
         $errorInfo = $stmt->errorInfo();
-        echo json_encode(["success" => false, "message" => "Failed to update user data."]);
+        echo json_encode(["success" => false, "message" => "Failed to update user data.", "error" => $errorInfo]);
         exit;
     }
 
@@ -184,26 +178,39 @@ try {
     $stmt->execute([$registration_id]);
     $user_id = $stmt->fetchColumn();
 
-    $wallet_balance = 0;
-
-    try {
-        $stmt = $pdo->prepare("INSERT INTO account_balance (user_id, wallet_balance, email, phone_number) VALUES (?, ?, ?, ?)");
-        $stmt->execute([
-            $user_id,
-            $wallet_balance,
-            $user['email'],
-            $user['phone_number']
-        ]);
-    } catch (PDOException $th) {
-        echo json_encode([
-            "success" => false,
-            "message" => "Account balance creation failed.",
-        ]);
+    if (!$user_id) {
+        echo json_encode(["success" => false, "message" => "User ID not found after registration."]);
         exit;
     }
 
+    $wallet_balance = 0;
+
+    // Check if account_balance already exists for this user
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM account_balance WHERE user_id = ?");
+    $stmt->execute([$user_id]);
+    $balanceExists = $stmt->fetchColumn();
+
+    if (!$balanceExists) {
+        try {
+            $stmt = $pdo->prepare("INSERT INTO account_balance (user_id, wallet_balance, email, phone_number) VALUES (?, ?, ?, ?)");
+            $stmt->execute([
+                $user_id,
+                $wallet_balance,
+                $user['email'],
+                $user['phone_number']
+            ]);
+        } catch (PDOException $th) {
+            echo json_encode([
+                "success" => false,
+                "message" => "Account balance creation failed.",
+                "error" => $th->getMessage()
+            ]);
+            exit;
+        }
+    }
+
+    // Insert user settings along with ip address
     try {
-        // Insert user settings along with ip address
         $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
         $stmt = $pdo->prepare("INSERT INTO user_settings (user_id, biometrics_enabled, hide_balance, session_expiry_enabled, ip_address) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([
@@ -220,7 +227,6 @@ try {
         ]);
         exit;
     }
-
 
     // Insert notification for user in the db
     $title = 'Virtual Account Created';

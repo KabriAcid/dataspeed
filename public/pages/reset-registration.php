@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             try {
                 // Check if token is valid
                 $stmt = $pdo->prepare("DELETE FROM users WHERE registration_id = ?");
-                $stmt->execute([$registration_id]);
+                $result = $stmt->execute([$registration_id]);
 
                 echo json_encode(["success" => true, "message" => "Registration reset successful."]);
             } catch (Exception $e) {

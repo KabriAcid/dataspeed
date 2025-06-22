@@ -25,7 +25,8 @@
 - Query to verify smartcard number.
 - Acccount should be locked after 5 wrong PIN attempts.
 - An upload form for variations.
-- Username field for updates.
+- Username field for updates.✔️
+- Username already taken flaw logic.
 - Animation for account balance.
 - Add a subdomain for the admins.
 - A dashboard panel for admin

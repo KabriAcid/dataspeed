@@ -3,6 +3,7 @@
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
+require __DIR__ . '/../../functions/utilities.php';
 
 if (isset($_GET['referral_code'])) {
     $_SESSION['referral_code'] = $_GET['referral_code'];
@@ -12,6 +13,14 @@ function set_title($title = null)
 {
     $default = "DataSpeed";
     return htmlspecialchars($title ?: $default);
+}
+
+$missing_env = checkEnvVars();
+if (!empty($missing_env)) {
+    // if missing is passwword
+    if (in_array('DB_PASS', $missing_env)) {
+        $_SESSION['toast_error'] = "Service not configured. Missing: " . $missing_env;
+    }
 }
 
 ?>
@@ -230,6 +239,14 @@ function set_title($title = null)
 
     </main>
 </body>
+<?php if (!empty($_SESSION['toast_error'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showToasted("<?= addslashes($_SESSION['toast_error']) ?>", "error");
+        });
+    </script>
+<?php unset($_SESSION['toast_error']);
+endif; ?>
 <script>
     // Reset registration
     document.addEventListener('DOMContentLoaded', function() {
@@ -245,6 +262,7 @@ function set_title($title = null)
                     function(response) {
                         if (!response.success) {
                             showToasted(response.message, "error");
+                            sessionStorage.clear();
                         } else {
                             showToasted(response.message, "success");
                             setTimeout(() => {

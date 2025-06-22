@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pin = "";
     updateDots();
     updateBackspace();
-    window.location.href = "../../pages/dashboard.php";
+    window.location.href = "dashboard.php";
   });
 
   forgotBtn?.addEventListener("click", function () {

@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($email) || empty($otp)) {
         ob_clean();
-        echo json_encode(["success" => false, "message" => "Email and OTP are required."]);
+        echo json_encode(["success" => false, "message" => "OTP is required."]);
         exit;
     }
 
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ob_clean();
             echo json_encode(["success" => false, "message" => "Invalid or expired OTP."]);
         }
-    } catch (Exception $e) {
+    } catch (PDOException $e) {
         ob_clean();
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }

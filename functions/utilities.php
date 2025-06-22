@@ -18,12 +18,12 @@ function checkEnvVars($required_vars = null)
     if ($required_vars === null) {
         $required_vars = [
             'MAIL_HOST',
+            'MAIL_PORT',
             'MAIL_USERNAME',
             'MAIL_PASSWORD',
-            'MAIL_PORT',
-            'MAIL_FROM_ADDRESS',
             'MAIL_FROM_NAME',
             'VTPASS_API_KEY',
+            'MAIL_FROM_ADDRESS',
             'BILLSTACK_SECRET_KEY'
         ];
     }

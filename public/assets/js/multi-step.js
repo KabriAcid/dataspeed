@@ -134,6 +134,10 @@ document.addEventListener("DOMContentLoaded", function () {
         response => {
           if (!response.success) {
             showToasted(response.message, "error");
+            if (response.registration_id) {
+              sessionStorage.clear();
+              window.location.href = "register.php";
+            }
             done();
           } else {
             sessionStorage.setItem("email", email);
@@ -244,6 +248,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!registration_id) {
         showToasted("Registration ID not set", "error");
+        sessionStorage.clear();
+        window.location.href = "register.php";
         return;
       }
 

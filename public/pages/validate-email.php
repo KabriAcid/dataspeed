@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (!$registration_id) {
-        echo json_encode(["success" => false, "message" => "Registration session expired. Start again."]);
+        echo json_encode(["success" => false, "message" => "Registration session expired. Start again.", "regisration_id" => false]);
         exit;
     }
 

@@ -38,7 +38,7 @@ $states = fetchNigerianStates($pdo);
             <input type="file" id="photo-input" accept="image/*" style="display: none;">
         </div>
 
-        <div class="form-container" style="min-height: 410px;">
+        <div class="form-container" style="min-height: 440px;">
             <!-- Step Tracker -->
             <div class="d-flex justify-content-between py-4 px-0 step-tracker">
                 <div class="step-indicator text-center flex-fill" data-step="0">
@@ -62,7 +62,7 @@ $states = fetchNigerianStates($pdo);
                         <label>First Name</label>
                         <input type="text" class="input" value="<?= htmlspecialchars($user['first_name']) ?? '' ?>" disabled>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <label>Last Name</label>
                         <input type="text" class="input" value="<?= htmlspecialchars($user['last_name']) ?? '' ?>" disabled>
                     </div>
@@ -89,7 +89,7 @@ $states = fetchNigerianStates($pdo);
                         <label>Bank Name</label>
                         <input type="text" name="bank_name" placeholder="e.g OPay" class="input" value="<?= htmlspecialchars($user['w_bank_name']) ?>">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <label>Account Number</label>
                         <input type="text"
                             id="account_number"
@@ -101,6 +101,10 @@ $states = fetchNigerianStates($pdo);
                             placeholder="10-digit NUBAN"
                             value="<?= htmlspecialchars($user['w_account_number']) ?>">
 
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Username</label>
+                        <input type="text" name="user_name" placeholder="e.g John23" class="input" value="<?= htmlspecialchars($user['user_name']) ?>">
                     </div>
                 </div>
                 <div class="text-end mt-3">
@@ -230,7 +234,7 @@ $states = fetchNigerianStates($pdo);
                     }
 
 
-                    sendAjaxRequest('update-address.php', 'POST', params.toString(), function(res) {
+                    sendAjaxRequest('update-profile.php', 'POST', params.toString(), function(res) {
                         if (res.success) {
                             showToasted(res.message || 'Update successful', 'success');
                         } else {
