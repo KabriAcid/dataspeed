@@ -1,6 +1,10 @@
 <?php
-ob_clean();
+ob_start();
 require __DIR__ . '/../../config/config.php';
+
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+error_reporting(E_ALL);
 
 header("Content-Type: application/json");
 session_start();

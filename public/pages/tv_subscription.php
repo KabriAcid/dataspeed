@@ -66,7 +66,8 @@ echo $loggedInPhone;
                         pattern="\d*"
                         placeholder="IUC/Smartcard Number"
                         class="input"
-                        required>
+                        required
+                        autocomplete="off">
                 </div>
 
                 <!-- Recipient Phone (for Pay For Others) -->
