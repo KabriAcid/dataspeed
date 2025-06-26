@@ -95,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
              encodeURIComponent(window.location.pathname.replace(/^\/+/, ""));
          }, 1200);
         }
-        if (response.phone) {
-          console.log(response.phone);
+        if (response.frozen) {
+          window.location.href = 'dashboard.php';
         }
         showToasted(response.message, "error");
         pinpadModal.style.display = 'flex';
