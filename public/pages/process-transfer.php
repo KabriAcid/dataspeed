@@ -14,55 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 $user_id = $_SESSION['user_id'] ?? null;
 
-// Add this at the top of the file, after session_start() and before processing the transaction
-try {
-    $stmt = $pdo->prepare("SELECT txn_pin, failed_attempts, account_status FROM users WHERE user_id = ?");
-    $stmt->execute([$user_id]);
-    $user = $stmt->fetch();
-
-    if (!$user) {
-        echo json_encode(["success" => false, "message" => "User not found."]);
-        exit;
-    }
-
-    // Check if account is already frozen
-    if ($user['account_status'] == ACCOUNT_STATUS_FROZEN) {
-        echo json_encode(["success" => false, "message" => "Your account is frozen due to multiple failed PIN attempts."]);
-        exit;
-    }
-
-    // Verify the PIN
-    if (!password_verify($entered_pin, $user['txn_pin'])) {
-        // Increment failed attempts
-        $failed_attempts = $user['failed_attempts'] + 1;
-
-        // Freeze account if failed attempts reach 5
-        if ($failed_attempts >= 5) {
-            $stmt = $pdo->prepare("UPDATE users SET failed_attempts = ?, account_status = ? WHERE user_id = ?");
-            $stmt->execute([$failed_attempts, ACCOUNT_STATUS_FROZEN, $user_id]);
-
-            pushNotification($pdo, $user_id, "Account Frozen", "Your account has been frozen due to multiple failed PIN attempts.", "security", "ni ni-lock-circle-open", "text-danger", 0);
-
-            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts.", "frozen" => true]);
-            exit;
-        }
-
-        // Update failed attempts
-        $stmt = $pdo->prepare("UPDATE users SET failed_attempts = ? WHERE user_id = ?");
-        $stmt->execute([$failed_attempts, $user_id]);
-
-        echo json_encode(["success" => false, "message" => "Incorrect PIN. You have " . (5 - $failed_attempts) . " attempts remaining."]);
-        exit;
-    }
-
-    // Reset failed attempts on successful PIN entry
-    $stmt = $pdo->prepare("UPDATE users SET failed_attempts = 0 WHERE user_id = ?");
-    $stmt->execute([$user_id]);
-} catch (PDOException $e) {
-    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
-    exit;
-}
-
 $recipient = trim($_POST['email'] ?? '');
 $amount = floatval($_POST['amount'] ?? 0);
 
@@ -129,6 +80,62 @@ if ($recipientData['registration_status'] !== 'complete') {
     echo json_encode(['success' => false, 'message' => 'Beneficiary registration is not complete.']);
     exit;
 }
+
+try {
+    // 3. Fetch User Details
+    $stmt = $pdo->prepare("SELECT txn_pin, failed_attempts, account_status FROM users WHERE user_id = ?");
+    $stmt->execute([$user_id]);
+    $user = $stmt->fetch();
+
+    if (!$user) {
+        echo json_encode(["success" => false, "message" => "User not found."]);
+        exit;
+    }
+
+    // Check if the account is already frozen
+    if ($user['account_status'] == ACCOUNT_STATUS_FROZEN) {
+        echo json_encode(["success" => false, "message" => "Your account is frozen due to multiple failed PIN attempts."]);
+        exit;
+    }
+
+    // Check if the transaction PIN is set
+    if (empty($user['txn_pin'])) {
+        echo json_encode(["success" => false, "message" => "No Transaction PIN set.", "redirect" => true]);
+        exit;
+    }
+
+    // Verify the PIN
+    if (!password_verify($pin, $user['txn_pin'])) {
+        // Increment failed attempts
+        $failed_attempts = $user['failed_attempts'] + 1;
+
+        // Freeze account if failed attempts reach 5
+        if ($failed_attempts >= 5) {
+            $stmt = $pdo->prepare("UPDATE users SET failed_attempts = ?, account_status = ? WHERE user_id = ?");
+            $stmt->execute([$failed_attempts, ACCOUNT_STATUS_FROZEN, $user_id]);
+
+            pushNotification($pdo, $user_id, "Account Frozen", "Your account has been frozen due to multiple failed PIN attempts.", "security", "ni ni-lock-circle-open", "text-danger", 0);
+
+            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts.", "frozen" => true]);
+            exit;
+        }
+
+        // Update failed attempts
+        $stmt = $pdo->prepare("UPDATE users SET failed_attempts = ? WHERE user_id = ?");
+        $stmt->execute([$failed_attempts, $user_id]);
+
+        echo json_encode(["success" => false, "message" => "Incorrect PIN. You have " . (5 - $failed_attempts) . " attempts remaining."]);
+        exit;
+    }
+
+    // Reset failed attempts on successful PIN entry
+    $stmt = $pdo->prepare("UPDATE users SET failed_attempts = 0 WHERE user_id = ?");
+    $stmt->execute([$user_id]);
+} catch (PDOException $e) {
+    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    exit;
+}
+
 $recipient_id = $recipientData['user_id'];
 
 // Check sender balance

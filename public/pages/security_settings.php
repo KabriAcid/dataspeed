@@ -105,7 +105,7 @@ require __DIR__ . '/../partials/initialize.php';
         document.getElementById('sessionExpirySwitch').addEventListener('change', function() {
             const enabled = this.checked ? 1 : 0;
             sendAjaxRequest(
-                'update-security_setting.php',
+                'update-security-settings.php',
                 'POST',
                 'setting=session_expiry_enabled&value=' + enabled,
                 function(response) {

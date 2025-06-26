@@ -47,11 +47,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // if (currentStep == 0) {
-  //   document.getElementById("reset-registration").style.visibility = "hidden";
-  // } else {
-  //   document.getElementById("reset-registration").style.visibility = "visible";
-  // }
+  function withOverlay(handler) {
+    document.getElementById("bodyOverlay").style.display = "flex";
+    handler(() => {
+      document.getElementById("bodyOverlay").style.display = "none";
+    });
+  }
 
   // Step 0: Referral Code
   const referralInput = document.getElementById("referral-code");
@@ -102,81 +103,88 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   emailContinueBtn.addEventListener("click", () => {
-    handleButtonClick(emailContinueBtn, done => {
-      const email = emailInput.value.trim();
+    withOverlay(hideOverlay => {
+      handleButtonClick(emailContinueBtn, done => {
+        const email = emailInput.value.trim();
 
-      if (email == "") {
-        showToasted("Email address is required.", "error");
-        done();
-        return;
-      }
-
-      if (email.length <= 6 || email.includes("mailinator")) {
-        showToasted("Email address not supported.", "error");
-        done();
-        return;
-      }
-
-      // Checking network before any AJAX
-      // if (!navigator.onLine) {
-      //   showToasted(
-      //     "No internet connection. Please connect and try again.",
-      //     "error"
-      //   );
-      //   done();
-      //   return;
-      // }
-
-      sendAjaxRequest(
-        "validate-email.php",
-        "POST",
-        `email=${encodeURIComponent(email)}`,
-        response => {
-          if (!response.success) {
-            showToasted(response.message, "error");
-            if (response.registration_id) {
-              sessionStorage.clear();
-              window.location.href = "register.php";
-            }
-            done();
-          } else {
-            sessionStorage.setItem("email", email);
-            const registration_id = response.registration_id;
-            sessionStorage.setItem("registration_id", registration_id);
-
-            // Check network again before sending OTP
-            // if (!navigator.onLine) {
-            //   showToasted(
-            //     "Couldn't send email. Please check your internet connection.",
-            //     "error"
-            //   );
-            //   done();
-            //   return;
-            // }
-
-            sendAjaxRequest(
-              "send-otp.php",
-              "POST",
-              `email=${encodeURIComponent(
-                email
-              )}&registration_id=${encodeURIComponent(registration_id)}`,
-              otpResponse => {
-                if (otpResponse.success) {
-                  completedSteps.add(1);
-                  setTimeout(() => {
-                    goToStep(2);
-                    done();
-                    showToasted(otpResponse.message, "success");
-                  }, TIMEOUT);
-                } else {
-                  showToasted(otpResponse.message, "error");
-                  done();
-                }
-              }
-            );
-          }
+        if (email == "") {
+          showToasted("Email address is required.", "error");
+          hideOverlay(); // Hide the overlay
+          done();
+          return;
         }
-      );
+
+        if (email.length <= 6 || email.includes("mailinator")) {
+          showToasted("Email address not supported.", "error");
+          hideOverlay(); // Hide the overlay
+          done();
+          return;
+        }
+
+        // Checking network before any AJAX
+        // if (!navigator.onLine) {
+        //   showToasted(
+        //     "No internet connection. Please connect and try again.",
+        //     "error"
+        //   );
+        //   done();
+        //   return;
+        // }
+
+        sendAjaxRequest(
+          "validate-email.php",
+          "POST",
+          `email=${encodeURIComponent(email)}`,
+          response => {
+            if (!response.success) {
+              showToasted(response.message, "error");
+              if (response.registration_id) {
+                sessionStorage.clear();
+                window.location.href = "register.php";
+              }
+              hideOverlay(); // Hide the overlay
+              done();
+            } else {
+              sessionStorage.setItem("email", email);
+              const registration_id = response.registration_id;
+              sessionStorage.setItem("registration_id", registration_id);
+
+              // Checking network before any AJAX
+              // if (!navigator.onLine) {
+              //   showToasted(
+              //     "No internet connection. Please connect and try again.",
+              //     "error"
+              //   );
+              //   done();
+              //   return;
+              // }
+
+              sendAjaxRequest(
+                "send-otp.php",
+                "POST",
+                `email=${encodeURIComponent(
+                  email
+                )}&registration_id=${encodeURIComponent(registration_id)}`,
+                otpResponse => {
+                  if (otpResponse.success) {
+                    completedSteps.add(1);
+                    setTimeout(() => {
+                      goToStep(2);
+                      hideOverlay(); // Hide the overlay
+                      done();
+                      showToasted(otpResponse.message, "success");
+                    }, TIMEOUT);
+                  } else {
+                    showToasted(otpResponse.message, "error");
+                    hideOverlay(); // Hide the overlay
+                    done();
+                  }
+                }
+              );
+            }
+          }
+        );
+      });
     });
   });
 
@@ -444,12 +452,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  function withOverlay(handler) {
-    document.getElementById("bodyOverlay").style.display = "flex";
-    handler(() => {
-      document.getElementById("bodyOverlay").style.display = "none";
-    });
-  }
 
   // Step 6: Password
   const passwordInput = document.getElementById("password");

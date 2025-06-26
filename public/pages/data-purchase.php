@@ -14,8 +14,31 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST" || !isset($_SESSION['user_id'])) {
 }
 $user_id = $_SESSION['user_id'];
 
-// Add this at the top of the file, after session_start() and before processing the transaction
+// 2. Collect & Validate Input
+$pin     = trim($_POST['pin'] ?? '');
+$amount  = trim($_POST['amount'] ?? '');
+$phone   = trim($_POST['phone'] ?? '');
+$network = trim($_POST['network'] ?? '');
+$type    = trim($_POST['type'] ?? '');
+$plan_id = trim($_POST['plan_id'] ?? '');
+
+if (!is_numeric($amount) || $amount <= 0) {
+    echo json_encode(["success" => false, "message" => "Invalid amount."]);
+    exit;
+}
+
+if (strlen($pin) !== 4 || !ctype_digit($pin)) {
+    echo json_encode(["success" => false, "message" => "PIN must be a 4-digit number."]);
+    exit;
+}
+
+if (!preg_match('/^0\d{10}$/', $phone)) {
+    echo json_encode(["success" => false, "message" => "Invalid phone number.", "phone" => $phone]);
+    exit;
+}
+
 try {
+    // 3. Fetch User Details
     $stmt = $pdo->prepare("SELECT txn_pin, failed_attempts, account_status FROM users WHERE user_id = ?");
     $stmt->execute([$user_id]);
     $user = $stmt->fetch();
@@ -25,14 +48,20 @@ try {
         exit;
     }
 
-    // Check if account is already frozen
+    // Check if the account is already frozen
     if ($user['account_status'] == ACCOUNT_STATUS_FROZEN) {
         echo json_encode(["success" => false, "message" => "Your account is frozen due to multiple failed PIN attempts."]);
         exit;
     }
 
+    // Check if the transaction PIN is set
+    if (empty($user['txn_pin'])) {
+        echo json_encode(["success" => false, "message" => "No Transaction PIN set.", "redirect" => true]);
+        exit;
+    }
+
     // Verify the PIN
-    if (!password_verify($entered_pin, $user['txn_pin'])) {
+    if (!password_verify($pin, $user['txn_pin'])) {
         // Increment failed attempts
         $failed_attempts = $user['failed_attempts'] + 1;
 
@@ -60,29 +89,6 @@ try {
     $stmt->execute([$user_id]);
 } catch (PDOException $e) {
     echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
-    exit;
-}
-
-// 2. Collect & Validate Input
-$pin     = trim($_POST['pin'] ?? '');
-$amount  = trim($_POST['amount'] ?? '');
-$phone   = trim($_POST['phone'] ?? '');
-$network = trim($_POST['network'] ?? '');
-$type    = trim($_POST['type'] ?? '');
-$plan_id = trim($_POST['plan_id'] ?? '');
-
-if (!is_numeric($amount) || $amount <= 0) {
-    echo json_encode(["success" => false, "message" => "Invalid amount."]);
-    exit;
-}
-
-if (strlen($pin) !== 4 || !ctype_digit($pin)) {
-    echo json_encode(["success" => false, "message" => "PIN must be a 4-digit number."]);
-    exit;
-}
-
-if (!preg_match('/^0\d{10}$/', $phone)) {
-    echo json_encode(["success" => false, "message" => "Invalid phone number.", "phone" => $phone]);
     exit;
 }
 
