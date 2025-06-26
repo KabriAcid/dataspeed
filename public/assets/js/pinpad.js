@@ -97,9 +97,18 @@ document.addEventListener("DOMContentLoaded", function () {
               encodeURIComponent(window.location.pathname.replace(/^\/+/, ""));
           }, 1200);
         }
+        // Redirect to dashboard if account is frozen
         if (response.frozen) {
-          window.location.href = "dashboard.php";
+          showToasted(
+            "Your account is frozen. Redirecting to dashboard...",
+            "error"
+          );
+          setTimeout(() => {
+            window.location.href = "dashboard.php";
+          }, 1500);
+          return; // Stop further execution
         }
+        
         showToasted(response.message, "error");
         pinpadModal.style.display = "flex";
       }

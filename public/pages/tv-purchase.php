@@ -41,7 +41,7 @@ try {
 
             pushNotification($pdo, $user_id, "Account Frozen", "Your account has been frozen due to multiple failed PIN attempts.", "security", "ni ni-lock-circle-open", "text-danger", 0);
 
-            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts."]);
+            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts.", "frozen" => true]);
             exit;
         }
 

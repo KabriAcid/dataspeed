@@ -14,9 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Account Frozen
     $account_status = $userData['account_status'];
 
-    if($account_status == ACCOUNT_STATUS_FROZEN){
-        
+    if ($userData['account_status'] == ACCOUNT_STATUS_FROZEN) {
+        $_SESSION['locked_user_id'] = $userData['user_id'];
+        header("Location: account-locked.php");
+        exit;
     }
+
 
     if ($userData && password_verify($password, $userData['password'])) {
         $_SESSION['user_id'] = $userData;
