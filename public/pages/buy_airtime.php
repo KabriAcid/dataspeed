@@ -2,6 +2,7 @@
 session_start();
 
 require __DIR__ . '/../../config/config.php';
+require __DIR__ . '/../../config/initialize.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
@@ -164,7 +165,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
             const payBtn = document.getElementById("payBtn");
             const pinpadModal = document.getElementById("pinpadModal");
             const closePinpad = document.getElementById("closePinpad");
-            
+
 
             // --- Tab Switching ---
             tabButtons.forEach(btn => {
@@ -276,7 +277,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                         return;
                     }
 
-                    if(amount > 1000000) {
+                    if (amount > 1000000) {
                         showToasted("Amount cannot exceed ₦1,000,000.", "error");
                         return;
                     }

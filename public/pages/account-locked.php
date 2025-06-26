@@ -1,6 +1,7 @@
 <?php
 session_start();
 require __DIR__ . '/../../config/config.php';
+require __DIR__ . '/../../config/initialize.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
@@ -21,6 +22,7 @@ $reasons = [
     "Other"
 ];
 ?>
+
 <body>
     <main class="container py-4">
         <header>
@@ -54,7 +56,9 @@ $reasons = [
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Submit Complaint</button>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn primary-btn">Submit Complaint</button>
+                </div>
             </form>
         <?php endif; ?>
     </main>

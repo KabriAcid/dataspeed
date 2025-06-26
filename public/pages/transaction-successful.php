@@ -1,6 +1,7 @@
 <?php
 session_start();
 require __DIR__ . '/../../config/config.php';
+require __DIR__ . '/../../config/initialize.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
@@ -138,7 +139,7 @@ $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode($tx
     </script>
     <script>
         setTimeout(() => {
-           window.location.href = 'dashboard.php';
+            window.location.href = 'dashboard.php';
         }, 20000);
     </script>
 </body>

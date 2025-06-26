@@ -1,13 +1,5 @@
 <?php
 // Check if user session exists
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $user = getUserInfo($pdo, $user_id);
-} else {
-    header('Location: login.php');
-    exit;
-}
-
 function set_header($page_header = 'Dataspeed')
 {
     return $page_header = htmlspecialchars($page_header);

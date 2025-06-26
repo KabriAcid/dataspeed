@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Redirect to dashboard if account is frozen
         if (response.frozen) {
           showToasted(
-            "Your account is frozen. Please contact admin...",
+            "Your account is locked. Please contact admin...",
             "error"
           );
           setTimeout(() => {
