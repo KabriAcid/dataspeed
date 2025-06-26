@@ -100,15 +100,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // Redirect to dashboard if account is frozen
         if (response.frozen) {
           showToasted(
-            "Your account is frozen. Redirecting to dashboard...",
+            "Your account is frozen. Please contact admin...",
             "error"
           );
           setTimeout(() => {
-            window.location.href = "dashboard.php";
+            window.location.href = "account-locked.php";
           }, 1500);
           return; // Stop further execution
         }
-        
+
         showToasted(response.message, "error");
         pinpadModal.style.display = "flex";
       }

@@ -33,7 +33,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 loginBtn.style.cursor = 'pointer';
 
                 if (!response.success) {
-                    showToasted(response.message, 'error');
+                  // Redirect to account frozen page
+                  if (response.frozen) {
+                    showToasted(
+                      "Your account is frozen. Please contact admin...",
+                      "error"
+                    );
+                    setTimeout(() => {
+                      window.location.href = response.redirect;
+                    }, 1500);
+                    return; // Stop further execution
+                    }
+                    
+                  showToasted(response.message, "error");
                 } else {
                     window.location.href = "dashboard.php?success=1";
 

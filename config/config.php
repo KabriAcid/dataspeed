@@ -11,7 +11,15 @@ define('ACCOUNT_STATUS_FROZEN', 102);
 define('ACCOUNT_STATUS_BANNED', 103);
 define('ACCOUNT_STATUS_INACTIVE', 104);
 
+if (isset($_SESSION['locked_user_id'])) {
+    header('Location: account-locked.php');
+    exit;
+}
+
+echo $_SESSION['locked_user_id'] ?? 'No user is locked.';
+
 require __DIR__ . '/../vendor/autoload.php';
+
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');

@@ -11,18 +11,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute(['user' => $user]);
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Account Frozen
-    $account_status = $userData['account_status'];
-
-    if ($userData['account_status'] == ACCOUNT_STATUS_FROZEN) {
-        $_SESSION['locked_user_id'] = $userData['user_id'];
-        header("Location: account-locked.php");
+    if (!$userData) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid login credentials.']);
         exit;
     }
 
+    // Check if the account is frozen
+    if ($userData['account_status'] == ACCOUNT_STATUS_FROZEN) {
+        $_SESSION['locked_user_id'] = $userData['user_id'];
+        echo json_encode([
+            'success' => false,
+            'status' => 'locked',
+            'message' => 'Your account is locked due to multiple failed login attempts.',
+            'redirect' => 'account-locked.php',
+            'frozen' => true
+        ]);
+        exit;
+    }
 
-    if ($userData && password_verify($password, $userData['password'])) {
-        $_SESSION['user_id'] = $userData;
+    // Verify the password
+    if (password_verify($password, $userData['password'])) {
+        $_SESSION['user_id'] = $userData['user_id'];
         echo json_encode(['status' => 'success', 'message' => 'Login successful.']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Invalid login credentials.']);
