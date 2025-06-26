@@ -2,6 +2,7 @@
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
+require __DIR__ . '/../../partials/initialize.php';
 
 // Log raw input for debugging
 $payload = file_get_contents("php://input");

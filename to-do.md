@@ -30,6 +30,7 @@
 - Animation for account balance.
 - Add a subdomain for the admins.
 - A dashboard panel for admin
+- Email loader animation.
 
 --- NOTIFICATION MODULES ---
 

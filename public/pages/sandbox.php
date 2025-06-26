@@ -3,6 +3,7 @@ session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
+require __DIR__ . '/../../partials/initialize.php';
 
 // VTpass API credentials (replace with your actual credentials)
 $vtpass_api_key = $_ENV['VTPASS_API_KEY'];

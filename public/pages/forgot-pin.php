@@ -2,10 +2,10 @@
 session_start();
 
 require __DIR__ . '/../../config/config.php';
-require __DIR__ . '/../../config/initialize.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
+require __DIR__ . '/../partials/initialize.php';
 
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 ?>

@@ -3,6 +3,7 @@ session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
+require __DIR__ . '/../../partials/initialize.php';
 
 header('Content-Type: application/json');
 
@@ -17,8 +18,32 @@ if (!isset($_SESSION['user_id'])) {
 }
 $user_id = $_SESSION['user_id'];
 
-// Add this at the top of the file, after session_start() and before processing the transaction
+// 2. Collect & Validate Input
+$pin    = trim($_POST['pin'] ?? '');
+$amount = trim($_POST['amount'] ?? '');
+$phone  = trim($_POST['phone'] ?? '');
+$network = trim($_POST['network'] ?? '');
+$type   = trim($_POST['type'] ?? '');
+
+if (!is_numeric($amount) || $amount <= 0) {
+    echo json_encode(["success" => false, "message" => "Invalid amount."]);
+    exit;
+}
+if (!preg_match('/^0\d{10}$/', $phone)) {
+    echo json_encode(["success" => false, "message" => "Invalid phone number."]);
+    exit;
+}
+if (!in_array($network, ['mtn', 'airtel', 'glo', 'etisalat', '9mobile'])) {
+    echo json_encode(["success" => false, "message" => "Invalid network."]);
+    exit;
+}
+if (strlen($pin) !== 4 || !ctype_digit($pin)) {
+    echo json_encode(["success" => false, "message" => "Invalid PIN format."]);
+    exit;
+}
+
 try {
+    // 3. Fetch User Details
     $stmt = $pdo->prepare("SELECT txn_pin, failed_attempts, account_status FROM users WHERE user_id = ?");
     $stmt->execute([$user_id]);
     $user = $stmt->fetch();
@@ -28,14 +53,20 @@ try {
         exit;
     }
 
-    // Check if account is already frozen
+    // Check if the account is already frozen
     if ($user['account_status'] == ACCOUNT_STATUS_FROZEN) {
         echo json_encode(["success" => false, "message" => "Your account is frozen due to multiple failed PIN attempts."]);
         exit;
     }
 
+    // Check if the transaction PIN is set
+    if (empty($user['txn_pin'])) {
+        echo json_encode(["success" => false, "message" => "No Transaction PIN set.", "redirect" => true]);
+        exit;
+    }
+
     // Verify the PIN
-    if (!password_verify($entered_pin, $user['txn_pin'])) {
+    if (!password_verify($pin, $user['txn_pin'])) {
         // Increment failed attempts
         $failed_attempts = $user['failed_attempts'] + 1;
 
@@ -66,54 +97,12 @@ try {
     exit;
 }
 
-// 2. Collect & Validate Input
-$pin    = trim($_POST['pin'] ?? '');
-$amount = trim($_POST['amount'] ?? '');
-$phone  = trim($_POST['phone'] ?? '');
-$network = trim($_POST['network'] ?? '');
-$type   = trim($_POST['type'] ?? '');
-
-if (!is_numeric($amount) || $amount <= 0) {
-    echo json_encode(["success" => false, "message" => "Invalid amount."]);
-    exit;
-}
-if (!preg_match('/^0\d{10}$/', $phone)) {
-    echo json_encode(["success" => false, "message" => "Invalid phone number."]);
-    exit;
-}
-if (!in_array($network, ['mtn', 'airtel', 'glo', 'etisalat', '9mobile'])) {
-    echo json_encode(["success" => false, "message" => "Invalid network."]);
-    exit;
-}
-if (strlen($pin) !== 4 || !ctype_digit($pin)) {
-    echo json_encode(["success" => false, "message" => "Invalid PIN format."]);
-    exit;
-}
-
 // 11-digit format for VTpass
 if (strlen($phone) === 10) {
     $phone = '0' . $phone;
 }
 
 $amount = (float)$amount;
-
-// 3. Fetch User & PIN
-$stmt = $pdo->prepare("SELECT user_id, txn_pin, email FROM users WHERE user_id = ?");
-$stmt->execute([$user_id]);
-$user = $stmt->fetch();
-if (!$user) {
-    echo json_encode(["success" => false, "message" => "User not found."]);
-    exit;
-}
-if (empty($user['txn_pin'])) {
-    echo json_encode(["success" => false, "message" => "No Transaction PIN set.", "redirect" => true]);
-    exit;
-}
-$pinValid = password_verify($pin, $user['txn_pin']) || $pin === $user['txn_pin'];
-if (!$pinValid) {
-    echo json_encode(["success" => false, "message" => "Incorrect Transaction PIN."]);
-    exit;
-}
 
 // 4. Check Balance
 $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ?");
@@ -148,7 +137,6 @@ $serviceMap = [
     'tv'             => 4
 ];
 $service_id = $serviceMap[$type] ?? 1;
-
 
 // 6. Prepare VTpass API Call
 $serviceID = $network === '9mobile' ? 'etisalat' : $network; // VTpass uses 'etisalat' for 9mobile
