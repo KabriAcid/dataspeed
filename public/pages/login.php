@@ -5,7 +5,6 @@ if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
 
-
 function set_title($title = null)
 {
     $default = "DataSpeed";
@@ -90,13 +89,13 @@ function set_title($title = null)
                             class="input">
                     </div>
                     <div class="my-3"></div>
-                        <div class="password-wrapper">
-                            <input type="password" id="password" class="input" placeholder="Enter your password" style="padding-right: 40px;" />
-                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
-                        </div>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" class="input" placeholder="Enter your password" style="padding-right: 40px;" />
+                        <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                    </div>
 
-                        <p class="text-end"><a href="forgot_password.php" class="text-secondary text-sm">Forgot
-                                password?</a></p>
+                    <p class="text-end"><a href="forgot_password.php" class="text-secondary text-sm">Forgot
+                            password?</a></p>
                     <button type="submit" class="btn primary-btn mt-3" name="login" id="login">
                         Login
                     </button>

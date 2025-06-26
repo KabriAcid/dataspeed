@@ -11,6 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute(['user' => $user]);
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // Account Frozen
+    $account_status = $userData['account_status'];
+
+    if($account_status == ACCOUNT_STATUS_FROZEN){
+        
+    }
+
     if ($userData && password_verify($password, $userData['password'])) {
         $_SESSION['user_id'] = $userData;
         echo json_encode(['status' => 'success', 'message' => 'Login successful.']);

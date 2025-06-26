@@ -1,4 +1,3 @@
-
 // DOM Ready
 document.addEventListener('DOMContentLoaded', function () {
     const userInput = document.getElementById('user');
