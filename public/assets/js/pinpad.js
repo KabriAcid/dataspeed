@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const backspaceBtn = pinpadModal.querySelector("#backspace");
   const exitBtn = pinpadModal.querySelector("#pin-exit-btn");
   const forgotBtn = pinpadModal.querySelector("#pin-forgot-btn");
-  
+
   let pin = "";
 
   function processPinEntry(pin) {
@@ -87,19 +87,21 @@ document.addEventListener("DOMContentLoaded", function () {
             "transaction-successful.php?ref=" +
             encodeURIComponent(response.reference);
         }, 1200);
-      } else {
-       if (response.redirect) {
-         setTimeout(() => {
-           window.location.href =
-             "password_pin_setting.php?tab=pin&prev_page=" +
-             encodeURIComponent(window.location.pathname.replace(/^\/+/, ""));
-         }, 1200);
+      }
+      // False part
+      else {
+        if (response.redirect) {
+          setTimeout(() => {
+            window.location.href =
+              "password_pin_setting.php?tab=pin&prev_page=" +
+              encodeURIComponent(window.location.pathname.replace(/^\/+/, ""));
+          }, 1200);
         }
         if (response.frozen) {
-          window.location.href = 'dashboard.php';
+          window.location.href = "dashboard.php";
         }
         showToasted(response.message, "error");
-        pinpadModal.style.display = 'flex';
+        pinpadModal.style.display = "flex";
       }
     });
   }
@@ -200,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   forgotBtn?.addEventListener("click", function () {
     // Implement your forgot PIN logic here
-    window.location.href = 'forgot-pin.php';
+    window.location.href = "forgot-pin.php";
   });
 
   // Initialize state
