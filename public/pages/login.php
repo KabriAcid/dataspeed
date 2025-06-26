@@ -86,7 +86,7 @@ function set_title($title = null)
                 <p class="text-sm">Enter your correct login details to continue.</p>
                 <div class="form-field">
                     <div>
-                        <input type="text" id="user" name="user" placeholder="Email address, username,  or Phone Number"
+                        <input type="text" id="user" name="user" placeholder="Email address, Username,  or Phone Number"
                             class="input">
                     </div>
                     <div class="my-3"></div>

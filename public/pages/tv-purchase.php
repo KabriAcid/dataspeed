@@ -132,8 +132,6 @@ try {
         $color = 'text-danger';
         $desc = "TV subscription of ₦" . number_format($amount, 2) . " for IUC $iuc on " . strtoupper($network) . " failed.";
 
-        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-        $stmt->execute([$user_id, $service_id, $provider_id, $plan_id, 'TV Subscription', $icon, $color, 'debit', $desc, $amount, $user['email'], $request_id, 'failed']);
 
         pushNotification($pdo, $user_id, "TV Subscription Failed", $desc, 'tv_subscription_failed', $icon, $color, 0);
         echo json_encode(["success" => false, "message" => $errorMsg]);

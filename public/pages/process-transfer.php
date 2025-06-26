@@ -123,8 +123,8 @@ try {
 
 
     // Log transactions for both users
-    $descSender = "Transfer to {$recipientName}";
-    $descRecipient = "Received transfer from {$senderName}";
+    $descSender = "{$recipientName}";
+    $descRecipient = "{$senderName}";
 
     $iconSender = 'ni ni-send';
     $iconRecipient = 'ni ni-money-coins';
@@ -153,7 +153,6 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Transfer successful!',
-        'new_balance' => $new_balance,
         'reference' => $reference // <-- Add this line
     ]);
     exit;
