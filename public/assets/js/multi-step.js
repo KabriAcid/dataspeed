@@ -261,9 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
         )}&registration_id=${encodeURIComponent(registration_id)}`,
         response => {
           if (response.success) {
-            document.getElementById(
-              "user_email"
-            ).textContent = `Enter the 6-digit code sent to ${email}`;
+            showToasted(response.message, "success");
             completedSteps.add(2);
             setTimeout(() => {
               goToStep(3);
@@ -271,7 +269,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }, TIMEOUT);
           } else {
             showToasted(response.message, "error");
-            sessionStorage.clear();
             done();
           }
         }

@@ -1,8 +1,8 @@
 <?php
-function getUserInfo(PDO $pdo, int $userd): array|false
+function getUserInfo(PDO $pdo, int $user_id): array|false
 {
     $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
-    $stmt->execute([$userd]);
+    $stmt->execute([$user_id]);
 
     if ($stmt->rowCount() === 0) {
         return false;
