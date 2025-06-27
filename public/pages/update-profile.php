@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
-require __DIR__ . '/../../partials/initialize.php';
+require __DIR__ . '/../partials/initialize.php';
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
