@@ -30,22 +30,22 @@ try {
     ]);
 
     // Check if the user is locked, but only for authenticated users and non-exempt pages
-    if (isset($_SESSION['user_id'])) {
-        $currentPage = basename($_SERVER['PHP_SELF']);
-        $exemptPages = ['account-locked.php', 'submit_complaint.php', 'login.php'];
+    // if (isset($_SESSION['user_id'])) {
+    //     $currentPage = basename($_SERVER['PHP_SELF']);
+    //     $exemptPages = ['account-locked.php', 'submit_complaint.php', 'login.php'];
 
-        if (!in_array($currentPage, $exemptPages)) {
-            $stmt = $pdo->prepare("SELECT account_status FROM users WHERE user_id = ?");
-            $stmt->execute([$_SESSION['user_id']]);
-            $user = $stmt->fetch();
+    //     if (!in_array($currentPage, $exemptPages)) {
+    //         $stmt = $pdo->prepare("SELECT account_status FROM users WHERE user_id = ?");
+    //         $stmt->execute([$_SESSION['user_id']]);
+    //         $user = $stmt->fetch();
 
-            if ($user && $user['account_status'] == ACCOUNT_STATUS_FROZEN) {
-                $_SESSION['locked_user_id'] = $_SESSION['user_id'];
-                header('Location: account-locked.php');
-                exit;
-            }
-        }
-    }
+    //         if ($user && $user['account_status'] == ACCOUNT_STATUS_FROZEN) {
+    //             $_SESSION['locked_user_id'] = $_SESSION['user_id'];
+    //             header('Location: account-locked.php');
+    //             exit;
+    //         }
+    //     }
+    // }
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }
