@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (response.locked) {
               showToasted(
                 "Your account is locked. Please contact admin...",
-                "error"
+                "info"
               );
               setTimeout(() => {
                 window.location.href = response.redirect;
