@@ -2,11 +2,6 @@
 const TIMEOUT_DURATION = 30000;
 
 function sendAjaxRequest(url, method, data, callback) {
-  if (!navigator.onLine) {
-      showToasted('You are offline. Please check your internet connection.', 'error');
-      // return;
-  }
-
   const xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

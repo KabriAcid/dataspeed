@@ -8,24 +8,24 @@
 --- FEATURES ---
 
 - Quick amount issues in buy airtime page.✔️
-- No back to OTP page in the register page.
 - Also add the login with username functionality.✔️
 - Notification sort by date fixes.
 - User's account setting failure.✔️
 - Sanitize inputs when using quick amount buttons. ✔️
 - Sanitizing and validating username field.✔️
 - Fixing the email sent to...✔️
-- Full fixes of TV subscription page.
 - Forgot PIN functionality. ✔️
 - Username step in registration form.✔️
 - Adding action buttons (e.g., Transfer to Friend)✔️
+- Username field for updates.✔️
+- No back to OTP page in the register page.
+- Full fixes of TV subscription page.
 - In transactions page use the icon of the service provider instead.
 - Handle response codes efficiently.
 - Use webhooks for updates.
 - Query to verify smartcard number.
 - Acccount should be locked after 5 wrong PIN attempts.
 - An upload form for variations.
-- Username field for updates.✔️
 - Username already taken flaw logic.
 - Animation for account balance.
 - Add a subdomain for the admins.

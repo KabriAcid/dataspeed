@@ -12,7 +12,7 @@ if (!isset($_SESSION['locked_user_id'])) {
     exit;
 }
 
-$locked_user_id = $_SESSION['locked_user_id'];
+$locked_user_id = $_SESSION['locked_user_id'] ?? null;
 
 // Predefined reasons for account lock
 $reasons = [

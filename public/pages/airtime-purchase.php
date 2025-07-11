@@ -140,7 +140,7 @@ $service_id = $serviceMap[$type] ?? 1;
 
 // 6. Prepare VTpass API Call
 $serviceID = $network === '9mobile' ? 'etisalat' : $network; // VTpass uses 'etisalat' for 9mobile
-$request_id = time() . rand(1000, 9999); // Unique request ID
+$request_id = time() . rand(1000, 9999);
 $postData = [
     'serviceID'   => $serviceID,
     'amount'      => $amount,
@@ -179,7 +179,7 @@ try {
 
     $api_result = json_decode($api_response, true);
 
-    // Check VTpass response
+    // VTpass response if failed
     if ($api_http_code !== 200 || !isset($api_result['code']) || $api_result['code'] !== '000') {
         safeRollback($pdo);
 
@@ -187,7 +187,7 @@ try {
         if (isset($api_result['code']) && $api_result['code'] === '019') {
             $errorMsg = "This transaction appears to be a duplicate. Please check your transaction history before retrying.";
         } else {
-            $errorMsg = $api_result['response_description'] ?? 'Airtime purchase failed.';
+            $errorMsg = $api_result['response_description'] ?? 'Airtime purchase failed. Please retry.';
         }
 
         $plan_id = null;
