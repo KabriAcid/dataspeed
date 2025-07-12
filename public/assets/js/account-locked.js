@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
   const submitComplain = document.getElementById("submit_complain");
 
+  if (!submitComplain) {
+    console.error("Element with ID 'submit_complain' not found in the DOM.");
+    return;
+  }
+
   submitComplain.addEventListener("click", function (e) {
     e.preventDefault(); // Prevent default form submission
 
