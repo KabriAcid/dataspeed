@@ -153,13 +153,27 @@ $networkProviders = getServiceProvider($pdo, 'network');
             // --- Service selection ---
             networkTabs.forEach(tab => {
                 tab.addEventListener("click", function() {
+                    // Update network tab selection
                     networkTabs.forEach(t => t.classList.remove("selected-tab", "active"));
                     tab.classList.add("selected-tab", "active");
                     selectedTab = tab.dataset.network;
                     selectedProviderId = tab.dataset.providerId;
 
-                    airtelLogo.src = "../assets/icons/airtel.svg";
-                    if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-2.svg";
+                    if (airtelLogo) {
+                        airtelLogo.src = "../assets/icons/airtel-1.png";
+                        if (selectedTab === "airtel") airtelLogo.src = "../assets/icons/airtel-2.png";
+                    }
+
+                    // Update the background color of the selected plan card
+                    const selectedPlanCard = document.querySelector(".plan-card.selected-plan");
+                    if (selectedPlanCard) {
+                        const brandColor = getComputedStyle(tab).getPropertyValue("--brand-color");
+                        selectedPlanCard.style.backgroundColor = brandColor;
+                        selectedPlanCard.style.color = "#fff";
+                        selectedPlanCard.querySelectorAll('*').forEach(el => el.style.color = "#fff");
+                    }
+
+                    // Load plans for the selected network
                     loadPlans();
                 });
             });
