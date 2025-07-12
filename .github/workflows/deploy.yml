@@ -20,7 +20,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ./           # ✅ Deploys to the current directory
-        local-dir: ./            # ✅ Deploys the whole repo
+        server-dir: ./              # Deploy into your existing public_html
+        local-dir: ./              # Deploy everything in your repo
         protocol: ftp
-        mode: "passive"
+        timeout: 120000            # 2 minutes to avoid quick timeouts
