@@ -31,6 +31,7 @@
 - Add a subdomain for the admins.
 - A dashboard panel for admin
 - Email loader animation.
+- Use Synk for vulnerability detection.
 
 --- NOTIFICATION MODULES ---
 

@@ -43,12 +43,12 @@ $reasons = [
             </div>
         <?php else: ?>
             <!-- Show the complaint form -->
-            <form id="accountLockForm" method="POST" action="submit_complaint.php" class="form-container">
+            <form id="accountLockForm" method="POST" class="form-container">
                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($locked_user_id); ?>">
 
                 <div class="form-group">
                     <label for="reason">Reason for Account Lock</label>
-                    <select name="reason" id="reason" class="form-control" required>
+                    <select name="reason" id="reason" class="form-control">
                         <option value="">-- Select a Reason --</option>
                         <?php foreach ($reasons as $reason): ?>
                             <option value="<?php echo htmlspecialchars($reason); ?>"><?php echo htmlspecialchars($reason); ?></option>
@@ -57,11 +57,13 @@ $reasons = [
                 </div>
 
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn primary-btn">Submit Complaint</button>
+                    <button type="submit" class="btn primary-btn" name="submit_complain">Submit Complaint</button>
                 </div>
             </form>
         <?php endif; ?>
     </main>
+    <script src="../assets/js/ajax.js"></script>
+    <script src="../assets/js/account-locked.js"></script>
 </body>
 
 </html>
