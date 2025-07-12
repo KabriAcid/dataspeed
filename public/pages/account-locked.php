@@ -6,7 +6,6 @@ require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 require __DIR__ . '/../partials/initialize.php';
 
-
 if (!isset($_SESSION['locked_user_id'])) {
     header("Location: login.php");
     exit;
@@ -25,10 +24,12 @@ $reasons = [
 
 <body>
     <main class="container py-4">
-        <header>
-            <h3 class="text-center">Account Locked</h3>
-            <p class="text-center">Your account has been locked due to multiple failed attempts. Please submit a complaint to unlock your account.</p>
-        </header>
+        <?php if (!isset($_GET['submitted']) || $_GET['submitted'] !== 'true'): ?>
+            <header>
+                <h3 class="text-center">Account Locked</h3>
+                <p class="text-center">Your account has been locked due to multiple failed attempts. Please submit a complaint to unlock your account.</p>
+            </header>
+        <?php endif; ?>
 
         <?php if (isset($_GET['submitted']) && $_GET['submitted'] === 'true'): ?>
             <div class="success-message">
@@ -48,7 +49,7 @@ $reasons = [
 
                 <div class="form-group">
                     <label for="reason">Reason for Account Lock</label>
-                    <select name="reason" id="reason" class="form-control">
+                    <select name="reason" id="reason" class="input">
                         <option value="">-- Select a Reason --</option>
                         <?php foreach ($reasons as $reason): ?>
                             <option value="<?php echo htmlspecialchars($reason); ?>"><?php echo htmlspecialchars($reason); ?></option>
@@ -57,7 +58,7 @@ $reasons = [
                 </div>
 
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn primary-btn" name="submit_complain">Submit Complaint</button>
+                    <button type="submit" class="btn primary-btn" id="submit_complain">Submit Complaint</button>
                 </div>
             </form>
         <?php endif; ?>
