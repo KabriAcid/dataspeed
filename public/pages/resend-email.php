@@ -120,7 +120,8 @@ try {
     if (sendMail($user['email'], "Account Reset Instructions", $emailContent)) {
         echo json_encode(["success" => true, "message" => "Email sent successfully."]);
     } else {
-        echo json_encode(["success" => false, "message" => "Failed to send email."]);
+        error_log("Failed to send email");
+        echo json_encode(["success" => false, "message" => "Failed to resend email."]);
     }
 } catch (Exception $e) {
     echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
