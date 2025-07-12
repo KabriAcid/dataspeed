@@ -43,7 +43,7 @@ $reasons = [
             </div>
         <?php else: ?>
             <!-- Show the complaint form -->
-            <form id="accountLockForm" method="POST" action="submit-complaint.php" class="form-container">
+            <form id="accountLockForm" method="POST" action="submit_complaint.php" class="form-container">
                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($locked_user_id); ?>">
 
                 <div class="form-group">
