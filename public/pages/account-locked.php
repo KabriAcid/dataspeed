@@ -43,7 +43,7 @@ $complaintExists = $stmt->fetchColumn() > 0;
                 </ol>
                 <p><a href="" class="fw-bold fs-5 primary">Contact us</a></p>
                 <div class="d-flex justify-content-center mt-4">
-                    <button id="resend_email" class="btn secondary-btn">Resend Email</button>
+                    <button id="resend_email" class="outline-btn">Resend Email</button>
                 </div>
             </div>
         <?php else: ?>

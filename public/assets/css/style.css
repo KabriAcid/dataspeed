@@ -203,6 +203,17 @@ section:not(.jumbotoron) {
   transition: all 0.35s ease-in;
 }
 
+.outline-btn {
+  background: transparent;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+.outline-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+
 button:disabled {
   box-shadow: var(--shadow-md);
   background-color: transparent !important;
