@@ -5,7 +5,8 @@ require __DIR__ . '/../../config/config.php';
 header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $reason = trim($_POST['reason']) ?? '';
+    $reason = trim($_POST['reason'] ?? '');
+    $user_id = $_SESSION['locked_user_id'] ?? null;
 
     // Validate input
     if (empty($reason)) {
@@ -13,23 +14,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 
+    if (!$user_id) {
+        echo json_encode(["success" => false, "message" => "User session expired. Please log in again."]);
+        exit;
+    }
+
     try {
+        // Insert the complaint into the database with a default status of 'pending'
+        $stmt = $pdo->prepare("INSERT INTO account_complaints (user_id, reason, status) VALUES (?, ?, ?)");
+        $stmt->execute([$user_id, $reason, 'pending']);
 
-        $stmt = $pdo->prepare("SELECT reason FROM users WHERE reason = ?");
-        $stmt->execute([$reason]);
-        $user = $stmt->fetch();
-
-        if ($user) {
-            echo json_encode(["success" => false, "message" => "Username is already taken."]);
-            exit;
-        }
-
-        // Update the username using registration_id
-        $stmt = $pdo->prepare("UPDATE users SET reason = ? WHERE registration_id = ?");
-        $stmt->execute([$reason, $registration_id]);
-
-        echo json_encode(["success" => true, "message" => "Username added successfully."]);
+        echo json_encode(["success" => true, "message" => "Complaint submitted successfully."]);
     } catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
+} else {
+    echo json_encode(["success" => false, "message" => "Invalid request method."]);
 }
