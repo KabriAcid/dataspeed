@@ -22,7 +22,7 @@ $reasons = [
 ];
 
 // Check if the user has already submitted a complaint
-$stmt = $pdo->prepare("SELECT COUNT(*) FROM account_complaints WHERE user_id = ?");
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM account_complaints WHERE status = 'pending' AND user_id = ?");
 $stmt->execute([$locked_user_id]);
 $complaintExists = $stmt->fetchColumn() > 0;
 ?>
