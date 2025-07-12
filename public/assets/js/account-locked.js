@@ -61,4 +61,34 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     });
   });
+
+  //   Functionality for resending email
+  const resendEmailBtn = document.getElementById("resend_email");
+
+  if (resendEmailBtn) {
+    resendEmailBtn.addEventListener("click", () => {
+      withOverlay(hideOverlay => {
+        sendAjaxRequest(
+          "resend-email.php",
+          "POST",
+          `action=resend`,
+          function (response) {
+            try {
+              if (!response.success) {
+                hideOverlay();
+                showToasted(response.message, "error");
+              } else {
+                showToasted(response.message, "success");
+                hideOverlay();
+              }
+            } catch (error) {
+              console.error("Invalid JSON response:", response);
+              showToasted("An error occurred. Please try again.", "error");
+              hideOverlay();
+            }
+          }
+        );
+      });
+    });
+  }
 });

@@ -33,15 +33,15 @@ $complaintExists = $stmt->fetchColumn() > 0;
     <main class="container py-4">
         <?php if ($complaintExists): ?>
             <div class="success-message">
-                <h4>Complaint Submitted</h4>
+                <h2 class="mb-3">Complaint Submitted</h2>
                 <p>Your complaint has been submitted successfully. Our team will review it and get back to you shortly.</p>
-                <p>Steps to reset your account:</p>
+                <i>Steps to reset your account:</i>
                 <ol>
-                    <li>Wait for an email or SMS from our support team.</li>
-                    <li>Follow the instructions provided to reset your account.</li>
-                    <li>If you need further assistance, contact our support team.</li>
+                    <li class="mt-2">Wait for an email or SMS from our support team.</li>
+                    <li class="mt-2">Follow the instructions provided to reset your account.</li>
+                    <li class="mt-2">If you need further assistance, contact our support team.</li>
                 </ol>
-                <p><a href="" class="fw-bold fs-5 primary">Contact us</a></p>
+                <p><a href="" class="fw-bold fs-6 primary">Contact us here</a></p>
                 <div class="d-flex justify-content-center mt-4">
                     <button id="resend_email" class="outline-btn">Resend Email</button>
                 </div>
@@ -78,6 +78,9 @@ $complaintExists = $stmt->fetchColumn() > 0;
         <div id="bodyOverlay" class="body-overlay" style="display: none;">
             <div class="overlay-spinner"></div>
         </div>
+
+        <!-- Copyright text -->
+         <p class="text-center text-sm text-secondary mt-5">Copyright @Dataspeed.com.ng. All rights reserved.</p>
     </main>
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/account-locked.js"></script>
