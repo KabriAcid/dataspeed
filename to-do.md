@@ -32,6 +32,7 @@
 - A dashboard panel for admin
 - Email loader animation.
 - Use Synk for vulnerability detection.
+- Use a different SMTP.
 
 --- NOTIFICATION MODULES ---
 
