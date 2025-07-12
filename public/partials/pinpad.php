@@ -1,6 +1,6 @@
 <!-- PIN Modal -->
 <div id="pinpadModal" class="modal-overlay" style="display: none;"
- data-amount="" data-phone="" data-network="" data-type="" data-action="" data-plan-id="" data-iuc-number="">
+  data-amount="" data-phone="" data-network="" data-type="" data-action="" data-plan-id="" data-iuc-number="">
   <div class="pin-container">
     <div class="pin-header text-center">
       <img src="<?= $user['photo']; ?>" alt="avatar" class="pinpad-avatar">
@@ -52,8 +52,5 @@
     </div>
   </div>
 
-  <!-- Overlay -->
-  <div id="bodyOverlay" class="body-overlay" style="display: none;">
-    <div class="overlay-spinner"></div>
-  </div>
+  <?php include_once __DIR__ . '/loader.php'; ?>
 </div>

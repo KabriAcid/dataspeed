@@ -1,10 +1,4 @@
 <?php
-session_start();
-require __DIR__ . '/../../config/config.php';
-require __DIR__ . '/../../functions/sendMail.php';
-
-header("Content-Type: application/json");
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $reason = trim($_POST['reason'] ?? '');
     $user_id = $_SESSION['locked_user_id'] ?? null;
@@ -42,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $pdo->prepare("INSERT INTO account_reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)");
         $stmt->execute([$user_id, $token, $expires_at]);
 
-        // Compose the email
         // Compose the email
         $resetLink = "http://localhost/dataspeed/public/pages/complain_form.php?token=" . urlencode($token);
         $emailContent = "
@@ -130,7 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (sendMail($user['email'], "Account Reset Instructions", $emailContent)) {
             echo json_encode(["success" => true, "message" => "Complaint submitted successfully. Reset instructions sent to your email."]);
         } else {
-            echo json_encode(["success" => false, "message" => "Complaint submitted successfully, but failed to send email."]);
+            error_log("Failed to send email to " . $user['email']);
+            echo json_encode(["success" => true, "message" => "Complaint submitted successfully, but failed to send email."]);
         }
     } catch (Exception $e) {
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);

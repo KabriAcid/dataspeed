@@ -108,6 +108,11 @@ function set_title($title = null)
     </div>
 </main>
 
+<!-- Overlay -->
+<div id="bodyOverlay" class="body-overlay" style="display: none;">
+    <div class="overlay-spinner"></div>
+</div>
+
 <script src="../assets/js/toggle-password.js"></script>
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/auth.js"></script>

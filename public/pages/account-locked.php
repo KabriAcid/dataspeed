@@ -16,8 +16,10 @@ $locked_user_id = $_SESSION['locked_user_id'] ?? null;
 // Predefined reasons for account lock
 $reasons = [
     "Forgot PIN",
+    "Multiple failed PIN attempts",
     "Suspicious activity detected",
     "Account locked by mistake",
+    "Multiple failed login attempts",
     "Other"
 ];
 
@@ -40,6 +42,9 @@ $complaintExists = $stmt->fetchColumn() > 0;
                     <li>If you need further assistance, contact our support team.</li>
                 </ol>
                 <p><a href="" class="fw-bold fs-5 primary">Contact us</a></p>
+                <div class="d-flex justify-content-center mt-4">
+                    <button id="resend_email" class="btn secondary-btn">Resend Email</button>
+                </div>
             </div>
         <?php else: ?>
             <?php if (!isset($_GET['submitted']) || $_GET['submitted'] !== 'true'): ?>
@@ -68,6 +73,11 @@ $complaintExists = $stmt->fetchColumn() > 0;
                 </div>
             </form>
         <?php endif; ?>
+
+        <!-- Overlay -->
+        <div id="bodyOverlay" class="body-overlay" style="display: none;">
+            <div class="overlay-spinner"></div>
+        </div>
     </main>
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/account-locked.js"></script>

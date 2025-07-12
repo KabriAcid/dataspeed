@@ -232,10 +232,7 @@ if (!empty($missing_env)) {
 
         </div>
 
-        <!-- Overlay -->
-        <div id="bodyOverlay" class="body-overlay" style="display: none;">
-            <div class="overlay-spinner"></div>
-        </div>
+        <?php include __DIR__ . '../partials/loader.php'; ?>
 
     </main>
 </body>
