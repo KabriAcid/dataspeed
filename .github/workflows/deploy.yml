@@ -3,7 +3,7 @@ name: 🚀 Deploy to Afeeshost via FTP
 on:
   push:
     branches:
-      - main # or "master" if that's your default
+      - main
 
 jobs:
   ftp-deploy:
@@ -20,7 +20,6 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ./
-        local-dir: ./
+        server-dir: ./           # ✅ Deploys to the current directory
+        local-dir: ./            # ✅ Deploys the whole repo
         protocol: ftp
-        dangerous-clean-slate: true
