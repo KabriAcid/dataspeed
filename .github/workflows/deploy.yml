@@ -23,3 +23,4 @@ jobs:
         server-dir: ./           # ✅ Deploys to the current directory
         local-dir: ./            # ✅ Deploys the whole repo
         protocol: ftp
+        mode: "passive"
