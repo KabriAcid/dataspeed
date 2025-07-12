@@ -1,0 +1,11 @@
+{
+  "exclude": [
+    ".git/**",
+    ".gitignore",
+    ".env",
+    "node_modules/**",
+    "README.md",
+    ".ftp-deploy-sync-state.json",
+    ".github/**"
+  ]
+}

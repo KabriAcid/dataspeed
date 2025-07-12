@@ -20,7 +20,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /public_html/ # adjust if needed
-        local-dir: ./ # or ./dist if you're deploying a subfolder
+        server-dir: ./
+        local-dir: ./
         protocol: ftp
         dangerous-clean-slate: true
