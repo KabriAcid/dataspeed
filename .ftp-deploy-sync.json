@@ -4,6 +4,7 @@
     ".git/**",
     ".gitignore",
     ".env",
-    ".ftp-deploy-sync-state.json"
+    ".ftp-deploy-sync-state.json",
+    "README.md"
   ]
 }
