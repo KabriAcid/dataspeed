@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!response.success) {
               // Hide the overlay if the response is unsuccessful
               hideOverlay();
+              loginBtn.disabled = false; // Correctly re-enable the button
 
               // Redirect to account frozen page if locked
               if (response.locked) {
@@ -72,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Invalid JSON response:", response);
             showToasted("An error occurred. Please try again.", "error");
             hideOverlay(); // Hide the overlay in case of an error
+            loginBtn.disabled = false; // Ensure the button is re-enabled in case of an error
           }
         }
       );

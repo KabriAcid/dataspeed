@@ -61,8 +61,17 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     });
   });
+});
 
-  //   Functionality for resending email
+document.addEventListener("DOMContentLoaded", function () {
+  function withOverlay(handler) {
+    const overlay = document.getElementById("bodyOverlay");
+    overlay.style.display = "flex"; // Show the overlay
+    handler(() => {
+      overlay.style.display = "none"; // Hide the overlay
+    });
+  }
+
   const resendEmailBtn = document.getElementById("resend_email");
 
   if (resendEmailBtn) {
