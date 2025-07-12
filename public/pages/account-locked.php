@@ -20,18 +20,16 @@ $reasons = [
     "Account locked by mistake",
     "Other"
 ];
+
+// Check if the user has already submitted a complaint
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM account_complaints WHERE user_id = ?");
+$stmt->execute([$locked_user_id]);
+$complaintExists = $stmt->fetchColumn() > 0;
 ?>
 
 <body>
     <main class="container py-4">
-        <?php if (!isset($_GET['submitted']) || $_GET['submitted'] !== 'true'): ?>
-            <header>
-                <h3 class="text-center">Account Locked</h3>
-                <p class="text-center">Your account has been locked due to multiple failed attempts. Please submit a complaint to unlock your account.</p>
-            </header>
-        <?php endif; ?>
-
-        <?php if (isset($_GET['submitted']) && $_GET['submitted'] === 'true'): ?>
+        <?php if ($complaintExists): ?>
             <div class="success-message">
                 <h4>Complaint Submitted</h4>
                 <p>Your complaint has been submitted successfully. Our team will review it and get back to you shortly.</p>
@@ -41,8 +39,16 @@ $reasons = [
                     <li>Follow the instructions provided to reset your account.</li>
                     <li>If you need further assistance, contact our support team.</li>
                 </ol>
+                <p><a href="" class="fw-bold fs-5 primary">Contact us</a></p>
             </div>
         <?php else: ?>
+            <?php if (!isset($_GET['submitted']) || $_GET['submitted'] !== 'true'): ?>
+                <header>
+                    <h3 class="text-center">Account Locked</h3>
+                    <p class="text-center">Your account has been locked due to multiple failed attempts. Please submit a complaint to unlock your account.</p>
+                </header>
+            <?php endif; ?>
+
             <!-- Show the complaint form -->
             <form id="accountLockForm" method="POST" class="form-container">
                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($locked_user_id); ?>">
