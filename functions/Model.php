@@ -65,7 +65,6 @@ function getTransactions($pdo, $user_id, $limit = 5)
 
         return $transactions ?: [];
     } catch (PDOException $e) {
-        echo $e->getMessage();
         return [];
     }
 }
