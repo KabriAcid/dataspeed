@@ -269,7 +269,7 @@ set_title('Dashboard');
             </div>
         </div>
 
-        <audio id="balanceUpdateSound" src="../assets/sounds/tick.mp3"></audio>
+        <audio id="balanceUpdateSound" src="../assets/sounds/ding.mp3"></audio>
 
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
         <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
@@ -279,6 +279,7 @@ set_title('Dashboard');
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const balanceAmount = document.getElementById("balanceAmount");
+            const balanceUpdateSound = document.getElementById("balanceUpdateSound");
 
             function animateBalanceUpdate(currentBalance, newBalance) {
                 const balanceElement = document.getElementById("balanceAmount");
