@@ -17,6 +17,13 @@ $user_id = $_SESSION['user_id'] ?? null;
 $recipient = trim($_POST['email'] ?? '');
 $amount = floatval($_POST['amount'] ?? 0);
 
+$pin = $_POST['pin'] ?? null;
+
+if (empty($pin)) {
+    echo json_encode(["success" => false, "message" => "Transaction PIN is required."]);
+    exit;
+}
+
 if (!$user_id || !$recipient || $amount <= 0) {
     echo json_encode(['success' => false, 'message' => 'All fields are required.']);
     exit;
@@ -60,6 +67,8 @@ if (!ctype_digit($providedPin) || strlen($providedPin) < 4 || strlen($providedPi
 }
 
 if (!password_verify($providedPin, $userPin)) {
+    error_log("Provided PIN: " . $providedPin);
+    error_log("Stored PIN Hash: " . $userPin);
     echo json_encode([
         'success' => false,
         'message' => 'Invalid transaction PIN.'
@@ -116,7 +125,7 @@ try {
 
             pushNotification($pdo, $user_id, "Account Frozen", "Your account has been frozen due to multiple failed PIN attempts.", "security", "ni ni-lock-circle-open", "text-danger", 0);
 
-            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts.", "frozen" => true]);
+            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts.", "locked" => true]);
             exit;
         }
 
