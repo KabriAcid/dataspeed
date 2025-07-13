@@ -106,7 +106,7 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
             </form>
 
         </div>
-        
+
         <!-- Overlay -->
         <div id="bodyOverlay" class="body-overlay" style="display: none;">
             <div class="overlay-spinner"></div>

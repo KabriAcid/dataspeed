@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("UPDATE users SET password = :password WHERE user_id = :user_id");
+            $stmt = $pdo->prepare("UPDATE users SET password = :password, updated_at = NOW() WHERE user_id = :user_id");
             $stmt->execute([
                 'password' => $hashedPassword,
                 'user_id' => $user_id
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // ✅ Securely hash the PIN
             $hashedPin = password_hash($newPin, PASSWORD_DEFAULT);
 
-            $stmt = $pdo->prepare("UPDATE users SET txn_pin = :pin WHERE user_id = :user_id");
+            $stmt = $pdo->prepare("UPDATE users SET txn_pin = :pin, updated_at = NOW() WHERE user_id = :user_id");
             $stmt->execute([
                 'pin' => $hashedPin,
                 'user_id' => $user_id
