@@ -275,6 +275,35 @@ set_title('Dashboard');
     </main>
     <script src="../assets/js/toggle-number.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const balanceAmount = document.getElementById("balanceAmount");
+
+            function updateBalance() {
+                fetch("update-balance.php", {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            balanceAmount.innerHTML = `&#8358;${data.balance}`;
+                        } else {
+                            console.error(data.message);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error updating balance:", error);
+                    });
+            }
+
+            setInterval(updateBalance, 5000);
+
+            updateBalance();
+        });
+
+        // Copy to clipboard
         document.getElementById('copy-icon').addEventListener('click', function() {
             const referralCode = document.getElementById('account-number').innerText.trim();
 
