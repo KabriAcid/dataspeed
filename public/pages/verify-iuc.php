@@ -5,6 +5,10 @@ require __DIR__ . '/../../functions/utilities.php';
 
 header('Content-Type: application/json');
 
+$vtpass_api_key = $_ENV['VTPASS_API_KEY'];
+$vtpass_secret_key = $_ENV['VTPASS_SECRET_KEY'];
+$vtpass_url = $_ENV['VTPASS_SANDBOX_URL'] ?? 'https://sandbox.vtpass.com/api/pay';
+
 $iuc = trim($_POST['iuc'] ?? '');
 $network = trim($_POST['network'] ?? '');
 

@@ -98,9 +98,11 @@ $providers = getServiceProvider($pdo, 'TV');
                     <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bolder primary fs-6"></span></div>
                     <div class="info-row"><span>Validity:</span><span id="confirmValidity" class="fw-bold"></span></div>
                     <div class="info-row"><span>Phone:</span><span id="confirmPhone" class="fw-bold"></span></div>
-                    <div class="info-row"><span>Customer Name:</span><span id="customerName" class="fw-bold"></span></div>
-                    <div class="info-row" data-row="account-status" style="display: none;">
-                        <span>Account Status:</span><span id="accountStatus" class="fw-bold"></span>
+                    <div class="info-row">
+                        <span>Customer Name:</span>
+                        <span id="customerName" class="fw-bold">
+                            <span class="spinner" id="customerNameSpinner" style="display: none;"></span>
+                        </span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -133,9 +135,6 @@ $providers = getServiceProvider($pdo, 'TV');
             const confirmAmount = document.getElementById("confirmAmount");
             const confirmValidity = document.getElementById("confirmValidity");
             const confirmPhone = document.getElementById("confirmPhone");
-            const customerName = document.getElementById("customerName");
-            const accountStatusRow = document.querySelector(".info-row[data-row='account-status']");
-            const accountStatus = document.getElementById("accountStatus");
             const payBtn = document.getElementById("payBtn");
 
             // --- State ---
@@ -145,7 +144,6 @@ $providers = getServiceProvider($pdo, 'TV');
             let selectedPlan = null;
             let buyFor = "self";
 
-            // --- IUC Verification ---
             iucNumberInput.addEventListener("input", function() {
                 const iuc = this.value.trim();
                 const network = selectedTab;
@@ -154,8 +152,9 @@ $providers = getServiceProvider($pdo, 'TV');
                 this.value = this.value.replace(/\D/g, '');
 
                 if (iuc.length === 10 && network) {
-                    customerIUC.textContent = "Verifying...";
-                    customerName.textContent = "Verifying...";
+                    // Show spinner and hide customer name
+                    customerNameSpinner.style.display = "inline-block";
+                    customerName.textContent = "";
                     accountStatusRow.style.display = "none";
 
                     sendAjaxRequest(
@@ -163,13 +162,14 @@ $providers = getServiceProvider($pdo, 'TV');
                         "POST",
                         `iuc=${encodeURIComponent(iuc)}&network=${encodeURIComponent(network)}`,
                         function(response) {
+                            // Hide spinner
+                            customerNameSpinner.style.display = "none";
+
                             if (response.success) {
-                                customerIUC.textContent = iuc;
                                 customerName.textContent = response.customer_name;
                                 accountStatus.textContent = response.account_status;
                                 accountStatusRow.style.display = "flex";
                             } else {
-                                customerIUC.textContent = "Invalid IUC/Smartcard number.";
                                 customerName.textContent = "Unknown";
                                 accountStatusRow.style.display = "none";
                             }
@@ -177,7 +177,7 @@ $providers = getServiceProvider($pdo, 'TV');
                         }
                     );
                 } else {
-                    customerIUC.textContent = "Enter a valid IUC number.";
+                    customerNameSpinner.style.display = "none";
                     customerName.textContent = "Unknown";
                     accountStatusRow.style.display = "none";
                     checkPurchaseReady();
@@ -185,9 +185,9 @@ $providers = getServiceProvider($pdo, 'TV');
             });
 
             // --- Service selection ---
-            networkTabs.forEach((tab) => {
+            networkTabs.forEach(tab => {
                 tab.addEventListener("click", function() {
-                    networkTabs.forEach((t) => t.classList.remove("selected-tab", "active"));
+                    networkTabs.forEach(t => t.classList.remove("selected-tab", "active"));
                     tab.classList.add("selected-tab", "active");
                     selectedTab = tab.dataset.network;
                     selectedProviderId = tab.dataset.providerId;
@@ -199,9 +199,9 @@ $providers = getServiceProvider($pdo, 'TV');
             });
 
             // --- Tab selection (Pay for Self/Others) ---
-            document.querySelectorAll(".tab-btn").forEach((btn) => {
+            document.querySelectorAll(".tab-btn").forEach(btn => {
                 btn.addEventListener("click", function() {
-                    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+                    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
                     buyFor = btn.dataset.tab;
                     recipientPhoneWrap.style.display = buyFor === "others" ? "flex" : "none";
@@ -214,8 +214,7 @@ $providers = getServiceProvider($pdo, 'TV');
             // --- Load plans via AJAX ---
             function loadPlans() {
                 if (!selectedProviderId) return;
-                planCardsContainer.innerHTML =
-                    '<div class="d-flex justify-content-center py-4"><span class="loading-spinner"></span></div>';
+                planCardsContainer.innerHTML = '<div class="d-flex justify-content-center py-4"><span class="loading-spinner"></span></div>';
                 sendAjaxRequest(
                     "fetch-tv-plans.php",
                     "POST",
@@ -224,8 +223,7 @@ $providers = getServiceProvider($pdo, 'TV');
                         if (response.success && Array.isArray(response.plans)) {
                             renderPlans(response.plans);
                         } else {
-                            planCardsContainer.innerHTML =
-                                '<div class="text-center fw-bold text-sm text-danger py-4">No plans found.</div>';
+                            planCardsContainer.innerHTML = '<div class="text-center fw-bold text-sm text-danger py-4">No plans found.</div>';
                         }
                     }
                 );
@@ -234,26 +232,37 @@ $providers = getServiceProvider($pdo, 'TV');
             // --- Render plans ---
             function renderPlans(plans) {
                 planCardsContainer.innerHTML = "";
-                plans.forEach((plan) => {
+                plans.forEach((plan, idx) => {
                     const card = document.createElement("div");
                     card.className = "col-4 mb-3";
                     card.innerHTML = `
-                <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
-                    <div class="fw-bold">${plan.name}</div>
-                    <div class="text-muted small">${plan.validity}</div>
-                    <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
-                </div>
-            `;
+            <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
+                <div class="fw-bold">${plan.name}</div>
+                <div class="text-muted small">${plan.validity}</div>
+                <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
+            </div>
+        `;
                     card.querySelector(".plan-card").addEventListener("click", function() {
-                        document.querySelectorAll("#planCards .plan-card").forEach((c) => {
+                        // Remove highlight from all plan cards in this container
+                        document.querySelectorAll("#planCards .plan-card").forEach(c => {
                             c.classList.remove("selected-plan");
+                            c.style.backgroundColor = "";
+                            c.style.color = "";
+                            c.querySelectorAll('*').forEach(el => el.style.color = "");
                         });
                         this.classList.add("selected-plan");
+                        // Set background to network color, text to white
+                        const selectedTabTab = document.querySelector('.service-tab.selected-tab');
+                        const brandColor = selectedTabTab ? getComputedStyle(selectedTabTab).getPropertyValue('--brand-color') : '#FFCB05';
+                        this.style.backgroundColor = brandColor;
+                        this.style.color = "#fff";
+                        this.querySelectorAll('*').forEach(el => el.style.color = "#fff");
+
                         selectedPlan = {
                             plan_id: plan.plan_id,
                             price: plan.price,
                             name: plan.name,
-                            validity: plan.validity,
+                            validity: plan.validity
                         };
                         checkPurchaseReady();
                     });
@@ -265,14 +274,13 @@ $providers = getServiceProvider($pdo, 'TV');
 
             // --- Highlight selected plan (reset) ---
             function highlightSelectedPlan() {
-                document.querySelectorAll(".plan-card").forEach((c) => c.classList.remove("selected-plan"));
+                document.querySelectorAll(".plan-card").forEach(c => c.classList.remove("selected-plan"));
             }
 
             // --- Enable/disable Purchase button ---
             function checkPurchaseReady() {
                 const iucValid = /^\d{10}$/.test(iucNumberInput.value.trim());
-                const phoneValid =
-                    buyFor === "self" || (buyFor === "others" && recipientPhoneInput.value.trim().length >= 10);
+                const phoneValid = buyFor === "self" || (buyFor === "others" && recipientPhoneInput.value.trim().length >= 10);
                 if (selectedPlan && iucValid && phoneValid) {
                     purchaseBtn.disabled = false;
                 } else {
@@ -280,25 +288,37 @@ $providers = getServiceProvider($pdo, 'TV');
                 }
             }
 
+            // --- Input validation ---
+            iucNumberInput.addEventListener("input", checkPurchaseReady);
+            recipientPhoneInput.addEventListener("input", checkPurchaseReady);
+
             // --- Purchase button: show confirm modal ---
             purchaseBtn.addEventListener("click", function() {
+                // Fill confirm modal
                 const phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
-                const selectedTabEl = document.querySelector(".service-tab.selected-tab");
-                const providerName = selectedTabEl ? selectedTabEl.querySelector("span").textContent : "";
-                const providerIcon = selectedTabEl ? selectedTabEl.querySelector("img").src : "";
+                const selectedTabEl = document.querySelector('.service-tab.selected-tab');
+                const providerName = selectedTabEl ? selectedTabEl.querySelector('span').textContent : '';
+                const providerIcon = selectedTabEl ? selectedTabEl.querySelector('img').src : '';
 
+                // Show provider icon and name
                 confirmService.innerHTML = providerIcon ?
                     `<img src="${providerIcon}" alt="${providerName}" style="height:22px;vertical-align:middle;">` :
                     providerName;
 
                 customerIUC.textContent = iucNumberInput.value.trim();
-                confirmPlan.textContent = selectedPlan ? selectedPlan.name : "";
+                customerIUC.setAttribute("data-raw", iucNumberInput.value.trim());
+
+                // Show both plan name and volume if available
+                let planDisplay = selectedPlan.name;
+                if (selectedPlan.volume && selectedPlan.volume !== selectedPlan.name) {
+                    planDisplay += ` (${selectedPlan.volume})`;
+                }
+
+                confirmPlan.textContent = selectedPlan ? selectedPlan.name : '';
+
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
                 confirmValidity.textContent = selectedPlan.validity;
                 confirmPhone.textContent = phone;
-                customerName.textContent = customerName.textContent || "Unknown";
-                accountStatus.textContent = accountStatus.textContent || "Unknown";
-
                 confirmModal.style.display = "flex";
             });
 
