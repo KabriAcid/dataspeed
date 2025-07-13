@@ -10,6 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function withOverlay(handler) {
+    const overlay = document.getElementById("bodyOverlay");
+    overlay.style.display = "flex"; // Show the overlay
+    handler(() => {
+      overlay.style.display = "none"; // Hide the overlay
+    });
+  }
+
   const steps = document.querySelectorAll(".form-step");
   const indicators = document.querySelectorAll(".pagination .page");
   let currentStep = parseInt(sessionStorage.getItem("currentStep")) || 0;
@@ -76,41 +84,46 @@ document.addEventListener("DOMContentLoaded", function () {
   const emailSubmit = document.getElementById("email-submit");
 
   emailSubmit.addEventListener("click", function () {
-    handleButtonClick(emailSubmit, done => {
-      const email = emailInput.value.trim();
+    withOverlay(hideOverlay => {
+      handleButtonClick(emailSubmit, done => {
+        const email = emailInput.value.trim();
         const type = "pin";
-        
-      if (email === "") {
-        showToasted("Email address is required.", "error");
-        return done();
-      }
 
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showToasted("Invalid email address.", "error");
-        return done();
-      }
-
-      sendAjaxRequest(
-        "send-token.php",
-        "POST",
-        "email=" +
-          encodeURIComponent(email) +
-          "&type=" +
-          encodeURIComponent(type),
-        function (response) {
-          if (!response.success) {
-            showToasted(response.message, "error");
-          } else {
-            sessionStorage.setItem("reset_email", email);
-            showToasted(response.message, "success");
-            setTimeout(() => {
-              currentStep = 2; // Move to token step
-              showStep(currentStep);
-            }, TIMEOUT);
-          }
-          done(); // re-enable button
+        if (email === "") {
+          showToasted("Email address is required.", "error");
+          hideOverlay(); // Hide the overlay immediately
+          return done();
         }
-      );
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showToasted("Invalid email address.", "error");
+          hideOverlay(); // Hide the overlay immediately
+          return done();
+        }
+
+        sendAjaxRequest(
+          "send-token.php",
+          "POST",
+          "email=" +
+            encodeURIComponent(email) +
+            "&type=" +
+            encodeURIComponent(type),
+          function (response) {
+            if (!response.success) {
+              showToasted(response.message, "error");
+            } else {
+              sessionStorage.setItem("reset_email", email);
+              showToasted(response.message, "success");
+              setTimeout(() => {
+                currentStep = 2; // Move to token step
+                showStep(currentStep);
+              }, TIMEOUT);
+            }
+            hideOverlay(); // Hide the overlay after processing
+            done(); // Re-enable the button
+          }
+        );
+      });
     });
   });
 
@@ -127,7 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
         showToasted("Token is required", "error");
         return done();
       }
-
 
       sendAjaxRequest(
         "verify-token.php",
@@ -159,44 +171,50 @@ document.addEventListener("DOMContentLoaded", function () {
   const pinSubmit = document.getElementById("pin-submit");
 
   pinSubmit.addEventListener("click", function () {
-    handleButtonClick(pinSubmit, done => {
-      const pin = pinInput.value.trim();
-      const confirmPin = confirmPinInput.value.trim();
-      const reset_email = sessionStorage.getItem("reset_email");
+    withOverlay(hideOverlay => {
+      handleButtonClick(pinSubmit, done => {
+        const pin = pinInput.value.trim();
+        const confirmPin = confirmPinInput.value.trim();
+        const reset_email = sessionStorage.getItem("reset_email");
 
-      if (pin === "" || confirmPin === "") {
-        showToasted("Both PIN fields are required.", "error");
-        return done();
-      }
-      if (!/^\d{4}$/.test(pin)) {
-        showToasted("PIN must be exactly 4 digits.", "error");
-        return done();
-      }
-      if (pin !== confirmPin) {
-        showToasted("PINs do not match.", "error");
-        return done();
-      }
-
-      sendAjaxRequest(
-        "reset-pin.php",
-        "POST",
-        "pin=" +
-          encodeURIComponent(pin) +
-          "&reset_email=" +
-          encodeURIComponent(reset_email),
-        function (response) {
-          if (!response.success) {
-            showToasted(response.message, "error");
-          } else {
-            setTimeout(() => {
-              showToasted(response.message, "success");
-              sessionStorage.clear();
-              window.location.href = "dashboard.php?success=pin";
-            }, TIMEOUT);
-          }
-          done();
+        if (pin === "" || confirmPin === "") {
+          showToasted("Both PIN fields are required.", "error");
+          hideOverlay(); // Hide the overlay immediately
+          return done();
         }
-      );
+        if (!/^\d{4}$/.test(pin)) {
+          showToasted("PIN must be exactly 4 digits.", "error");
+          hideOverlay(); // Hide the overlay immediately
+          return done();
+        }
+        if (pin !== confirmPin) {
+          showToasted("PINs do not match.", "error");
+          hideOverlay(); // Hide the overlay immediately
+          return done();
+        }
+
+        sendAjaxRequest(
+          "reset-pin.php",
+          "POST",
+          "pin=" +
+            encodeURIComponent(pin) +
+            "&reset_email=" +
+            encodeURIComponent(reset_email),
+          function (response) {
+            if (!response.success) {
+              showToasted(response.message, "error");
+            } else {
+              setTimeout(() => {
+                showToasted(response.message, "success");
+                sessionStorage.clear();
+                window.location.href = "dashboard.php?success=pin";
+              }, TIMEOUT);
+            }
+            hideOverlay(); // Hide the overlay after processing
+            done(); // Re-enable the button
+          }
+        );
+      });
     });
   });
 

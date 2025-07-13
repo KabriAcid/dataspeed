@@ -107,6 +107,11 @@ $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 
         </div>
 
+        <!-- Overlay -->
+        <div id="bodyOverlay" class="body-overlay" style="display: none;">
+            <div class="overlay-spinner"></div>
+        </div>
+
         <!-- Bottom navigation -->
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
         <?php require __DIR__ . '/../partials/pinpad.php' ?>
