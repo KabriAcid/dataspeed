@@ -30,6 +30,19 @@ try {
         exit;
     }
 
+    // Collect & Validate Input
+    $entered_pin = trim($_POST['pin'] ?? '');
+
+    if (empty($entered_pin)) {
+        echo json_encode(["success" => false, "message" => "Transaction PIN is required."]);
+        exit;
+    }
+
+    if (strlen($entered_pin) !== 4 || !ctype_digit($entered_pin)) {
+        echo json_encode(["success" => false, "message" => "PIN must be a 4-digit number."]);
+        exit;
+    }
+
     // Verify the PIN
     if (!password_verify($entered_pin, $user['txn_pin'])) {
         // Increment failed attempts
