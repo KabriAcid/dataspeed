@@ -30,6 +30,19 @@ try {
         exit;
     }
 
+    // Collect & Validate Input
+    $entered_pin = trim($_POST['pin'] ?? '');
+
+    if (empty($entered_pin)) {
+        echo json_encode(["success" => false, "message" => "Transaction PIN is required."]);
+        exit;
+    }
+
+    if (strlen($entered_pin) !== 4 || !ctype_digit($entered_pin)) {
+        echo json_encode(["success" => false, "message" => "PIN must be a 4-digit number."]);
+        exit;
+    }
+
     // Verify the PIN
     if (!password_verify($entered_pin, $user['txn_pin'])) {
         // Increment failed attempts
@@ -136,7 +149,8 @@ $provider_id = $providerMap[strtolower($network)] ?? 0;
 $service_id = 3; // Always 3 for TV
 
 // 6. VTpass API Setup
-$request_id = time() . rand(1000, 9999); // Unique request ID
+$request_id = generateRequestID('TV', $user_id, $pdo);
+
 $postData = [
     'serviceID'      => strtolower($network),
     'billersCode'    => $iuc,

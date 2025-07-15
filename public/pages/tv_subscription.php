@@ -8,7 +8,6 @@ require __DIR__ . '/../partials/initialize.php';
 
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 $providers = getServiceProvider($pdo, 'TV');
-echo $loggedInPhone;
 ?>
 
 <body>
@@ -99,6 +98,12 @@ echo $loggedInPhone;
                     <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bolder primary fs-6"></span></div>
                     <div class="info-row"><span>Validity:</span><span id="confirmValidity" class="fw-bold"></span></div>
                     <div class="info-row"><span>Phone:</span><span id="confirmPhone" class="fw-bold"></span></div>
+                    <div class="info-row">
+                        <span>Customer Name:</span>
+                        <span id="customerName" class="fw-bold">
+                            <span class="spinner" id="customerNameSpinner" style="display: none;"></span>
+                        </span>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="pay-btn" id="payBtn" type="button">Pay</button>
@@ -139,10 +144,44 @@ echo $loggedInPhone;
             let selectedPlan = null;
             let buyFor = "self";
 
-            iucNumberInput.addEventListener("input", function(e) {
+            iucNumberInput.addEventListener("input", function() {
+                const iuc = this.value.trim();
+                const network = selectedTab;
+
                 // Remove all non-digit characters
                 this.value = this.value.replace(/\D/g, '');
-                checkPurchaseReady();
+
+                if (iuc.length === 10 && network) {
+                    // Show spinner and hide customer name
+                    customerNameSpinner.style.display = "inline-block";
+                    customerName.textContent = "";
+                    accountStatusRow.style.display = "none";
+
+                    sendAjaxRequest(
+                        "verify-iuc.php",
+                        "POST",
+                        `iuc=${encodeURIComponent(iuc)}&network=${encodeURIComponent(network)}`,
+                        function(response) {
+                            // Hide spinner
+                            customerNameSpinner.style.display = "none";
+
+                            if (response.success) {
+                                customerName.textContent = response.customer_name;
+                                accountStatus.textContent = response.account_status;
+                                accountStatusRow.style.display = "flex";
+                            } else {
+                                customerName.textContent = "Unknown";
+                                accountStatusRow.style.display = "none";
+                            }
+                            checkPurchaseReady();
+                        }
+                    );
+                } else {
+                    customerNameSpinner.style.display = "none";
+                    customerName.textContent = "Unknown";
+                    accountStatusRow.style.display = "none";
+                    checkPurchaseReady();
+                }
             });
 
             // --- Service selection ---

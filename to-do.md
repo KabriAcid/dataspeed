@@ -9,7 +9,6 @@
 
 - Quick amount issues in buy airtime page.✔️
 - Also add the login with username functionality.✔️
-- Notification sort by date fixes.
 - User's account setting failure.✔️
 - Sanitize inputs when using quick amount buttons. ✔️
 - Sanitizing and validating username field.✔️
@@ -18,6 +17,7 @@
 - Username step in registration form.✔️
 - Adding action buttons (e.g., Transfer to Friend)✔️
 - Username field for updates.✔️
+- Notification sort by date fixes.
 - No back to OTP page in the register page.
 - Full fixes of TV subscription page.
 - In transactions page use the icon of the service provider instead.
@@ -31,8 +31,8 @@
 - Add a subdomain for the admins.
 - A dashboard panel for admin
 - Email loader animation.
-- Use Synk for vulnerability detection.
 - Use a different SMTP.
+- Use Synk for vulnerability detection.
 
 --- NOTIFICATION MODULES ---
 

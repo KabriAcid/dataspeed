@@ -269,6 +269,8 @@ set_title('Dashboard');
             </div>
         </div>
 
+        <audio id="balanceUpdateSound" src="../assets/sounds/ding.mp3"></audio>
+
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
         <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
         <!-- FontAwesome CDN -->
@@ -277,6 +279,26 @@ set_title('Dashboard');
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const balanceAmount = document.getElementById("balanceAmount");
+            const balanceUpdateSound = document.getElementById("balanceUpdateSound");
+
+            function animateBalanceUpdate(currentBalance, newBalance) {
+                const balanceElement = document.getElementById("balanceAmount");
+                const duration = 1000; // Animation duration in milliseconds
+                const frameRate = 60; // Frames per second
+                const totalFrames = Math.round(duration / (1000 / frameRate));
+                const increment = (newBalance - currentBalance) / totalFrames;
+
+                let frame = 0;
+                const animation = setInterval(() => {
+                    frame++;
+                    const updatedBalance = currentBalance + increment * frame;
+                    balanceElement.innerHTML = `&#8358;${updatedBalance.toFixed(2)}`;
+
+                    if (frame === totalFrames) {
+                        clearInterval(animation);
+                    }
+                }, 1000 / frameRate);
+            }
 
             function updateBalance() {
                 fetch("update-balance.php", {
@@ -288,7 +310,12 @@ set_title('Dashboard');
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.success) {
-                            balanceAmount.innerHTML = `&#8358;${data.balance}`;
+                            const currentBalance = parseFloat(
+                                document.getElementById("balanceAmount").innerText.replace("₦", "").replace(",", "")
+                            );
+                            const newBalance = parseFloat(data.balance);
+                            animateBalanceUpdate(currentBalance, newBalance);
+                            balanceUpdateSound.play();
                         } else {
                             console.error(data.message);
                         }
@@ -297,10 +324,6 @@ set_title('Dashboard');
                         console.error("Error updating balance:", error);
                     });
             }
-
-            setInterval(updateBalance, 5000);
-
-            updateBalance();
         });
 
         // Copy to clipboard

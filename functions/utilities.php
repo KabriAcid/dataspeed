@@ -13,6 +13,21 @@ function redirectToReferrer()
     exit();
 }
 
+function generateRequestID($prefix, $user_id, $pdo,)
+{
+    do {
+        // Generate request ID using user ID, timestamp, and random number
+        $request_id = $prefix . '-' . $user_id . '-' . time() . '-' . rand(1000, 9999);
+
+        // Check if the request ID already exists in the database
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM transactions WHERE reference = ?");
+        $stmt->execute([$request_id]);
+        $exists = $stmt->fetchColumn();
+    } while ($exists > 0);
+
+    return $request_id;
+}
+
 function checkEnvVars($required_vars = null)
 {
     if ($required_vars === null) {
@@ -75,7 +90,8 @@ function sanitizeInput($input, $type = 'default')
     return $input;
 }
 
-function validateInput($input, $type, $required = true, $min = null, $max = null) {
+function validateInput($input, $type, $required = true, $min = null, $max = null)
+{
     $input = trim($input);
 
     if ($required && empty($input)) {
@@ -133,4 +149,3 @@ function validateInput($input, $type, $required = true, $min = null, $max = null
 
     return $input;
 }
-?>

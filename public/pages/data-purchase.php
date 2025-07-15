@@ -50,7 +50,7 @@ try {
 
     // Check if the account is already frozen
     if ($user['account_status'] == ACCOUNT_STATUS_FROZEN) {
-        echo json_encode(["success" => false, "message" => "Your account is frozen due to multiple failed PIN attempts."]);
+        echo json_encode(["success" => false, "message" => "Your account is frozen due to multiple failed PIN attempts.", "locked" => true]);
         exit;
     }
 
@@ -72,7 +72,7 @@ try {
 
             pushNotification($pdo, $user_id, "Account Frozen", "Your account has been frozen due to multiple failed PIN attempts.", "security", "ni ni-lock-circle-open", "text-danger", 0);
 
-            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts.", "frozen" => true]);
+            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts.", "locked" => true]);
             exit;
         }
 
@@ -140,7 +140,8 @@ $service_id = 2; // Always 2 for data
 $serviceID = $network === '9mobile' ? 'etisalat' : $network;
 
 // 6. VTpass API Setup
-$request_id = time() . rand(1000, 9999); // Unique request ID
+$request_id = generateRequestID('AT', $user_id, $pdo);
+
 $postData = [
     'serviceID'  => $serviceID,
     'billersCode' => $phone,
