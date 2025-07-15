@@ -1,32 +1,26 @@
 <?php
-$stmt = $pdo->prepare("SELECT session_expiry_enabled FROM user_settings WHERE user_id = ?");
-$stmt->execute([$_SESSION['user_id']]);
-$userSettings = $stmt->fetch();
+session_start();
+require_once __DIR__ . '/../config/database.php';
 
-// Session expiry check (10 minutes = 600 seconds)
-if (session_status() === PHP_SESSION_ACTIVE || session_status() === PHP_SESSION_NONE) {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    // Only check if user is logged in
-    if (isset($_SESSION['user_id'])) {
-        // Fetch user settings from DB (if not already in session)
-        if (!isset($_SESSION['session_expiry_enabled'])) {
-            $stmt = $pdo->prepare("SELECT session_expiry_enabled FROM user_settings WHERE user_id = ?");
-            $stmt->execute([$_SESSION['user_id']]);
-            $settings = $stmt->fetch();
-            $_SESSION['session_expiry_enabled'] = $settings['session_expiry_enabled'] ?? 1;
-        }
+header('Content-Type: application/json');
 
-        if (
-            $_SESSION['session_expiry_enabled'] &&
-            isset($_SESSION['last_activity']) &&
-            (time() - $_SESSION['last_activity'] > 10)
-        ) {
-            $_SESSION['reauth_required'] = true;
-        } else {
-            $_SESSION['last_activity'] = time();
-            unset($_SESSION['reauth_required']);
-        }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $password = $_POST['password'] ?? null;
+
+    // Verify the user's password
+    $stmt = $pdo->prepare("SELECT password FROM admins WHERE id = :id");
+    $stmt->execute([':id' => $_SESSION['user_id']]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['password'])) {
+        // Unlock the account and reset inactivity timer
+        $_SESSION['last_activity'] = time(); // Reset inactivity timer
+        echo json_encode(['status' => 'success', 'message' => 'Account unlocked successfully.']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid password. Please try again.']);
     }
+    exit;
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+    exit;
 }

@@ -1,12 +1,3 @@
-<?php
-
-if (!empty($_SESSION['reauth_required'])): ?>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            showReauthModal();
-        });
-    </script>
-<?php endif; ?>
 <script>
     // Add functionality for the header-back-button
     document.addEventListener('DOMContentLoaded', function() {
@@ -18,5 +9,6 @@ if (!empty($_SESSION['reauth_required'])): ?>
         }
     });
 </script>
+<script src="../assets/js/session-auth.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
 <script src="../assets/js/popper.js"></script>

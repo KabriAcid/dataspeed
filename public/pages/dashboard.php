@@ -372,6 +372,7 @@ set_title('Dashboard');
         });
     </script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
+    
 </body>
 
 </html>
