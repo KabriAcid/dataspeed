@@ -140,7 +140,8 @@ $service_id = 2; // Always 2 for data
 $serviceID = $network === '9mobile' ? 'etisalat' : $network;
 
 // 6. VTpass API Setup
-$request_id = time() . rand(1000, 9999); // Unique request ID
+$request_id = generateRequestID('AT', $user_id, $pdo);
+
 $postData = [
     'serviceID'  => $serviceID,
     'billersCode' => $phone,

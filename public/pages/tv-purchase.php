@@ -149,7 +149,8 @@ $provider_id = $providerMap[strtolower($network)] ?? 0;
 $service_id = 3; // Always 3 for TV
 
 // 6. VTpass API Setup
-$request_id = time() . rand(1000, 9999); // Unique request ID
+$request_id = generateRequestID('TV', $user_id, $pdo);
+
 $postData = [
     'serviceID'      => strtolower($network),
     'billersCode'    => $iuc,

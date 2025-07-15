@@ -139,14 +139,19 @@ $serviceMap = [
 $service_id = $serviceMap[$type] ?? 1;
 
 // 6. Prepare VTpass API Call
-$serviceID = $network === '9mobile' ? 'etisalat' : $network; // VTpass uses 'etisalat' for 9mobile
-$request_id = time() . rand(1000, 9999);
+$serviceID = $network === '9mobile' ? 'etisalat' : $network;
+
+// Request ID util function
+$request_id = generateRequestID('AT', $user_id, $pdo);
+
 $postData = [
     'serviceID'   => $serviceID,
     'amount'      => $amount,
     'phone'       => $phone,
     'request_id'  => $request_id
 ];
+
+
 $vtpass_api_key = $_ENV['VTPASS_API_KEY'];
 $vtpass_secret_key = $_ENV['VTPASS_SECRET_KEY'];
 $vtpass_url = $_ENV['VTPASS_SANDBOX_URL'] ?? 'https://sandbox.vtpass.com/api/pay';
