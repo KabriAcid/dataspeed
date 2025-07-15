@@ -9,6 +9,6 @@
         }
     });
 </script>
-<script src="../assets/js/session-auth.js"></script>
+<script src="../assets/js/session-lock.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
 <script src="../assets/js/popper.js"></script>

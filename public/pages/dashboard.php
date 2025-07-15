@@ -7,13 +7,6 @@ require __DIR__ . '/../partials/header.php';
 require __DIR__ . '/../partials/initialize.php';
 
 set_title('Dashboard');
-
-// if (isset($_SESSION['reauth_required']) && !empty($_SESSION['reauth_required'])) {
-//     require __DIR__ . '/../partials/auth-modal.php';
-//     echo "<script>document.addEventListener('DOMContentLoaded', function(){ showReauthModal(); });</script>";
-//     exit;
-// }
-
 ?>
 
 <body>

@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Use the withOverlay function to show the loader
     withOverlay(hideOverlay => {
       sendAjaxRequest(
-        "auth.php",
+        "login-auth.php",
         "POST",
         `user=${encodeURIComponent(user)}&password=${encodeURIComponent(
           password

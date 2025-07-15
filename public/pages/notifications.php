@@ -72,7 +72,6 @@ $groupedNotifications = groupNotificationsByDate($notifications);
         &copy; Dreamerscodes 2025. All rights reserved.
     </footer>
 
-    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 

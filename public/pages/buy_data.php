@@ -359,7 +359,6 @@ $networkProviders = getServiceProvider($pdo, 'network');
     </script>
 
     <!-- FontAwesome CDN -->
-    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
