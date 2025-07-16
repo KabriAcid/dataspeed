@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->execute([$user_id, $token, $expires_at]);
 
         // Compose the email
-        $resetLink = "http://localhost/dataspeed/public/pages/account_unlock.php.php?token=" . urlencode($token);
+        $resetLink = "http://localhost/dataspeed/public/pages/account_unlock.php?token=" . urlencode($token);
         $emailContent = "
             <html>
             <head>

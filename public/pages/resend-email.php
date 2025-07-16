@@ -46,7 +46,7 @@ try {
     }
 
     // Compose the email
-    $resetLink = "http://localhost/dataspeed/public/pages/account_unlock.php.php?token=" . urlencode($token);
+    $resetLink = "http://localhost/dataspeed/public/pages/account_unlock.php?token=" . urlencode($token);
     $emailContent = "
             <html>
             <head>

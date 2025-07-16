@@ -109,6 +109,10 @@ function set_title($title = null)
             </form>
 
         </div>
+        <!-- Overlay -->
+        <div id="bodyOverlay" class="body-overlay" style="display: none;">
+            <div class="overlay-spinner"></div>
+        </div>
     </main>
 </body>
 <script src="../assets/js/ajax.js"></script>

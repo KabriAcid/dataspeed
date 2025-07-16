@@ -80,7 +80,10 @@ require __DIR__ . '/../partials/initialize.php';
                 </div>
             </form>
         </div>
-
+        <!-- Overlay -->
+        <div id="bodyOverlay" class="body-overlay" style="display: none;">
+            <div class="overlay-spinner"></div>
+        </div>
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
     </main>
 

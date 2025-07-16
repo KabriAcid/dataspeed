@@ -1,6 +1,7 @@
 <?php
 session_start();
 require __DIR__ . '/../../config/config.php';
+require __DIR__ . '/../../functions/Model.php';
 
 header("Content-Type: application/json");
 
@@ -50,9 +51,14 @@ try {
     // Hash the new password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Update the user's password
-    $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE user_id = ?");
-    $stmt->execute([$hashedPassword, $user_id]);
+    // Update the user's password, reset failed attempts, and set account status to active
+    $stmt = $pdo->prepare("UPDATE users SET password = ?, account_status = ?, failed_attempts = ? WHERE user_id = ?");
+    $stmt->execute([$hashedPassword, ACCOUNT_STATUS_ACTIVE, 0, $user_id]);
+
+    // Push a notification to the user
+    $notificationTitle = "Account Unlocked";
+    $notificationMessage = "Your account has been successfully unlocked and your password has been updated.";
+    pushNotification($pdo, $user_id, $notificationTitle, $notificationMessage, "security", "ni ni-lock-circle-open", "text-success");
 
     // Delete the token after successful password reset
     $stmt = $pdo->prepare("DELETE FROM account_reset_tokens WHERE token = ?");

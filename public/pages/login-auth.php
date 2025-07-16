@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'success' => false,
             'locked' => true,
             'message' => 'Your account is locked due to multiple failed login attempts.',
-            'redirect' => 'account_locked.php.php'
+            'redirect' => 'account_locked.php'
         ]);
         exit;
     }

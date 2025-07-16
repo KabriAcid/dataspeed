@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
               // Keep the overlay visible for a timeout before redirecting
               showToasted(response.message, "success");
               setTimeout(() => {
-                window.location.href = "account_locked.php.php?submitted=true"; // Redirect to success page
+                window.location.href = "account_locked.php?submitted=true"; // Redirect to success page
                 hideOverlay(); // Hide the overlay after redirect
               }, 1500);
             }

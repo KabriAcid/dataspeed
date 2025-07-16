@@ -84,14 +84,14 @@ function set_title($title = null)
             <div class="form-group">
                 <label for="password" class="form-label">New Password</label>
                 <div class="mb-3 password-wrapper">
-                    <input type="password" placeholder="Password" id="password" name="password" class="input" minlength="6" required>
+                    <input type="password" placeholder="Password" id="password" name="password" class="input" minlength="6">
                     <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
                 </div>
             </div>
             <div class="form-group">
                 <label for="confirm_password" class="form-label">Confirm Password</label>
                 <div class="mb-3 password-wrapper">
-                    <input type="password" placeholder="Re-Password" id="confirm_password" name="confirm_password" class="input" minlength="6" required>
+                    <input type="password" placeholder="Re-Password" id="confirm_password" name="confirm_password" class="input" minlength="6">
                     <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
                 </div>
             </div>
@@ -100,6 +100,12 @@ function set_title($title = null)
                 <button type="submit" class="btn primary-btn" id="submit_reset">Reset Password</button>
             </div>
         </form>
+
+        <!-- Overlay -->
+        <div id="bodyOverlay" class="body-overlay" style="display: none;">
+            <div class="overlay-spinner"></div>
+        </div>
+        
     </main>
     <?php require __DIR__ . '/../partials/mini-footer.php' ?>
     <script src="../assets/js/toggle-password.js"></script>
@@ -110,10 +116,14 @@ function set_title($title = null)
             const password = document.getElementById("password").value.trim();
             const confirmPassword = document.getElementById("confirm_password").value.trim();
 
-            // Validate password strength
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/; // At least 6 characters, 1 letter, 1 number
-            if (!passwordRegex.test(password)) {
-                showToasted("Password must be at least 6 characters long and include at least one letter and one number.", "error");
+            // if both fields are empty
+            if (password == "" || confirmPassword == "") {
+                showToasted("Please fill in both password fields.", "error");
+                return;
+            }
+
+            if (password.length < 6 || confirmPassword.length < 6) {
+                showToasted("Password must be at least 6 characters long.", "error");
                 return;
             }
 
