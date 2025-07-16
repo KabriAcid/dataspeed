@@ -324,6 +324,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
             });
         });
     </script>
+    <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
