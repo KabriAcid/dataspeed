@@ -115,11 +115,11 @@ $networkProviders = getServiceProvider($pdo, 'network');
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/pinpad.js"></script>
     <script>
-        const networkSVGs = {
-            MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:32px;">`,
-            AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:32px;">`,
-            GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:32px;">`,
-            '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:32px;">`
+        const networkIcons = {
+            MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:25px;widht:25px;">`,
+            AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:25px;widht:25px;">`,
+            GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:25px;widht:25px;">`,
+            '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:25px;widht:25px;">`
         };
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -304,7 +304,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
                 // Insert network SVG
                 const networkKey = selectedTab?.toUpperCase() || "MTN";
-                confirmService.innerHTML = networkSVGs[networkKey] || "";
+                confirmService.innerHTML = networkIcons[networkKey] || "";
 
                 confirmPlan.textContent = `${selectedPlan.volume}`;
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
@@ -325,7 +325,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
-                
+
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
                         pinpadModal.style.display = "flex";

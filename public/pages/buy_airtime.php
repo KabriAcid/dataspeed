@@ -140,11 +140,11 @@ $networkProviders = getServiceProvider($pdo, 'network');
     <script src="../assets/js/pinpad.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const networkSVGs = {
-                MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:25px;">`,
-                AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:25px;">`,
-                GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:25px;">`,
-                '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:25px;">`
+            const networkIcons = {
+                MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:25px;widht:25px;">`,
+                AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:25px;widht:25px;">`,
+                GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:25px;widht:25px;">`,
+                '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:25px;widht:25px;">`
             };
 
             let selectedTab = null;
@@ -303,7 +303,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                     // Set values in confirm modal
                     document.getElementById('customer-phone').textContent = phone ? formatPhoneNumber(phone) : 'N/A';
                     document.getElementById('customer-phone').setAttribute('data-raw', phone);
-                    document.getElementById('confirm-network').innerHTML = networkSVGs[network] || '';
+                    document.getElementById('confirm-network').innerHTML = networkIcons[network] || '';
                     document.getElementById('confirm-plan').textContent = activeTab.dataset.tab === "self" ? "Self" : "Others";
                     document.getElementById('confirm-amount').textContent = formattedAmount(amount);
 

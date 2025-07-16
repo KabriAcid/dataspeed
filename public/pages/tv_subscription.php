@@ -178,6 +178,7 @@ $providers = getServiceProvider($pdo, 'TV');
                                 accountStatusRow.style.display = "flex";
                             } else {
                                 customerName.textContent = "Unknown";
+                                customerName.className = 'text-warning';
                                 accountStatusRow.style.display = "none";
                             }
                             checkPurchaseReady();
@@ -186,6 +187,7 @@ $providers = getServiceProvider($pdo, 'TV');
                 } else {
                     customerNameSpinner.style.display = "none";
                     customerName.textContent = "Unknown";
+                    customerName.className = 'text-warning';
                     accountStatusRow.style.display = "none";
                     checkPurchaseReady();
                 }
