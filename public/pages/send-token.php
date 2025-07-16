@@ -1,12 +1,10 @@
 <?php
-ob_start();
 session_start();
-
-header("Content-Type: application/json");
-
 // Required files
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/sendMail.php';
+
+header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'] ?? '';
@@ -18,19 +16,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Check if user exists and registration is complete
-        $stmt = $pdo->prepare("SELECT user_id, registration_status FROM users WHERE email = ?");
+        $stmt = $pdo->prepare("SELECT user_id, registration_status, account_status FROM users WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user) {
-            ob_clean();
             echo json_encode(["success" => false, "message" => "Email does not exist. Check for typo."]);
             exit;
         }
 
         if ($user['registration_status'] !== 'complete') {
-            ob_clean();
             echo json_encode(["success" => false, "message" => "Registration not complete."]);
+            exit;
+        }
+
+        if ($user['account_status'] !== ACCOUNT_STATUS_ACTIVE) {
+            echo json_encode(["success" => false, "message" => "Account is not active."]);
             exit;
         }
 
@@ -61,20 +62,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Send email
         if (sendMail($email, $subject, $body)) {
-            ob_clean();
             echo json_encode(["success" => true, "message" => "Token sent to your email."]);
         } else {
-            ob_clean();
             echo json_encode(["success" => false, "message" => "Failed to send email."]);
         }
     } catch (Exception $e) {
-        ob_clean();
+        error_log("Error in send-token.php: " . $e->getMessage());
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
 
     exit;
 } else {
-    ob_clean();
     echo json_encode(["success" => false, "message" => "Invalid request method."]);
     exit;
 }
