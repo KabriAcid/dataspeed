@@ -50,6 +50,8 @@ function set_title($title = null)
         </div>
     </main>
 
+    <?php include __DIR__ . '/../partials/mini-footer.php'; ?>
+
     <!-- Overlay -->
     <div id="bodyOverlay" class="body-overlay" style="display: none;">
         <div class="overlay-spinner"></div>

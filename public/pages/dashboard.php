@@ -265,7 +265,7 @@ set_title('Dashboard');
         <audio id="balanceUpdateSound" src="../assets/sounds/ding.mp3"></audio>
 
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
-        <?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+
         <!-- FontAwesome CDN -->
     </main>
     <script src="../assets/js/toggle-number.js"></script>
@@ -365,7 +365,7 @@ set_title('Dashboard');
         });
     </script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
-    
+
 </body>
 
 </html>

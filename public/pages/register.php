@@ -295,7 +295,7 @@ endif; ?>
 <script src="../assets/js/ajax.js"></script>
 <script src="../assets/js/toggle-password.js"></script>
 <script src="../assets/js/multi-step.js"></script>
-<?php require __DIR__ . '/../partials/auth-modal.php'; ?>
+
 <?php require __DIR__ . '/../partials/scripts.php'; ?>
 
 </html>
