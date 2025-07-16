@@ -7,7 +7,7 @@ ini_set('log_errors', 1);
 error_reporting(E_ALL);
 
 define('ACCOUNT_STATUS_ACTIVE', 101);
-define('ACCOUNT_STATUS_FROZEN', 102);
+define('ACCOUNT_STATUS_LOCKED', 102);
 define('ACCOUNT_STATUS_BANNED', 103);
 define('ACCOUNT_STATUS_INACTIVE', 104);
 
@@ -28,7 +28,6 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ]);
-
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }

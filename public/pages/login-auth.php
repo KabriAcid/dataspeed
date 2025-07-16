@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Check if the account is frozen
-    if ($userData['account_status'] == ACCOUNT_STATUS_FROZEN) {
+    if ($userData['account_status'] == ACCOUNT_STATUS_LOCKED) {
         $_SESSION['locked_user_id'] = $userData['user_id'];
         echo json_encode([
             'success' => false,

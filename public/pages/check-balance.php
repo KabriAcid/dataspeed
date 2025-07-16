@@ -34,11 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($available_balance >= $amount) {
             echo json_encode([
                 "success" => true,
-                "message" => "Sufficient balance.",
-                "balance" => $available_balance
+                "message" => "Sufficient balance."
             ]);
         } else {
             echo json_encode(["success" => false, "message" => "Insufficient balance."]);
+            exit;
         }
 
     } catch (PDOException $e) {

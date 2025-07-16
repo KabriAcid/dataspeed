@@ -25,8 +25,8 @@ try {
     }
 
     // Check if account is already frozen
-    if ($user['account_status'] == ACCOUNT_STATUS_FROZEN) {
-        echo json_encode(["success" => false, "message" => "Your account is frozen due to multiple failed PIN attempts."]);
+    if ($user['account_status'] == ACCOUNT_STATUS_LOCKED) {
+        echo json_encode(["success" => false, "message" => "Your account is locked due to multiple failed PIN attempts."]);
         exit;
     }
 
@@ -51,11 +51,16 @@ try {
         // Freeze account if failed attempts reach 5
         if ($failed_attempts >= 5) {
             $stmt = $pdo->prepare("UPDATE users SET failed_attempts = ?, account_status = ? WHERE user_id = ?");
-            $stmt->execute([$failed_attempts, ACCOUNT_STATUS_FROZEN, $user_id]);
+            $stmt->execute([$failed_attempts, ACCOUNT_STATUS_LOCKED, $user_id]);
 
             pushNotification($pdo, $user_id, "Account Frozen", "Your account has been frozen due to multiple failed PIN attempts.", "security", "ni ni-lock-circle-open", "text-danger", 0);
 
-            echo json_encode(["success" => false, "message" => "Your account has been frozen due to multiple failed PIN attempts.", "frozen" => true]);
+            echo json_encode([
+                "success" => false,
+                "message" => "Your account has been frozen due to multiple failed PIN attempts.",
+                "locked" => true,
+                "redirect" => "logout.php"
+            ]);
             exit;
         }
 

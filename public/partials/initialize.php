@@ -4,6 +4,13 @@ define("INACTIVITY_TIMEOUT", 600);
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     $user = getUserInfo($pdo, $user_id);
+
+    $account_status = $user['account_status'];
+    
+    if ($account_status == ACCOUNT_STATUS_LOCKED) {
+        header("Location: logout.php");
+        exit();
+    }
 } else {
     header('Location: ../pages/login.php');
     exit;

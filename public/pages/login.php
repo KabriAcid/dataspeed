@@ -44,68 +44,79 @@ function set_title($title = null)
 
 <body>
 
-<main class="container">
-    <?php
-    if ($success == 1) {
-        echo "<script>showToasted('Registration Successful', 'success')</script>";
-        // Redirect to the same page without the success parameter
-        echo "<script>window.location.href='login.php';</script>";
-        exit;
-    } elseif ($success == 2) {
-        echo "<script>showToasted('Password reset Successfully', 'success')</script>";
-        // Redirect to the same page without the success parameter
-        echo "<script>window.location.href='login.php';</script>";
-        exit;
-    }
-    ?>
-    <div class="form-container text-center">
-        <div class="form-top-container">
-            <a href="../../index.php">
-                <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M8.60564 1.65147L3.73182 6.5253H16V8.47483H3.73182L8.60564 13.3487L7.22712 14.7272L0 7.50006L7.22712 0.272949L8.60564 1.65147Z"
-                        fill="#722F37" />
-                </svg>
-            </a>
-        </div>
-        <form method="post" onsubmit="return false;" class="mt-5">
-            <div id="login-form">
-                <h3>Welcome Back!</h3>
-                <p class="text-sm">Enter your correct login details to continue.</p>
-                <div class="form-field">
-                    <div>
-                        <input type="text" id="user" name="user" placeholder="Email address, Username,  or Phone Number"
-                            class="input">
-                    </div>
-                    <div class="my-3"></div>
-                    <div class="password-wrapper">
-                        <input type="password" id="password" class="input" placeholder="Enter your password" style="padding-right: 40px;" />
-                        <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
-                    </div>
-
-                    <p class="text-end"><a href="forgot_password.php" class="text-secondary text-sm">Forgot
-                            password?</a></p>
-                    <button type="submit" class="btn primary-btn mt-3" name="login" id="login">
-                        Login
-                    </button>
-                </div>
-                <p class="text-center text-sm">Don't have an account? <a href="register.php" class="link">Register</a>
-                </p>
-                <p class="copyright text-xs">Copyright @Dreamerscodes</p>
+    <main class="container">
+        <?php
+        if ($success == 1) {
+            echo "<script>showToasted('Registration Successful', 'success')</script>";
+            // Redirect to the same page without the success parameter
+            echo "<script>window.location.href='login.php';</script>";
+            exit;
+        } elseif ($success == 2) {
+            echo "<script>showToasted('Password reset Successfully', 'success')</script>";
+            // Redirect to the same page without the success parameter
+            echo "<script>window.location.href='login.php';</script>";
+            exit;
+        }
+        ?>
+        <div class="form-container text-center">
+            <div class="form-top-container">
+                <a href="../../index.php">
+                    <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M8.60564 1.65147L3.73182 6.5253H16V8.47483H3.73182L8.60564 13.3487L7.22712 14.7272L0 7.50006L7.22712 0.272949L8.60564 1.65147Z"
+                            fill="#722F37" />
+                    </svg>
+                </a>
             </div>
-        </form>
+            <form method="post" onsubmit="return false;" class="mt-5">
+                <div id="login-form">
+                    <h3>Welcome Back!</h3>
+                    <p class="text-sm">Enter your correct login details to continue.</p>
+                    <div class="form-field">
+                        <div>
+                            <input type="text" id="user" name="user" placeholder="Email address, Username,  or Phone Number"
+                                class="input">
+                        </div>
+                        <div class="my-3"></div>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" class="input" placeholder="Enter your password" style="padding-right: 40px;" />
+                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                        </div>
+
+                        <p class="text-end"><a href="forgot_password.php" class="text-secondary text-sm">Forgot
+                                password?</a></p>
+                        <button type="submit" class="btn primary-btn mt-3" name="login" id="login">
+                            Login
+                        </button>
+                    </div>
+                    <p class="text-center text-sm">Don't have an account? <a href="register.php" class="link">Register</a>
+                    </p>
+                    <p class="copyright text-xs">Copyright @Dreamerscodes</p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Overlay -->
+    <div id="bodyOverlay" class="body-overlay" style="display: none;">
+        <div class="overlay-spinner"></div>
     </div>
-</main>
 
-<!-- Overlay -->
-<div id="bodyOverlay" class="body-overlay" style="display: none;">
-    <div class="overlay-spinner"></div>
-</div>
-
-<script src="../assets/js/toggle-password.js"></script>
-<script src="../assets/js/ajax.js"></script>
-<script src="../assets/js/login-auth.js"></script>
-<?php require __DIR__ . '/../partials/scripts.php'; ?>
+    <script src="../assets/js/toggle-password.js"></script>
+    <script src="../assets/js/ajax.js"></script>
+    <script src="../assets/js/login-auth.js"></script>
+    <script>
+        // Add functionality for the header-back-button
+        document.addEventListener('DOMContentLoaded', function() {
+            const backButton = document.querySelector('.header-back-button');
+            if (backButton) {
+                backButton.addEventListener('click', function() {
+                    window.history.back(); // Navigate to the previous page
+                });
+            }
+        });
+    </script>
 
 </body>
+
 </html>

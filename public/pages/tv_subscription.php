@@ -113,6 +113,7 @@ $providers = getServiceProvider($pdo, 'TV');
                 </div>
             </div>
         </div>
+        <?php var_dump($user); ?>
 
         <!-- Bottom navigation -->
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
@@ -179,6 +180,7 @@ $providers = getServiceProvider($pdo, 'TV');
                             } else {
                                 customerName.textContent = "Unknown";
                                 customerName.className = 'text-warning';
+                                accountStatusRow.style.display = "none";
                             }
                             checkPurchaseReady();
                         }
@@ -186,6 +188,7 @@ $providers = getServiceProvider($pdo, 'TV');
                 } else {
                     customerNameSpinner.style.display = "none";
                     customerName.textContent = "Unknown";
+                    customerName.className = 'text-warning';
                     accountStatusRow.style.display = "none";
                     checkPurchaseReady();
                 }
@@ -305,12 +308,6 @@ $providers = getServiceProvider($pdo, 'TV');
                 const phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
                 const selectedTabEl = document.querySelector('.service-tab.selected-tab');
 
-                // Validate phone number
-                const phoneRegex = /^(070|080|081|090|091|071|091)\d{8}$/; // Nigerian phone number format
-                if (buyFor === "others" && !phoneRegex.test(phone)) {
-                    showToasted("Please enter a valid phone number.", "error");
-                    return;
-                }
 
                 // Validate selected plan
                 if (!selectedPlan) {
@@ -333,7 +330,8 @@ $providers = getServiceProvider($pdo, 'TV');
                     `<img src="${providerIcon}" alt="${providerName}" style="height:22px;vertical-align:middle;">` :
                     providerName;
 
-                customerIUC.textContent = iucNumberInput.value.trim();
+                const IUCNumber = iucNumberInput.value.trim();
+                customerIUC.textContent = formatNumber(IUCNumber);
                 customerIUC.setAttribute("data-raw", iucNumberInput.value.trim());
 
                 // Show both plan name and volume if available
@@ -361,6 +359,8 @@ $providers = getServiceProvider($pdo, 'TV');
                 pinpadModal.dataset.action = "tv";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
 
+                let rawAmount = pinpadModal.dataset.amount.replace(/[^\d]/g, '');
+
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
                         pinpadModal.style.display = "flex";
@@ -371,6 +371,21 @@ $providers = getServiceProvider($pdo, 'TV');
 
                 confirmModal.style.display = "none";
             });
+
+
+            function formatNumber(num) {
+                // Remove all non-digits
+                num = num.replace(/\D/g, '');
+
+                // Ensure leading zero
+                if (num.length === 10) num = '0' + num;
+
+                // Format as 080 8483 4953
+                if (num.length === 11 && num.startsWith('0')) {
+                    return `${num.substring(0, 3)} ${num.substring(3, 7)} ${num.substring(7, 11)}`;
+                }
+                return num;
+            }
 
             // --- Close confirm modal ---
             closeConfirm.addEventListener("click", function() {
@@ -384,6 +399,8 @@ $providers = getServiceProvider($pdo, 'TV');
 
             // --- Initial load ---
             loadPlans();
+
+
         });
     </script>
 

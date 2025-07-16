@@ -56,7 +56,7 @@ try {
                         overflow: hidden;
                     }
                     .email-header {
-                        background-color: #007bff;
+                        background-color: #94241e;
                         color: #ffffff;
                         padding: 20px;
                         text-align: center;
@@ -70,20 +70,20 @@ try {
                         padding: 20px;
                     }
                     .email-body h3 {
-                        color: #007bff;
+                        color: #94241e;
                     }
                     .email-body a {
                         display: inline-block;
                         margin-top: 20px;
                         padding: 10px 20px;
-                        background-color: #007bff;
+                        background-color: #94241e;
                         color: #ffffff;
                         text-decoration: none;
                         border-radius: 5px;
                         font-weight: bold;
                     }
                     .email-body a:hover {
-                        background-color: #0056b3;
+                        background-color: #94241e;
                     }
                     .email-footer {
                         text-align: center;
@@ -97,7 +97,7 @@ try {
             <body>
                 <div class='email-container'>
                     <div class='email-header'>
-                        <img src='http://localhost/dataspeed/public/favicon.png' alt='DataSpeed Logo'>
+                        <img src='https://dataspeed.com/public/favicon.png' alt='DataSpeed Logo'>
                         <h2>DataSpeed Support</h2>
                     </div>
                     <div class='email-body'>
@@ -118,7 +118,13 @@ try {
 
     // Send the email
     if (sendMail($user['email'], "Account Reset Instructions", $emailContent)) {
-        echo json_encode(["success" => true, "message" => "Email sent successfully."]);
+
+        $stmt = $pdo->prepare("UPDATE account_reset_tokens SET expires_at =? WHERE user_id = ?");
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
+        $stmt->execute([$expiresAt, $user_id]);
+        
+
+        echo json_encode(["success" => true, "message" => "Email sent successfully. Please check your inbox"]);
     } else {
         error_log("Failed to send email");
         echo json_encode(["success" => false, "message" => "Failed to resend email."]);

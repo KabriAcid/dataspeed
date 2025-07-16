@@ -1,5 +1,4 @@
 <?php
-session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
@@ -325,6 +324,8 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
+
+                let rawAmount = pinpadModal.dataset.amount.replace(/[^\d]/g, '');
 
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
