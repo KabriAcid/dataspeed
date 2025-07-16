@@ -325,7 +325,16 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
-                pinpadModal.style.display = "flex";
+                
+                sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
+                    if (response.success) {
+                        pinpadModal.style.display = "flex";
+                    } else {
+                        showToasted(response.message, "error");
+                    }
+                });
+
+                confirmModal.style.display = "none";
             });
 
             // **Format Phone Number**

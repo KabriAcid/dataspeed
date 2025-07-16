@@ -76,7 +76,7 @@ $providers = getServiceProvider($pdo, 'TV');
                         <img src="../assets/img/ng.png" alt=""> +234
                     </span>
                     <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
-                        placeholder="Phone Number" id="phone-number" class="input phone-input" required>
+                        placeholder="Phone Number" class="input phone-input" required>
                 </div>
 
                 <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
@@ -103,6 +103,9 @@ $providers = getServiceProvider($pdo, 'TV');
                         <span id="customerName" class="fw-bold">
                             <span class="spinner" id="customerNameSpinner" style="display: none;"></span>
                         </span>
+                    </div>
+                    <div class="info-row" id="accountStatusRow" style="display: none;">
+                        <span>Account Status:</span><span id="accountStatus" class="fw-bold"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -135,6 +138,10 @@ $providers = getServiceProvider($pdo, 'TV');
             const confirmAmount = document.getElementById("confirmAmount");
             const confirmValidity = document.getElementById("confirmValidity");
             const confirmPhone = document.getElementById("confirmPhone");
+            const customerName = document.getElementById("customerName");
+            const customerNameSpinner = document.getElementById("customerNameSpinner");
+            const accountStatusRow = document.getElementById("accountStatusRow");
+            const accountStatus = document.getElementById("accountStatus");
             const payBtn = document.getElementById("payBtn");
 
             // --- State ---
@@ -302,20 +309,20 @@ $providers = getServiceProvider($pdo, 'TV');
                 const phoneRegex = /^(070|080|081|090|091|071|091)\d{8}$/; // Nigerian phone number format
                 if (buyFor === "others" && !phoneRegex.test(phone)) {
                     showToasted("Please enter a valid phone number.", "error");
-                    return; // Prevent modal display
+                    return;
                 }
 
                 // Validate selected plan
                 if (!selectedPlan) {
                     showToasted("Please select a subscription plan.", "error");
-                    return; // Prevent modal display
+                    return;
                 }
 
                 // Validate IUC number
                 const iuc = iucNumberInput.value.trim();
                 if (!/^\d{10}$/.test(iuc)) {
                     showToasted("Please enter a valid IUC number.", "error");
-                    return; // Prevent modal display
+                    return;
                 }
 
                 const providerName = selectedTabEl ? selectedTabEl.querySelector('span').textContent : '';
@@ -353,7 +360,16 @@ $providers = getServiceProvider($pdo, 'TV');
                 pinpadModal.dataset.type = selectedPlan.name + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "tv";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
-                pinpadModal.style.display = "flex";
+
+                sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
+                    if (response.success) {
+                        pinpadModal.style.display = "flex";
+                    } else {
+                        showToasted(response.message, "error");
+                    }
+                });
+
+                confirmModal.style.display = "none";
             });
 
             // --- Close confirm modal ---
