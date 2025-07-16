@@ -1,6 +1,6 @@
 // Configuration variables for inactivity timeout and check interval
-const INACTIVITY_TIMEOUT = 5 * 1000;
-const CHECK_INTERVAL = 1000;
+const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 minutes
+const CHECK_INTERVAL = 1000 * 60;
 
 let inactivityTimeout;
 let inactivityCheckInterval;
@@ -19,7 +19,7 @@ function startInactivityCheck() {
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "locked") {
-          window.location.href = "auth_modal.php";
+          window.location.href = "auth_modal.php?expired=1";
         }
       })
       .catch(() => console.error("Failed to check inactivity."));

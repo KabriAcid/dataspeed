@@ -43,10 +43,7 @@ function set_title($title = null)
 </head>
 
 <body>
-    <?php #require __DIR__ . '/../partials/navbar.php';
-    ?>
 
-</body>
 <main class="container">
     <?php
     if ($success == 1) {
@@ -59,14 +56,6 @@ function set_title($title = null)
         // Redirect to the same page without the success parameter
         echo "<script>window.location.href='login.php';</script>";
         exit;
-    }
-    if (isset($_GET['expired'])) {
-        $expired = $_GET['expired'];
-        if ($expired == 1) {
-            echo "<script>
-            showToasted('Your session has expired. Please login again.', 'error')
-            </script>";
-        }
     }
     ?>
     <div class="form-container text-center">
@@ -118,5 +107,5 @@ function set_title($title = null)
 <script src="../assets/js/login-auth.js"></script>
 <?php require __DIR__ . '/../partials/scripts.php'; ?>
 
-
+</body>
 </html>

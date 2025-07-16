@@ -5,6 +5,7 @@ function set_title($title = null)
     $default = "DataSpeed";
     return htmlspecialchars($title ?: $default);
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +37,13 @@ function set_title($title = null)
 <body>
     <main class="container">
         <div class="form-container text-center">
+            <?php
+            if (isset($_GET['expired']) && $_GET['expired'] == 1) {
+                echo "<script>
+                        showToasted('Your session has expired. Please login again.', 'info')
+                    </script>";
+            }
+            ?>
             <form method="post" onsubmit="return false;" class="mt-5">
                 <div>
                     <h2 class="mb-3 text-center">Session Locked</h2>

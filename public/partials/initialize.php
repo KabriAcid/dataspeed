@@ -1,6 +1,6 @@
 <?php
-define("INACTIVITY_TIMEOUT", 5);
-
+session_start();
+define("INACTIVITY_TIMEOUT", 600);
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     $user = getUserInfo($pdo, $user_id);
@@ -11,7 +11,6 @@ if (isset($_SESSION['user_id'])) {
 
 // Check for inactivity
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > INACTIVITY_TIMEOUT)) {
-    // Redirect to lock screen after 5 seconds of inactivity
     header('Location: auth_modal.php');
     exit;
 }

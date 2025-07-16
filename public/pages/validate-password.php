@@ -4,7 +4,8 @@ session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
-require __DIR__ . '/../partials/initialize.php';
+
+
 
 header("Content-Type: application/json");
 
@@ -36,7 +37,7 @@ try {
     if (!empty($user['virtual_account'])) {
         echo json_encode([
             "success" => true,
-            "message" => "User already has a virtual account.",
+            "message" => "You already have a virtual account.",
             "account_number" => $user['virtual_account']
         ]);
         exit;
