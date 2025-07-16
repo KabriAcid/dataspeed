@@ -297,6 +297,27 @@ $providers = getServiceProvider($pdo, 'TV');
                 // Fill confirm modal
                 const phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
                 const selectedTabEl = document.querySelector('.service-tab.selected-tab');
+
+                // Validate phone number
+                const phoneRegex = /^(070|080|081|090|091|071|091)\d{8}$/; // Nigerian phone number format
+                if (buyFor === "others" && !phoneRegex.test(phone)) {
+                    showToasted("Please enter a valid phone number.", "error");
+                    return; // Prevent modal display
+                }
+
+                // Validate selected plan
+                if (!selectedPlan) {
+                    showToasted("Please select a subscription plan.", "error");
+                    return; // Prevent modal display
+                }
+
+                // Validate IUC number
+                const iuc = iucNumberInput.value.trim();
+                if (!/^\d{10}$/.test(iuc)) {
+                    showToasted("Please enter a valid IUC number.", "error");
+                    return; // Prevent modal display
+                }
+
                 const providerName = selectedTabEl ? selectedTabEl.querySelector('span').textContent : '';
                 const providerIcon = selectedTabEl ? selectedTabEl.querySelector('img').src : '';
 
