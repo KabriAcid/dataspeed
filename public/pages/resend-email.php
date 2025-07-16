@@ -24,13 +24,25 @@ try {
     }
 
     // Fetch the latest token
-    $stmt = $pdo->prepare("SELECT token FROM account_reset_tokens WHERE user_id = ? ORDER BY created_at DESC LIMIT 1");
+    $stmt = $pdo->prepare("SELECT token, expires_at FROM account_reset_tokens WHERE user_id = ? ORDER BY created_at DESC LIMIT 1");
     $stmt->execute([$user_id]);
-    $token = $stmt->fetchColumn();
+    $tokenData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$token) {
-        echo json_encode(["success" => false, "message" => "No reset token found."]);
-        exit;
+    // Check if token exists and is valid
+    if (!$tokenData || strtotime($tokenData['expires_at']) < time()) {
+        // Generate a new token if none exists or the token is expired
+        $token = bin2hex(random_bytes(32));
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+        $stmt = $pdo->prepare("INSERT INTO account_reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)");
+        $stmt->execute([$user_id, $token, $expiresAt]);
+    } else {
+        // Use the existing token and update its expiration time
+        $token = $tokenData['token'];
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+        $stmt = $pdo->prepare("UPDATE account_reset_tokens SET expires_at = ? WHERE user_id = ?");
+        $stmt->execute([$expiresAt, $user_id]);
     }
 
     // Compose the email
@@ -118,12 +130,6 @@ try {
 
     // Send the email
     if (sendMail($user['email'], "Account Reset Instructions", $emailContent)) {
-
-        $stmt = $pdo->prepare("UPDATE account_reset_tokens SET expires_at =? WHERE user_id = ?");
-        $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
-        $stmt->execute([$expiresAt, $user_id]);
-        
-
         echo json_encode(["success" => true, "message" => "Email sent successfully. Please check your inbox"]);
     } else {
         error_log("Failed to send email");
