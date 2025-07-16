@@ -1,10 +1,10 @@
 <?php
+session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php'; 
 
 header("Content-Type: application/json");
 
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $pin = $_POST['pin'] ?? '';

@@ -32,18 +32,31 @@ $complaintExists = $stmt->fetchColumn() > 0;
     <main class="container py-4">
         <?php if ($complaintExists): ?>
             <div class="success-message">
-                <h2 class="mb-3 primary">Complaint Submitted</h2>
+                <div class="d-flex justify-content-between mb-5 align-items-center">
+                    <a href="login.php" class="p-0 m-0">
+                        <svg width="20" height="19" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M8.60564 1.65147L3.73182 6.5253H16V8.47483H3.73182L8.60564 13.3487L7.22712 14.7272L0 7.50006L7.22712 0.272949L8.60564 1.65147Z"
+                                fill="#722F37" />
+                        </svg>
+                    </a>
+                    <h3 class="primary p-0 m-0">Complaint Submitted</h3>
+                    <h2></h2>
+                </div>
+
                 <p>Your complaint has been submitted successfully. Our team will review it and get back to you shortly.</p>
-                <i>Steps to reset your account:</i>
+                <p>Steps to reset your account:</p>
                 <ol>
-                    <li class="mt-2">Wait for an email or SMS from our support team.</li>
-                    <li class="mt-2">Follow the instructions provided to reset your account.</li>
-                    <li class="mt-2">If you need further assistance, contact our support team.</li>
+                    <li class="mb-2">Wait for an email or SMS from our support team.</li>
+                    <li class="mb-2">Follow the instructions provided to reset your account.</li>
+                    <li class="mb-2">If you need further assistance, contact our support team.</li>
                 </ol>
-                <p><a href="" class="fw-bold fs-6 primary">Contact us here</a></p>
                 <div class="d-flex justify-content-center mt-4">
                     <button id="resend_email" class="outline-btn">Resend Email</button>
                 </div>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <a href="" class="fw-bold fs-6">Contact Us Here</a>
             </div>
         <?php else: ?>
             <?php if (!isset($_GET['submitted']) || $_GET['submitted'] !== 'true'): ?>
@@ -79,10 +92,10 @@ $complaintExists = $stmt->fetchColumn() > 0;
         </div>
 
         <!-- Copyright text -->
-       <script src="../assets/js/toggle-password.js"></script>
+        <script src="../assets/js/toggle-password.js"></script>
     </main>
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/account_locked.php.js"></script>
+    <script src="../assets/js/account-locked.js"></script>
 </body>
 
 </html>

@@ -55,10 +55,15 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET password = ?, account_status = ?, failed_attempts = ? WHERE user_id = ?");
     $stmt->execute([$hashedPassword, ACCOUNT_STATUS_ACTIVE, 0, $user_id]);
 
+// Update the account complaints table as resolved
+    $stmt = $pdo->prepare("UPDATE account_complaints SET status = 'resolved' WHERE user_id = ? AND status = 'pending'");
+    $stmt->execute([$user_id]);
+
     // Push a notification to the user
     $notificationTitle = "Account Unlocked";
     $notificationMessage = "Your account has been successfully unlocked and your password has been updated.";
     pushNotification($pdo, $user_id, $notificationTitle, $notificationMessage, "security", "ni ni-lock-circle-open", "text-success");
+
 
     // Delete the token after successful password reset
     $stmt = $pdo->prepare("DELETE FROM account_reset_tokens WHERE token = ?");

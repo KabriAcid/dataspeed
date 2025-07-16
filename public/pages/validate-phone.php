@@ -1,10 +1,9 @@
 <?php
-
+session_start();
 require __DIR__ . '/../../config/config.php';
 
 header("Content-Type: application/json");
 
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $phone = $_POST['phone'] ?? '';

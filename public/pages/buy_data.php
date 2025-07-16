@@ -115,10 +115,10 @@ $networkProviders = getServiceProvider($pdo, 'network');
     <script src="../assets/js/pinpad.js"></script>
     <script>
         const networkIcons = {
-            MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:25px;widht:25px;">`,
-            AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:25px;widht:25px;">`,
-            GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:25px;widht:25px;">`,
-            '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:25px;widht:25px;">`
+            MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:25px;">`,
+            AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:25px;">`,
+            GLO: `<img src="../assets/img/icons/glo.png" alt="Glo" style="height:25px;">`,
+            '9MOBILE': `<img src="../assets/img/icons/9mobile.png" alt="9Mobile" style="height:25px;">`
         };
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -236,12 +236,12 @@ $networkProviders = getServiceProvider($pdo, 'network');
                     const card = document.createElement("div");
                     card.className = "col-4 mb-3";
                     card.innerHTML = `
-    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
-        <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
-        <div class="data-volume mb-1">${plan.volume}</div>
-        <div class="data-validity mb-2">${plan.validity}</div>
-    </div>
-    `;
+                                    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
+                                        <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
+                                        <div class="data-volume mb-1">${plan.volume}</div>
+                                        <div class="data-validity mb-2">${plan.validity}</div>
+                                    </div>
+                                `;
 
                     // Plan card click
                     card.querySelector(".plan-card").addEventListener("click", function() {

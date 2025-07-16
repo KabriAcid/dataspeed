@@ -1,5 +1,4 @@
 <?php
-session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
