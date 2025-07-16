@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "error"
           );
           setTimeout(() => {
-            window.location.href = "account-locked.php";
+            window.location.href = "account_locked.php.php";
           }, 1500);
           return; // Stop further execution
         }

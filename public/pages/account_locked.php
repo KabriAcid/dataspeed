@@ -32,7 +32,7 @@ $complaintExists = $stmt->fetchColumn() > 0;
     <main class="container py-4">
         <?php if ($complaintExists): ?>
             <div class="success-message">
-                <h2 class="mb-3">Complaint Submitted</h2>
+                <h2 class="mb-3 primary">Complaint Submitted</h2>
                 <p>Your complaint has been submitted successfully. Our team will review it and get back to you shortly.</p>
                 <i>Steps to reset your account:</i>
                 <ol>
@@ -79,10 +79,10 @@ $complaintExists = $stmt->fetchColumn() > 0;
         </div>
 
         <!-- Copyright text -->
-         <p class="text-center text-sm text-secondary mt-5">Copyright @Dataspeed.com.ng. All rights reserved.</p>
+       <script src="../assets/js/toggle-password.js"></script>
     </main>
     <script src="../assets/js/ajax.js"></script>
-    <script src="../assets/js/account-locked.js"></script>
+    <script src="../assets/js/account_locked.php.js"></script>
 </body>
 
 </html>

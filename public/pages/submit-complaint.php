@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->execute([$user_id, $token, $expires_at]);
 
         // Compose the email
-        $resetLink = "http://localhost/dataspeed/public/pages/complain_form.php?token=" . urlencode($token);
+        $resetLink = "http://localhost/dataspeed/public/pages/account_unlock.php.php?token=" . urlencode($token);
         $emailContent = "
             <html>
             <head>
@@ -55,11 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         background-color: #ffffff;
                         border: 1px solid #ddd;
                         border-radius: 8px;
-                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        box-shadow: 0 2px 24px rgba(0, 0, 0, 0.1);
                         overflow: hidden;
                     }
                     .email-header {
-                        background-color: #007bff;
+                        background-color: #94241e;
                         color: #ffffff;
                         padding: 20px;
                         text-align: center;
@@ -73,20 +73,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         padding: 20px;
                     }
                     .email-body h3 {
-                        color: #007bff;
+                        color: #94241e;
                     }
                     .email-body a {
                         display: inline-block;
                         margin-top: 20px;
                         padding: 10px 20px;
-                        background-color: #007bff;
+                        background-color: #94241e;
                         color: #ffffff;
                         text-decoration: none;
                         border-radius: 5px;
                         font-weight: bold;
                     }
                     .email-body a:hover {
-                        background-color: #0056b3;
+                        background-color: #2c0d0b;
                     }
                     .email-footer {
                         text-align: center;
@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <body>
                 <div class='email-container'>
                     <div class='email-header'>
-                        <img src='http://localhost/dataspeed/public/favicon.png' alt='DataSpeed Logo'>
+                        <img src='http://dataspeed.com/public/favicon.png' alt='DataSpeed Logo'>
                         <h2>DataSpeed Support</h2>
                     </div>
                     <div class='email-body'>
