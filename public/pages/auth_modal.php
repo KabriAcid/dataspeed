@@ -1,5 +1,10 @@
 <?php
+session_start();
 require __DIR__ . '/../../functions/utilities.php';
+if(!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
 function set_title($title = null)
 {
     $default = "DataSpeed";

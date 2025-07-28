@@ -6,13 +6,13 @@ if (isset($_SESSION['user_id'])) {
     $user = getUserInfo($pdo, $user_id);
 
     $account_status = $user['account_status'];
-    
-    if ($account_status == ACCOUNT_STATUS_LOCKED) {
+
+    if ($account_status != ACCOUNT_STATUS_ACTIVE) {
         header("Location: logout.php");
         exit();
     }
 } else {
-    header('Location: ../pages/login.php');
+    header('Location: login.php');
     exit;
 }
 

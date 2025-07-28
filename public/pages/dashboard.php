@@ -5,7 +5,6 @@ require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/header.php';
 require __DIR__ . '/../partials/initialize.php';
 
-set_title('Dashboard');
 ?>
 
 <body>

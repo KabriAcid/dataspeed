@@ -108,7 +108,7 @@ $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id 
 $stmt->execute([$user_id]);
 $account = $stmt->fetch();
 if (!$account) {
-    echo json_encode(["success" => false, "message" => "Account not found."]);
+    echo json_encode(["success" => false, "message" => "Wallet not found."]);
     exit;
 }
 $balance = (float)$account['wallet_balance'];

@@ -1,19 +1,20 @@
 <?php
 function getUserInfo(PDO $pdo, int $user_id): array|false
 {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
-    $stmt->execute([$user_id]);
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
+        $stmt->execute([$user_id]);
 
-    if ($stmt->rowCount() === 0) {
-        return false;
+        if ($stmt->rowCount() === 0) {
+            return false;
+        }
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user;
+    } catch (PDOException $th) {
+        error_log("Error fetching user info: " . $th->getMessage());
+        throw $th;
     }
-
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user['account_status'] != ACCOUNT_STATUS_ACTIVE) {
-        return false;
-    }
-
-    return $user;
 }
 
 //  A function to get user settings from the database
