@@ -33,6 +33,7 @@
 - Email loader animation.
 - Use a different SMTP.
 - Use Synk for vulnerability detection.
+- Token caching for ebills.
 
 --- NOTIFICATION MODULES ---
 
