@@ -112,7 +112,6 @@ $providers = getServiceProvider($pdo, 'TV');
                 </div>
             </div>
         </div>
-        <?php var_dump($user); ?>
 
         <!-- Bottom navigation -->
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
@@ -365,6 +364,8 @@ $providers = getServiceProvider($pdo, 'TV');
                         pinpadModal.style.display = "flex";
                     } else {
                         showToasted(response.message, "error");
+                        // log users balance
+                        console.log("Failed", response.balance);
                     }
                 });
 

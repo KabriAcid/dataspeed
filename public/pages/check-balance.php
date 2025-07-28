@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "message" => "Sufficient balance."
             ]);
         } else {
-            echo json_encode(["success" => false, "message" => "Insufficient balance."]);
+            echo json_encode(["success" => false, "message" => "Insufficient balance.", "balance" => $available_balance]);
             exit;
         }
 
