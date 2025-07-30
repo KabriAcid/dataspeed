@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
@@ -297,4 +296,5 @@ endif; ?>
 <script src="../assets/js/multi-step.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
 <script src="../assets/js/popper.js"></script>
+
 </html>

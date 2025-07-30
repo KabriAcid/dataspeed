@@ -1,6 +1,4 @@
-<?php
-
-session_start();
+<? phpsession_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/sendMail.php';
 
@@ -30,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $currentTime = time();
 
         // Enforce 3-minute cooldown
-        if ($currentTime - $lastResendTime < 180) { 
+        if ($currentTime - $lastResendTime < 180) {
             $remainingTime = 180 - ($currentTime - $lastResendTime);
             echo json_encode(["success" => false, "message" => "Please wait {$remainingTime} seconds before requesting a new OTP."]);
             exit;

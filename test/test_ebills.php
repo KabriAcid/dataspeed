@@ -1,5 +1,4 @@
 <?php
-
 function authenticate_ebills($username, $password)
 {
     $url = "https://ebills.africa/wp-json/jwt-auth/v1/token";

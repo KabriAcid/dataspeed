@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="../public/assets/css/style.css">
 <?php
-
 $logFile = 'c:/xampp/apache/logs/error.log'; // Path to your log file
 
 if (!file_exists($logFile)) {
