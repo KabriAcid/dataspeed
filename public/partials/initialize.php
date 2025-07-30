@@ -1,9 +1,16 @@
 <?php
 session_start();
 define("INACTIVITY_TIMEOUT", 600);
+
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     $user = getUserInfo($pdo, $user_id);
+
+    if (!$user) {
+        // User not found, force logout
+        header("Location: logout.php");
+        exit();
+    }
 
     $account_status = $user['account_status'];
 
