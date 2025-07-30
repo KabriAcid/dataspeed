@@ -4,7 +4,6 @@ const TIMEOUT_DURATION = 30000;
 // check Online status
 if (!navigator.onLine) {
   showToasted("You are currently offline. Please check your internet connection.", "error");
-  return;
 }
 
 function sendAjaxRequest(url, method, data, callback) {
