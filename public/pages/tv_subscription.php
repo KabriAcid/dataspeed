@@ -244,12 +244,12 @@ $providers = getServiceProvider($pdo, 'TV');
                     const card = document.createElement("div");
                     card.className = "col-4";
                     card.innerHTML = `
-                                <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
-                                    <div class="fw-bold">${plan.name}</div>
-                                    <div class="text-muted small">${plan.validity}</div>
-                                    <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
-                                </div>
-                            `;
+                            <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
+                                <div class="">${plan.plan_name}</div>
+                                <div class="text-muted small">${plan.validity}</div>
+                                <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
+                            </div>
+                        `;
                     card.querySelector(".plan-card").addEventListener("click", function() {
                         // Remove highlight from all plan cards in this container
                         document.querySelectorAll("#planCards .plan-card").forEach(c => {
@@ -269,7 +269,7 @@ $providers = getServiceProvider($pdo, 'TV');
                         selectedPlan = {
                             plan_id: plan.plan_id,
                             price: plan.price,
-                            name: plan.name,
+                            name: plan.plan_name,
                             validity: plan.validity
                         };
                         checkPurchaseReady();
@@ -341,7 +341,7 @@ $providers = getServiceProvider($pdo, 'TV');
                 confirmPlan.textContent = selectedPlan ? selectedPlan.name : '';
 
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
-                confirmValidity.textContent = selectedPlan.validity;
+                confirmValidity.textContent = selectedPlan.validity ?? 'N/A';
                 confirmPhone.textContent = phone;
                 confirmModal.style.display = "flex";
             });
@@ -357,7 +357,7 @@ $providers = getServiceProvider($pdo, 'TV');
                 pinpadModal.dataset.action = "tv";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
 
-                let rawAmount = pinpadModal.dataset.amount.replace(/[^\d]/g, '');
+                let rawAmount = pinpadModal.dataset.amount.replace(/,/g, '');
 
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
