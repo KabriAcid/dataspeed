@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Sanitize input
-$type = trim($_POST['type'] ?? '');
+$type = strtolower(trim($_POST['type'] ?? ''));
 $provider_id = intval($_POST['provider_id'] ?? 0);
 
 if (empty($type) || $provider_id <= 0) {
@@ -58,6 +58,7 @@ try {
     exit;
 
 } catch (PDOException $e) {
+    error_log("DB error in fetch-data-plans: " . $e->getMessage());
     echo json_encode(["success" => false, "message" => "DB error: " . $e->getMessage()]);
     exit;
 }

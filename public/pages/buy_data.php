@@ -325,12 +325,13 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
 
-                let rawAmount = pinpadModal.dataset.amount.replace(/[^\d]/g, '');
+                let rawAmount = pinpadModal.dataset.amount.replace(/,/g, '');
 
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
                         pinpadModal.style.display = "flex";
                     } else {
+                        console.log(response.balance);
                         showToasted(response.message, "error");
                     }
                 });
