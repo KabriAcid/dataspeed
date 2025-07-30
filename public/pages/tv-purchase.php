@@ -107,25 +107,35 @@ try {
         file_put_contents($token_cache_file, json_encode($data));
     }
 
-    function getEbillToken($username, $password)
+    function getEbillToken($username, $password, $forceRefresh = false)
     {
-        $cached = getCachedToken();
-        if ($cached) return $cached;
+        global $token_cache_file;
+
+        if (!$forceRefresh) {
+            $cached = getCachedToken();
+            if ($cached) return $cached;
+        }
+
         $auth_url = $GLOBALS['ebills_base_url'] . '/jwt-auth/v1/token';
         $payload = json_encode(["username" => $username, "password" => $password]);
+
         $ch = curl_init($auth_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
         $res = curl_exec($ch);
         curl_close($ch);
+
         $result = json_decode($res, true);
+
         if (isset($result['token'])) {
             saveTokenToCache($result['token']);
             return $result['token'];
         }
+
         return null;
     }
+
 
     $token = getEbillToken($ebills_username, $ebills_password);
     if (!$token) {

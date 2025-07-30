@@ -34,33 +34,35 @@ function saveTokenToCache($token)
     file_put_contents($token_cache_file, json_encode($data));
 }
 
-function getEbillToken($username, $password)
+function getEbillToken($username, $password, $forceRefresh = false)
 {
-    $cached = getCachedToken();
-    if ($cached) return $cached;
+    global $token_cache_file;
+
+    if (!$forceRefresh) {
+        $cached = getCachedToken();
+        if ($cached) return $cached;
+    }
 
     $auth_url = $GLOBALS['ebills_base_url'] . '/jwt-auth/v1/token';
-    $payload = json_encode([
-        "username" => $username,
-        "password" => $password
-    ]);
+    $payload = json_encode(["username" => $username, "password" => $password]);
 
     $ch = curl_init($auth_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        "Content-Type: application/json"
-    ]);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
     $res = curl_exec($ch);
     curl_close($ch);
 
     $result = json_decode($res, true);
+
     if (isset($result['token'])) {
         saveTokenToCache($result['token']);
         return $result['token'];
     }
+
     return null;
 }
+
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     echo json_encode(["success" => false, "message" => "Invalid request."]);
@@ -167,10 +169,27 @@ curl_close($ch);
 
 $balanceData = json_decode($balanceResponse, true);
 
+if (isset($balanceData['code']) && $balanceData['code'] === 'rest_forbidden') {
+    // Token was invalidated, regenerate and retry once
+    $token = getEbillToken($ebills_username, $ebills_password, true);
+
+    $ch = curl_init($ebills_base_url . '/api/v2/balance');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Authorization: Bearer $token",
+        "Content-Type: application/json"
+    ]);
+    $balanceResponse = curl_exec($ch);
+    curl_close($ch);
+
+    $balanceData = json_decode($balanceResponse, true);
+}
+
 if (!isset($balanceData['data']['balance'])) {
     echo json_encode(["success" => false, "message" => "Unable to check reseller balance. Try again later."]);
     exit;
 }
+
 
 $reseller_balance = (float) $balanceData['data']['balance'];
 if ($reseller_balance < $amount) {

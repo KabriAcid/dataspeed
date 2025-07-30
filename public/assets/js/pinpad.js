@@ -77,6 +77,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     bodyOverlay.style.display = "flex";
 
+    if (!navigator.onLine) {
+  bodyOverlay.style.display = "none";
+  showToasted("No internet connection. Please check your network.", "error");
+  return;
+}
+
     sendAjaxRequest(endpoint, "POST", data, function (response) {
       bodyOverlay.style.display = "none";
       if (response.success) {
