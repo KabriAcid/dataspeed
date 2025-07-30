@@ -28,7 +28,7 @@ $groupedNotifications = groupNotificationsByDate($notifications);
             <div class="card h-100 p-0" style="max-width: 600px;width: 600px;">
                 <div class="card-header pb-0 mb-0">
                     <p class="text-sm mb-0">
-                        <span class="font-weight-bold">Today</span>
+                        <!-- <span class="font-weight-bold">Today</span> -->
                     </p>
                 </div>
                 <div class="notifications-date-group">
@@ -46,7 +46,8 @@ $groupedNotifications = groupNotificationsByDate($notifications);
                                                     <?= htmlspecialchars($note['title']) ?>
                                                 </p>
                                                 <span class="text-secondary font-weight-bold text-xs mt-1 mb-0" style="position: absolute;right: 0;top: 5px;">
-                                                    <?= date('g:i A', strtotime($note['created_at'])) ?>
+                                                    <?= date('M j, Y g:i A', strtotime($note['created_at']));
+                                                    ?>
                                                 </span>
                                             </div>
                                             <?php if (!empty($note['message'])): ?>

@@ -36,6 +36,7 @@ try {
     }
     exit;
 } catch (PDOException $e) {
+    error_log("DB error: " . $e->getMessage());
     echo json_encode(["success" => false, "message" => "DB error: " . $e->getMessage()]);
     exit;
 }

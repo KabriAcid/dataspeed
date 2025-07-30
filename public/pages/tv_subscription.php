@@ -242,14 +242,14 @@ $providers = getServiceProvider($pdo, 'TV');
                 planCardsContainer.innerHTML = "";
                 plans.forEach((plan, idx) => {
                     const card = document.createElement("div");
-                    card.className = "col-4 mb-3";
+                    card.className = "col-4";
                     card.innerHTML = `
-            <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
-                <div class="fw-bold">${plan.name}</div>
-                <div class="text-muted small">${plan.validity}</div>
-                <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
-            </div>
-        `;
+                                <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
+                                    <div class="fw-bold">${plan.name}</div>
+                                    <div class="text-muted small">${plan.validity}</div>
+                                    <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
+                                </div>
+                            `;
                     card.querySelector(".plan-card").addEventListener("click", function() {
                         // Remove highlight from all plan cards in this container
                         document.querySelectorAll("#planCards .plan-card").forEach(c => {

@@ -44,7 +44,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
         </div>
 
         <!-- Purchase Tabs -->
-        <div class="tabs mb-3">
+        <div class="tabs mb-5">
             <div class="tab-buttons d-flex">
                 <button class="tab-btn active" data-tab="self" type="button">Buy For Self</button>
                 <button class="tab-btn" data-tab="others" type="button">Buy For Others</button>
@@ -69,7 +69,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                         placeholder="Phone Number" class="input phone-input" required value="8011111111">
                 </div>
 
-                <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
+                <button type="button" class="btn w-100 mt-3 mb-5 primary-btn" id="purchaseBtn" disabled>Purchase</button>
             </div>
         </div>
 
@@ -234,7 +234,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 container.innerHTML = "";
                 plans.forEach((plan, idx) => {
                     const card = document.createElement("div");
-                    card.className = "col-4 mb-3";
+                    card.className = "col-4";
                     card.innerHTML = `
                                     <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
                                         <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>

@@ -1,12 +1,16 @@
 // Constants and reusable functions
 const TIMEOUT_DURATION = 30000;
 
-// check Online status
-if (!navigator.onLine) {
-  showToasted("You are currently offline. Please check your internet connection.", "error");
-}
-
 function sendAjaxRequest(url, method, data, callback) {
+  // Check network status before sending request
+  if (!navigator.onLine) {
+    callback({
+      success: false,
+      message: "No internet connection. Please check your network.",
+    });
+    return;
+  }
+
   const xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -15,6 +19,13 @@ function sendAjaxRequest(url, method, data, callback) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 0) {
+        // Double-check network status here as well
+        if (!navigator.onLine) {
+          return callback({
+            success: false,
+            message: "No internet connection. Please check your network.",
+          });
+        }
         return callback({
           success: false,
           message:
@@ -35,11 +46,19 @@ function sendAjaxRequest(url, method, data, callback) {
   };
 
   xhr.onerror = function () {
-    callback({
-      success: false,
-      message:
-        "An error occurred during the request. Please check your internet connection.",
-    });
+    // Check network status on error
+    if (!navigator.onLine) {
+      callback({
+        success: false,
+        message: "No internet connection. Please check your network.",
+      });
+    } else {
+      callback({
+        success: false,
+        message:
+          "An error occurred during the request. Please check your internet connection.",
+      });
+    }
   };
 
   xhr.ontimeout = function () {
