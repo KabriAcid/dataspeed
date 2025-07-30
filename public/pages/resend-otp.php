@@ -1,4 +1,5 @@
-<? phpsession_start();
+<?php
+session_start();
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/sendMail.php';
 
