@@ -2,8 +2,8 @@
 require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
-require __DIR__ . '/../partials/header.php';
 require __DIR__ . '/../partials/initialize.php';
+require __DIR__ . '/../partials/header.php';
 ?>
 
 <!DOCTYPE html>
