@@ -4,6 +4,7 @@ require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 
+
 header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -56,49 +57,68 @@ try {
     function createVirtualAccount($email, $reference, $firstName, $lastName, $phone_number)
     {
         $secretKey = $_ENV['BILLSTACK_SECRET_KEY'];
+        $publicKey = $_ENV['BILLSTACK_PUBLIC_KEY'];
+        $apiUrl = $_ENV['BILLSTACK_API_URL'];
+
+        // Clean phone number
+        $phone_number = preg_replace('/[^\d]/', '', $phone_number);
+        if (substr($phone_number, 0, 1) === '0') {
+            $phone_number = '234' . substr($phone_number, 1);
+        } elseif (substr($phone_number, 0, 3) !== '234') {
+            $phone_number = '234' . $phone_number;
+        }
 
         $bank_type = ["9PSB", "PALMPAY"];
-        $random = floor(rand(0, 1));
+        $chosen_bank = $bank_type[array_rand($bank_type)];
 
-        $data = [
-            "email" => $email,
-            "reference" => $reference,
-            "firstName" => $firstName,
-            "lastName" => $lastName,
-            "phone" => $phone_number,
-            "bank" => $bank_type[$random]
-        ];
-
-        $payload = json_encode($data);
-
-        $ch = curl_init('https://api.billstack.co/v2/thirdparty/generateVirtualAccount/');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . $secretKey,
-            'Content-Type: application/json',
+        $payload = json_encode([
+            "bank_type" => $chosen_bank,
+            "account_reference" => $reference,
+            "account_name" => trim($firstName . ' ' . $lastName),
+            "customer_name" => trim($firstName . ' ' . $lastName),
+            "customer_email" => $email,
+            "customer_phone" => $phone_number,
+            "webhook_url" => "https://yourdomain.com/public/webhooks/billstack-deposit.php" // Update this URL
         ]);
 
-        $response = curl_exec($ch);
-        $curlError = curl_error($ch);
-        curl_close($ch);
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $apiUrl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => [
+                "Authorization: Bearer $secretKey",
+                "Content-Type: application/json",
+                "Accept: application/json"
+            ],
+        ]);
 
-        if ($curlError) {
-            return ["success" => false, "message" => "cURL Error: $curlError"];
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            return ["success" => false, "message" => "cURL Error: $err"];
+        }
+
+        if ($httpCode !== 200) {
+            return ["success" => false, "message" => "HTTP Error: $httpCode", "response" => $response];
         }
 
         $decoded = json_decode($response, true);
 
-        if (!$decoded) {
-            return ["success" => false, "message" => "Failed to decode API response."];
-        }
-
-        if (!isset($decoded['data']['account'][0]['account_number'])) {
-            return ["success" => false, "message" => "Invalid response from Billstack API.", "api_response" => $decoded];
+        if (!$decoded || !isset($decoded['data']['account'][0]['account_number'])) {
+            return ["success" => false, "message" => "Invalid API response", "response" => $decoded];
         }
 
         return [
+            "success" => true,
             "account_number" => $decoded['data']['account'][0]['account_number'],
             "bank_name" => $decoded['data']['account'][0]['bank_name'],
             "account_name" => $decoded['data']['account'][0]['account_name'],

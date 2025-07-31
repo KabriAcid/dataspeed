@@ -4,7 +4,6 @@ require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/initialize.php';
 require __DIR__ . '/../partials/header.php';
-
 ?>
 
 <body>
@@ -53,6 +52,12 @@ require __DIR__ . '/../partials/header.php';
                             stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </span>
+            </button>
+            <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="refresh-balance" type="button" title="Refresh Balance">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.6506 17.6506C16.1679 19.1333 14.1175 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M17 8L20 12L17 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
             </button>
         </div>
         <!--  -->
@@ -271,6 +276,10 @@ require __DIR__ . '/../partials/header.php';
         document.addEventListener("DOMContentLoaded", function() {
             const balanceAmount = document.getElementById("balanceAmount");
             const balanceUpdateSound = document.getElementById("balanceUpdateSound");
+            const refreshBtn = document.getElementById("refresh-balance");
+            let lastKnownBalance = null;
+            let balanceCheckInterval = null;
+            let isRefreshing = false;
 
             function animateBalanceUpdate(currentBalance, newBalance) {
                 const balanceElement = document.getElementById("balanceAmount");
@@ -291,7 +300,14 @@ require __DIR__ . '/../partials/header.php';
                 }, 1000 / frameRate);
             }
 
-            function updateBalance() {
+            function updateBalance(isManualRefresh = false) {
+                // Show loading state for manual refresh
+                if (isManualRefresh) {
+                    isRefreshing = true;
+                    refreshBtn.style.animation = 'spin 1s linear infinite';
+                    refreshBtn.style.opacity = '0.7';
+                }
+
                 fetch("update-balance.php", {
                         method: "GET",
                         headers: {
@@ -305,52 +321,131 @@ require __DIR__ . '/../partials/header.php';
                                 document.getElementById("balanceAmount").innerText.replace("₦", "").replace(",", "")
                             );
                             const newBalance = parseFloat(data.balance);
-                            animateBalanceUpdate(currentBalance, newBalance);
-                            balanceUpdateSound.play();
+
+                            // Only animate and play sound if balance actually changed
+                            if (lastKnownBalance !== null && newBalance !== currentBalance) {
+                                animateBalanceUpdate(currentBalance, newBalance);
+                                balanceUpdateSound.play().catch(e => console.log('Sound play failed:', e));
+
+                                // Show notification for balance increase
+                                if (newBalance > currentBalance) {
+                                    const increase = newBalance - currentBalance;
+                                    showToasted(`Balance updated! +₦${increase.toFixed(2)}`, 'success');
+                                } else if (newBalance < currentBalance) {
+                                    const decrease = currentBalance - newBalance;
+                                    showToasted(`Balance updated! -₦${decrease.toFixed(2)}`, 'info');
+                                }
+                            } else if (lastKnownBalance === null) {
+                                // First load, just update without animation
+                                document.getElementById("balanceAmount").innerHTML = `&#8358;${newBalance.toFixed(2)}`;
+                            } else if (isManualRefresh) {
+                                // Manual refresh but no change
+                                showToasted('Balance is up to date', 'info');
+                            }
+
+                            lastKnownBalance = newBalance;
                         } else {
-                            console.error(data.message);
+                            console.error('Balance update failed:', data.message);
+                            if (isManualRefresh) {
+                                showToasted('Failed to refresh balance', 'error');
+                            }
                         }
                     })
                     .catch((error) => {
                         console.error("Error updating balance:", error);
+                        if (isManualRefresh) {
+                            showToasted('Network error. Please try again.', 'error');
+                        }
+                    })
+                    .finally(() => {
+                        // Reset refresh button state
+                        if (isManualRefresh) {
+                            setTimeout(() => {
+                                isRefreshing = false;
+                                refreshBtn.style.animation = '';
+                                refreshBtn.style.opacity = '';
+                            }, 500);
+                        }
                     });
             }
-        });
 
-        // Copy to clipboard
-        document.getElementById('copy-icon').addEventListener('click', function() {
-            const referralCode = document.getElementById('account-number').innerText.trim();
+            // Get initial balance
+            const initialBalance = parseFloat(
+                document.getElementById("balanceAmount").innerText.replace("₦", "").replace(",", "")
+            );
+            lastKnownBalance = initialBalance;
 
-            // Copy to clipboard
-            navigator.clipboard.writeText(referralCode).then(() => {
-                const copyBtn = document.getElementById('copy-icon');
-                // Change icon to checkmark and color to green
+            // Refresh button click handler
+            refreshBtn.addEventListener('click', function() {
+                if (!isRefreshing) {
+                    updateBalance(true);
+                }
+            });
 
-                showToasted('Copied successfully', 'success');
+            // Start auto-checking for balance updates every 5 seconds
+            function startBalanceMonitoring() {
+                // Clear any existing interval
+                if (balanceCheckInterval) {
+                    clearInterval(balanceCheckInterval);
+                }
 
-                document.getElementById('copy-icon').innerHTML = `
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.9989 11.2858V19.1429C16.9989 20.6735 15.7637 22 14.1168 22H5.88213C4.33813 22 3 20.7756 3 19.1429V7.91841C3 6.3878 4.2352 5.06127 5.88213 5.06127H10.72C11.4405 5.06127 12.1611 5.36739 12.7787 5.8776L16.1755 9.24495C16.6901 9.85719 16.9989 10.5715 16.9989 11.2858Z" fill="#030D45"/>
-                <path d="M19.2635 17.9184C18.8517 17.9184 18.44 17.6123 18.44 17.1021V9.75515C18.44 9.44903 18.3371 9.1429 18.0283 8.83678L13.0875 3.93882C12.8816 3.73474 12.4699 3.53066 12.1611 3.53066H7.9408C7.52907 3.6327 7.11733 3.22454 7.11733 2.81637C7.11733 2.40821 7.52907 2.00005 7.9408 2.00005H12.264C12.9845 2.00005 13.7051 2.30617 14.2197 2.81637L19.1605 7.71433C19.6752 8.22454 19.984 8.93882 19.984 9.65311V17.1021C20.0869 17.5103 19.6752 17.9184 19.2635 17.9184Z" fill="#030D45"/>
-                </svg>
-            `;
+                // Set up new interval
+                balanceCheckInterval = setInterval(() => {
+                    // Only check if user is on dashboard and tab is active
+                    if (document.visibilityState === 'visible' && !isRefreshing) {
+                        updateBalance(false);
+                    }
+                }, 5000); // Check every 5 seconds
 
-                setTimeout(() => {
-                    document.getElementById('copy-icon').innerHTML = `
-                    <svg width="24" id="copy-icon" class="cursor-pointer" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.83333 6.61539C5.12206 6.61539 4.54545 7.18938 4.54545 7.89744V19.1795C4.54545 19.8875 5.12206 20.4615 5.83333 20.4615H14.0758C14.787 20.4615 15.3636 19.8875 15.3636 19.1795V11.3112C15.3636 10.9712 15.2279 10.6451 14.9864 10.4047L11.5571 6.99089C11.3156 6.75046 10.988 6.61539 10.6465 6.61539H5.83333ZM3 7.89744C3 6.33971 4.26853 5.07692 5.83333 5.07692H10.6465C11.3979 5.07692 12.1186 5.37408 12.6499 5.90303L16.0792 9.3168C16.6106 9.84575 16.9091 10.5632 16.9091 11.3112V19.1795C16.9091 20.7372 15.6406 22 14.0758 22H5.83333C4.26853 22 3 20.7372 3 19.1795V7.89744Z" fill="#030D45"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.12121 2.76923C7.12121 2.3444 7.46717 2 7.89394 2H12.1919C12.9434 2 13.664 2.29716 14.1954 2.82611L19.1701 7.77834C19.7015 8.30729 20 9.0247 20 9.77275V17.1282C20 17.553 19.654 17.8974 19.2273 17.8974C18.8005 17.8974 18.4545 17.553 18.4545 17.1282V9.77275C18.4545 9.43273 18.3189 9.10663 18.0773 8.8662L13.1026 3.91397C12.8611 3.67353 12.5335 3.53846 12.1919 3.53846H7.89394C7.46717 3.53846 7.12121 3.19407 7.12121 2.76923Z" fill="#030D45"/>
-                    </svg>
-                `;
-                }, 2000);
+                console.log('Balance monitoring started - checking every 5 seconds');
+            }
 
-            }).catch(err => {
-                showToasted('Could not copy code', 'error');
-                console.error('Copy failed: ', err);
+            // Stop monitoring when user leaves the page
+            function stopBalanceMonitoring() {
+                if (balanceCheckInterval) {
+                    clearInterval(balanceCheckInterval);
+                    balanceCheckInterval = null;
+                    console.log('Balance monitoring stopped');
+                }
+            }
+
+            // Handle page visibility changes
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    // Page became visible, resume monitoring
+                    startBalanceMonitoring();
+                    // Check immediately when returning to page
+                    setTimeout(() => updateBalance(false), 1000);
+                } else {
+                    // Page hidden, stop monitoring to save resources
+                    stopBalanceMonitoring();
+                }
+            });
+
+            // Handle window focus/blur for additional optimization
+            window.addEventListener('focus', function() {
+                if (!balanceCheckInterval) {
+                    startBalanceMonitoring();
+                }
+                // Check immediately when window gains focus
+                setTimeout(() => updateBalance(false), 500);
+            });
+
+            window.addEventListener('blur', function() {
+                // Optional: reduce frequency when window loses focus
+                // or keep running for immediate updates
+            });
+
+            // Start monitoring immediately
+            startBalanceMonitoring();
+
+            // Clean up on page unload
+            window.addEventListener('beforeunload', function() {
+                stopBalanceMonitoring();
             });
         });
-    </script>
-    <script>
+
+
         window.addEventListener("load", () => {
             // Create a new URL object based on the current location
             const url = new URL(window.location);
