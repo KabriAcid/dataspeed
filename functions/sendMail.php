@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -30,7 +31,8 @@ function sendMail($to, $subject, $body)
 
         return $mail->send();
     } catch (Exception $e) {
-        error_log("Mail error: " . $mail->ErrorInfo);
+        error_log("Mail exception: " . $e->getMessage());
+        error_log("PHPMailer ErrorInfo: " . $mail->ErrorInfo);
         return false;
     }
 }

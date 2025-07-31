@@ -55,10 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         ";
 
-        if (!sendMail($email, $subject, $body)) {
-            echo json_encode(["success" => false, "message" => "Failed to send OTP email."]);
-            exit;
-        }
+        sendMail($email, $subject, $body);
 
         echo json_encode(["success" => true, "message" => "New OTP sent successfully!"]);
     } catch (Exception $e) {

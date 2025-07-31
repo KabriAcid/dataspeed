@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  let countdown = 180; // 3 minutes
+  let countdown = 60; // 1 minute
   const timerDisplay = document.getElementById("otp-timer");
   const resendOtpBtn = document.getElementById("resend-otp-btn");
 
@@ -197,9 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateTimer() {
     const minutes = Math.floor(countdown / 60);
     const seconds = countdown % 60;
-    timerDisplay.textContent = `${minutes}:${
-      seconds < 10 ? "0" : ""
-    }${seconds}`;
+    timerDisplay.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 
     if (countdown === 0) {
       resendOtpBtn.classList.remove("disabled-link");
@@ -225,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
       response => {
         if (response.success) {
           showToasted("New OTP sent successfully!", "success");
-          countdown = 180;
+          countdown = 60;
           resendOtpBtn.classList.remove("active-link");
           resendOtpBtn.classList.add("disabled-link");
           setInterval(updateTimer, 1000);

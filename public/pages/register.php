@@ -128,7 +128,7 @@ if (!empty($missing_env)) {
                         </button>
                     </div>
                     <div class="otp-timer-container">
-                        <p>Time remaining: <span id="otp-timer">03:00</span></p>
+                        <p>Time remaining: <span id="otp-timer">01:00</span></p>
                         <a id="resend-otp-btn" class="disabled-link">Resend OTP</a>
                     </div>
                 </div>
