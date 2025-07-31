@@ -150,14 +150,14 @@ document.addEventListener("DOMContentLoaded", function () {
               sessionStorage.setItem("registration_id", registration_id);
 
               // Checking network before any AJAX
-              // if (!navigator.onLine) {
-              //   showToasted(
-              //     "No internet connection. Please connect and try again.",
-              //     "error"
-              //   );
-              //   done();
-              //   return;
-              // }
+              if (!navigator.onLine) {
+                showToasted(
+                  "No internet connection. Please connect and try again.",
+                  "error"
+                );
+                done();
+                return;
+              }
 
               sendAjaxRequest(
                 "send-otp.php",

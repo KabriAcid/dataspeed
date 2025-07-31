@@ -34,6 +34,7 @@
 - Use a different SMTP.
 - Use Synk for vulnerability detection.
 - Token caching for ebills.
+- Onclick transaction, redirect to txt successful page with ref.
 
 --- NOTIFICATION MODULES ---
 
