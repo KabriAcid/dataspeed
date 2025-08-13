@@ -1,52 +1,45 @@
-[2025-07-31 14:35:29] Balance check requested
-[2025-07-31 14:35:29] User ID: 1
-[2025-07-31 14:35:29] Balance retrieved: 0.00
-[2025-07-31 14:35:29] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968929}
-[2025-07-31 14:35:29] Balance check requested
-[2025-07-31 14:35:29] User ID: 1
-[2025-07-31 14:35:29] Balance retrieved: 0.00
-[2025-07-31 14:35:29] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968929}
-[2025-07-31 14:35:30] Balance check requested
-[2025-07-31 14:35:30] User ID: 1
-[2025-07-31 14:35:30] Balance retrieved: 0.00
-[2025-07-31 14:35:30] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968930}
-[2025-07-31 14:35:30] Balance check requested
-[2025-07-31 14:35:30] User ID: 1
-[2025-07-31 14:35:30] Balance retrieved: 0.00
-[2025-07-31 14:35:30] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968930}
-[2025-07-31 14:35:51] Balance check requested
-[2025-07-31 14:35:51] User ID: 244
-[2025-07-31 14:35:51] Balance retrieved: 0.00
-[2025-07-31 14:35:51] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968951}
-[2025-07-31 14:35:59] Balance check requested
-[2025-07-31 14:35:59] User ID: 244
-[2025-07-31 14:35:59] Balance retrieved: 0.00
-[2025-07-31 14:35:59] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968959}
-[2025-07-31 14:35:59] Balance check requested
-[2025-07-31 14:35:59] User ID: 244
-[2025-07-31 14:35:59] Balance retrieved: 0.00
-[2025-07-31 14:35:59] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968959}
-[2025-07-31 14:36:16] Balance check requested
-[2025-07-31 14:36:16] User ID: 244
-[2025-07-31 14:36:16] Balance retrieved: 0.00
-[2025-07-31 14:36:16] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968976}
-[2025-07-31 14:36:17] Balance check requested
-[2025-07-31 14:36:17] User ID: 244
-[2025-07-31 14:36:17] Balance retrieved: 0.00
-[2025-07-31 14:36:17] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753968977}
-[2025-07-31 14:45:59] Balance check requested
-[2025-07-31 14:45:59] User ID: 244
-[2025-07-31 14:45:59] Balance retrieved: 0.00
-[2025-07-31 14:45:59] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753969559}
-[2025-07-31 14:45:59] Balance check requested
-[2025-07-31 14:45:59] User ID: 244
-[2025-07-31 14:45:59] Balance retrieved: 0.00
-[2025-07-31 14:45:59] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753969559}
-[2025-07-31 14:46:03] Balance check requested
-[2025-07-31 14:46:03] User ID: 244
-[2025-07-31 14:46:03] Balance retrieved: 0.00
-[2025-07-31 14:46:03] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753969563}
-[2025-07-31 14:46:04] Balance check requested
-[2025-07-31 14:46:04] User ID: 244
-[2025-07-31 14:46:04] Balance retrieved: 0.00
-[2025-07-31 14:46:04] Response: {"success":true,"balance":"0.00","formatted_balance":"0.00","timestamp":1753969564}
+[2025-08-13 03:46:23] Balance check requested
+[2025-08-13 03:46:23] User ID: 136
+[2025-08-13 03:46:23] Balance retrieved: 36,054.00
+[2025-08-13 03:50:11] Balance check requested
+[2025-08-13 03:50:11] User ID: 136
+[2025-08-13 03:50:11] Balance retrieved: 36,054.00
+[2025-08-13 03:50:16] Balance check requested
+[2025-08-13 03:50:16] User ID: 136
+[2025-08-13 03:50:16] Balance retrieved: 36,054.00
+[2025-08-13 03:50:18] Balance check requested
+[2025-08-13 03:50:18] User ID: 136
+[2025-08-13 03:50:18] Balance retrieved: 36,054.00
+[2025-08-13 03:50:21] Balance check requested
+[2025-08-13 03:50:21] User ID: 136
+[2025-08-13 03:50:21] Balance retrieved: 36,054.00
+[2025-08-13 03:52:13] Balance check requested
+[2025-08-13 03:52:13] User ID: 136
+[2025-08-13 03:52:13] Balance retrieved: 36,054.00
+[2025-08-13 03:52:13] Balance check requested
+[2025-08-13 03:52:13] User ID: 136
+[2025-08-13 03:52:13] Balance retrieved: 36,054.00
+[2025-08-13 03:52:16] Balance check requested
+[2025-08-13 03:52:16] User ID: 136
+[2025-08-13 03:52:16] Balance retrieved: 36,054.00
+[2025-08-13 03:52:17] Balance check requested
+[2025-08-13 03:52:17] User ID: 136
+[2025-08-13 03:52:17] Balance retrieved: 36,054.00
+[2025-08-13 03:52:33] Balance check requested
+[2025-08-13 03:52:33] User ID: 136
+[2025-08-13 03:52:33] Balance retrieved: 36,054.00
+[2025-08-13 03:52:33] Balance check requested
+[2025-08-13 03:52:33] User ID: 136
+[2025-08-13 03:52:33] Balance retrieved: 36,054.00
+[2025-08-13 03:52:40] Balance check requested
+[2025-08-13 03:52:40] User ID: 136
+[2025-08-13 03:52:40] Balance retrieved: 36,054.00
+[2025-08-13 03:52:40] Balance check requested
+[2025-08-13 03:52:40] User ID: 136
+[2025-08-13 03:52:40] Balance retrieved: 36,054.00
+[2025-08-13 03:53:16] Balance check requested
+[2025-08-13 03:53:16] User ID: 136
+[2025-08-13 03:53:16] Balance retrieved: 36,054.00
+[2025-08-13 03:53:16] Balance check requested
+[2025-08-13 03:53:16] User ID: 136
+[2025-08-13 03:53:16] Balance retrieved: 36,054.00
