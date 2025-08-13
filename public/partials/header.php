@@ -1,5 +1,4 @@
 <?php
-// Check if user session exists
 function set_header($page_header = 'Dataspeed')
 {
     return $page_header = htmlspecialchars($page_header);
