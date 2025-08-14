@@ -1,6 +1,5 @@
 <?php
 require_once '../config/config.php';
-
 function getUsers($page = 1, $limit = 20, $search = '', $status = '', $role = '') {
     global $pdo;
     
@@ -16,7 +15,7 @@ function getUsers($page = 1, $limit = 20, $search = '', $status = '', $role = ''
     }
     
     if ($status) {
-        $where[] = "status = ?";
+        $where[] = "kyc_status = ?";
         $params[] = $status;
     }
     
@@ -34,7 +33,7 @@ function getUsers($page = 1, $limit = 20, $search = '', $status = '', $role = ''
     $total = $countStmt->fetchColumn();
     
     // Get users
-    $query = "SELECT id, name, email, phone, role, status, kyc_status, balance, created_at 
+    $query = "SELECT id, name, email, phone, role, account_status, kyc_status, balance, created_at 
               FROM users $whereClause 
               ORDER BY created_at DESC 
               LIMIT $limit OFFSET $offset";
@@ -63,7 +62,7 @@ function createUser($data) {
     global $pdo;
     
     $stmt = $pdo->prepare("
-        INSERT INTO users (name, email, phone, role, status, pin) 
+        INSERT INTO users (name, email, phone, role, account_status, pin) 
         VALUES (?, ?, ?, ?, ?, ?)
     ");
     
@@ -74,7 +73,7 @@ function createUser($data) {
         $data['email'],
         $data['phone'],
         $data['role'] ?? 'user',
-        $data['status'] ?? 'active',
+        $data['kyc_status'] ?? 'active',
         password_hash($pin, PASSWORD_DEFAULT)
     ]);
 }
@@ -82,7 +81,7 @@ function createUser($data) {
 function updateUser($id, $data) {
     global $pdo;
     
-    $fields = ['name', 'email', 'phone', 'role', 'status'];
+    $fields = ['name', 'email', 'phone', 'role', 'kyc_status'];
     $updates = [];
     $params = [];
     
@@ -116,7 +115,7 @@ function getUserStats() {
     $stats['total_users'] = $stmt->fetchColumn();
     
     // Active users
-    $stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE status = 'active'");
+    $stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE kyc_status = 'active'");
     $stats['active_users'] = $stmt->fetchColumn();
     
     // KYC pending

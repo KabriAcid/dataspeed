@@ -85,6 +85,7 @@ try {
         curl_close($ch);
 
         if ($curlError) {
+            error_log("cURL Error: $curlError");
             return ["success" => false, "message" => "cURL Error: $curlError"];
         }
 

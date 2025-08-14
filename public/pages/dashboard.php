@@ -54,9 +54,8 @@ require __DIR__ . '/../partials/header.php';
                 </span>
             </button>
             <button class="btn btn-link text-secondary p-0 mx-1 py-0 my-0" id="refresh-balance" type="button" title="Refresh Balance">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17.6506 17.6506C16.1679 19.1333 14.1175 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                    <path d="M17 8L20 12L17 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <svg class="cursor-pointer" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21.1679 8C19.6248 4.46819 16.1006 2 12 2C6.81465 2 2.5511 5.94668 2.04938 11M22 3V7.4C22 7.73137 21.7314 8 21.4 8H17M2.88146 16C4.42458 19.5318 7.94874 22 12.0494 22C17.2347 22 21.4983 18.0533 22 13M2.04932 21V16.6C2.04932 16.2686 2.31795 16 2.64932 16H7.04932" stroke="#424242ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
         </div>
@@ -274,6 +273,41 @@ require __DIR__ . '/../partials/header.php';
     <script src="../assets/js/toggle-number.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Copy account number to clipboard
+            const copyIcon = document.getElementById('copy-icon');
+            const accountNumberEl = document.getElementById('account-number');
+            const copyHandler = () => {
+                const text = (accountNumberEl?.textContent || '').trim();
+                if (!text) return;
+                const doCopy = async () => {
+                    try {
+                        if (navigator.clipboard && window.isSecureContext) {
+                            await navigator.clipboard.writeText(text);
+                        } else {
+                            const ta = document.createElement('textarea');
+                            ta.value = text;
+                            ta.setAttribute('readonly', '');
+                            ta.style.position = 'fixed';
+                            ta.style.top = '-1000px';
+                            document.body.appendChild(ta);
+                            ta.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(ta);
+                        }
+                        if (typeof showToasted === 'function') {
+                            showToasted('Account number copied', 'success');
+                        }
+                    } catch (e) {
+                        if (typeof showToasted === 'function') {
+                            showToasted('Failed to copy. Tap and hold to copy manually.', 'error');
+                        }
+                    }
+                };
+                doCopy();
+            };
+            if (copyIcon) copyIcon.addEventListener('click', copyHandler);
+            if (accountNumberEl) accountNumberEl.addEventListener('click', copyHandler);
+
             const balanceAmount = document.getElementById("balanceAmount");
             const balanceUpdateSound = document.getElementById("balanceUpdateSound");
             const refreshBtn = document.getElementById("refresh-balance");
@@ -296,6 +330,8 @@ require __DIR__ . '/../partials/header.php';
 
                     if (frame === totalFrames) {
                         clearInterval(animation);
+                        // Ensure final value is exact to avoid drift
+                        balanceElement.innerHTML = `&#8358;${newBalance.toFixed(2)}`;
                     }
                 }, 1000 / frameRate);
             }
@@ -309,16 +345,13 @@ require __DIR__ . '/../partials/header.php';
                 }
 
                 fetch("update-balance.php", {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
+                        method: "GET"
                     })
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.success) {
                             const currentBalance = parseFloat(
-                                document.getElementById("balanceAmount").innerText.replace("₦", "").replace(",", "")
+                                document.getElementById("balanceAmount").innerText.replace(/[₦,\s]/g, "")
                             );
                             const newBalance = parseFloat(data.balance);
 
@@ -371,7 +404,7 @@ require __DIR__ . '/../partials/header.php';
 
             // Get initial balance
             const initialBalance = parseFloat(
-                document.getElementById("balanceAmount").innerText.replace("₦", "").replace(",", "")
+                document.getElementById("balanceAmount").innerText.replace(/[₦,\s]/g, "")
             );
             lastKnownBalance = initialBalance;
 

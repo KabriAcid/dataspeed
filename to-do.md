@@ -35,6 +35,7 @@
 - Use Synk for vulnerability detection.
 - Token caching for ebills.
 - Onclick transaction, redirect to txt successful page with ref.
+- Do a general clean (truncate tables and keep consistency)
 
 --- NOTIFICATION MODULES ---
 
