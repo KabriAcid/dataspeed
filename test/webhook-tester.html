@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Webhook Tester (Browser)</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/water.css/2.0.0/water.min.css"
+    />
+    <style>
+      textarea {
+        width: 100%;
+        min-height: 200px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+    </style>
+    <script>
+      function defaultPayload() {
+        return {
+          status: "successful",
+          account_number: "5764363053",
+          amount: 100,
+          reference: "BROWSER_TEST_" + Date.now(),
+          sender_name: "Browser Tester",
+          transaction_date: new Date().toISOString(),
+        };
+      }
+
+      async function sendWebhook(ev) {
+        ev.preventDefault();
+        const url = document.getElementById("url").value.trim();
+        const bodyText = document.getElementById("payload").value;
+        const output = document.getElementById("output");
+        output.textContent = "Sending...";
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: bodyText,
+          });
+          const text = await res.text();
+          output.textContent = "HTTP " + res.status + "\n" + text;
+        } catch (e) {
+          output.textContent = "Request error: " + e.message;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("payload").value = JSON.stringify(
+          defaultPayload(),
+          null,
+          2
+        );
+        document
+          .getElementById("tester-form")
+          .addEventListener("submit", sendWebhook);
+        document.getElementById("set-success").addEventListener("click", () => {
+          const p = defaultPayload();
+          document.getElementById("payload").value = JSON.stringify(p, null, 2);
+        });
+        document.getElementById("set-failed").addEventListener("click", () => {
+          const p = defaultPayload();
+          p.status = "failed";
+          document.getElementById("payload").value = JSON.stringify(p, null, 2);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h2>Webhook Tester (Browser, no CLI)</h2>
+    <form id="tester-form">
+      <label for="url">Webhook URL</label>
+      <input
+        id="url"
+        name="url"
+        type="url"
+        required
+        value="https://163aeaf4517c.ngrok-free.app/dataspeed/webhooks/billstack-deposit.php"
+      />
+
+      <label for="payload">JSON Payload</label>
+      <textarea id="payload" name="payload"></textarea>
+      <div>
+        <button type="button" id="set-success">Preset: Successful</button>
+        <button type="button" id="set-failed">Preset: Failed</button>
+      </div>
+      <br />
+      <button type="submit">Send Webhook</button>
+    </form>
+
+    <h3>Response</h3>
+    <pre><code id="output"></code></pre>
+
+    <hr />
+    <p>
+      After sending, check the server log at:
+      <code>public/webhooks/deposit-log.txt</code> and your account
+      balance/transactions.
+    </p>
+  </body>
+</html>

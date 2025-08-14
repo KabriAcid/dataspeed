@@ -2,4 +2,4 @@
 src/api/*
 vendor
 cache
-ebills_token.js
+ebills_token.json

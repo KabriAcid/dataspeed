@@ -1,12 +1,15 @@
 <?php
 require __DIR__ . '/../../config/config.php';
-require __DIR__ . '/../../functions/Model.php';
-require __DIR__ . '/../../functions/utilities.php';
-require __DIR__ . '/../partials/initialize.php';
 
 // Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// CORS: allow browser-based testers and third-party services
+header('Access-Control-Allow-Origin: *');
+header('Vary: Origin');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Signature, X-Billstack-Signature');
 
 // Log all incoming requests
 $logFile = __DIR__ . '/deposit-log.txt';
@@ -27,6 +30,13 @@ $logEntry .= str_repeat("-", 50) . "\n";
 
 file_put_contents($logFile, $logEntry, FILE_APPEND | LOCK_EX);
 
+// Handle CORS preflight early
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    file_put_contents($logFile, "[$timestamp] INFO: Preflight (OPTIONS) acknowledged\n", FILE_APPEND);
+    http_response_code(204);
+    exit;
+}
+
 // Verify webhook signature (if Billstack provides one)
 function verifyWebhookSignature($payload, $signature, $secret)
 {
@@ -34,42 +44,116 @@ function verifyWebhookSignature($payload, $signature, $secret)
     return hash_equals($expectedSignature, $signature);
 }
 
-// Parse JSON payload
-$data = json_decode($payload, true);
-
-if (!$data) {
-    file_put_contents($logFile, "[$timestamp] ERROR: Invalid JSON payload\n", FILE_APPEND);
-    http_response_code(400);
-    echo json_encode(['status' => 'error', 'message' => 'Invalid JSON']);
+// Allow only POST for processing
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    file_put_contents($logFile, "[$timestamp] ERROR: Unsupported method {$_SERVER['REQUEST_METHOD']}\n", FILE_APPEND);
+    http_response_code(405);
+    echo json_encode(['status' => 'error', 'message' => 'Method not allowed']);
     exit;
 }
 
-// Log parsed data
-file_put_contents($logFile, "[$timestamp] Parsed data: " . json_encode($data, JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
-
-// Validate required fields
-$requiredFields = ['status', 'account_number', 'amount', 'reference'];
-foreach ($requiredFields as $field) {
-    if (!isset($data[$field]) || empty($data[$field])) {
-        file_put_contents($logFile, "[$timestamp] ERROR: Missing required field: $field\n", FILE_APPEND);
-        http_response_code(400);
-        echo json_encode(['status' => 'error', 'message' => "Missing field: $field"]);
-        exit;
+// Parse payload with fallbacks (JSON body -> form 'payload' -> flat form)
+$contentType = $_SERVER['CONTENT_TYPE'] ?? ($_SERVER['HTTP_CONTENT_TYPE'] ?? '');
+$data = json_decode($payload, true);
+if (!$data) {
+    if (!empty($_POST)) {
+        if (isset($_POST['payload'])) {
+            $data = json_decode($_POST['payload'], true);
+        }
+        if (!$data) {
+            // Treat flat form fields as data
+            $data = $_POST;
+        }
     }
 }
 
-// Check if transaction is successful
-if (strtolower($data['status']) !== 'successful') {
-    file_put_contents($logFile, "[$timestamp] INFO: Transaction not successful, status: {$data['status']}\n", FILE_APPEND);
+if (!$data || !is_array($data)) {
+    file_put_contents($logFile, "[$timestamp] ERROR: Unable to parse payload. Content-Type={$contentType} Body=" . substr($payload, 0, 1000) . "\n", FILE_APPEND);
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid payload']);
+    exit;
+}
+
+// Some providers nest fields under 'data'
+$root = (isset($data['data']) && is_array($data['data'])) ? $data['data'] : $data;
+
+// Billstack event/type (may indicate success without an explicit status)
+$eventRaw = $data['event'] ?? ($root['event'] ?? '');
+$event = strtolower(trim((string)$eventRaw));
+$typeRaw = $root['type'] ?? '';
+$type = strtolower(trim((string)$typeRaw));
+
+// Extract expected fields with tolerances for alternative keys
+$statusRaw = $root["status"] ?? $data["status"] ?? '';
+$accountNumber = $root['account_number'] ?? $root['accountNo'] ?? $root['customer_account'] ?? $data['account_number'] ?? '';
+// Billstack nested account number
+if (!$accountNumber && isset($root['account']) && is_array($root['account']) && isset($root['account']['account_number'])) {
+    $accountNumber = $root['account']['account_number'];
+}
+$amountRaw = $root['amount'] ?? $root['amount_paid'] ?? $data['amount'] ?? null;
+$reference = $root['reference'] ?? $root['transaction_reference'] ?? $root['ref'] ?? $data['reference'] ?? '';
+
+// Payer details for sender name
+$payerFirst = trim((string)($root['payer']['first_name'] ?? ''));
+$payerLast = trim((string)($root['payer']['last_name'] ?? ''));
+$payerAcc = preg_replace('/\D/', '', (string)($root['payer']['account_number'] ?? ''));
+$sender = $root['sender_name'] ?? $root['sender'] ?? trim(($payerFirst . ' ' . $payerLast)) ?: ($payerAcc ?: ($root['narration'] ?? 'Bank Transfer'));
+// Masked payer account for messages
+$payerAcctMasked = $payerAcc ? ('****' . substr($payerAcc, -4)) : '';
+
+// Optional extra refs
+$wiaxyRef = $root['wiaxy_ref'] ?? '';
+$merchantRef = $root['merchant_reference'] ?? '';
+
+$status = strtolower(trim((string)$statusRaw));
+$amount = is_numeric($amountRaw) ? (float)$amountRaw : (float)preg_replace('/[^\d.]/', '', (string)$amountRaw);
+
+// Optional: convert minor units (e.g., kobo) to major units using env BILLSTACK_AMOUNT_SCALE
+$scaleEnv = getenv('BILLSTACK_AMOUNT_SCALE') ?: ($_ENV['BILLSTACK_AMOUNT_SCALE'] ?? '1');
+$scale = (int)$scaleEnv;
+if ($scale > 1) {
+    $amount = round($amount / $scale, 2);
+}
+
+// If status missing, infer success from Billstack event/type
+$eventKey = preg_replace('/[^a-z]/', '', $event); // normalize, drop underscores/typos
+$isBillstackPayment = str_starts_with($eventKey, 'paymentnotification');
+if (!$status && $isBillstackPayment) {
+    // For reserved account transactions, treat as successful
+    if (!$type || $type === 'reserved_account_transaction') {
+        $status = 'successful';
+    }
+}
+
+// Log normalized fields
+file_put_contents($logFile, "[$timestamp] Normalized fields: " . json_encode([
+    'status' => $status,
+    'account_number' => $accountNumber,
+    'amount' => $amount,
+    'reference' => $reference,
+    'sender' => $sender,
+    'payer_account' => $payerAcc,
+    'event' => $event,
+    'type' => $type,
+    'scale' => $scale
+], JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
+
+// Validate required fields after normalization (status may be inferred)
+if (!$accountNumber || !$reference || $amount <= 0) {
+    file_put_contents($logFile, "[$timestamp] ERROR: Missing/invalid required fields\n", FILE_APPEND);
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Missing or invalid fields']);
+    exit;
+}
+
+// Determine success from status or Billstack event/type
+$isSuccessful = ($status === 'successful') || ($isBillstackPayment && (!$type || $type === 'reserved_account_transaction'));
+if (!$isSuccessful) {
+    file_put_contents($logFile, "[$timestamp] INFO: Transaction not successful, status: {$status}\n", FILE_APPEND);
     http_response_code(200);
     echo json_encode(['status' => 'ok', 'message' => 'Transaction not successful']);
     exit;
 }
-
-$accountNumber = $data['account_number'];
-$amount = floatval($data['amount']);
-$reference = $data['reference'];
-$sender = $data['sender_name'] ?? 'Bank Transfer';
 
 // Validate amount
 if ($amount <= 0) {
@@ -143,14 +227,14 @@ try {
         $email,
         'success',
         $reference,
-        "Deposit from $sender",
+        trim("Billstack deposit from $sender" . ($payerAcctMasked ? " ($payerAcctMasked)" : '') . ($wiaxyRef ? " | wiaxy_ref: $wiaxyRef" : '') . ($merchantRef ? " | merchant_ref: $merchantRef" : '')),
         'ni ni-money-coins',
         'text-success'
     ]);
 
     // Create notification
     $title = "Deposit Received";
-    $message = "₦" . number_format($amount, 2) . " has been credited to your wallet from $sender.";
+    $message = "₦" . number_format($amount, 2) . " credited from $sender" . ($payerAcctMasked ? " ($payerAcctMasked)" : '') . ". Ref: $reference";
 
     $stmt = $pdo->prepare("INSERT INTO notifications (user_id, title, message, type, color, icon, is_read, created_at) VALUES (?, ?, ?, ?, ?, ?, 0, NOW())");
     $stmt->execute([$userId, $title, $message, 'deposit', 'text-success', 'ni ni-money-coins']);
