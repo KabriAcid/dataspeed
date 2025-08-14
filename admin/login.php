@@ -1,193 +1,130 @@
 <?php
 session_start();
-// If already logged in, redirect
-if (isset($_SESSION['admin_id'])) {
+
+// Redirect if already logged in
+if (!empty($_SESSION['admin_id'])) {
     header('Location: dashboard.php');
     exit;
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Dataspeed</title>
-
-    <!-- CSS -->
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Nucleo Icons -->
-    <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet" />
-
-    <!-- Lottie Animations -->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <!-- <script src="../assets/js/lottie-player.js"></script> -->
-
-    <!-- Toasted JS for notifications -->
-    <link rel="stylesheet" href="../public/assets/css/toasted.css" />
-    <script src="../public/assets/js/toasted.js"></script>
-
-    <link rel="stylesheet" href="../public/assets/css/soft-design-system-pro.min3f71.css">
-
-    <link href="../public/assets/css/style.css" rel="stylesheet" />
-    <link href="../public/assets/css/admin.css" rel="stylesheet" />
+    <title>Admin Login - DataSpeed VTU</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/nucleo@1.0.0/css/nucleo.css" rel="stylesheet">
+    <link href="assets/css/admin.css" rel="stylesheet">
 </head>
-
-<body>
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-6 col-lg-4">
-                <div class="card login-card">
-                    <div class="card-header text-center pb-0">
-                        <img src="../public/favicon.png" alt="Dataspeed" class="img-fluid mb-3" style="height:50px; width:50px; max-height: 60px;">
-                    </div>
-
-                    <div class="card-body">
-                        <form method="POST" class="admin-form" onsubmit="return false;" id="admin-login-form">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placheholder="Enter your email"
-                                    required autocomplete="email" autofocus>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
-                                    required autocomplete="current-password">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="otp" class="form-label">
-                                    OTP Code
-                                    <small class="text-muted">(if enabled)</small>
-                                </label>
-                                <input type="text" class="form-control" id="otp" name="otp"
-                                    placeholder="Enter 6-digit code" maxlength="6" autocomplete="one-time-code">
-                                <small class="form-text text-muted">
-                                    Leave blank if OTP is not enabled for your account.
-                                </small>
-                            </div>
-
-                            <div class="text-center">
-                                <button type="submit" id="login-btn" class="btn btn-primary w-100 my-4 mb-2">
-                                    Sign In
-                                </button>
-                            </div>
-                        </form>
-
-                        <div class="text-center">
-                            <small class="text-muted">
-                                Forgot your password? Contact system administrator.
-                            </small>
-                        </div>
-                    </div>
-
-                    <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                        <small class="text-muted">
-                            © <?php echo date('Y'); ?> Dataspeed. All rights reserved.
-                        </small>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo-container">
+                    <img src="../public/favicon.png" alt="" class="img-fluid">
+                </div>
+                <h2>Admin Login</h2>
+                <p class="text-muted">Sign in to your admin dashboard</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="ni ni-email-83"></i>
+                        </span>
+                        <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                 </div>
-
-
-            </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="ni ni-lock-circle-open"></i>
+                        </span>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-login" id="loginBtn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner d-none">
+                        <span class="spinner-border spinner-border-sm" role="status"></span>
+                    </span>
+                </button>
+            </form>
         </div>
     </div>
 
-    <!-- Core JS Files -->
-    <script src="../public/assets/js/core/popper.min.js"></script>
-    <script src="../public/assets/js/core/bootstrap.min.js"></script>
-    <script src="../public/assets/js/admin.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/admin.js"></script>
     <script>
-        // Enhance UX + wire AJAX login
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('admin-login-form');
-            const emailField = document.getElementById('email');
-            const passwordField = document.getElementById('password');
-            const otpField = document.getElementById('otp');
-            const btn = document.getElementById('login-btn');
-
-            // Autofocus
-            (emailField.value ? passwordField : emailField).focus();
-
-            // Numeric-only OTP
-            otpField.addEventListener('input', e => e.target.value = e.target.value.replace(/[^0-9]/g, ''));
-
-            async function postForm(url, data) {
-                const resp = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: data
-                });
-                return resp.json();
-            }
-
-            async function validateEmail() {
-                const email = emailField.value.trim();
-                if (!email) return;
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const btnText = loginBtn.querySelector('.btn-text');
+            const btnSpinner = loginBtn.querySelector('.btn-spinner');
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Show loading state
+                loginBtn.disabled = true;
+                btnText.classList.add('d-none');
+                btnSpinner.classList.remove('d-none');
+                
                 try {
-                    const fd = new FormData();
-                    fd.append('email', email);
-                    const res = await postForm('./api/validate-login.php', fd);
-                    if (res.success && res.exists) {
-                        if (res.status !== 'active') {
-                            showToasted('Account is not active. Please contact support.', 'error');
-                        }
-                        if (res.otp_required) {
-                            otpField.placeholder = 'Enter 6-digit code (required)';
-                        } else {
-                            otpField.placeholder = 'Enter 6-digit code (if enabled)';
-                        }
+                    // First validate inputs
+                    const validateResponse = await apiFetch('api/auth.php', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'validate',
+                            email: email,
+                            password: password
+                        })
+                    });
+                    
+                    if (!validateResponse.success) {
+                        showToasted(validateResponse.message, 'error');
+                        return;
                     }
-                } catch (e) {
-                    // silent
-                }
-            }
-
-            emailField.addEventListener('blur', validateEmail);
-
-            form.addEventListener('submit', async function() {
-                const email = emailField.value.trim();
-                const password = passwordField.value;
-                const otp = otpField.value.trim();
-
-                if (!email || !password) {
-                    showToasted('Email and password are required.', 'error');
-                    return;
-                }
-
-                btn.disabled = true;
-                btn.innerText = 'Signing in...';
-
-                try {
-                    const fd = new FormData(form);
-                    const res = await postForm('./api/auth-login.php', fd);
-
-                    if (res.success) {
-                        showToasted('Login successful.', 'success');
+                    
+                    // Then attempt login
+                    const loginResponse = await apiFetch('api/auth.php', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'login',
+                            email: email,
+                            password: password
+                        })
+                    });
+                    
+                    if (loginResponse.success) {
+                        showToasted('Login successful! Redirecting...', 'success');
                         setTimeout(() => {
-                            window.location.href = res.redirect || 'dashboard.php';
-                        }, 500);
+                            window.location.href = loginResponse.redirect;
+                        }, 1000);
                     } else {
-                        showToasted(res.message || 'Login failed. Try again.', 'error');
-                        if (res.otp_required) {
-                            otpField.focus();
-                        }
+                        showToasted(loginResponse.message, 'error');
                     }
-                } catch (err) {
-                    showToasted('Network error. Please try again.', 'error');
+                    
+                } catch (error) {
+                    showToasted('Login failed. Please try again.', 'error');
+                    console.log(error);
                 } finally {
-                    btn.disabled = false;
-                    btn.innerText = 'Sign In';
+                    // Reset button state
+                    loginBtn.disabled = false;
+                    btnText.classList.remove('d-none');
+                    btnSpinner.classList.add('d-none');
                 }
             });
         });
     </script>
 </body>
-
 </html>

@@ -1,120 +1,199 @@
 <?php
 session_start();
-require_once '../config/config.php';
 
-// Check admin authentication
-if (!isset($_SESSION['admin_id'])) {
+// Check authentication
+if (empty($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit;
 }
 
-// Get dashboard stats
-require_once '../functions/users.php';
-require_once '../functions/transactions.php';
-
-$user_stats = getUserStats();
-$transaction_stats = getTransactionStats();
-
-$page_title = 'Dashboard';
-include '../includes/admin/header.php';
-include '../includes/admin/sidebar.php';
+include 'includes/header.php';
 ?>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Dashboard</h1>
-    <div class="text-muted">
-        Welcome back, <?= htmlspecialchars($_SESSION['admin_name'] ?? 'Admin') ?>
-    </div>
-</div>
+<body class="admin-body">
+    <?php include 'includes/topbar.php'; ?>
+    <?php include 'includes/sidebar.php'; ?>
 
-<!-- Dashboard Cards -->
-<div class="row g-4 mb-4">
-    <div class="col-md-3">
-        <div class="card dashboard-card border-primary">
-            <div class="card-body text-center">
-                <i class="bi bi-people text-primary display-4"></i>
-                <div class="display-6 text-primary"><?= $user_stats['active_users'] ?></div>
-                <div class="text-muted">Active Users</div>
+    <main class="main-content">
+        <div class="container-fluid">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-subtitle">Welcome back! Here's what's happening with your platform.</p>
             </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3">
-        <div class="card dashboard-card border-warning">
-            <div class="card-body text-center">
-                <i class="bi bi-shield-exclamation text-warning display-4"></i>
-                <div class="display-6 text-warning"><?= $user_stats['kyc_pending'] ?></div>
-                <div class="text-muted">KYC Pending</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3">
-        <div class="card dashboard-card border-success">
-            <div class="card-body text-center">
-                <i class="bi bi-credit-card text-success display-4"></i>
-                <div class="display-6 text-success"><?= $transaction_stats['today_transactions'] ?></div>
-                <div class="text-muted">Today's Transactions</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3">
-        <div class="card dashboard-card border-danger">
-            <div class="card-body text-center">
-                <i class="bi bi-exclamation-triangle text-danger display-4"></i>
-                <div class="display-6 text-danger"><?= $transaction_stats['failed_transactions'] ?></div>
-                <div class="text-muted">Failed Transactions</div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Quick Actions -->
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Quick Actions</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    <a href="users/create.php" class="btn btn-outline-primary">
-                        <i class="bi bi-person-plus"></i> Add New User
-                    </a>
-                    <a href="notifications/templates.php" class="btn btn-outline-secondary">
-                        <i class="bi bi-envelope"></i> Send Notification
-                    </a>
-                    <a href="settings/" class="btn btn-outline-info">
-                        <i class="bi bi-gear"></i> System Settings
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">System Status</h5>
-            </div>
-            <div class="card-body">
-                <div class="row text-center">
-                    <div class="col">
-                        <div class="h4 text-success mb-1">₦<?= number_format($transaction_stats['today_amount'], 2) ?></div>
-                        <small class="text-muted">Today's Revenue</small>
+            <!-- KPI Cards -->
+            <div class="row g-4 mb-4" id="kpiCards">
+                <div class="col-xl-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-card-body">
+                            <div class="stat-icon bg-primary">
+                                <i class="ni ni-single-02"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" id="activeUsers">-</h3>
+                                <p class="stat-label">Active Users</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col">
-                        <div class="h4 text-info mb-1"><?= $transaction_stats['pending_transactions'] ?></div>
-                        <small class="text-muted">Pending</small>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-card-body">
+                            <div class="stat-icon bg-success">
+                                <i class="ni ni-money-coins"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" id="todayRevenue">₦0</h3>
+                                <p class="stat-label">Today's Revenue</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-card-body">
+                            <div class="stat-icon bg-info">
+                                <i class="ni ni-circle-08"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" id="newUsersToday">-</h3>
+                                <p class="stat-label">New Users Today</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-card-body">
+                            <div class="stat-icon bg-warning">
+                                <i class="ni ni-wallet-43"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" id="totalBalance">₦0</h3>
+                                <p class="stat-label">Total Users' Balance</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<?php
-include '../includes/admin/footer.php';
-include '../includes/admin/scripts.php';
-?>
+            <!-- Charts Row -->
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Daily Transactions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" id="dailyChart">
+                                <div class="chart-placeholder">
+                                    <i class="ni ni-chart-bar-32"></i>
+                                    <p>Loading chart data...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Bill Distribution</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" id="billChart">
+                                <div class="chart-placeholder">
+                                    <i class="ni ni-chart-pie-35"></i>
+                                    <p>Loading chart data...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <?php include 'includes/scripts.php'; ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            topbarInit();
+            loadDashboardStats();
+        });
+
+        async function loadDashboardStats() {
+            try {
+                const response = await apiFetch('api/stats.php');
+                if (response.success) {
+                    const data = response.data;
+
+                    // Update KPI cards
+                    document.getElementById('activeUsers').textContent = data.active_users || 0;
+                    document.getElementById('todayRevenue').textContent = formatCurrency(data.today_revenue_amount || 0);
+                    document.getElementById('newUsersToday').textContent = data.new_users_today || 0;
+                    document.getElementById('totalBalance').textContent = formatCurrency(data.total_users_balance || 0);
+
+                    // Simple chart rendering (CSS-based bars)
+                    if (data.series && data.series.daily_transactions) {
+                        renderDailyChart(data.series.daily_transactions);
+                    }
+
+                    if (data.series && data.series.bill_distribution) {
+                        renderBillChart(data.series.bill_distribution);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load dashboard stats:', error);
+            }
+        }
+
+        function renderDailyChart(data) {
+            const container = document.getElementById('dailyChart');
+            const maxValue = Math.max(...data.map(d => d.amount));
+
+            container.innerHTML = `
+                <div class="simple-chart">
+                    ${data.map(d => `
+                        <div class="chart-bar">
+                            <div class="bar" style="height: ${(d.amount / maxValue) * 100}%"></div>
+                            <span class="bar-label">${d.date}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderBillChart(data) {
+            const container = document.getElementById('billChart');
+            const total = data.reduce((sum, d) => sum + d.value, 0);
+
+            container.innerHTML = `
+                <div class="bill-distribution">
+                    ${data.map(d => `
+                        <div class="bill-item">
+                            <div class="bill-color" style="background-color: ${getBillColor(d.label)}"></div>
+                            <span class="bill-label">${d.label}</span>
+                            <span class="bill-value">${((d.value / total) * 100).toFixed(1)}%</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function getBillColor(label) {
+            const colors = {
+                'Data': 'var(--primary)',
+                'Airtime': 'var(--warning)',
+                'Bills payment': 'var(--info)',
+                'Electricity': 'var(--success)'
+            };
+            return colors[label] || 'var(--gray-400)';
+        }
+    </script>
+</body>
+
+</html>
