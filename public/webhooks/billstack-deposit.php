@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin: *');
 header('Vary: Origin');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Signature, X-Billstack-Signature');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Signature, X-Billstack-Signature, X-Wiaxy-Signature');
 
 // Log all incoming requests
 $logFile = __DIR__ . '/deposit-log.txt';
@@ -49,6 +49,30 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     file_put_contents($logFile, "[$timestamp] ERROR: Unsupported method {$_SERVER['REQUEST_METHOD']}\n", FILE_APPEND);
     http_response_code(405);
     echo json_encode(['status' => 'error', 'message' => 'Method not allowed']);
+    exit;
+}
+
+// Verify x-wiaxy-signature = md5(secret) where secret = BILLSTACK_SECRET_KEY
+$secret = getenv('BILLSTACK_SECRET_KEY') ?: ($_ENV['BILLSTACK_SECRET_KEY'] ?? '');
+if (empty($secret)) {
+    file_put_contents($logFile, "[$timestamp] ERROR: Missing BILLSTACK_SECRET_KEY env for signature verification\n", FILE_APPEND);
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'Webhook secret not configured']);
+    exit;
+}
+
+$providedSig = null;
+foreach ($headers as $hk => $hv) {
+    if (strtolower($hk) === 'x-wiaxy-signature') {
+        $providedSig = trim((string)$hv);
+        break;
+    }
+}
+$expectedSig = md5($secret);
+if (!$providedSig || !hash_equals($expectedSig, $providedSig)) {
+    file_put_contents($logFile, "[$timestamp] ERROR: Signature verification failed. Provided={$providedSig} Expected={$expectedSig}\n", FILE_APPEND);
+    http_response_code(401);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid signature']);
     exit;
 }
 
