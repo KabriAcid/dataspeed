@@ -13,14 +13,14 @@ include 'includes/header.php';
 <body class="admin-body">
     <?php include 'includes/topbar.php'; ?>
     <?php include 'includes/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="container-fluid">
             <div class="page-header">
                 <h1 class="page-title">Transactions</h1>
                 <p class="page-subtitle">Monitor and manage all platform transactions</p>
             </div>
-            
+
             <!-- Stats Cards -->
             <div class="row g-4 mb-4">
                 <div class="col-xl-3 col-md-6">
@@ -36,7 +36,7 @@ include 'includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card">
                         <div class="stat-card-body">
@@ -50,7 +50,7 @@ include 'includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card">
                         <div class="stat-card-body">
@@ -64,7 +64,7 @@ include 'includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card">
                         <div class="stat-card-body">
@@ -79,7 +79,7 @@ include 'includes/header.php';
                     </div>
                 </div>
             </div>
-            
+
             <!-- Filters -->
             <div class="card mb-4">
                 <div class="card-body">
@@ -118,7 +118,7 @@ include 'includes/header.php';
                     </div>
                 </div>
             </div>
-            
+
             <!-- Transactions Table -->
             <div class="card">
                 <div class="card-header">
@@ -149,33 +149,33 @@ include 'includes/header.php';
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <!-- Pagination -->
                     <div id="paginationContainer" class="mt-4"></div>
                 </div>
             </div>
         </div>
     </main>
-    
+
     <?php include 'includes/scripts.php'; ?>
-    
+
     <script>
         let currentPage = 1;
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             topbarInit();
             loadTransactions();
             loadTransactionStats();
-            
+
             // Search functionality
             const searchInput = document.getElementById('searchInput');
             const debouncedSearch = debounce(() => {
                 currentPage = 1;
                 loadTransactions();
             }, 500);
-            
+
             searchInput.addEventListener('input', debouncedSearch);
-            
+
             // Filter changes
             ['statusFilter', 'typeFilter', 'dateFilter'].forEach(id => {
                 document.getElementById(id).addEventListener('change', () => {
@@ -183,46 +183,55 @@ include 'includes/header.php';
                     loadTransactions();
                 });
             });
-            
+
             // Pagination
             window.addEventListener('pageChange', (e) => {
                 currentPage = e.detail.page;
                 loadTransactions();
             });
         });
-        
+
         async function loadTransactionStats() {
             try {
-                // Mock data - replace with actual API call
-                const stats = {
-                    completed: 1250,
-                    pending: 45,
-                    failed: 23,
-                    total_volume: 2450000
-                };
-                
-                document.getElementById('completedCount').textContent = stats.completed.toLocaleString();
-                document.getElementById('pendingCount').textContent = stats.pending.toLocaleString();
-                document.getElementById('failedCount').textContent = stats.failed.toLocaleString();
-                document.getElementById('totalVolume').textContent = formatCurrency(stats.total_volume);
-                
+                const res = await apiFetch('api/transactions.php?action=stats');
+                if (res.success) {
+                    const {
+                        completed,
+                        pending,
+                        failed,
+                        total_volume
+                    } = res.data;
+                    document.getElementById('completedCount').textContent = (completed || 0).toLocaleString();
+                    document.getElementById('pendingCount').textContent = (pending || 0).toLocaleString();
+                    document.getElementById('failedCount').textContent = (failed || 0).toLocaleString();
+                    document.getElementById('totalVolume').textContent = formatCurrency(total_volume || 0);
+                }
             } catch (error) {
                 console.error('Failed to load transaction stats:', error);
             }
         }
-        
+
         async function loadTransactions() {
             const tableBody = document.getElementById('transactionsTableBody');
-            
+
             try {
                 setLoadingState(tableBody, true);
-                
-                // Mock data - replace with actual API call
-                const mockTransactions = generateMockTransactions();
-                
-                renderTransactionsTable(mockTransactions.items);
-                renderPagination(document.getElementById('paginationContainer'), mockTransactions.pagination);
-                
+                const params = new URLSearchParams({
+                    page: String(currentPage),
+                    per_page: '20',
+                    search: document.getElementById('searchInput').value.trim(),
+                    status: document.getElementById('statusFilter').value,
+                    type: document.getElementById('typeFilter').value,
+                    date: document.getElementById('dateFilter').value
+                });
+                const res = await apiFetch('api/transactions.php?action=list&' + params.toString());
+                if (!res.success) throw new Error(res.message || 'Failed');
+                const {
+                    items,
+                    pagination
+                } = res.data;
+                renderTransactionsTable(items);
+                renderPagination(document.getElementById('paginationContainer'), pagination);
             } catch (error) {
                 showToasted('Error loading transactions', 'error');
                 tableBody.innerHTML = '<tr><td colspan="7" class="text-center py-4">Error loading transactions</td></tr>';
@@ -230,37 +239,12 @@ include 'includes/header.php';
                 setLoadingState(tableBody, false);
             }
         }
-        
-        function generateMockTransactions() {
-            const statuses = ['completed', 'pending', 'failed'];
-            const types = ['data', 'airtime', 'electricity', 'cable_tv'];
-            const users = ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson', 'David Brown'];
-            
-            const items = [];
-            for (let i = 0; i < 20; i++) {
-                items.push({
-                    id: 'TXN' + (1000 + i),
-                    user_name: users[Math.floor(Math.random() * users.length)],
-                    service_type: types[Math.floor(Math.random() * types.length)],
-                    amount: Math.floor(Math.random() * 5000) + 100,
-                    status: statuses[Math.floor(Math.random() * statuses.length)],
-                    created_at: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
-                });
-            }
-            
-            return {
-                items: items,
-                pagination: {
-                    page: currentPage,
-                    total_pages: 5,
-                    count: 100
-                }
-            };
-        }
-        
+
+        // removed mock generator; using API
+
         function renderTransactionsTable(transactions) {
             const tableBody = document.getElementById('transactionsTableBody');
-            
+
             if (transactions.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
@@ -275,7 +259,7 @@ include 'includes/header.php';
                 `;
                 return;
             }
-            
+
             tableBody.innerHTML = transactions.map(transaction => `
                 <tr>
                     <td>
@@ -301,20 +285,13 @@ include 'includes/header.php';
                             <button class="btn btn-outline-primary" onclick="viewTransaction('${transaction.id}')" title="View Details">
                                 <i class="ni ni-zoom-split-in"></i>
                             </button>
-                            ${transaction.status === 'pending' ? `
-                                <button class="btn btn-outline-success" onclick="approveTransaction('${transaction.id}')" title="Approve">
-                                    <i class="ni ni-check-bold"></i>
-                                </button>
-                                <button class="btn btn-outline-danger" onclick="rejectTransaction('${transaction.id}')" title="Reject">
-                                    <i class="ni ni-fat-remove"></i>
-                                </button>
-                            ` : ''}
+                            <button class="btn btn-outline-success" onclick="approveTransaction('${transaction.id}')
                         </div>
                     </td>
                 </tr>
             `).join('');
         }
-        
+
         function getTypeColor(type) {
             const colors = {
                 'data': 'primary',
@@ -324,7 +301,7 @@ include 'includes/header.php';
             };
             return colors[type] || 'secondary';
         }
-        
+
         function getStatusBadgeClass(status) {
             const classes = {
                 'completed': 'bg-success',
@@ -333,29 +310,30 @@ include 'includes/header.php';
             };
             return classes[status] || 'bg-secondary';
         }
-        
+
         function viewTransaction(transactionId) {
             showToasted(`Viewing transaction ${transactionId}`, 'info');
             // Implement transaction details modal
         }
-        
+
         function approveTransaction(transactionId) {
             if (confirm('Are you sure you want to approve this transaction?')) {
                 showToasted(`Transaction ${transactionId} approved`, 'success');
                 loadTransactions();
             }
         }
-        
+
         function rejectTransaction(transactionId) {
             if (confirm('Are you sure you want to reject this transaction?')) {
                 showToasted(`Transaction ${transactionId} rejected`, 'error');
                 loadTransactions();
             }
         }
-        
+
         function exportTransactions() {
             showToasted('Export functionality coming soon', 'info');
         }
     </script>
 </body>
+
 </html>

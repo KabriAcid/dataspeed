@@ -25,7 +25,8 @@ if ($method === 'GET') {
     echo json_encode(['success' => false, 'message' => 'Method not allowed']);
 }
 
-function handleGetRequest($action, $pdo) {
+function handleGetRequest($action, $pdo)
+{
     switch ($action) {
         case 'plans':
             getServicePlans($pdo);
@@ -36,7 +37,8 @@ function handleGetRequest($action, $pdo) {
     }
 }
 
-function handlePostRequest($action, $input, $pdo) {
+function handlePostRequest($action, $input, $pdo)
+{
     switch ($action) {
         case 'updatePlanPrice':
             updatePlanPrice($input, $pdo);
@@ -53,27 +55,56 @@ function handlePostRequest($action, $input, $pdo) {
     }
 }
 
-function getServicePlans($pdo) {
+function getServicePlans($pdo)
+{
     try {
-        // Get service plans
-        $stmt = $pdo->query("
-            SELECT id, name, network, code, price, data_size, validity, status, created_at
-            FROM service_plans 
-            ORDER BY network, price ASC
-        ");
-        $plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Format data
-        foreach ($plans as &$plan) {
-            $plan['price'] = (float)$plan['price'];
-            $plan['created_at'] = date('Y-m-d H:i:s', strtotime($plan['created_at']));
+        // Join plans with providers to expose network; map columns to UI shape
+        $sql = "
+            SELECT sp.id,
+                   sp.plan_name AS name,
+                   prov.name AS network,
+                   sp.variation_code AS code,
+                   sp.price,
+                   sp.volume AS data_size,
+                   sp.validity,
+                   sp.is_active,
+                   sp.created_at
+            FROM service_plans sp
+            LEFT JOIN service_providers prov ON prov.id = sp.provider_id
+            ORDER BY prov.name, sp.price ASC
+        ";
+        $stmt = $pdo->query($sql);
+        $rows = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+
+        $plans = [];
+        foreach ($rows as $r) {
+            $plans[] = [
+                'id' => (int)$r['id'],
+                'name' => $r['name'],
+                'network' => $r['network'] ?? 'Unknown',
+                'code' => $r['code'],
+                'price' => (float)$r['price'],
+                'data_size' => $r['data_size'],
+                'validity' => $r['validity'],
+                'status' => ((int)$r['is_active'] === 1 ? 'active' : 'inactive'),
+                'created_at' => date('Y-m-d H:i:s', strtotime($r['created_at']))
+            ];
         }
-        
-        // Get airtime markup
-        $stmt = $pdo->query("SELECT value FROM settings WHERE key = 'airtime_markup' LIMIT 1");
-        $markupResult = $stmt->fetch(PDO::FETCH_ASSOC);
-        $airtimeMarkup = $markupResult ? (float)$markupResult['value'] : 0;
-        
+
+        // Optional: airtime markup; ignore if settings table doesn't exist
+        $airtimeMarkup = 0;
+        try {
+            $stmt2 = $pdo->query("SELECT value FROM settings WHERE `key` = 'airtime_markup' LIMIT 1");
+            if ($stmt2) {
+                $row = $stmt2->fetch(PDO::FETCH_ASSOC);
+                if ($row && isset($row['value'])) {
+                    $airtimeMarkup = (float)$row['value'];
+                }
+            }
+        } catch (PDOException $e) {
+            error_log('Pricing settings lookup skipped: ' . $e->getMessage());
+        }
+
         echo json_encode([
             'success' => true,
             'data' => [
@@ -81,7 +112,6 @@ function getServicePlans($pdo) {
                 'airtime_markup' => $airtimeMarkup
             ]
         ]);
-        
     } catch (PDOException $e) {
         error_log("Get pricing error: " . $e->getMessage());
         http_response_code(500);
@@ -89,128 +119,143 @@ function getServicePlans($pdo) {
     }
 }
 
-function updatePlanPrice($input, $pdo) {
+function updatePlanPrice($input, $pdo)
+{
     try {
         $planId = $input['plan_id'] ?? '';
         $price = $input['price'] ?? '';
-        
-        if (empty($planId) || empty($price)) {
+
+        if (empty($planId) || $planId === '' || $price === '') {
             echo json_encode(['success' => false, 'message' => 'Plan ID and price are required']);
             return;
         }
-        
+
         if (!is_numeric($price) || $price < 0) {
             echo json_encode(['success' => false, 'message' => 'Invalid price value']);
             return;
         }
-        
-        $stmt = $pdo->prepare("UPDATE service_plans SET price = ?, updated_at = NOW() WHERE id = ?");
+
+        $stmt = $pdo->prepare("UPDATE service_plans SET price = ? WHERE id = ?");
         $stmt->execute([$price, $planId]);
-        
+
         if ($stmt->rowCount() > 0) {
             echo json_encode(['success' => true, 'message' => 'Plan price updated successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Plan not found or no changes made']);
         }
-        
     } catch (PDOException $e) {
         error_log("Update plan price error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Failed to update plan price']);
     }
 }
 
-function updatePlan($input, $pdo) {
+function updatePlan($input, $pdo)
+{
     try {
         $planId = $input['id'] ?? '';
         $name = trim($input['name'] ?? '');
-        $network = trim($input['network'] ?? '');
-        $code = trim($input['code'] ?? '');
+        $network = trim($input['network'] ?? ''); // provider name
+        $code = trim($input['code'] ?? ''); // variation_code
         $price = $input['price'] ?? '';
-        $dataSize = trim($input['data_size'] ?? '');
+        $dataSize = trim($input['data_size'] ?? ''); // volume
         $validity = trim($input['validity'] ?? '');
-        $status = $input['status'] ?? 'active';
-        
+        $status = $input['status'] ?? 'active'; // maps to is_active (1/0)
+
         if (empty($planId)) {
             echo json_encode(['success' => false, 'message' => 'Plan ID is required']);
             return;
         }
-        
-        // Validate input
+
         $errors = [];
-        
-        if (empty($name)) {
-            $errors[] = 'Plan name is required';
-        }
-        
-        if (empty($network)) {
-            $errors[] = 'Network is required';
-        }
-        
-        if (empty($code)) {
-            $errors[] = 'Plan code is required';
-        }
-        
-        if (empty($price) || !is_numeric($price) || $price < 0) {
-            $errors[] = 'Valid price is required';
-        }
-        
+        if ($name === '') $errors[] = 'Plan name is required';
+        if ($code === '') $errors[] = 'Plan code is required';
+        if ($price === '' || !is_numeric($price) || $price < 0) $errors[] = 'Valid price is required';
         if (!empty($errors)) {
             echo json_encode(['success' => false, 'message' => implode(', ', $errors)]);
             return;
         }
-        
-        // Check if code exists for other plans
-        $stmt = $pdo->prepare("SELECT id FROM service_plans WHERE code = ? AND id != ?");
+
+        // Resolve provider_id from network if provided
+        $providerId = null;
+        if ($network !== '') {
+            $stmtProv = $pdo->prepare("SELECT id FROM service_providers WHERE name = ? LIMIT 1");
+            $stmtProv->execute([$network]);
+            $prov = $stmtProv->fetch(PDO::FETCH_ASSOC);
+            if (!$prov) {
+                echo json_encode(['success' => false, 'message' => 'Invalid network selected']);
+                return;
+            }
+            $providerId = (int)$prov['id'];
+        }
+
+        // Ensure variation_code is unique across other plans
+        $stmt = $pdo->prepare("SELECT id FROM service_plans WHERE variation_code = ? AND id != ?");
         $stmt->execute([$code, $planId]);
         if ($stmt->fetch()) {
             echo json_encode(['success' => false, 'message' => 'Plan code already exists']);
             return;
         }
-        
-        // Update plan
-        $stmt = $pdo->prepare("
-            UPDATE service_plans 
-            SET name = ?, network = ?, code = ?, price = ?, data_size = ?, validity = ?, status = ?, updated_at = NOW()
-            WHERE id = ?
-        ");
-        
-        $stmt->execute([$name, $network, $code, $price, $dataSize, $validity, $status, $planId]);
-        
+
+        // Build update
+        $columns = [
+            'plan_name = ?',
+            'variation_code = ?',
+            'price = ?',
+            'volume = ?',
+            'validity = ?',
+            'is_active = ?'
+        ];
+        $params = [$name, $code, $price, $dataSize, $validity, ($status === 'active' ? 1 : 0)];
+        if ($providerId !== null) {
+            $columns[] = 'provider_id = ?';
+            $params[] = $providerId;
+        }
+        $params[] = $planId;
+
+        $sql = 'UPDATE service_plans SET ' . implode(', ', $columns) . ' WHERE id = ?';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+
         if ($stmt->rowCount() > 0) {
             echo json_encode(['success' => true, 'message' => 'Plan updated successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Plan not found or no changes made']);
         }
-        
     } catch (PDOException $e) {
         error_log("Update plan error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Failed to update plan']);
     }
 }
 
-function updateAirtimeMarkup($input, $pdo) {
+function updateAirtimeMarkup($input, $pdo)
+{
     try {
         $percentage = $input['percentage'] ?? '';
-        
+
         if (!is_numeric($percentage) || $percentage < 0) {
             echo json_encode(['success' => false, 'message' => 'Invalid markup percentage']);
             return;
         }
-        
-        // Update or insert airtime markup setting
-        $stmt = $pdo->prepare("
-            INSERT INTO settings (key, value, updated_at) 
-            VALUES ('airtime_markup', ?, NOW())
-            ON DUPLICATE KEY UPDATE value = VALUES(value), updated_at = VALUES(updated_at)
-        ");
-        
+
+        // Ensure settings table exists with a simple schema
+        try {
+            $pdo->exec("CREATE TABLE IF NOT EXISTS settings (
+                `key` VARCHAR(100) NOT NULL PRIMARY KEY,
+                `value` VARCHAR(255) NOT NULL,
+                `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
+        } catch (PDOException $e) {
+            error_log('Failed creating settings table: ' . $e->getMessage());
+        }
+
+        // Upsert airtime_markup
+        $stmt = $pdo->prepare("INSERT INTO settings (`key`, `value`, `updated_at`) VALUES ('airtime_markup', ?, NOW())
+            ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated_at` = VALUES(`updated_at`)");
         $stmt->execute([$percentage]);
-        
+
         echo json_encode(['success' => true, 'message' => 'Airtime markup updated successfully']);
-        
     } catch (PDOException $e) {
         error_log("Update airtime markup error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Failed to update airtime markup']);
     }
 }
-?>

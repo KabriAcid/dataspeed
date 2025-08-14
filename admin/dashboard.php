@@ -118,82 +118,10 @@ include 'includes/header.php';
     </main>
 
     <?php include 'includes/scripts.php'; ?>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            topbarInit();
-            loadDashboardStats();
-        });
-
-        async function loadDashboardStats() {
-            try {
-                const response = await apiFetch('api/stats.php');
-                if (response.success) {
-                    const data = response.data;
-
-                    // Update KPI cards
-                    document.getElementById('activeUsers').textContent = data.active_users || 0;
-                    document.getElementById('todayRevenue').textContent = formatCurrency(data.today_revenue_amount || 0);
-                    document.getElementById('newUsersToday').textContent = data.new_users_today || 0;
-                    document.getElementById('totalBalance').textContent = formatCurrency(data.total_users_balance || 0);
-
-                    // Simple chart rendering (CSS-based bars)
-                    if (data.series && data.series.daily_transactions) {
-                        renderDailyChart(data.series.daily_transactions);
-                    }
-
-                    if (data.series && data.series.bill_distribution) {
-                        renderBillChart(data.series.bill_distribution);
-                    }
-                }
-            } catch (error) {a
-                console.error('Failed to load dashboard stats:', error);
-            }
-        }
-
-        function renderDailyChart(data) {
-            const container = document.getElementById('dailyChart');
-            const maxValue = Math.max(...data.map(d => d.amount));
-
-            container.innerHTML = `
-                <div class="simple-chart">
-                    ${data.map(d => `
-                        <div class="chart-bar">
-                            <div class="bar" style="height: ${(d.amount / maxValue) * 100}%"></div>
-                            <span class="bar-label">${d.date}</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function renderBillChart(data) {
-            const container = document.getElementById('billChart');
-            const total = data.reduce((sum, d) => sum + d.value, 0);
-
-            container.innerHTML = `
-                <div class="bill-distribution">
-                    ${data.map(d => `
-                        <div class="bill-item">
-                            <div class="bill-color" style="background-color: ${getBillColor(d.label)}"></div>
-                            <span class="bill-label">${d.label}</span>
-                            <span class="bill-value">${((d.value / total) * 100).toFixed(1)}%</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function getBillColor(label) {
-            const colors = {
-                'Data': 'var(--primary)',
-                'Airtime': 'var(--warning)',
-                'Bills payment': 'var(--info)',
-                'Electricity': 'var(--success)'
-            };
-            return colors[label] || 'var(--gray-400)';
-        }
-    </script>
+    <!-- Chart.js (page-scoped) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Dashboard Charts JS -->
+    <script src="assets/js/dashboard-charts.js"></script>
 </body>
 
 </html>
