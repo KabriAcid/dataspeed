@@ -283,6 +283,7 @@ function set_title($title = null)
             </div>
         </div>
         </div>
+        <a href="admin/login.php">ADMIN</a>
     </footer>
 
 </body>

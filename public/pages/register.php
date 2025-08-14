@@ -68,7 +68,6 @@ if (!empty($missing_env)) {
                     <span class="page"></span>
                     <span class="page"></span>
                     <span class="page"></span>
-                    <span class="page"></span>
                 </div>
 
             </div>
@@ -106,33 +105,7 @@ if (!empty($missing_env)) {
                         </div>
                     </div>
                 </div>
-                <!-- OTP VERIFICATION -->
-                <div class="form-step d-none">
-                    <div class="form-step-header">
-                        <h4>Verify Your OTP Code</h3>
-                            <p>
-                                Enter the 6 digit code that was sent to
-                                <span id="user-email" class="fw-bold"></span>
-                            </p>
-                    </div>
-                    <div class="form-field">
-                        <div class="otp-container my-4">
-                            <input type="text" maxlength="1" class="otp-input">
-                            <input type="text" maxlength="1" class="otp-input">
-                            <input type="text" maxlength="1" class="otp-input">
-                            <input type="text" maxlength="1" class="otp-input">
-                            <input type="text" maxlength="1" class="otp-input">
-                            <input type="text" maxlength="1" class="otp-input">
-                        </div>
-                        <button type="button" id="verify-otp-btn" class="btn primary-btn mt-3">
-                            Verify OTP
-                        </button>
-                    </div>
-                    <div class="otp-timer-container">
-                        <p>Time remaining: <span id="otp-timer">03:00</span></p>
-                        <a id="resend-otp-btn" class="disabled-link">Resend OTP</a>
-                    </div>
-                </div>
+                <!-- OTP step removed -->
 
                 <!-- PHONE NUMBER VERIFICATION-->
                 <div class="form-step d-none">
@@ -227,9 +200,7 @@ if (!empty($missing_env)) {
                         </button>
                     </div>
                 </div>
-
             </form>
-
         </div>
 
         <!-- Overlay -->
