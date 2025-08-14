@@ -26,6 +26,20 @@ include 'includes/header.php';
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card">
                         <div class="stat-card-body">
+                            <div class="stat-icon bg-info">
+                                <i class="ni ni-money-coins"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" id="totalVolume">₦0</h3>
+                                <p class="stat-label">Total Volume</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Completed -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-card-body">
                             <div class="stat-icon bg-success">
                                 <i class="ni ni-check-bold"></i>
                             </div>
@@ -36,7 +50,7 @@ include 'includes/header.php';
                         </div>
                     </div>
                 </div>
-
+                <!-- Pending -->
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card">
                         <div class="stat-card-body">
@@ -50,7 +64,7 @@ include 'includes/header.php';
                         </div>
                     </div>
                 </div>
-
+                <!-- Failed -->
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card">
                         <div class="stat-card-body">
@@ -60,20 +74,6 @@ include 'includes/header.php';
                             <div class="stat-content">
                                 <h3 class="stat-value" id="failedCount">-</h3>
                                 <p class="stat-label">Failed</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <div class="stat-card">
-                        <div class="stat-card-body">
-                            <div class="stat-icon bg-info">
-                                <i class="ni ni-money-coins"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 class="stat-value" id="totalVolume">₦0</h3>
-                                <p class="stat-label">Total Volume</p>
                             </div>
                         </div>
                     </div>
@@ -241,7 +241,6 @@ include 'includes/header.php';
         }
 
         // removed mock generator; using API
-
         function renderTransactionsTable(transactions) {
             const tableBody = document.getElementById('transactionsTableBody');
 
@@ -285,7 +284,12 @@ include 'includes/header.php';
                             <button class="btn btn-outline-primary" onclick="viewTransaction('${transaction.id}')" title="View Details">
                                 <i class="ni ni-zoom-split-in"></i>
                             </button>
-                            <button class="btn btn-outline-success" onclick="approveTransaction('${transaction.id}')
+                            <button class="btn btn-outline-success" onclick="approveTransaction('${transaction.id}')" title="Approve">
+                                <i class="ni ni-check-bold"></i>
+                            </button>
+                            <button class="btn btn-outline-danger" onclick="rejectTransaction('${transaction.id}')" title="Reject">
+                                <i class="ni ni-fat-remove"></i>
+                            </button>
                         </div>
                     </td>
                 </tr>
