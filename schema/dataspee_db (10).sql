@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Aug 14, 2025 at 12:00 AM
--- Server version: 10.11.13-MariaDB-cll-lve
--- PHP Version: 8.4.10
+-- Host: 127.0.0.1
+-- Generation Time: Aug 14, 2025 at 11:48 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -49,7 +49,9 @@ INSERT INTO `account_balance` (`account_id`, `user_id`, `email`, `phone_number`,
 (7, 242, 'jepacibet@gmail.com', '08095784833', 3450.00, '2025-07-13 18:53:15'),
 (8, 244, 'zzetim@gmail.com', '08041375606', 0.00, '2025-07-16 07:10:37'),
 (9, 246, 'johik@gmail.com', '09090779344', 0.00, '2025-07-25 05:07:47'),
-(10, 219, 'rademu910@gmail.com', '09045144840', 0.00, '2025-07-31 08:22:53');
+(10, 219, 'rademu910@gmail.com', '09045144840', 0.00, '2025-07-31 08:22:53'),
+(11, 258, 'zuruvo@gmail.com', '08028596499', 901.00, '2025-08-14 21:07:08'),
+(12, 259, 'abdullahikabri@gmail.com', '09113369958', 100.00, '2025-08-14 03:52:06');
 
 -- --------------------------------------------------------
 
@@ -89,6 +91,59 @@ CREATE TABLE `account_reset_tokens` (
   `expires_at` datetime NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('superadmin','admin','support','auditor') NOT NULL DEFAULT 'admin',
+  `status` enum('active','inactive','suspended') NOT NULL DEFAULT 'active',
+  `otp_secret` varchar(64) DEFAULT NULL,
+  `failed_attempts` int(11) NOT NULL DEFAULT 0,
+  `locked_until` datetime DEFAULT NULL,
+  `last_login_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `name`, `email`, `password`, `role`, `status`, `otp_secret`, `failed_attempts`, `locked_until`, `last_login_at`, `created_at`, `updated_at`) VALUES
+(1, 'System Admin', 'dataspeedcontact@gmail.com', '$2y$10$6UzqaMPMcSwVKHmR6.07VuteblXui/GZPw.bwNAfxyeKN2x6rSCpG', 'superadmin', 'active', NULL, 0, NULL, NULL, '2025-08-14 00:57:02', '2025-08-14 07:14:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `audit_logs`
+--
+
+CREATE TABLE `audit_logs` (
+  `id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `action` varchar(50) NOT NULL,
+  `entity_type` varchar(50) DEFAULT NULL,
+  `entity_id` int(11) DEFAULT NULL,
+  `details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`details`)),
+  `ip_address` varchar(45) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `audit_logs`
+--
+
+INSERT INTO `audit_logs` (`id`, `admin_id`, `action`, `entity_type`, `entity_id`, `details`, `ip_address`, `created_at`) VALUES
+(1, 1, 'login', 'admin_session', NULL, '{\"ip\":\"::1\",\"user_agent\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/138.0.0.0 Safari\\/537.36\"}', '::1', '2025-08-14 00:59:11'),
+(2, 1, 'login', 'admin_session', NULL, '{\"ip\":\"::1\",\"user_agent\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/138.0.0.0 Safari\\/537.36\"}', '::1', '2025-08-14 04:48:42');
 
 -- --------------------------------------------------------
 
@@ -360,7 +415,20 @@ INSERT INTO `notifications` (`id`, `user_id`, `title`, `message`, `type`, `color
 (162, 136, 'Account Details Updated', 'Your account details were updated successfully.', 'profile', 'text-info', 'ni ni-single-02', 0, '2025-07-30 16:55:42'),
 (163, 221, 'PIN Changed', 'Your transaction PIN was changed successfully.', 'security', 'text-warning', 'ni ni-key-25', 0, '2025-07-30 19:01:48'),
 (164, 219, 'Virtual Account Created', 'Congratulations! Your virtual account has been created successfully.', 'virtual_account', 'text-success', 'ni ni-building', 0, '2025-07-31 08:22:53'),
-(165, 219, 'Set Your Transaction PIN', 'For your security, please set your transaction PIN to enable transactions.', 'security', 'text-warning', 'ni ni-key-25', 0, '2025-07-31 08:22:53');
+(165, 219, 'Set Your Transaction PIN', 'For your security, please set your transaction PIN to enable transactions.', 'security', 'text-warning', 'ni ni-key-25', 0, '2025-07-31 08:22:53'),
+(166, 258, 'Virtual Account Created', 'Congratulations! Your virtual account has been created successfully.', 'virtual_account', 'text-success', 'ni ni-building', 0, '2025-08-14 02:11:52'),
+(167, 258, 'Set Your Transaction PIN', 'For your security, please set your transaction PIN to enable transactions.', 'security', 'text-warning', 'ni ni-key-25', 0, '2025-08-14 02:11:52'),
+(168, 258, 'Deposit Received', '₦1,000.00 has been credited to your wallet from Browser Tester.', 'deposit', 'text-success', 'ni ni-money-coins', 0, '2025-08-14 03:06:11'),
+(169, 258, 'Deposit Received', '₦100.00 has been credited to your wallet from Browser Tester.', 'deposit', 'text-success', 'ni ni-money-coins', 0, '2025-08-14 03:08:45'),
+(170, 258, 'PIN Changed', 'Your transaction PIN was changed successfully.', 'security', 'text-warning', 'ni ni-key-25', 0, '2025-08-14 03:20:49'),
+(171, 259, 'Virtual Account Created', 'Congratulations! Your virtual account has been created successfully.', 'virtual_account', 'text-success', 'ni ni-building', 0, '2025-08-14 03:40:27'),
+(172, 259, 'Set Your Transaction PIN', 'For your security, please set your transaction PIN to enable transactions.', 'security', 'text-warning', 'ni ni-key-25', 0, '2025-08-14 03:40:28'),
+(173, 258, 'Referral Reward Earned', 'You have earned a referral reward! Go to your rewards page to claim it.', 'referral', 'text-info', 'ni ni-diamond', 0, '2025-08-14 03:40:28'),
+(174, 259, 'Deposit Received', '₦100.00 credited from 5764363369 (****3369). Ref: R-MBCERHNFVX', 'deposit', 'text-success', 'ni ni-money-coins', 0, '2025-08-14 03:52:06'),
+(175, 258, 'Deposit Received', '₦100.00 credited from 5764363053 (****3053). Ref: R-BRFGDOBMGS', 'deposit', 'text-success', 'ni ni-money-coins', 0, '2025-08-14 03:53:16'),
+(176, 258, 'Airtime Purchase Failed', 'INVALID MTN NUMBER. Please enter a valid MTN number.', 'airtime_failed', 'text-danger', 'ni ni-mobile-button', 0, '2025-08-14 21:04:06'),
+(177, 258, 'Data Purchase Failed', 'INVALID MTN NUMBER. Please enter a valid MTN number.', 'data_failed', 'text-danger', 'ni ni-world-2', 0, '2025-08-14 21:05:38'),
+(178, 258, 'Data Purchase Successful', 'You purchased ₦299.00 data for 08028596499 on AIRTEL', 'data_purchase', 'text-success', 'ni ni-world-2', 0, '2025-08-14 21:07:09');
 
 -- --------------------------------------------------------
 
@@ -449,7 +517,8 @@ CREATE TABLE `referral_reward` (
 INSERT INTO `referral_reward` (`referral_id`, `reward`, `user_id`, `referee_email`, `status`, `created_at`) VALUES
 (9, 100.00, 133, '', 'claimed', '2025-05-20 04:53:16'),
 (10, 100.00, 136, '', 'claimed', '2025-05-28 04:34:36'),
-(11, 100.00, 136, '', 'claimed', '2025-06-01 08:49:40');
+(11, 100.00, 136, '', 'claimed', '2025-06-01 08:49:40'),
+(12, 100.00, 258, 'abdullahikabri@gmail.com', 'pending', '2025-08-14 03:40:28');
 
 -- --------------------------------------------------------
 
@@ -784,7 +853,12 @@ INSERT INTO `transactions` (`id`, `user_id`, `service_id`, `provider_id`, `plan_
 (81, 136, 2, 1, 354408, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦99.00 data for 07037943396 on MTN', 99.00, 'kabriacid01@gmail.com', 'DT-136-1753885133-9475', 'success', '2025-07-30 14:19:04'),
 (82, 136, 2, 1, 354408, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦99.00 data for 08062365769 on MTN', 99.00, 'kabriacid01@gmail.com', 'DT-136-1753885277-4963', 'success', '2025-07-30 14:21:28'),
 (83, 136, 1, 1, NULL, 'Airtime Purchase', 'ni ni-mobile-button', 'text-success', 'debit', 'You purchased ₦600.00 airtime for 07037943396 on MTN', 600.00, 'kabriacid01@gmail.com', 'AT-136-1753887173-2161', 'success', '2025-07-30 14:53:03'),
-(84, 136, 2, 1, 354406, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦499.00 data for 07037943396 on MTN', 499.00, 'kabriacid01@gmail.com', 'DT-136-1753887249-7917', 'success', '2025-07-30 14:54:20');
+(84, 136, 2, 1, 354406, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦499.00 data for 07037943396 on MTN', 499.00, 'kabriacid01@gmail.com', 'DT-136-1753887249-7917', 'success', '2025-07-30 14:54:20'),
+(85, 258, 5, NULL, NULL, 'Deposit', 'ni ni-money-coins', 'text-success', 'credit', 'Deposit from Browser Tester', 1000.00, 'zuruvo@gmail.com', 'BROWSER_TEST_1755140767980', 'success', '2025-08-14 03:06:11'),
+(86, 258, 5, NULL, NULL, 'Deposit', 'ni ni-money-coins', 'text-success', 'credit', 'Deposit from Browser Tester', 100.00, 'zuruvo@gmail.com', 'BROWSER_TEST_1755140922343', 'success', '2025-08-14 03:08:45'),
+(87, 259, 5, NULL, NULL, 'Deposit', 'ni ni-money-coins', 'text-success', 'credit', 'Billstack deposit from 5764363369 (****3369) | wiaxy_ref: 100004250814034224138972028410 | merchant_', 100.00, 'abdullahikabri@gmail.com', 'R-MBCERHNFVX', 'success', '2025-08-14 03:52:06'),
+(88, 258, 5, NULL, NULL, 'Deposit', 'ni ni-money-coins', 'text-success', 'credit', 'Billstack deposit from 5764363053 (****3053) | wiaxy_ref: 100004250814022010138971991158 | merchant_', 100.00, 'zuruvo@gmail.com', 'R-BRFGDOBMGS', 'success', '2025-08-14 03:53:16'),
+(89, 258, 2, 1, 354444, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦299.00 data for 08028596499 on AIRTEL', 299.00, 'zuruvo@gmail.com', 'DT-258-1755205615-1894', 'success', '2025-08-14 21:07:08');
 
 -- --------------------------------------------------------
 
@@ -859,7 +933,9 @@ INSERT INTO `users` (`user_id`, `virtual_account`, `account_name`, `bank_name`, 
 (244, '5763443237', 'VTU-Hyatt Obrien', '9PSB Bank', 'R-RSXYMJLRTM', 'Wodev', 'Hyatt', 'Obrien', 'zzetim@gmail.com', '08041375606', '$2y$10$lMj1aNU1ZF8wWu8s5x7mo.WCqRP5IQZVodviVDQfLWeZbehw9tdJe', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'dd8ed1e7b8dccb3592ce72b02e6abc8a', 'YXGCBWSZ7T', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=YXGCBWSZ7T', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-07-16 07:10:36', NULL),
 (246, '5763744147', 'VTU-Lester Hawkins', '9PSB Bank', 'R-SXYWLTZJLZ', 'Renev', 'Lester', 'Hawkins', 'johik@gmail.com', '09090779344', '$2y$10$jfNgTKM6tdBJplChh90edOdpoS7CpfL5XsEhwS47iCQxgIYBLdE1K', '', '', '', NULL, '', '', '', '', 'uploads/default.png', '96050b9883be8f1d01cb20add7065f1c', '2M71KLXFVJ', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=2M71KLXFVJ', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-07-25 05:07:47', NULL),
 (251, NULL, '', '', '', 'Kabure', 'Sadik', 'Dahiru', 'sadikdahiru419@yahoo.com', '08081514371', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', '2122f7201dbfc7dba43a57657fbefeeb', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-07-31 11:17:20', NULL),
-(256, NULL, '', '', '', '', '', '', 'eced235731@students.umyu.edu.ng', '07037943396', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'ad9fa5e67bc954120be095033f9c7553', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-08-01 22:46:08', NULL);
+(256, NULL, '', '', '', '', '', '', 'eced235731@students.umyu.edu.ng', '07037943396', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'ad9fa5e67bc954120be095033f9c7553', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-08-01 22:46:08', NULL),
+(258, '5764363053', 'VTU-Michael Perkins', '9PSB Bank', 'R-BRFGDOBMGS', 'Cupihed', 'Michael', 'Perkins', 'zuruvo@gmail.com', '08028596499', '$2y$10$l2BZLA1pssrsQnRsymR7gu8M447VCeiRIXwJxCrO4RiYcGN5R4z6S', '', '', '', '$2y$10$Jhkk6IQkfp7L8hkey2Qr4edFVgIZEnQr/qweXChz2Htfb62ufcy/.', '', '', '', '', 'uploads/default.png', 'f00e8e1964cac0a602a967038cde019d', 'YT31ZWEUXF', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=YT31ZWEUXF', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-08-14 21:06:55', '2025-08-14 04:20:49'),
+(259, '5764363369', 'VTU-Abdullahi Abubakar Kabri', '9PSB Bank', 'R-MBCERHNFVX', 'Abdusat', 'Abdullahi', 'Abubakar Kabri', 'abdullahikabri@gmail.com', '09113369958', '$2y$10$a4PWs0vuxL1.rjhdPC/QXeogzhdxgNsk8KYXNFB4wFg2tzehOWo66', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'bcbba2c9342346990085b06e7e71ecf9', '10R9IZK47D', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=10R9IZK47D', 'YT31ZWEUXF', 'complete', '101', 0, NULL, 'unverified', NULL, '2025-08-14 03:40:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -888,7 +964,9 @@ INSERT INTO `user_settings` (`user_id`, `biometrics_enabled`, `hide_balance`, `s
 (237, 0, 0, 1, 0, '::1'),
 (242, 0, 0, 1, 0, '::1'),
 (244, 0, 0, 1, 0, '102.88.104.242'),
-(246, 0, 0, 1, 0, '105.112.23.181');
+(246, 0, 0, 1, 0, '105.112.23.181'),
+(258, 0, 0, 1, 0, '::1'),
+(259, 0, 0, 1, 0, '::1');
 
 -- --------------------------------------------------------
 
@@ -936,6 +1014,22 @@ ALTER TABLE `account_complaints`
 ALTER TABLE `account_reset_tokens`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `admins`
+--
+ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_admins_email` (`email`),
+  ADD KEY `idx_admins_role` (`role`),
+  ADD KEY `idx_admins_status` (`status`);
+
+--
+-- Indexes for table `audit_logs`
+--
+ALTER TABLE `audit_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_audit_admin` (`admin_id`);
 
 --
 -- Indexes for table `forgot_password`
@@ -1030,7 +1124,7 @@ ALTER TABLE `variations`
 -- AUTO_INCREMENT for table `account_balance`
 --
 ALTER TABLE `account_balance`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `account_complaints`
@@ -1043,6 +1137,18 @@ ALTER TABLE `account_complaints`
 --
 ALTER TABLE `account_reset_tokens`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `admins`
+--
+ALTER TABLE `admins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `audit_logs`
+--
+ALTER TABLE `audit_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `forgot_password`
@@ -1066,7 +1172,7 @@ ALTER TABLE `nigerian_states`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=179;
 
 --
 -- AUTO_INCREMENT for table `otp_codes`
@@ -1078,7 +1184,7 @@ ALTER TABLE `otp_codes`
 -- AUTO_INCREMENT for table `referral_reward`
 --
 ALTER TABLE `referral_reward`
-  MODIFY `referral_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `referral_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -1102,13 +1208,13 @@ ALTER TABLE `service_providers`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=260;
 
 --
 -- AUTO_INCREMENT for table `variations`
@@ -1125,6 +1231,12 @@ ALTER TABLE `variations`
 --
 ALTER TABLE `account_reset_tokens`
   ADD CONSTRAINT `account_reset_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `audit_logs`
+--
+ALTER TABLE `audit_logs`
+  ADD CONSTRAINT `fk_audit_admin` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

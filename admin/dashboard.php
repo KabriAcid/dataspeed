@@ -146,7 +146,7 @@ include 'includes/header.php';
                         renderBillChart(data.series.bill_distribution);
                     }
                 }
-            } catch (error) {
+            } catch (error) {a
                 console.error('Failed to load dashboard stats:', error);
             }
         }
