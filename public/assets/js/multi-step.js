@@ -338,4 +338,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
   showStep(currentStep);
 });
-              done();

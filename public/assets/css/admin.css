@@ -1,3 +1,9 @@
+/* Plus Jakarta font */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap");
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
 /* Add to existing admin.css */
 .login-card {
   background: rgba(255, 255, 255, 0.95);
