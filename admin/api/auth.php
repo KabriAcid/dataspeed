@@ -95,7 +95,7 @@ function authenticateAdmin($input, $pdo)
         $_SESSION['admin_id'] = $admin['id'];
 
         // Update last login
-        $stmt = $pdo->prepare("UPDATE admins SET last_login = NOW() WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE admins SET last_login_at = NOW() WHERE id = ?");
         $stmt->execute([$admin['id']]);
 
         echo json_encode([

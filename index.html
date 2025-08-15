@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Sidebar - DataSpeed</title>
+    <title>Notifications - DataSpeed Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
+      :root {
   --primary: #94241e;
   --primary-light: #f8d7da;
   --primary-dark: #c0392b;
@@ -29,12 +30,9 @@
   --gray-800: #343a40;
   --gray-900: #212529;
   
-  /* Premium sidebar variables */
-  --sidebar-width: 280px;
-  --sidebar-collapsed-width: 80px;
-  --sidebar-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --sidebar-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  --nav-item-height: 56px;
+  /* Premium notification variables */
+  --notification-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --notification-hover-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   --border-radius: 12px;
   --transition-speed: 0.3s;
   --transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -54,791 +52,854 @@ body {
   line-height: 1.6;
 }
 
-.app-container {
-  display: flex;
+.notifications-container {
+  padding: 0;
   min-height: 100vh;
-  position: relative;
 }
 
-/* Sidebar Styles */
-.sidebar {
-  width: var(--sidebar-width);
-  background: var(--sidebar-bg);
-  backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: var(--sidebar-shadow);
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  transition: all var(--transition-speed) var(--transition-ease);
-  overflow: hidden;
-}
-
-.sidebar.collapsed {
-  width: var(--sidebar-collapsed-width);
-}
-
-.sidebar.collapsed .logo-text,
-.sidebar.collapsed .nav-text,
-.sidebar.collapsed .user-info {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-
-.sidebar.collapsed .sidebar-toggle i {
-  transform: rotate(180deg);
-}
-
-/* Sidebar Header */
-.sidebar-header {
-  padding: 24px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-.sidebar-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-}
-
-.logo-icon {
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Header Styles */
+.notifications-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
-  font-size: 18px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.logo-text {
-  font-size: 20px;
-  font-weight: 700;
-  color: white;
-  letter-spacing: -0.5px;
-  transition: all var(--transition-speed) var(--transition-ease);
-}
-
-.sidebar-toggle {
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--transition-speed) var(--transition-ease);
-  backdrop-filter: blur(10px);
-}
-
-.sidebar-toggle:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.05);
-}
-
-.sidebar-toggle i {
-  transition: transform var(--transition-speed) var(--transition-ease);
-}
-
-/* Sidebar Navigation */
-.sidebar-nav {
-  flex: 1;
-  padding: 20px 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.sidebar-nav::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-nav::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar-nav::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-}
-
-.nav-list {
-  list-style: none;
-  padding: 0 16px;
-}
-
-.nav-item {
-  margin-bottom: 8px;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  height: var(--nav-item-height);
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  border-radius: var(--border-radius);
-  transition: all var(--transition-speed) var(--transition-ease);
+  padding: 40px 0;
+  margin-bottom: 40px;
   position: relative;
   overflow: hidden;
-  gap: 16px;
 }
 
-.nav-link::before {
+.notifications-header::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  opacity: 0;
-  transition: opacity var(--transition-speed) var(--transition-ease);
-  border-radius: var(--border-radius);
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
 }
 
-.nav-link:hover::before {
-  opacity: 1;
+.header-content {
+  position: relative;
+  z-index: 2;
 }
 
-.nav-link:hover {
-  color: white;
-  transform: translateX(4px);
-}
-
-.nav-link.active {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.nav-link.active .nav-indicator {
-  opacity: 1;
-  transform: scaleY(1);
-}
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
 }
 
-.nav-text {
-  font-size: 15px;
-  font-weight: 500;
-  transition: all var(--transition-speed) var(--transition-ease);
-  flex: 1;
-}
-
-.nav-indicator {
-  width: 4px;
-  height: 24px;
-  background: white;
-  border-radius: 2px;
-  opacity: 0;
-  transform: scaleY(0);
-  transition: all var(--transition-speed) var(--transition-ease);
-  position: absolute;
-  right: 8px;
-}
-
-/* Sidebar Footer */
-.sidebar-footer {
-  padding: 20px 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--border-radius);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all var(--transition-speed) var(--transition-ease);
-  cursor: pointer;
-}
-
-.user-profile:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
-}
-
-.user-avatar {
-  width: 36px;
-  height: 36px;
+.page-title i {
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
+  padding: 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.page-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 400;
+}
+
+.header-actions {
+  position: relative;
+  z-index: 2;
+}
+
+.header-actions .btn {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.header-actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Stats Cards */
+.stats-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: var(--notification-shadow);
+  border: 1px solid var(--gray-200);
+  transition: all var(--transition-speed) var(--transition-ease);
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 14px;
-  flex-shrink: 0;
+  gap: 16px;
 }
 
-.user-info {
-  flex: 1;
-  transition: all var(--transition-speed) var(--transition-ease);
-}
-
-.user-name {
-  display: block;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.user-role {
-  display: block;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
-  line-height: 1.2;
-}
-
-.user-menu-toggle {
-  width: 24px;
-  height: 24px;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all var(--transition-speed) var(--transition-ease);
-  flex-shrink: 0;
-}
-
-.user-menu-toggle:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-/* Sidebar Overlay */
-.sidebar-overlay {
-  position: fixed;
+.stats-card::before {
+  content: '';
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  transition: all var(--transition-speed) var(--transition-ease);
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
 }
 
-.sidebar-overlay.active {
-  opacity: 1;
-  visibility: visible;
+.stats-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--notification-hover-shadow);
 }
 
-/* Main Content */
-.main-content {
+.stats-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.stats-content {
   flex: 1;
-  margin-left: var(--sidebar-width);
-  transition: margin-left var(--transition-speed) var(--transition-ease);
-  min-height: 100vh;
 }
 
-.sidebar.collapsed + .sidebar-overlay + .main-content {
-  margin-left: var(--sidebar-collapsed-width);
-}
-
-.content-wrapper {
-  padding: 40px;
-  max-width: 1200px;
-}
-
-.content-wrapper h1 {
-  font-size: 32px;
+.stats-number {
+  font-size: 2rem;
   font-weight: 700;
   color: var(--gray-900);
-  margin-bottom: 16px;
-  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+  line-height: 1;
 }
 
-.content-wrapper p {
-  font-size: 16px;
+.stats-label {
+  font-size: 0.875rem;
   color: var(--gray-600);
-  margin-bottom: 32px;
-  line-height: 1.7;
+  margin: 0;
+  font-weight: 500;
 }
 
-.demo-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-top: 32px;
+.stats-trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  flex-shrink: 0;
 }
 
-.demo-card {
+.stats-trend.positive {
+  color: var(--success);
+  background: rgba(40, 167, 69, 0.1);
+}
+
+.stats-trend.negative {
+  color: var(--danger);
+  background: rgba(220, 53, 69, 0.1);
+}
+
+/* Filter Tabs */
+.filter-tabs {
+  display: flex;
+  gap: 8px;
   background: white;
-  padding: 32px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 8px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--notification-shadow);
   border: 1px solid var(--gray-200);
+  overflow-x: auto;
+}
+
+.filter-tab {
+  background: transparent;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-ease);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  position: relative;
+}
+
+.filter-tab:hover {
+  background: var(--gray-100);
+  color: var(--gray-800);
+}
+
+.filter-tab.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(148, 36, 30, 0.3);
+}
+
+.filter-tab .badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: inherit;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.filter-tab.active .badge {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Notifications List */
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notification-item {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: var(--notification-shadow);
+  border: 1px solid var(--gray-200);
+  transition: all var(--transition-speed) var(--transition-ease);
+  display: flex;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.notification-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--gray-300);
   transition: all var(--transition-speed) var(--transition-ease);
 }
 
-.demo-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+.notification-item.unread::before {
+  background: var(--primary);
 }
 
-.demo-card h3 {
+.notification-item.critical::before {
+  background: var(--danger);
+  animation: pulse 2s infinite;
+}
+
+.notification-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--notification-hover-shadow);
+}
+
+.notification-item.read {
+  opacity: 0.8;
+}
+
+.notification-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
   font-size: 20px;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 16px;
+}
+
+.notification-title {
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--gray-900);
-  margin-bottom: 12px;
-}
-
-.demo-card p {
-  font-size: 14px;
-  color: var(--gray-600);
-  line-height: 1.6;
   margin: 0;
+  line-height: 1.3;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  
-  .sidebar.mobile-open {
-    transform: translateX(0);
-  }
-  
-  .sidebar.mobile-open + .sidebar-overlay {
+.notification-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.notification-time {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.notification-priority {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.notification-priority.critical {
+  background: rgba(220, 53, 69, 0.1);
+  color: var(--danger);
+}
+
+.notification-priority.high {
+  background: rgba(255, 193, 7, 0.1);
+  color: #e67e22;
+}
+
+.notification-priority.medium {
+  background: rgba(23, 162, 184, 0.1);
+  color: var(--info);
+}
+
+.notification-priority.low {
+  background: rgba(40, 167, 69, 0.1);
+  color: var(--success);
+}
+
+.notification-message {
+  font-size: 0.9375rem;
+  color: var(--gray-700);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.notification-actions .btn {
+  font-size: 0.875rem;
+  padding: 6px 16px;
+  border-radius: 8px;
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.notification-actions .btn:hover {
+  transform: translateY(-1px);
+}
+
+.notification-status {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
+}
+
+.unread-indicator {
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+/* Load More Button */
+.load-more-btn {
+  border-radius: var(--border-radius);
+  padding: 12px 32px;
+  font-weight: 600;
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.load-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(148, 36, 30, 0.2);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
     opacity: 1;
-    visibility: visible;
   }
-  
-  .main-content {
-    margin-left: 0;
-  }
-  
-  .content-wrapper {
-    padding: 24px;
-  }
-  
-  .demo-cards {
-    grid-template-columns: 1fr;
+  50% {
+    opacity: 0.5;
   }
 }
 
-@media (max-width: 768px) {
-  .content-wrapper h1 {
-    font-size: 24px;
-  }
-  
-  .demo-card {
-    padding: 24px;
-  }
-}
-
-/* Animation keyframes */
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
-.nav-item {
-  animation: slideIn 0.3s ease-out forwards;
+.notification-item {
+  animation: slideIn 0.4s ease-out forwards;
 }
 
-.nav-item:nth-child(1) { animation-delay: 0.1s; }
-.nav-item:nth-child(2) { animation-delay: 0.2s; }
-.nav-item:nth-child(3) { animation-delay: 0.3s; }
-.nav-item:nth-child(4) { animation-delay: 0.4s; }
-.nav-item:nth-child(5) { animation-delay: 0.5s; }
+.notification-item:nth-child(1) { animation-delay: 0.1s; }
+.notification-item:nth-child(2) { animation-delay: 0.2s; }
+.notification-item:nth-child(3) { animation-delay: 0.3s; }
+.notification-item:nth-child(4) { animation-delay: 0.4s; }
+.notification-item:nth-child(5) { animation-delay: 0.5s; }
 
-/* Focus styles for accessibility */
-.nav-link:focus,
-.sidebar-toggle:focus,
-.user-profile:focus {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .notifications-header {
+    padding: 24px 0;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .page-title i {
+    padding: 8px;
+    margin-right: 12px;
+  }
+  
+  .header-actions {
+    margin-top: 16px;
+  }
+  
+  .stats-card {
+    padding: 20px;
+  }
+  
+  .stats-number {
+    font-size: 1.75rem;
+  }
+  
+  .notification-item {
+    padding: 20px;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .notification-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .notification-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .filter-tabs {
+    padding: 6px;
+  }
+  
+  .filter-tab {
+    padding: 10px 16px;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .notifications-container {
+    padding: 0 16px;
+  }
+  
+  .page-title {
+    font-size: 1.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .stats-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .stats-trend {
+    align-self: center;
+  }
+  
+  .notification-actions {
+    flex-direction: column;
+  }
+  
+  .notification-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #e0e0e0;
+  }
+  
+  .stats-card,
+  .notification-item,
+  .filter-tabs {
+    background: #2d2d2d;
+    border-color: #404040;
+    color: #e0e0e0;
+  }
+  
+  .notification-title {
+    color: #ffffff;
+  }
+  
+  .notification-message {
+    color: #b0b0b0;
+  }
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-  .sidebar {
-    border-right: 2px solid white;
+  .notification-item {
+    border: 2px solid var(--gray-400);
   }
   
-  .nav-link {
-    border: 1px solid transparent;
+  .notification-item.unread {
+    border-left-color: var(--primary);
+    border-left-width: 4px;
   }
   
-  .nav-link:hover,
-  .nav-link.active {
-    border-color: white;
+  .filter-tab.active {
+    border: 2px solid var(--primary-dark);
   }
 }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-bolt"></i>
+    <div class="notifications-container">
+        <!-- Header Section -->
+        <div class="notifications-header">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="header-content">
+                            <h1 class="page-title">
+                                <i class="fas fa-bell me-3"></i>
+                                Notifications
+                            </h1>
+                            <p class="page-subtitle">Stay updated with system alerts and user activities</p>
+                        </div>
                     </div>
-                    <span class="logo-text">DataSpeed</span>
+                    <div class="col-md-6">
+                        <div class="header-actions d-flex justify-content-end gap-3">
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-filter me-2"></i>Filter
+                            </button>
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-check-double me-2"></i>Mark All Read
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <button class="sidebar-toggle" id="sidebarToggle">
-                    <i class="fas fa-chevron-left"></i>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="container-fluid mb-4">
+            <div class="row g-4">
+                <div class="col-xl-3 col-md-6">
+                    <div class="stats-card">
+                        <div class="stats-icon bg-primary">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3 class="stats-number">24</h3>
+                            <p class="stats-label">Total Notifications</p>
+                        </div>
+                        <div class="stats-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="stats-card">
+                        <div class="stats-icon bg-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3 class="stats-number">8</h3>
+                            <p class="stats-label">Unread Alerts</p>
+                        </div>
+                        <div class="stats-trend negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>5%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="stats-card">
+                        <div class="stats-icon bg-success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3 class="stats-number">16</h3>
+                            <p class="stats-label">Read Notifications</p>
+                        </div>
+                        <div class="stats-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="stats-card">
+                        <div class="stats-icon bg-info">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3 class="stats-number">3</h3>
+                            <p class="stats-label">Recent Today</p>
+                        </div>
+                        <div class="stats-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>25%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="container-fluid mb-4">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">
+                    <i class="fas fa-list me-2"></i>All Notifications
+                    <span class="badge">24</span>
+                </button>
+                <button class="filter-tab" data-filter="unread">
+                    <i class="fas fa-envelope me-2"></i>Unread
+                    <span class="badge">8</span>
+                </button>
+                <button class="filter-tab" data-filter="system">
+                    <i class="fas fa-cog me-2"></i>System
+                    <span class="badge">12</span>
+                </button>
+                <button class="filter-tab" data-filter="user">
+                    <i class="fas fa-user me-2"></i>User Activity
+                    <span class="badge">7</span>
+                </button>
+                <button class="filter-tab" data-filter="security">
+                    <i class="fas fa-shield-alt me-2"></i>Security
+                    <span class="badge">5</span>
                 </button>
             </div>
-            
-            <nav class="sidebar-nav">
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="dashboard.php" class="nav-link active" data-page="Dashboard">
-                            <div class="nav-icon">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <span class="nav-text">Dashboard</span>
-                            <div class="nav-indicator"></div>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="users.php" class="nav-link" data-page="Users">
-                            <div class="nav-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <span class="nav-text">Users</span>
-                            <div class="nav-indicator"></div>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="pricing.php" class="nav-link" data-page="Pricing">
-                            <div class="nav-icon">
-                                <i class="fas fa-tags"></i>
-                            </div>
-                            <span class="nav-text">Pricing</span>
-                            <div class="nav-indicator"></div>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="transactions.php" class="nav-link" data-page="Transactions">
-                            <div class="nav-icon">
-                                <i class="fas fa-credit-card"></i>
-                            </div>
-                            <span class="nav-text">Transactions</span>
-                            <div class="nav-indicator"></div>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="settings.php" class="nav-link" data-page="Settings">
-                            <div class="nav-icon">
-                                <i class="fas fa-cog"></i>
-                            </div>
-                            <span class="nav-text">Settings</span>
-                            <div class="nav-indicator"></div>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        </div>
 
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
+        <!-- Notifications List -->
+        <div class="container-fluid">
+            <div class="notifications-list">
+                <!-- Critical Security Alert -->
+                <div class="notification-item unread critical" data-type="security">
+                    <div class="notification-icon bg-danger">
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                    <div class="user-info">
-                        <span class="user-name">John Doe</span>
-                        <span class="user-role">Administrator</span>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h5 class="notification-title">Critical Security Alert</h5>
+                            <div class="notification-meta">
+                                <span class="notification-time">2 minutes ago</span>
+                                <span class="notification-priority critical">Critical</span>
+                            </div>
+                        </div>
+                        <p class="notification-message">Multiple failed login attempts detected from IP 192.168.1.100. Account has been temporarily locked for security.</p>
+                        <div class="notification-actions">
+                            <button class="btn btn-sm btn-outline-danger">View Details</button>
+                            <button class="btn btn-sm btn-outline-secondary">Dismiss</button>
+                        </div>
                     </div>
-                    <button class="user-menu-toggle">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </div>
-            </div>
-        </aside>
-
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-        <main class="main-content">
-            <div class="content-wrapper">
-                <h1>Premium Sidebar Demo</h1>
-                <p>This is a demonstration of the premium sidebar design. The sidebar features smooth animations, hover effects, and a modern aesthetic.</p>
-                
-                <div class="demo-cards">
-                    <div class="demo-card">
-                        <h3>Responsive Design</h3>
-                        <p>The sidebar adapts beautifully to different screen sizes with smooth transitions.</p>
-                    </div>
-                    <div class="demo-card">
-                        <h3>Modern Styling</h3>
-                        <p>Clean typography, subtle shadows, and thoughtful spacing create a premium feel.</p>
-                    </div>
-                    <div class="demo-card">
-                        <h3>Interactive Elements</h3>
-                        <p>Hover states, active indicators, and micro-interactions enhance user experience.</p>
+                    <div class="notification-status">
+                        <div class="unread-indicator"></div>
                     </div>
                 </div>
+
+                <!-- System Update -->
+                <div class="notification-item unread" data-type="system">
+                    <div class="notification-icon bg-info">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h5 class="notification-title">System Update Available</h5>
+                            <div class="notification-meta">
+                                <span class="notification-time">15 minutes ago</span>
+                                <span class="notification-priority medium">Medium</span>
+                            </div>
+                        </div>
+                        <p class="notification-message">DataSpeed v2.4.1 is now available with security patches and performance improvements.</p>
+                        <div class="notification-actions">
+                            <button class="btn btn-sm btn-primary">Update Now</button>
+                            <button class="btn btn-sm btn-outline-secondary">Schedule Later</button>
+                        </div>
+                    </div>
+                    <div class="notification-status">
+                        <div class="unread-indicator"></div>
+                    </div>
+                </div>
+
+                <!-- New User Registration -->
+                <div class="notification-item unread" data-type="user">
+                    <div class="notification-icon bg-success">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h5 class="notification-title">New User Registration</h5>
+                            <div class="notification-meta">
+                                <span class="notification-time">1 hour ago</span>
+                                <span class="notification-priority low">Low</span>
+                            </div>
+                        </div>
+                        <p class="notification-message">Sarah Johnson (sarah.johnson@example.com) has successfully registered for a Premium account.</p>
+                        <div class="notification-actions">
+                            <button class="btn btn-sm btn-outline-primary">View Profile</button>
+                            <button class="btn btn-sm btn-outline-secondary">Mark Read</button>
+                        </div>
+                    </div>
+                    <div class="notification-status">
+                        <div class="unread-indicator"></div>
+                    </div>
+                </div>
+
+                <!-- Payment Received -->
+                <div class="notification-item read" data-type="system">
+                    <div class="notification-icon bg-success">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h5 class="notification-title">Payment Received</h5>
+                            <div class="notification-meta">
+                                <span class="notification-time">2 hours ago</span>
+                                <span class="notification-priority low">Low</span>
+                            </div>
+                        </div>
+                        <p class="notification-message">Payment of $99.00 received from Michael Chen for Premium subscription renewal.</p>
+                        <div class="notification-actions">
+                            <button class="btn btn-sm btn-outline-primary">View Transaction</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Server Maintenance -->
+                <div class="notification-item read" data-type="system">
+                    <div class="notification-icon bg-warning">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h5 class="notification-title">Scheduled Maintenance Complete</h5>
+                            <div class="notification-meta">
+                                <span class="notification-time">3 hours ago</span>
+                                <span class="notification-priority medium">Medium</span>
+                            </div>
+                        </div>
+                        <p class="notification-message">Server maintenance completed successfully. All services are now running normally with improved performance.</p>
+                        <div class="notification-actions">
+                            <button class="btn btn-sm btn-outline-primary">View Report</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Rate Limit Warning -->
+                <div class="notification-item unread" data-type="system">
+                    <div class="notification-icon bg-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h5 class="notification-title">API Rate Limit Warning</h5>
+                            <div class="notification-meta">
+                                <span class="notification-time">4 hours ago</span>
+                                <span class="notification-priority high">High</span>
+                            </div>
+                        </div>
+                        <p class="notification-message">API usage has reached 85% of the daily limit. Consider upgrading your plan or optimizing API calls.</p>
+                        <div class="notification-actions">
+                            <button class="btn btn-sm btn-warning">View Usage</button>
+                            <button class="btn btn-sm btn-outline-secondary">Dismiss</button>
+                        </div>
+                    </div>
+                    <div class="notification-status">
+                        <div class="unread-indicator"></div>
+                    </div>
+                </div>
+
+                <!-- User Feedback -->
+                <div class="notification-item read" data-type="user">
+                    <div class="notification-icon bg-info">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h5 class="notification-title">New User Feedback</h5>
+                            <div class="notification-meta">
+                                <span class="notification-time">6 hours ago</span>
+                                <span class="notification-priority low">Low</span>
+                            </div>
+                        </div>
+                        <p class="notification-message">Emma Wilson left a 5-star review: "Excellent service and great customer support!"</p>
+                        <div class="notification-actions">
+                            <button class="btn btn-sm btn-outline-primary">View Review</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup Complete -->
+                <div class="notification-item read" data-type="system">
+                    <div class="notification-icon bg-success">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h5 class="notification-title">Daily Backup Complete</h5>
+                            <div class="notification-meta">
+                                <span class="notification-time">8 hours ago</span>
+                                <span class="notification-priority low">Low</span>
+                            </div>
+                        </div>
+                        <p class="notification-message">Daily database backup completed successfully. 2.4GB backed up to secure cloud storage.</p>
+                        <div class="notification-actions">
+                            <button class="btn btn-sm btn-outline-primary">View Backups</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </main>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-4">
+                <button class="btn btn-outline-primary btn-lg load-more-btn">
+                    <i class="fas fa-chevron-down me-2"></i>
+                    Load More Notifications
+                </button>
+            </div>
+        </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    // Toggle sidebar collapse
-    sidebarToggle.addEventListener('click', function() {
-        sidebar.classList.toggle('collapsed');
-        
-        // Save state to localStorage
-        const isCollapsed = sidebar.classList.contains('collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
-    });
-
-    // Load saved sidebar state
-    const savedState = localStorage.getItem('sidebarCollapsed');
-    if (savedState === 'true') {
-        sidebar.classList.add('collapsed');
-    }
-
-    // Handle mobile sidebar
-    function handleMobileSidebar() {
-        if (window.innerWidth <= 1024) {
-            sidebar.classList.remove('collapsed');
-            
-            // Mobile menu toggle (you can add a mobile menu button)
-            sidebarOverlay.addEventListener('click', function() {
-                sidebar.classList.remove('mobile-open');
-            });
-        }
-    }
-
-    // Handle navigation link clicks
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Remove active class from all links
-            navLinks.forEach(l => l.classList.remove('active'));
-            
-            // Add active class to clicked link
-            this.classList.add('active');
-            
-            // Update page title or handle navigation
-            const pageName = this.getAttribute('data-page');
-            if (pageName) {
-                document.title = `${pageName} - DataSpeed`;
-            }
-            
-            // Close mobile sidebar after navigation
-            if (window.innerWidth <= 1024) {
-                sidebar.classList.remove('mobile-open');
-            }
-        });
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', handleMobileSidebar);
-    handleMobileSidebar(); // Initial call
-
-    // Add smooth scrolling for navigation
-    function smoothScrollToSection(targetId) {
-        const target = document.getElementById(targetId);
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    }
-
-    // Add keyboard navigation support
-    document.addEventListener('keydown', function(e) {
-        // Toggle sidebar with Ctrl/Cmd + B
-        if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
-            e.preventDefault();
-            sidebarToggle.click();
-        }
-        
-        // Navigate with arrow keys when sidebar is focused
-        if (document.activeElement.classList.contains('nav-link')) {
-            const currentIndex = Array.from(navLinks).indexOf(document.activeElement);
-            let nextIndex;
-            
-            switch(e.key) {
-                case 'ArrowDown':
-                    e.preventDefault();
-                    nextIndex = (currentIndex + 1) % navLinks.length;
-                    navLinks[nextIndex].focus();
-                    break;
-                case 'ArrowUp':
-                    e.preventDefault();
-                    nextIndex = currentIndex === 0 ? navLinks.length - 1 : currentIndex - 1;
-                    navLinks[nextIndex].focus();
-                    break;
-                case 'Enter':
-                case ' ':
-                    e.preventDefault();
-                    document.activeElement.click();
-                    break;
-            }
-        }
-    });
-
-    // Add hover effects with slight delay for better UX
-    let hoverTimeout;
-    navLinks.forEach(link => {
-        link.addEventListener('mouseenter', function() {
-            clearTimeout(hoverTimeout);
-            this.style.transform = 'translateX(4px)';
-        });
-        
-        link.addEventListener('mouseleave', function() {
-            hoverTimeout = setTimeout(() => {
-                if (!this.classList.contains('active')) {
-                    this.style.transform = '';
-                }
-            }, 150);
-        });
-    });
-
-    // Add ripple effect to navigation items
-    function createRipple(event) {
-        const button = event.currentTarget;
-        const circle = document.createElement('span');
-        const diameter = Math.max(button.clientWidth, button.clientHeight);
-        const radius = diameter / 2;
-
-        circle.style.width = circle.style.height = `${diameter}px`;
-        circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-        circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-        circle.classList.add('ripple');
-
-        const ripple = button.getElementsByClassName('ripple')[0];
-        if (ripple) {
-            ripple.remove();
-        }
-
-        button.appendChild(circle);
-    }
-
-    // Add ripple CSS
-    const rippleStyle = document.createElement('style');
-    rippleStyle.textContent = `
-        .nav-link {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            pointer-events: none;
-        }
-        
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(rippleStyle);
-
-    // Add ripple effect to nav links
-    navLinks.forEach(link => {
-        link.addEventListener('click', createRipple);
-    });
-
-    // Initialize tooltips for collapsed sidebar
-    function updateTooltips() {
-        const isCollapsed = sidebar.classList.contains('collapsed');
-        
-        navLinks.forEach(link => {
-            const navText = link.querySelector('.nav-text');
-            if (isCollapsed && navText) {
-                link.setAttribute('title', navText.textContent);
-            } else {
-                link.removeAttribute('title');
-            }
-        });
-    }
-
-    // Update tooltips when sidebar state changes
-    const observer = new MutationObserver(updateTooltips);
-    observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
-    updateTooltips(); // Initial call
-
-    // Add mobile menu button (you can customize this)
-    if (window.innerWidth <= 1024) {
-        const mobileMenuButton = document.createElement('button');
-        mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-        mobileMenuButton.className = 'mobile-menu-button';
-        mobileMenuButton.style.cssText = `
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
-            width: 48px;
-            height: 48px;
-            background: var(--primary);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-        `;
-        
-        mobileMenuButton.addEventListener('click', function() {
-            sidebar.classList.toggle('mobile-open');
-        });
-        
-        document.body.appendChild(mobileMenuButton);
-    }
-});
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

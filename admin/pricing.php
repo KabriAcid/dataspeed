@@ -166,11 +166,11 @@ include 'includes/header.php';
                             <thead>
                                 <tr>
                                     <th>Plan Name</th>
-                                    <th>Network</th>
-                                    <th>Data Size</th>
-                                    <th>Validity</th>
+                                    <th class="d-none d-md-table-cell">Network</th>
+                                    <th class="d-none d-lg-table-cell">Data Size</th>
+                                    <th class="d-none d-lg-table-cell">Validity</th>
                                     <th>Price (₦)</th>
-                                    <th>Status</th>
+                                    <th class="d-none d-md-table-cell">Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -265,6 +265,7 @@ include 'includes/header.php';
         </div>
     </div>
 
+    <?php include 'includes/footer.php'; ?>
     <?php include 'includes/scripts.php'; ?>
 
     <script>
@@ -442,15 +443,15 @@ include 'includes/header.php';
                 networkPlans.forEach((plan, index) => {
                     html += `
                         <tr>
-                            <td>
-                                <div class="fw-semibold">${plan.name}</div>
-                                <small class="text-muted">Code: ${plan.code}</small>
+                            <td class="min-w-0">
+                                <div class="fw-semibold text-truncate truncate-200" title="${plan.name}">${plan.name}</div>
+                                <small class="text-muted d-none d-md-inline">Code: ${plan.code}</small>
                             </td>
-                            <td>
+                            <td class="d-none d-md-table-cell">
                                 <span class="badge bg-${getNetworkColor(plan.network)}">${plan.network}</span>
                             </td>
-                            <td>${plan.data_size || '-'}</td>
-                            <td>${plan.validity || '-'}</td>
+                            <td class="d-none d-lg-table-cell">${plan.data_size || '-'}</td>
+                            <td class="d-none d-lg-table-cell">${plan.validity || '-'}</td>
                             <td>
                                 <span class="inline-edit fw-semibold" 
                                       onclick="editPrice(this, ${plan.id})"
@@ -458,7 +459,7 @@ include 'includes/header.php';
                                     ₦${parseFloat(plan.price).toLocaleString()}
                                 </span>
                             </td>
-                            <td>
+                            <td class="d-none d-md-table-cell">
                                 <span class="badge ${plan.status === 'active' ? 'bg-success' : 'bg-secondary'}">${plan.status}</span>
                             </td>
                             <td>

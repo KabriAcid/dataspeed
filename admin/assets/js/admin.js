@@ -26,6 +26,10 @@ function initSidebar() {
 
   if (!sidebar || !sidebarToggle) return;
 
+  // Guard against double initialization (pages may call topbarInit() themselves)
+  if (window.__dsSidebarInit) return;
+  window.__dsSidebarInit = true;
+
   const isDesktop = () => window.innerWidth >= 992;
 
   const updateCollapsedTooltips = () => {
@@ -38,11 +42,10 @@ function initSidebar() {
     });
   };
 
-  const applyCollapsedFromStorage = () => {
-    const savedCollapsed = localStorage.getItem("admin.sidebarCollapsed");
-    const shouldCollapse = savedCollapsed === "true";
-    sidebar.classList.toggle("collapsed", shouldCollapse);
-    body.classList.toggle("sidebar-collapsed", shouldCollapse);
+  // No persistence: start expanded on each load
+  const applyDefaultExpanded = () => {
+    sidebar.classList.remove("collapsed");
+    body.classList.remove("sidebar-collapsed");
     updateCollapsedTooltips();
   };
 
@@ -50,10 +53,6 @@ function initSidebar() {
     sidebar.classList.toggle("collapsed");
     const collapsed = sidebar.classList.contains("collapsed");
     body.classList.toggle("sidebar-collapsed", collapsed);
-    localStorage.setItem(
-      "admin.sidebarCollapsed",
-      collapsed ? "true" : "false"
-    );
     updateCollapsedTooltips();
   };
 
@@ -92,14 +91,14 @@ function initSidebar() {
   window.addEventListener("resize", () => {
     if (isDesktop()) {
       closeMobileSidebar();
-      applyCollapsedFromStorage();
+      // Keep current session state; no persistence
     } else {
       body.classList.remove("sidebar-collapsed");
     }
   });
 
-  // Initial state
-  if (isDesktop()) applyCollapsedFromStorage();
+  // Initial state: always start expanded on desktop (no persistence)
+  if (isDesktop()) applyDefaultExpanded();
   updateActiveNavLink();
   updateCollapsedTooltips();
 }

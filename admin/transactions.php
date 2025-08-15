@@ -130,11 +130,11 @@ include 'includes/header.php';
                             <thead>
                                 <tr>
                                     <th>Transaction ID</th>
-                                    <th>User</th>
+                                    <th class="d-none d-lg-table-cell">User</th>
                                     <th>Type</th>
                                     <th>Amount</th>
                                     <th>Status</th>
-                                    <th>Date</th>
+                                    <th class="d-none d-md-table-cell">Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -157,6 +157,7 @@ include 'includes/header.php';
         </div>
     </main>
 
+    <?php include 'includes/footer.php'; ?>
     <?php include 'includes/scripts.php'; ?>
 
     <script>
@@ -264,8 +265,8 @@ include 'includes/header.php';
                     <td>
                         <div class="fw-semibold">${transaction.id}</div>
                     </td>
-                    <td>
-                        <div>${transaction.user_name}</div>
+                    <td class="d-none d-lg-table-cell">
+                        <div class="text-truncate truncate-200" title="${transaction.user_name}">${transaction.user_name}</div>
                     </td>
                     <td>
                         <span class="badge bg-${getTypeColor(transaction.service_type)}">${transaction.service_type}</span>
@@ -276,7 +277,7 @@ include 'includes/header.php';
                     <td>
                         <span class="badge ${getStatusBadgeClass(transaction.status)}">${transaction.status}</span>
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell text-nowrap">
                         <div>${formatDate(transaction.created_at)}</div>
                     </td>
                     <td>

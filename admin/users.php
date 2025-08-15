@@ -13,7 +13,7 @@ include 'includes/header.php';
 <body class="admin-body">
     <?php include 'includes/topbar.php'; ?>
     <?php include 'includes/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="container-fluid">
             <div class="page-header">
@@ -27,7 +27,7 @@ include 'includes/header.php';
                     </button> -->
                 </div>
             </div>
-            
+
             <!-- Filters -->
             <div class="card mb-4">
                 <div class="card-body">
@@ -51,7 +51,7 @@ include 'includes/header.php';
                     </div>
                 </div>
             </div>
-            
+
             <!-- Users Table -->
             <div class="card">
                 <div class="card-header">
@@ -63,10 +63,10 @@ include 'includes/header.php';
                             <thead>
                                 <tr>
                                     <th>User</th>
-                                    <th>Contact</th>
+                                    <th class="d-none d-lg-table-cell">Contact</th>
                                     <th>Balance</th>
                                     <th>Status</th>
-                                    <th>Joined</th>
+                                    <th class="d-none d-md-table-cell">Joined</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -81,14 +81,14 @@ include 'includes/header.php';
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <!-- Pagination -->
                     <div id="paginationContainer" class="mt-4"></div>
                 </div>
             </div>
         </div>
     </main>
-    
+
     <!-- User Modal -->
     <div class="modal fade" id="userModal" tabindex="-1">
         <div class="modal-dialog">
@@ -100,27 +100,27 @@ include 'includes/header.php';
                 <form id="userForm">
                     <div class="modal-body">
                         <input type="hidden" name="id" id="userId">
-                        
+
                         <div class="mb-3">
                             <label for="fullName" class="form-label">Full Name</label>
                             <input type="text" class="form-control" name="full_name" id="fullName" required>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="email" class="form-label">Email Address</label>
                             <input type="email" class="form-control" name="email" id="email" required>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone Number</label>
                             <input type="tel" class="form-control" name="phone" id="phone" required>
                         </div>
-                        
+
                         <div class="mb-3" id="passwordField">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" name="password" id="password">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
                             <select class="form-select" name="status" id="status">
@@ -138,7 +138,7 @@ include 'includes/header.php';
             </div>
         </div>
     </div>
-    
+
     <!-- View User Modal -->
     <div class="modal fade" id="viewUserModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -156,38 +156,39 @@ include 'includes/header.php';
             </div>
         </div>
     </div>
-    
+
+    <?php include 'includes/footer.php'; ?>
     <?php include 'includes/scripts.php'; ?>
-    
+
     <script>
         let currentPage = 1;
         let isEditing = false;
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             topbarInit();
             loadUsers();
-            
+
             // Search functionality
             const searchInput = document.getElementById('searchInput');
             const debouncedSearch = debounce(() => {
                 currentPage = 1;
                 loadUsers();
             }, 500);
-            
+
             searchInput.addEventListener('input', debouncedSearch);
-            
+
             // Status filter
             document.getElementById('statusFilter').addEventListener('change', () => {
                 currentPage = 1;
                 loadUsers();
             });
-            
+
             // Pagination
             window.addEventListener('pageChange', (e) => {
                 currentPage = e.detail.page;
                 loadUsers();
             });
-            
+
             // Bind modal form
             const userModal = document.getElementById('userModal');
             bindModalForm(userModal, {
@@ -197,31 +198,31 @@ include 'includes/header.php';
                 }
             });
         });
-        
+
         async function loadUsers() {
             const tableBody = document.getElementById('usersTableBody');
             const query = document.getElementById('searchInput').value;
             const status = document.getElementById('statusFilter').value;
-            
+
             try {
                 setLoadingState(tableBody, true);
-                
+
                 const params = new URLSearchParams({
                     action: 'list',
                     page: currentPage,
                     query: query,
                     status: status
                 });
-                
+
                 const response = await apiFetch(`api/users.php?${params}`);
-                
+
                 if (response.success) {
                     renderUsersTable(response.data.items);
                     renderPagination(document.getElementById('paginationContainer'), response.data.pagination);
                 } else {
                     showToasted('Failed to load users', 'error');
                 }
-                
+
             } catch (error) {
                 showToasted('Error loading users', 'error');
                 tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4">Error loading users</td></tr>';
@@ -229,10 +230,10 @@ include 'includes/header.php';
                 setLoadingState(tableBody, false);
             }
         }
-        
+
         function renderUsersTable(users) {
             const tableBody = document.getElementById('usersTableBody');
-            
+
             if (users.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
@@ -247,7 +248,7 @@ include 'includes/header.php';
                 `;
                 return;
             }
-            
+
             tableBody.innerHTML = users.map(user => `
                 <tr>
                     <td>
@@ -255,15 +256,15 @@ include 'includes/header.php';
                             <div class="avatar me-3">
                                 <i class="ni ni-single-02"></i>
                             </div>
-                            <div>
-                                <div class="fw-semibold">${user.full_name}</div>
+                            <div class="min-w-0">
+                                <div class="fw-semibold text-truncate truncate-180" title="${user.full_name}">${user.full_name}</div>
                                 <small class="text-muted">ID: ${user.id}</small>
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <div>${user.email}</div>
-                        <small class="text-muted">${user.phone}</small>
+                    <td class="d-none d-lg-table-cell">
+                        <div class="text-truncate truncate-200" title="${user.email}">${user.email}</div>
+                        <small class="text-muted text-truncate truncate-160" title="${user.phone}">${user.phone}</small>
                     </td>
                     <td>
                         <span class="fw-semibold">${formatCurrency(user.balance)}</span>
@@ -271,7 +272,7 @@ include 'includes/header.php';
                     <td>
                         <span class="badge ${getStatusBadgeClass(user.status)}">${user.status}</span>
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell text-nowrap">
                         <div>${formatDate(user.created_at)}</div>
                         ${user.last_login ? `<small class="text-muted">Last: ${formatDate(user.last_login)}</small>` : '<small class="text-muted">Never logged in</small>'}
                     </td>
@@ -293,7 +294,7 @@ include 'includes/header.php';
                 </tr>
             `).join('');
         }
-        
+
         function getStatusBadgeClass(status) {
             const classes = {
                 'active': 'bg-success',
@@ -302,7 +303,7 @@ include 'includes/header.php';
             };
             return classes[status] || 'bg-secondary';
         }
-        
+
         function openCreateUserModal() {
             isEditing = false;
             document.getElementById('userModalTitle').textContent = 'Add User';
@@ -310,17 +311,17 @@ include 'includes/header.php';
             document.getElementById('password').required = true;
             openModal('userModal');
         }
-        
+
         async function editUser(userId) {
             try {
                 const response = await apiFetch(`api/users.php?action=view&id=${userId}`);
-                
+
                 if (response.success) {
                     isEditing = true;
                     document.getElementById('userModalTitle').textContent = 'Edit User';
                     document.getElementById('passwordField').style.display = 'none';
                     document.getElementById('password').required = false;
-                    
+
                     openModal('userModal', response.data);
                 } else {
                     showToasted('Failed to load user details', 'error');
@@ -329,11 +330,11 @@ include 'includes/header.php';
                 showToasted('Error loading user details', 'error');
             }
         }
-        
+
         async function viewUser(userId) {
             try {
                 const response = await apiFetch(`api/users.php?action=view&id=${userId}`);
-                
+
                 if (response.success) {
                     const user = response.data;
                     document.getElementById('userDetailsContent').innerHTML = `
@@ -358,7 +359,7 @@ include 'includes/header.php';
                             </div>
                         </div>
                     `;
-                    
+
                     openModal('viewUserModal');
                 } else {
                     showToasted('Failed to load user details', 'error');
@@ -367,14 +368,14 @@ include 'includes/header.php';
                 showToasted('Error loading user details', 'error');
             }
         }
-        
+
         async function toggleUserLock(userId, lock) {
             const action = lock ? 'lock' : 'unlock';
-            
+
             if (!confirm(`Are you sure you want to ${action} this user?`)) {
                 return;
             }
-            
+
             try {
                 const response = await apiFetch('api/users.php', {
                     method: 'POST',
@@ -384,7 +385,7 @@ include 'includes/header.php';
                         lock: lock
                     })
                 });
-                
+
                 if (response.success) {
                     showToasted(response.message, 'success');
                     loadUsers();
@@ -395,28 +396,28 @@ include 'includes/header.php';
                 showToasted('Error updating user status', 'error');
             }
         }
-        
+
         // Override form submission to handle create vs update
         document.getElementById('userForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
-            
+
             // Set action based on whether we're editing
             data.action = isEditing ? 'update' : 'create';
-            
+
             // Remove password if editing and it's empty
             if (isEditing && !data.password) {
                 delete data.password;
             }
-            
+
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
-            
+
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
-            
+
             apiFetch('api/users.php', {
                 method: 'POST',
                 body: JSON.stringify(data)
@@ -437,4 +438,5 @@ include 'includes/header.php';
         });
     </script>
 </body>
+
 </html>

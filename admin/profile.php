@@ -328,6 +328,7 @@ include 'includes/header.php';
         </div>
     </main>
 
+    <?php include 'includes/footer.php'; ?>
     <?php include 'includes/scripts.php'; ?>
     <script src="assets/js/profile.js"></script>
 </body>
