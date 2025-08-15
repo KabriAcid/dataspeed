@@ -1,81 +1,69 @@
---- FIXES ---
+# Project Development & Improvement Blueprint
 
-- Fixing the primary, secondary btn classes.
-- Fixing the balance toggle functionality.✔️
-- Finding relevant icons for transactions. ✔️
-- Eye toggle icon in the forgot password page and also the resend timeout. ✔️
+## 1. High Priority (Security, Core Functionality, Critical UX Fixes)
+- **Session lock timeout** for the admin page.  
+- **Passkey authentication** for admin login.  
+- Fix **brute force attempts** in the Airtime, Data, and TV pages.  
+- **Account lock** after 5 wrong PIN attempts (auto logout even if already logged in).  
+- **Sanitize inputs** when using quick amount buttons.  
+- **Sanitize & validate** username field.  
+- **Username already taken** flaw logic fix.  
+- **Token caching** for Ebills API.  
+- **Handle response codes** efficiently.  
+- **Query to verify smartcard number** before processing TV subscription.  
+- **Fix primary and secondary button classes**.  
+- Use **Synk** for vulnerability detection.  
+- **Use webhooks** for real-time updates.  
 
---- FEATURES ---
+---
 
-- Quick amount issues in buy airtime page.✔️
-- Also add the login with username functionality.✔️
-- User's account setting failure.✔️
-- Sanitize inputs when using quick amount buttons. ✔️
-- Sanitizing and validating username field.✔️
-- Fixing the email sent to...✔️
-- Forgot PIN functionality. ✔️
-- Username step in registration form.✔️
-- Adding action buttons (e.g., Transfer to Friend)✔️
-- Username field for updates.✔️
-- Notification sort by date fixes.
-- No back to OTP page in the register page.
-- Full fixes of TV subscription page.
-- In transactions page use the icon of the service provider instead.
-- Handle response codes efficiently.
-- Use webhooks for updates.
-- Query to verify smartcard number.
-- Acccount should be locked after 5 wrong PIN attempts.
-- An upload form for variations.
-- Username already taken flaw logic.
-- Animation for account balance.
-- Add a subdomain for the admins.
-- A dashboard panel for admin
-- Email loader animation.
-- Use a different SMTP.
-- Use Synk for vulnerability detection.
-- Token caching for ebills.
-- Onclick transaction, redirect to txt successful page with ref.
-- Do a general clean (truncate tables and keep consistency)
+## 2. Medium Priority (UX/UI Consistency, User Dashboard Improvements)
+- **Improve UX** and reduce lower spacing of the Buy Airtime container.  
+- **Detect network** based on Nigerian phone number format.  
+- **Consistency** across the entire UI/UX.  
+- Improve **transfer page** to transfer to the exact user.  
+- **Transactions** should fetch dynamically in the dashboard without reload.  
+- In Buy Data and TV **confirmation dialog**, add row for the `plan_name` (from DB).  
+- **Sort plans** by daily, weekly, and monthly (anything < 7 days is daily).  
+- Add **updated_at** column to `service_plans` table.  
+- Add **global constants file**.  
+- **Add global TV percentage setting**.  
+- **Enhance notifications** for admin for all user transactions.  
+- **Notification sorting** by date fixes.  
+- **Automatically log out** user when account is locked.  
+- **Make airtime percentage** reflect on users page.  
+- **If features are toggled** in admin, reflect on user dashboard immediately.  
 
---- NOTIFICATION MODULES ---
+---
 
-1. **Transactions**
-   - Deposits (successful, failed) ✔️
-   - Withdrawals (initiated, successful, failed)
-   - Transfers (sent, received, failed) ✔️
-   - Payments (bills, airtime, data, TV, etc.) ✔️
+## 3. Admin Dashboard & Notifications
+- **Add notifications section** in admin dashboard with auto-refresh.  
+- **Add ding sound** for notifications in admin notifications page.  
+- Replace **KPI card background colors** with lighter shades.  
+- **Animation** for account balance.  
+- **Email loader animation** for better UX.  
+- **Use a different SMTP** for email reliability.  
+- **Subdomain** for admin panel.  
+- **Dashboard panel** for admin with service management tools.  
 
-2. **Account Security**
-   - Login (new device/location)
-   - Password change ✔️
-   - PIN set or changed ✔️
-   - KYC status updates (submitted, approved, rejected)
-   - Profile updates (email, phone, photo) ✔️
+---
 
-3. **Referrals & Rewards**
-   - Referral reward earned ✔️
-   - Referral status changed (pending, approved, rejected) ✔️
+## 4. UI Enhancements & Directory Structure
+- Restructure **project directory** and rename files for consistency & standards.  
+- In Transactions page, **use service provider icon** instead of generic icon.  
+- **Improve responsiveness** of referrals table and its buttons.  
+- **Full fix** of TV subscription page.  
+- **No back to OTP page** in registration process.  
+- **On transaction click**, redirect to receipt/success page with reference.  
+- **General DB cleanup** (truncate test data, ensure naming consistency).  
 
-4. **System & Promotions**
-   - System announcements 
-   - Promotional offers
-   - Maintenance alerts
+---
 
-5. **Bank Account Actions**
-   - Virtual account created ✔️
-   - Bank account linked/unlinked 
-   - Failed account verification
+## 5. Additional Features
+- **Animation for account balance** display.  
+- **Upload form** for variations (bulk upload support).  
+- **Use different SMTP** for better email deliverability.  
+- **Handle response codes** for all API calls.  
+- **Use webhooks** for status updates.  
 
-7. **General Errors or Alerts**
-   - Failed actions (e.g., failed transaction, failed KYC)
-   - Unusual activity detected
-
-
---- SECURITY ISSUES -----
-
-General Security
-CSRF Protection: Use CSRF tokens for all AJAX POSTs.
-Replay Protection: Ensure each transaction/request ID is unique and not reused.
-Strict CORS Policy: Only allow requests from your own domain.
-Session Management: Invalidate sessions on logout or after inactivity.
-Error Handling: Never leak sensitive info in error messages.
+---
