@@ -46,7 +46,7 @@ body {
   font-size: 14px;
   line-height: 1.6;
   color: var(--gray-700);
-  background-color: var(--gray-100);
+  background-color: #fbf5f9!important;
 }
 
 .favicon {

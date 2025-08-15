@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Redirect if already logged in
 if (!empty($_SESSION['admin_id'])) {
     header('Location: dashboard.php');
@@ -14,12 +13,16 @@ if (!empty($_SESSION['admin_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - DataSpeed VTU</title>
+    <link rel="shortcut icon" href="../public/favicon.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Nucleo Icons -->
     <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- Toasted CSS/JS for notifications -->
+    <link rel="stylesheet" href="../public/assets/css/toasted.css">
+    <script src="../public/assets/js/toasted.js"></script>
 
     <link href="assets/css/admin.css" rel="stylesheet">
 </head>
@@ -40,7 +43,7 @@ if (!empty($_SESSION['admin_id'])) {
                     <label for="email" class="form-label">Email Address</label>
                     <div class="form-field has-icon">
                         <i class="input-icon ni ni-email-83" aria-hidden="true"></i>
-                        <input type="email" class="form-control with-icon" id="email" name="email" required placeholder="Enter your email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address" autocomplete="username">
+                        <input type="email" class="form-control with-icon" id="email" name="email" placeholder="Enter your email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address" autocomplete="username">
                     </div>
                 </div>
 
@@ -48,7 +51,7 @@ if (!empty($_SESSION['admin_id'])) {
                     <label for="password" class="form-label">Password</label>
                     <div class="form-field has-icon has-toggle">
                         <i class="input-icon ni ni-lock-circle-open" aria-hidden="true"></i>
-                        <input type="password" class="form-control with-icon with-toggle" id="password" name="password" required placeholder="Enter your password" pattern=".{6,}" title="Please enter at least 6 characters" autocomplete="current-password">
+                        <input type="password" class="form-control with-icon with-toggle" id="password" name="password" placeholder="Enter your password" pattern=".{6,}" title="Please enter at least 6 characters" autocomplete="current-password">
                         <button type="button" class="toggle-icon" id="togglePassword" aria-label="Show password" title="Show password">
                             <i class="fa fa-eye" aria-hidden="true"></i>
                         </button>
@@ -67,6 +70,8 @@ if (!empty($_SESSION['admin_id'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/admin.js"></script>
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loginForm = document.getElementById('loginForm');
@@ -83,8 +88,8 @@ if (!empty($_SESSION['admin_id'])) {
                     pwdInput.setAttribute('type', isPassword ? 'text' : 'password');
                     const icon = toggleBtn.querySelector('i');
                     if (icon) {
-                        icon.classList.toggle('ni-eye-17', !isPassword);
-                        icon.classList.toggle('ni-fat-remove', isPassword);
+                        icon.classList.toggle('fa-eye', !isPassword);
+                        icon.classList.toggle('fa-eye-slash', isPassword);
                     }
                     toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
                     toggleBtn.setAttribute('title', isPassword ? 'Hide password' : 'Show password');
@@ -96,6 +101,19 @@ if (!empty($_SESSION['admin_id'])) {
 
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
+
+                // Client-side validation with toasts
+                const emailInput = document.getElementById('email');
+                if (!emailInput.checkValidity()) {
+                    showToasted('Please enter a valid email address.', 'error');
+                    emailInput.focus();
+                    return;
+                }
+                if (!password || password.length < 6) {
+                    showToasted('Password must be at least 6 characters.', 'error');
+                    pwdInput.focus();
+                    return;
+                }
 
                 // Show loading state
                 loginBtn.disabled = true;
