@@ -53,6 +53,14 @@
                     <span class="nav-text">Activity Log</span>
                 </a>
             </li>
+
+            <!-- Notifications -->
+            <li class="nav-item">
+                <a href="notifications.php" class="nav-link" data-page="Notifications">
+                    <i class="ni ni-bell-55"></i>
+                    <span class="nav-text">Notifications</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </aside>

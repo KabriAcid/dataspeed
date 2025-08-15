@@ -18,7 +18,7 @@
             </div>
 
             <div class="topbar-notifications">
-                <button class="notification-btn">
+                <button onclick="window.location.href='notifications.php'" class="notification-btn">
                     <i class="ni ni-bell-55 fs-4"></i>
                     <span class="notification-badge">3</span>
                 </button>

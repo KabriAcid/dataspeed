@@ -223,14 +223,17 @@ body {
 .topbar {
   position: fixed;
   top: 0;
+  backdrop-filter: blur(10px);
   left: 0;
   right: 0;
   height: var(--topbar-height);
-  background: var(--white);
   border-bottom: 1px solid var(--gray-200);
   z-index: 1000;
-  box-shadow: var(--shadow-lg);
   transition: var(--transition);
+}
+
+.topbar::scroll-marker {
+  box-shadow: var(--shadow-md);
 }
 
 .topbar-container {

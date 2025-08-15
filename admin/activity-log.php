@@ -42,7 +42,7 @@ include 'includes/header.php';
                         </div>
                         <div class="col-md-3">
                             <button class="btn btn-outline-primary" onclick="loadLogs()">
-                                <i class="ni ni-zoom-split-in me-2"></i>Search
+                                Search
                             </button>
                             <button class="btn btn-outline-secondary" onclick="exportLogs()">
                                 <i class="ni ni-cloud-download-95 me-2"></i>Export

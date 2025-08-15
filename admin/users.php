@@ -45,7 +45,7 @@ include 'includes/header.php';
                         </div>
                         <div class="col-md-3">
                             <button class="btn btn-outline-primary" onclick="loadUsers()">
-                                <i class="ni ni-zoom-split-in me-2"></i>Search
+                                Search
                             </button>
                         </div>
                     </div>
