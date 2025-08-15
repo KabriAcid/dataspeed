@@ -325,6 +325,48 @@ function debounce(func, wait) {
 // Initialize admin functionality when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
   topbarInit();
+  // Populate admin identity in topbar
+  (async () => {
+    try {
+      const res = await apiFetch("api/profile.php?action=get");
+      if (res && res.success && res.data) {
+        const d = res.data;
+        const short = d.first_name ? d.first_name : d.username || "Admin";
+        const full =
+          (d.first_name || "") + (d.last_name ? " " + d.last_name : "");
+        const email = d.email || "";
+        const avatar = d.avatar_url || "../public/favicon.png";
+        const elShort = document.getElementById("adminNameShort");
+        const elFull = document.getElementById("adminNameFull");
+        const elEmail = document.getElementById("adminEmail");
+        const elAvatar = document.getElementById("adminAvatarSmall");
+        if (elShort) elShort.textContent = short;
+        if (elFull) elFull.textContent = full || short;
+        if (elEmail) elEmail.textContent = email;
+        if (elAvatar) elAvatar.src = avatar;
+      }
+    } catch (e) {
+      // ignore
+    }
+    try {
+      const st = await apiFetch("api/notifications.php?action=stats");
+      if (
+        st &&
+        st.success &&
+        st.data &&
+        typeof st.data.unread !== "undefined"
+      ) {
+        const badge = document.getElementById("notifBadge");
+        if (badge) {
+          const n = parseInt(st.data.unread, 10) || 0;
+          badge.textContent = n;
+          badge.style.display = n > 0 ? "inline-block" : "none";
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  })();
   const tooltipTriggerList = [].slice.call(
     document.querySelectorAll('[data-bs-toggle="tooltip"]')
   );

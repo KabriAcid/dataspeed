@@ -29,8 +29,8 @@ require __DIR__ . '/../partials/header.php';
         <div class="form-container">
             <div class="form-row">
                 <div class="mb-3">
-                    <label for="beneficiary" class="form-label">Beneficiary Email</label>
-                    <input type="text" id="email" name="email" class="input" placeholder="Enter beneficiary email" required>
+                    <label for="phone" class="form-label">Beneficiary Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="input" placeholder="Enter beneficiary phone number" inputmode="tel" required>
                 </div>
                 <div class="mb-3">
                     <label for="amount" class="form-label">Amount</label>
@@ -57,7 +57,7 @@ require __DIR__ . '/../partials/header.php';
                 </div>
                 <div class="modal-body">
                     <p class="text-sm text-secondary mb-1 text-center">Send to</p>
-                    <div id="confirm-email" class="fw-bold fs-5 primary text-center mb-2">example@email.com</div>
+                    <div id="confirm-to" class="fw-bold fs-5 primary text-center mb-2">080 0000 0000</div>
                     <div class="info-row">
                         <span>Name:</span>
                         <span id="confirm-name" class="fw-bold"></span>
@@ -92,31 +92,31 @@ require __DIR__ . '/../partials/header.php';
     <script src="../assets/js/pinpad.js"></script>
     <script>
         // Place this in a <script> tag or your JS file after DOMContentLoaded
-        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
         const amountInput = document.getElementById('amount');
         const transferBtn = document.getElementById('transfer-button');
         const availableBalance = parseFloat(document.getElementById('user-balance').textContent);
-        const currentUserEmail = "<?= htmlspecialchars($user['email'] ?? '') ?>";
+        const currentUserPhone = "<?= htmlspecialchars($user['phone_number'] ?? '') ?>";
         const closeConfirm = document.getElementById("closeConfirm");
 
         function validateForm() {
-            const email = emailInput.value.trim();
+            const phone = phoneInput.value.trim();
             const amount = amountInput.value.trim();
-            transferBtn.disabled = !(email && amount && !isNaN(amount) && Number(amount) > 0);
+            transferBtn.disabled = !(phone && amount && !isNaN(amount) && Number(amount) > 0);
         }
 
-        emailInput.addEventListener('input', validateForm);
+        phoneInput.addEventListener('input', validateForm);
         amountInput.addEventListener('input', validateForm);
         validateForm(); // Initial state
 
         transferBtn.onclick = function() {
-            const email = emailInput.value.trim();
+            const phone = phoneInput.value.trim();
             const amount = amountInput.value.trim();
 
-            sendAjaxRequest("fetch-user.php", "POST", `email=${email}`, function(response) {
+            sendAjaxRequest("fetch-user.php", "POST", `phone=${encodeURIComponent(phone)}`, function(response) {
                 if (response.success) {
                     // Fill modal fields
-                    document.getElementById('confirm-email').textContent = response.data.email;
+                    document.getElementById('confirm-to').textContent = formatPhoneNumber(response.data.phone_number || phone);
                     document.getElementById('confirm-name').textContent = response.data.first_name + " " + response.data.last_name;
                     document.getElementById('confirm-city').textContent = response.data.city ? response.data.city : 'N/A';
                     document.getElementById('confirm-phone').textContent = formatPhoneNumber(response.data.phone_number || 'N/A');
@@ -132,11 +132,13 @@ require __DIR__ . '/../partials/header.php';
         };
 
         document.getElementById('payBtn').onclick = function() {
-            const email = emailInput.value.trim();
+            const phone = phoneInput.value.trim();
             const amount = amountInput.value.trim();
             const availableBalance = parseFloat(document.getElementById('user-balance').textContent.replace(/,/g, ''));
 
-            if (email.toLowerCase() === currentUserEmail.toLowerCase()) {
+            // Prevent self-transfer by phone number (normalize digits for comparison)
+            const normalize = v => (v || '').replace(/\D/g, '');
+            if (normalize(phone) && normalize(phone) === normalize(currentUserPhone)) {
                 showToasted('You cannot transfer money to yourself.', 'error');
                 return;
             }
@@ -167,7 +169,7 @@ require __DIR__ . '/../partials/header.php';
             pinpadModal.style.display = 'flex';
 
             // Set required attributes for transfer
-            pinpadModal.dataset.email = email;
+            pinpadModal.dataset.phone = phone;
             pinpadModal.dataset.amount = amount;
             pinpadModal.dataset.action = 'transfer';
 

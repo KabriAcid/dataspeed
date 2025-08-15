@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (action) {
       case "transfer":
-        data += `&email=${encodeURIComponent(
-          pinpadModal.dataset.email
+        data += `&phone=${encodeURIComponent(
+          pinpadModal.dataset.phone
         )}&amount=${encodeURIComponent(
           pinpadModal.dataset.amount
         )}&action=transfer`;

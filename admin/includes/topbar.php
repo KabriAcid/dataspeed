@@ -20,7 +20,7 @@
             <div class="topbar-notifications">
                 <button onclick="window.location.href='notifications.php'" class="notification-btn">
                     <i class="ni ni-bell-55 fs-4"></i>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge" id="notifBadge">0</span>
                 </button>
             </div>
 
@@ -29,18 +29,18 @@
                     <div class="avatar">
                         <i class="ni ni-single-02"></i>
                     </div>
-                    <span class="admin-name d-none d-md-inline">Admin</span>
+                    <span id="adminNameShort" class="admin-name d-none d-md-inline">Admin</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end premium-dropdown">
                     <!-- Admin Profile Section -->
                     <div class="dropdown-header">
                         <div class="admin-info">
                             <div class="admin-avatar-small">
-                                <i class="ni ni-single-02"></i>
+                                <img id="adminAvatarSmall" src="../public/favicon.png" alt="Avatar" class="img-fluid rounded-circle" />
                             </div>
                             <div class="admin-details">
-                                <h6 class="admin-name-full">Super Admin</h6>
-                                <small class="admin-email">admin@vtuapp.com</small>
+                                <h6 id="adminNameFull" class="admin-name-full">Super Admin</h6>
+                                <small id="adminEmail" class="admin-email">admin@vtuapp.com</small>
                             </div>
                         </div>
                     </div>

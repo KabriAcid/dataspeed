@@ -14,16 +14,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     $email = trim($_POST["email"] ?? '');
+    $phone = trim($_POST["phone"] ?? '');
     $user_id = $_SESSION['user_id'];
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(["success" => false, "message" => "Invalid email format."]);
-        exit;
+    // Support lookup by phone when provided; fallback to email
+    $lookupByPhone = $phone !== '';
+    if ($lookupByPhone) {
+        // Normalize phone: keep digits only, handle local formats
+        $digits = preg_replace('/\D/', '', $phone);
+        if (strlen($digits) === 10) {
+            $digits = '0' . $digits;
+        }
+        if (strlen($digits) < 10 || strlen($digits) > 14) {
+            echo json_encode(["success" => false, "message" => "Invalid phone number."]);
+            exit;
+        }
+    } else {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(["success" => false, "message" => "Invalid email format."]);
+            exit;
+        }
     }
 
     try {
-        $stmt = $pdo->prepare("SELECT email, first_name, last_name, city, phone_number, registration_status FROM users WHERE email = ?");
-        $stmt->execute([$email]);
+        if ($lookupByPhone) {
+            $stmt = $pdo->prepare("SELECT email, first_name, last_name, city, phone_number, registration_status FROM users WHERE REPLACE(REPLACE(REPLACE(phone_number,' ',''),'-',''),'+','') LIKE ? LIMIT 1");
+            $stmt->execute(['%' . $digits . '%']);
+        } else {
+            $stmt = $pdo->prepare("SELECT email, first_name, last_name, city, phone_number, registration_status FROM users WHERE email = ?");
+            $stmt->execute([$email]);
+        }
         $user = $stmt->fetch();
 
         if (!$user) {

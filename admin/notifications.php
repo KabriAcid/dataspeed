@@ -113,7 +113,11 @@ require __DIR__ . '/includes/header.php';
                         <!-- items injected here -->
                     </div>
                     <div id="emptyState" class="text-center py-5 d-none">
-                        <p class="text-muted mb-0">No notifications match your filters.</p>
+                        <div class="empty-state">
+                            <i class="ni ni-bell-55 fs-1 d-block mb-3"></i>
+                            <h3>No notifications found</h3>
+                            <p class="text-muted">Try adjusting your filters</p>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer bg-white">
@@ -203,7 +207,8 @@ require __DIR__ . '/includes/header.php';
                             });
                             await Promise.all([loadStats(), loadList()]);
                         } catch (e) {
-                            /* noop */ } finally {
+                            /* noop */
+                        } finally {
                             btn.disabled = false;
                         }
                     });
@@ -260,7 +265,8 @@ require __DIR__ . '/includes/header.php';
                     });
                     await Promise.all([loadStats(), loadList()]);
                 } catch (e) {
-                    /* noop */ } finally {
+                    /* noop */
+                } finally {
                     markAllBtn.disabled = false;
                 }
             });

@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 $user_id = $_SESSION['user_id'] ?? null;
 
-$recipient = trim($_POST['email'] ?? '');
+$recipientPhone = trim($_POST['phone'] ?? '');
 $amount = floatval($_POST['amount'] ?? 0);
 
 $pin = $_POST['pin'] ?? null;
@@ -23,7 +23,7 @@ if (empty($pin)) {
     exit;
 }
 
-if (!$user_id || !$recipient || $amount <= 0) {
+if (!$user_id || !$recipientPhone || $amount <= 0) {
     echo json_encode(['success' => false, 'message' => 'All fields are required.']);
     exit;
 }
@@ -75,9 +75,15 @@ if (!password_verify($providedPin, $userPin)) {
     exit;
 }
 
-// Find recipient and check registration status
-$stmt = $pdo->prepare("SELECT user_id, first_name, last_name, registration_status FROM users WHERE email = ? AND registration_status = 'complete' LIMIT 1");
-$stmt->execute([$recipient]);
+// Normalize phone digits for lookup
+$digits = preg_replace('/\D/', '', $recipientPhone);
+if (strlen($digits) === 10) {
+    $digits = '0' . $digits;
+}
+
+// Find recipient and check registration status by phone
+$stmt = $pdo->prepare("SELECT user_id, first_name, last_name, registration_status, email, phone_number FROM users WHERE REPLACE(REPLACE(REPLACE(phone_number,' ',''),'-',''),'+','') LIKE ? AND registration_status = 'complete' LIMIT 1");
+$stmt->execute(['%' . $digits . '%']);
 $recipientData = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$recipientData) {
@@ -172,8 +178,8 @@ try {
     $stmt->execute([$user_id]);
     $senderEmail = $stmt->fetchColumn();
 
-    // Fetch recipient email (already available as $recipient)
-    $recipientEmail = $recipient;
+    // Fetch recipient email/phone (from recipientData)
+    $recipientEmail = $recipientData['email'] ?? '';
 
     // Fetch sender name
     $stmt = $pdo->prepare("SELECT first_name, last_name FROM users WHERE user_id = ?");

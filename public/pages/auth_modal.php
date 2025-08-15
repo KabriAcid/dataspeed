@@ -5,11 +5,6 @@ if(!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
-function set_title($title = null)
-{
-    $default = "DataSpeed";
-    return htmlspecialchars($title ?: $default);
-}
 
 ?>
 <!DOCTYPE html>
@@ -19,7 +14,7 @@ function set_title($title = null)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Page title is set dynamically -->
-    <title><?= set_title('Account Locked' ?? null) ?></title>
+    <title>Account Locked</title>
     <link rel="shortcut icon" href="../favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">

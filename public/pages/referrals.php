@@ -3,13 +3,13 @@ require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/initialize.php';
-require __DIR__ . '/../partials/header.php';
 
 $referrals = getUserReferralDetails($pdo, $user_id);
 $rewards = getReferralRewards($pdo, $user_id);
 $pendingReferrals = getReferralsByStatus($pdo, $user_id, 'pending');
 $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
 
+require __DIR__ . '/../partials/header.php';
 ?>
 
 <body>
@@ -323,7 +323,7 @@ $completedReferrals = getReferralsByStatus($pdo, $user_id, 'claimed');
             });
         });
     </script>
-    <?php require __DIR__ . '/auth_modal.php'; ?>
+    <?php #require __DIR__ . '/auth_modal.php'; ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 

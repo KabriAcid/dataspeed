@@ -10,6 +10,24 @@ $networkProviders = getServiceProvider($pdo, 'network');
 ?>
 
 <body>
+    <style>
+        /* Quick amounts: 3 per row on all screens; 2 per row only on ultra-small (watch-sized) screens */
+        .quick-amounts {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .quick-amounts .amount-btn {
+            width: 100%;
+        }
+
+        @media (max-width: 280px) {
+            .quick-amounts {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
     <main class="container-fluid py-4">
         <!-- Header Section -->
         <header>

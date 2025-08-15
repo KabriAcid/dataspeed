@@ -32,7 +32,6 @@ file_put_contents($logFile, $logEntry, FILE_APPEND | LOCK_EX);
 
 // Handle CORS preflight early
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    file_put_contents($logFile, "[$timestamp] INFO: Preflight (OPTIONS) acknowledged\n", FILE_APPEND);
     http_response_code(204);
     exit;
 }
@@ -121,7 +120,13 @@ $reference = $root['reference'] ?? $root['transaction_reference'] ?? $root['ref'
 $payerFirst = trim((string)($root['payer']['first_name'] ?? ''));
 $payerLast = trim((string)($root['payer']['last_name'] ?? ''));
 $payerAcc = preg_replace('/\D/', '', (string)($root['payer']['account_number'] ?? ''));
-$sender = $root['sender_name'] ?? $root['sender'] ?? trim(($payerFirst . ' ' . $payerLast)) ?: ($payerAcc ?: ($root['narration'] ?? 'Bank Transfer'));
+$senderName = trim($payerFirst . ' ' . $payerLast);
+if ($senderName === '') {
+    $senderName = trim((string)($root['account']['account_name'] ?? ''));
+}
+if ($senderName === '') {
+    $senderName = $payerAcc ? ('Acct ' . ('****' . substr($payerAcc, -4))) : 'Bank Transfer';
+}
 // Masked payer account for messages
 $payerAcctMasked = $payerAcc ? ('****' . substr($payerAcc, -4)) : '';
 
@@ -155,7 +160,7 @@ file_put_contents($logFile, "[$timestamp] Normalized fields: " . json_encode([
     'account_number' => $accountNumber,
     'amount' => $amount,
     'reference' => $reference,
-    'sender' => $sender,
+    'sender' => $senderName,
     'payer_account' => $payerAcc,
     'event' => $event,
     'type' => $type,
@@ -189,7 +194,14 @@ if ($amount <= 0) {
 
 // Sanitize reference
 $reference = substr(preg_replace('/[^a-zA-Z0-9-_]/', '', $reference), 0, 100);
-$sender = htmlspecialchars($sender, ENT_QUOTES, 'UTF-8');
+// we'll store raw sender in DB and escape on render
+//$senderName = htmlspecialchars($senderName, ENT_QUOTES, 'UTF-8');
+
+// Payment channel/bank from documented payload
+$channel = trim((string)($root['account']['bank_name'] ?? ''));
+if ($channel === '') {
+    $channel = 'Bank Transfer';
+}
 
 try {
     // Find user by virtual account
@@ -251,14 +263,14 @@ try {
         $email,
         'success',
         $reference,
-        trim("Billstack deposit from $sender" . ($payerAcctMasked ? " ($payerAcctMasked)" : '') . ($wiaxyRef ? " | wiaxy_ref: $wiaxyRef" : '') . ($merchantRef ? " | merchant_ref: $merchantRef" : '')),
+        trim("Billstack deposit from $senderName" . ($payerAcctMasked ? " ($payerAcctMasked)" : '') . ($wiaxyRef ? " | wiaxy_ref: $wiaxyRef" : '') . ($merchantRef ? " | merchant_ref: $merchantRef" : '')),
         'ni ni-money-coins',
         'text-success'
     ]);
 
-    // Create notification
+    // Create notification - e.g., "N100 credit from ABUBAKAR ADAMU - OPAY"
     $title = "Deposit Received";
-    $message = "₦" . number_format($amount, 2) . " credited from $sender" . ($payerAcctMasked ? " ($payerAcctMasked)" : '') . ". Ref: $reference";
+    $message = 'N' . number_format($amount, 0) . ' credit from ' . $senderName . ' - ' . strtoupper($channel);
 
     $stmt = $pdo->prepare("INSERT INTO notifications (user_id, title, message, type, color, icon, is_read, created_at) VALUES (?, ?, ?, ?, ?, ?, 0, NOW())");
     $stmt->execute([$userId, $title, $message, 'deposit', 'text-success', 'ni ni-money-coins']);

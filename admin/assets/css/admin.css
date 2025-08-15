@@ -230,10 +230,7 @@ body {
   border-bottom: 1px solid var(--gray-200);
   z-index: 1000;
   transition: var(--transition);
-}
-
-.topbar::scroll-marker {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow);
 }
 
 .topbar-container {
@@ -292,7 +289,7 @@ body {
 }
 
 .search-input {
-  background: var(--gray-100);
+  background: var(--white);
   border: none;
   border-radius: var(--border-radius-sm);
   padding: 8px 12px 8px 36px;
