@@ -305,7 +305,7 @@ include 'includes/header.php';
             const originalText = submitBtn.textContent;
             
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving';
             
             apiFetch('api/settings.php', {
                 method: 'POST',
