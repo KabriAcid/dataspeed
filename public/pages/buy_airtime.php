@@ -3,10 +3,11 @@ require __DIR__ . '/../../config/config.php';
 require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/initialize.php';
-require __DIR__ . '/../partials/header.php';
 
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 $networkProviders = getServiceProvider($pdo, 'network');
+
+require __DIR__ . '/../partials/header.php';
 ?>
 
 <body>

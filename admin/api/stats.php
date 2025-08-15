@@ -10,6 +10,9 @@ if (empty($_SESSION['admin_id'])) {
 }
 
 require __DIR__ . '/../../config/config.php';
+// + providers
+require __DIR__ . '/../../functions/ebills.php';
+require __DIR__ . '/../../functions/billstack.php';
 
 // Defaults to always return valid JSON
 $stats = [
@@ -148,6 +151,11 @@ echo json_encode([
         'series' => [
             'daily_transactions' => $dailyData,
             'bill_distribution'  => $billDistribution
+        ],
+        // + provider balances (nullable)
+        'providers' => [
+            'ebills'    => ebills_get_balance(60),
+            'billstack' => billstack_get_balance(60),
         ]
     ])
 ]);

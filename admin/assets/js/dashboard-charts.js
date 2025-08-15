@@ -1,4 +1,16 @@
 (function () {
+  window.addEventListener("error", e => {
+    console.error("[Dashboard] window error", {
+      message: e.message,
+      filename: e.filename,
+      lineno: e.lineno,
+      colno: e.colno,
+      error: e.error,
+    });
+  });
+  window.addEventListener("unhandledrejection", e => {
+    console.error("[Dashboard] unhandled promise rejection", e.reason);
+  });
   let dailyChart = null;
   let billChart = null;
 
@@ -21,8 +33,21 @@
 
   async function loadDashboardStats() {
     try {
-      const response = await apiFetch("api/stats.php");
-      if (!response.success) return;
+      const endpoint = "api/stats.php";
+      const response = await apiFetch(endpoint);
+
+      if (!response || typeof response !== "object") {
+        console.error("[Dashboard] Unexpected response type from stats API", {
+          response,
+        });
+        return;
+      }
+      if (!response.success) {
+        console.error("[Dashboard] Stats API responded with success=false", {
+          response,
+        });
+        return;
+      }
 
       const data = response.data || {};
 
@@ -41,13 +66,41 @@
           data.total_users_balance || 0
         );
 
+      // Provider balances (optional)
+      if (data.providers) {
+        if ($("ebillsBalance"))
+          $("ebillsBalance").textContent = formatCurrency(
+            data.providers.ebills || 0
+          );
+        if ($("billstackBalance")) {
+          const val = data.providers.billstack;
+          $("billstackBalance").textContent =
+            val === null || val === undefined ? "—" : formatCurrency(val);
+        }
+      }
+
       // Charts
       const series = data.series || {};
-      if (series.daily_transactions)
+      if (series.daily_transactions) {
         renderDailyChart(series.daily_transactions);
-      if (series.bill_distribution) renderBillChart(series.bill_distribution);
+      } else {
+        console.warn(
+          "[Dashboard] Missing daily_transactions series in stats response"
+        );
+      }
+      if (series.bill_distribution) {
+        renderBillChart(series.bill_distribution);
+      } else {
+        console.warn(
+          "[Dashboard] Missing bill_distribution series in stats response"
+        );
+      }
     } catch (err) {
-      console.error("Failed to load dashboard stats:", err);
+      console.error("[Dashboard] Failed to load dashboard stats", {
+        name: err?.name,
+        message: err?.message,
+        stack: err?.stack,
+      });
     }
   }
 
@@ -224,7 +277,38 @@
     return color;
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function safeInit() {
+    // Dependency checks
+    if (typeof apiFetch !== "function") {
+      console.error(
+        "[Dashboard] apiFetch is not available. Ensure admin scripts are loaded before dashboard-charts.js"
+      );
+      return;
+    }
+    if (typeof formatCurrency !== "function") {
+      console.warn(
+        "[Dashboard] formatCurrency is not available. Using basic formatter."
+      );
+      // Fallback
+      window.formatCurrency = function (n) {
+        const num = Number(n || 0);
+        return "₦" + num.toLocaleString();
+      };
+    }
     loadDashboardStats();
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", safeInit);
+  } else {
+    // Document already ready
+    safeInit();
+  }
+  // Extra fallback in case DOMContentLoaded is missed in some edge cases
+  setTimeout(() => {
+    if (!window.__dashboardStatsLoaded__) {
+      console.warn("[Dashboard] Fallback init trigger");
+      safeInit();
+    }
+  }, 1500);
 })();

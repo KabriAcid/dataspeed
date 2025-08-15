@@ -359,7 +359,7 @@ require __DIR__ . '/../partials/header.php';
                             if (lastKnownBalance !== null && newBalance !== currentBalance) {
                                 animateBalanceUpdate(currentBalance, newBalance);
                                 // reduce volume
-                                balanceUpdateSound.volume = 0.5;
+                                balanceUpdateSound.volume = 0.2;
                                 balanceUpdateSound.play().catch(e => console.log('Sound play failed:', e));
 
                                 // Show notification for balance increase

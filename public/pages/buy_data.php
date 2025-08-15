@@ -10,6 +10,34 @@ $networkProviders = getServiceProvider($pdo, 'network');
 ?>
 
 <body>
+    <style>
+        /* Plans grid: always 3 columns with gaps and no horizontal scroll */
+        #planCards,
+        #allPlanCards {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-left: 0 !important;
+            /* override .row negatives */
+            margin-right: 0 !important;
+        }
+
+        /* Ensure children don't impose widths that cause overflow */
+        #planCards>.col-4,
+        #allPlanCards>.col-4 {
+            width: auto !important;
+        }
+
+        #planCards .plan-card,
+        #allPlanCards .plan-card {
+            width: 100%;
+        }
+
+        /* Containing tab should not create horizontal scroll */
+        .tabs .tab-content {
+            overflow-x: hidden;
+        }
+    </style>
     <main class="container-fluid py-4">
         <!-- Header Section -->
         <header>
@@ -56,7 +84,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
             </div>
             <!-- Plans Section -->
             <div class="tab-content position-relative active">
-                <div id="planCards" class="row mt-3">
+                <div id="planCards" class="mt-3">
                     <!-- Plan cards will be dynamically loaded here -->
                 </div>
 
@@ -228,13 +256,13 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 );
             }
 
-            // --- Render plans (2 per row, etc.) ---
+            // --- Render plans (3 per row grid) ---
             function renderPlans(plans, forModal = false) {
                 const container = forModal ? allPlanCards : planCardsContainer;
                 container.innerHTML = "";
                 plans.forEach((plan, idx) => {
                     const card = document.createElement("div");
-                    card.className = "col-4";
+                    card.className = "plan-col"; // width controlled by CSS grid
                     card.innerHTML = `
                                     <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
                                         <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>

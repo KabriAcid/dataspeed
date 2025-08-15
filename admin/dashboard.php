@@ -21,6 +21,36 @@ include 'includes/header.php';
                 <p class="page-subtitle">Welcome back! Here's what's happening with your platform.</p>
             </div>
 
+            <!-- Provider Balances -->
+            <div class="row g-4 mb-4">
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="stat-card-body">
+                            <div class="stat-icon">
+                                <img src="../public/assets/img/brands/ebills_favicon.webp" alt="" class="img-fluid brand-icons">
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" id="ebillsBalance">₦0.00</h3>
+                                <p class="stat-label">eBills Balance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="stat-card-body">
+                            <div class="stat-icon">
+                                <img src="../public/assets/img/brands/billstack_favicon.avif" alt="" class="img-fluid brand-icons">
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" id="billstackBalance">—</h3>
+                                <p class="stat-label">Billstack Balance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- KPI Cards -->
             <div class="row g-4 mb-4" id="kpiCards">
                 <div class="col-xl-3 col-md-6">
