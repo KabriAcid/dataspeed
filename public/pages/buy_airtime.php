@@ -109,7 +109,7 @@ require __DIR__ . '/../partials/header.php';
                         <img src="../assets/img/ng.png" alt=""> +234
                     </span>
                     <input type="tel" id="phone-number" name="phone_number" maxlength="10"
-                        placeholder="Phone Number" class="input phone-input" required value="8011111111" inputmode="numeric">
+                        placeholder="Phone Number" class="input phone-input" required inputmode="numeric">
                 </div>
                 <button type="submit" class="btn w-100 mt-3 primary-btn purchase-btn" disabled>Purchase</button>
             </div>

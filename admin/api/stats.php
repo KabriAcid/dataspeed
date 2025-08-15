@@ -25,7 +25,7 @@ $stats = [
 
 // 1) Active users (supports string or numeric status)
 try {
-    $stmt = $pdo->query("SELECT COUNT(*) AS count FROM users WHERE account_status = 101");
+    $stmt = $pdo->query("SELECT COUNT(*) AS count FROM users WHERE account_status = '101'");
     $row = $stmt->fetch();
     $stats['active_users'] = (int)($row['count'] ?? 0);
 } catch (PDOException $e) {

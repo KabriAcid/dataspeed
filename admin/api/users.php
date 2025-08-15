@@ -65,7 +65,9 @@ function getUsersList($pdo)
         $page = max(1, (int)($_GET['page'] ?? 1));
         $limit = 20;
         $offset = ($page - 1) * $limit;
-        $status = $_GET['status'] ?? '';
+        $legacyStatus = $_GET['status'] ?? '';
+        $regStatus = $_GET['reg_status'] ?? '';
+        $accStatus = $_GET['acc_status'] ?? '';
 
         // Build WHERE clause
         $whereConditions = [];
@@ -82,19 +84,34 @@ function getUsersList($pdo)
             $params[] = $searchTerm;
         }
 
-        // Map UI status filter to DB fields
-        if (!empty($status)) {
-            $status = strtolower($status);
-            if ($status === 'active') {
+        // New filters: registration_status and account_status
+        if (!empty($regStatus)) {
+            $regStatus = strtolower($regStatus);
+            if (in_array($regStatus, ['complete', 'incomplete'], true)) {
+                $whereConditions[] = 'u.registration_status = ?';
+                $params[] = $regStatus;
+            }
+        }
+        if (!empty($accStatus)) {
+            $accStatus = strtolower($accStatus);
+            $code = mapAccountStatusLabelToCode($accStatus);
+            if ($code !== null) {
                 $whereConditions[] = 'u.account_status = ?';
-                $params[] = ACCOUNT_STATUS_ACTIVE; // 101
-            } elseif ($status === 'locked') {
-                $whereConditions[] = 'u.account_status = ?';
-                $params[] = ACCOUNT_STATUS_LOCKED; // 102
-            } elseif ($status === 'pending') {
-                // Treat pending as registration incomplete
+                $params[] = $code;
+            }
+        }
+        // Backward compat: legacy single status filter
+        if (empty($regStatus) && empty($accStatus) && !empty($legacyStatus)) {
+            $legacy = strtolower($legacyStatus);
+            if ($legacy === 'pending') {
                 $whereConditions[] = 'u.registration_status = ?';
                 $params[] = 'incomplete';
+            } else {
+                $code = mapAccountStatusLabelToCode($legacy);
+                if ($code !== null) {
+                    $whereConditions[] = 'u.account_status = ?';
+                    $params[] = $code;
+                }
             }
         }
 
@@ -137,14 +154,22 @@ function getUsersList($pdo)
         // Normalize to UI contract
         $users = [];
         foreach ($rows as $row) {
+            $accCode = isset($row['account_status']) ? (int)$row['account_status'] : null;
+            $accLabel = mapAccountStatusCodeToLabel($accCode);
+            $reg = $row['registration_status'] ?? null;
             $users[] = [
                 'id' => (int)$row['id'],
                 'full_name' => $row['full_name'] ?? '',
                 'email' => $row['email'] ?? '',
                 'phone' => $row['phone'] ?? '',
                 'balance' => (float)($row['balance'] ?? 0),
-                'status' => mapAccountStatusToUi($row['account_status'] ?? null, $row['registration_status'] ?? null),
+                // New explicit fields
+                'account_status_code' => $accCode,
+                'account_status_label' => $accLabel,
+                'registration_status' => $reg,
                 'kyc_status' => $row['kyc_status'] ?? 'unverified',
+                // Backward field for older UIs (kept but no longer used by new UI)
+                'status' => $reg === 'incomplete' ? 'pending' : $accLabel,
                 'created_at' => formatDateTime($row['created_at'] ?? null),
                 'last_login' => null
             ];
@@ -207,14 +232,19 @@ function getUserDetails($pdo)
             $fullName = $user['account_name'] ?: $user['email'];
         }
 
+        $accCode = isset($user['account_status']) ? (int)$user['account_status'] : null;
         $data = [
             'id' => (int)$user['id'],
             'full_name' => $fullName,
             'email' => $user['email'] ?? '',
             'phone' => $user['phone_number'] ?? '',
             'balance' => (float)($user['balance'] ?? 0),
-            'status' => mapAccountStatusToUi($user['account_status'] ?? null, $user['registration_status'] ?? null),
+            'account_status_code' => $accCode,
+            'account_status_label' => mapAccountStatusCodeToLabel($accCode),
+            'registration_status' => $user['registration_status'] ?? null,
             'kyc_status' => $user['kyc_status'] ?? 'unverified',
+            // Backward
+            'status' => ($user['registration_status'] ?? '') === 'incomplete' ? 'pending' : mapAccountStatusCodeToLabel($accCode),
             'created_at' => formatDateTime($user['created_at'] ?? null),
             'last_login' => null
         ];
@@ -234,7 +264,11 @@ function createUser($input, $pdo)
         $email = trim($input['email'] ?? '');
         $phone = trim($input['phone'] ?? '');
         $password = $input['password'] ?? '';
-        $status = strtolower($input['status'] ?? 'active');
+        // New fields
+        $inputAccStatus = $input['account_status'] ?? null; // label or code
+        $inputRegStatus = strtolower($input['registration_status'] ?? '');
+        // Legacy single status fallback
+        $legacyStatus = strtolower($input['status'] ?? '');
 
         // Validate input
         $errors = [];
@@ -277,13 +311,29 @@ function createUser($input, $pdo)
             $last = $parts[1] ?? '';
         }
 
-        // Map status to numeric account_status and registration_status
+        // Determine final statuses
         $accountStatus = ACCOUNT_STATUS_ACTIVE; // default 101
         $registrationStatus = 'complete';
-        if ($status === 'locked') {
-            $accountStatus = ACCOUNT_STATUS_LOCKED;
-        } elseif ($status === 'pending') {
-            $registrationStatus = 'incomplete';
+
+        if ($inputAccStatus !== null && $inputAccStatus !== '') {
+            // Accept label or numeric-like code
+            if (is_numeric($inputAccStatus)) {
+                $accountStatus = (int)$inputAccStatus;
+            } else {
+                $mapped = mapAccountStatusLabelToCode($inputAccStatus);
+                if ($mapped !== null) $accountStatus = $mapped;
+            }
+        }
+        if ($inputRegStatus === 'complete' || $inputRegStatus === 'incomplete') {
+            $registrationStatus = $inputRegStatus;
+        }
+        // Legacy fallback
+        if ($legacyStatus) {
+            if ($legacyStatus === 'pending') $registrationStatus = 'incomplete';
+            else {
+                $mapped = mapAccountStatusLabelToCode($legacyStatus);
+                if ($mapped !== null) $accountStatus = $mapped;
+            }
         }
 
         // Create user (provide safe defaults for NOT NULL columns)
@@ -318,6 +368,26 @@ function createUser($input, $pdo)
             $accountStatus
         ]);
 
+        $newId = (int)$pdo->lastInsertId();
+        // Admin notification
+        $nstmt = $pdo->prepare('INSERT INTO admin_notifications (type, title, message, meta, is_read, created_at) VALUES (?,?,?,?,0,NOW())');
+        $nstmt->execute([
+            'user',
+            'User Created',
+            "New user $fullName ($email) was created",
+            json_encode(['user_id' => $newId]),
+        ]);
+        // Activity log
+        $adminId = (int)($_SESSION['admin_id'] ?? 0);
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        $lstmt = $pdo->prepare('INSERT INTO activity_log (username, action_type, action_description, ip_address, created_at) VALUES (?,?,?,?,NOW())');
+        $lstmt->execute([
+            (string)$adminId,
+            'user_create',
+            "Created user $fullName ($email)",
+            $ip,
+        ]);
+
         echo json_encode(['success' => true, 'message' => 'User created successfully']);
     } catch (PDOException $e) {
         error_log("Create user error: " . $e->getMessage());
@@ -337,7 +407,9 @@ function updateUser($input, $pdo)
         $fullName = trim($input['full_name'] ?? '');
         $email = trim($input['email'] ?? '');
         $phone = trim($input['phone'] ?? '');
-        $status = strtolower($input['status'] ?? 'active');
+        $inputAccStatus = $input['account_status'] ?? null; // label or code
+        $inputRegStatus = strtolower($input['registration_status'] ?? '');
+        $legacyStatus = strtolower($input['status'] ?? '');
 
         if (empty($userId)) {
             echo json_encode(['success' => false, 'message' => 'User ID is required']);
@@ -381,29 +453,70 @@ function updateUser($input, $pdo)
             $last = $parts[1] ?? '';
         }
 
-        // Map status
-        $accountStatus = ACCOUNT_STATUS_ACTIVE;
-        $registrationStatus = null; // only set if pending
-        if ($status === 'locked') {
-            $accountStatus = ACCOUNT_STATUS_LOCKED;
-        } elseif ($status === 'pending') {
-            $registrationStatus = 'incomplete';
+        // Determine statuses respecting provided inputs
+        $accountStatus = null; // null means don't change
+        $registrationStatus = null; // null means don't change
+        if ($inputAccStatus !== null && $inputAccStatus !== '') {
+            if (is_numeric($inputAccStatus)) $accountStatus = (int)$inputAccStatus;
+            else {
+                $mapped = mapAccountStatusLabelToCode($inputAccStatus);
+                if ($mapped !== null) $accountStatus = $mapped;
+            }
+        }
+        if ($inputRegStatus === 'complete' || $inputRegStatus === 'incomplete') {
+            $registrationStatus = $inputRegStatus;
+        }
+        // Legacy fallback if neither provided
+        if ($accountStatus === null && $registrationStatus === null && $legacyStatus) {
+            if ($legacyStatus === 'pending') $registrationStatus = 'incomplete';
+            else {
+                $mapped = mapAccountStatusLabelToCode($legacyStatus);
+                if ($mapped !== null) $accountStatus = $mapped;
+            }
         }
 
         // Build dynamic SQL to avoid overwriting registration_status unless needed
-        if ($registrationStatus !== null) {
-            $stmt = $pdo->prepare("UPDATE users 
-                SET first_name = ?, last_name = ?, email = ?, phone_number = ?, account_status = ?, registration_status = ?, updated_at = NOW()
-                WHERE user_id = ?");
-            $stmt->execute([$first, $last, $email, $phone, $accountStatus, $registrationStatus, $userId]);
-        } else {
-            $stmt = $pdo->prepare("UPDATE users 
-                SET first_name = ?, last_name = ?, email = ?, phone_number = ?, account_status = ?, updated_at = NOW()
-                WHERE user_id = ?");
-            $stmt->execute([$first, $last, $email, $phone, $accountStatus, $userId]);
+        // Build dynamic parts based on which statuses we modify
+        $setParts = [
+            'first_name = ?',
+            'last_name = ?',
+            'email = ?',
+            'phone_number = ?',
+            'updated_at = NOW()'
+        ];
+        $values = [$first, $last, $email, $phone];
+        if ($accountStatus !== null) {
+            array_splice($setParts, 4, 0, 'account_status = ?');
+            array_splice($values, 4, 0, $accountStatus);
         }
+        if ($registrationStatus !== null) {
+            array_splice($setParts, 4 + ($accountStatus !== null ? 1 : 0), 0, 'registration_status = ?');
+            array_splice($values, 4 + ($accountStatus !== null ? 1 : 0), 0, $registrationStatus);
+        }
+        $sql = 'UPDATE users SET ' . implode(', ', $setParts) . ' WHERE user_id = ?';
+        $values[] = $userId;
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($values);
 
         if ($stmt->rowCount() > 0) {
+            // Admin notification
+            $nstmt = $pdo->prepare('INSERT INTO admin_notifications (type, title, message, meta, is_read, created_at) VALUES (?,?,?,?,0,NOW())');
+            $nstmt->execute([
+                'user',
+                'User Updated',
+                "User $fullName ($email) was updated",
+                json_encode(['user_id' => (int)$userId]),
+            ]);
+            // Activity log
+            $adminId = (int)($_SESSION['admin_id'] ?? 0);
+            $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+            $lstmt = $pdo->prepare('INSERT INTO activity_log (username, action_type, action_description, ip_address, created_at) VALUES (?,?,?,?,NOW())');
+            $lstmt->execute([
+                (string)$adminId,
+                'user_update',
+                "Updated user $fullName ($email)",
+                $ip,
+            ]);
             echo json_encode(['success' => true, 'message' => 'User updated successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => 'User not found or no changes made']);
@@ -432,6 +545,24 @@ function toggleUserLock($input, $pdo)
 
         if ($stmt->rowCount() > 0) {
             $action = $lock ? 'locked' : 'unlocked';
+            // Admin notification
+            $nstmt = $pdo->prepare('INSERT INTO admin_notifications (type, title, message, meta, is_read, created_at) VALUES (?,?,?,?,0,NOW())');
+            $nstmt->execute([
+                'security',
+                'Account Status Changed',
+                "User #$userId account was $action",
+                json_encode(['user_id' => (int)$userId, 'action' => $action]),
+            ]);
+            // Activity log
+            $adminId = (int)($_SESSION['admin_id'] ?? 0);
+            $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+            $lstmt = $pdo->prepare('INSERT INTO activity_log (username, action_type, action_description, ip_address, created_at) VALUES (?,?,?,?,NOW())');
+            $lstmt->execute([
+                (string)$adminId,
+                'user_toggle_lock',
+                "User #$userId $action",
+                $ip,
+            ]);
             echo json_encode(['success' => true, 'message' => "User $action successfully"]);
         } else {
             echo json_encode(['success' => false, 'message' => 'User not found']);
@@ -443,11 +574,8 @@ function toggleUserLock($input, $pdo)
 }
 
 // Helpers
-function mapAccountStatusToUi($accountStatus, $registrationStatus)
+function mapAccountStatusCodeToLabel($accountStatus)
 {
-    if (($registrationStatus ?? '') === 'incomplete') {
-        return 'pending';
-    }
     switch ((int)$accountStatus) {
         case ACCOUNT_STATUS_ACTIVE:
             return 'active';
@@ -459,6 +587,23 @@ function mapAccountStatusToUi($accountStatus, $registrationStatus)
             return 'inactive';
         default:
             return 'inactive';
+    }
+}
+
+function mapAccountStatusLabelToCode($label)
+{
+    $label = strtolower($label);
+    switch ($label) {
+        case 'active':
+            return ACCOUNT_STATUS_ACTIVE;
+        case 'locked':
+            return ACCOUNT_STATUS_LOCKED;
+        case 'banned':
+            return ACCOUNT_STATUS_BANNED;
+        case 'inactive':
+            return ACCOUNT_STATUS_INACTIVE;
+        default:
+            return null;
     }
 }
 

@@ -94,7 +94,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                         <img src="../assets/img/ng.png" alt=""> +234
                     </span>
                     <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
-                        placeholder="Phone Number" class="input phone-input" required value="8011111111">
+                        placeholder="Phone Number" class="input phone-input" required>
                 </div>
 
                 <button type="button" class="btn w-100 mt-3 mb-5 primary-btn" id="purchaseBtn" disabled>Purchase</button>

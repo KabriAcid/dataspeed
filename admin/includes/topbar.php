@@ -12,7 +12,7 @@
         <div class="topbar-right">
             <div class="topbar-search d-none d-md-block">
                 <div class="search-box">
-                    <i class="ni ni-zoom-split-in"></i>
+                    <i class="fa fa-search"></i>
                     <input type="text" placeholder="Search..." class="search-input">
                 </div>
             </div>

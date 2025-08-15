@@ -240,6 +240,66 @@ function inlineEdit(element, options = {}) {
   });
 }
 
+// Confirm Dialog Helper (Promise-based)
+async function confirmDialog(
+  message,
+  {
+    title = "Confirm Action",
+    confirmText = "Confirm",
+    cancelText = "Cancel",
+    confirmVariant = "primary",
+  } = {}
+) {
+  return new Promise(resolve => {
+    const modalEl = document.getElementById("confirmModal");
+    if (!modalEl) {
+      // Fallback to native confirm if modal missing
+      resolve(window.confirm(message));
+      return;
+    }
+    const titleEl = document.getElementById("confirmModalTitle");
+    const msgEl = document.getElementById("confirmModalMessage");
+    const okBtn = document.getElementById("confirmModalOk");
+    const cancelBtn = document.getElementById("confirmModalCancel");
+
+    if (titleEl) titleEl.textContent = title;
+    if (msgEl) msgEl.textContent = message;
+    if (okBtn) {
+      okBtn.textContent = confirmText;
+      okBtn.className = `btn btn-${confirmVariant}`;
+    }
+    if (cancelBtn) cancelBtn.textContent = cancelText;
+
+    const bsModal = new bootstrap.Modal(modalEl);
+
+    const cleanup = () => {
+      okBtn && okBtn.removeEventListener("click", onOk);
+      cancelBtn && cancelBtn.removeEventListener("click", onCancel);
+      modalEl.removeEventListener("hidden.bs.modal", onHidden);
+    };
+    const onOk = () => {
+      cleanup();
+      bsModal.hide();
+      resolve(true);
+    };
+    const onCancel = () => {
+      cleanup();
+      bsModal.hide();
+      resolve(false);
+    };
+    const onHidden = () => {
+      cleanup();
+      resolve(false);
+    };
+
+    okBtn && okBtn.addEventListener("click", onOk, { once: true });
+    cancelBtn && cancelBtn.addEventListener("click", onCancel, { once: true });
+    modalEl.addEventListener("hidden.bs.modal", onHidden, { once: true });
+
+    bsModal.show();
+  });
+}
+
 // Pagination Helper
 function renderPagination(container, pagination) {
   if (!container || !pagination) return;
@@ -348,24 +408,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (e) {
       // ignore
     }
-    try {
-      const st = await apiFetch("api/notifications.php?action=stats");
-      if (
-        st &&
-        st.success &&
-        st.data &&
-        typeof st.data.unread !== "undefined"
-      ) {
-        const badge = document.getElementById("notifBadge");
-        if (badge) {
-          const n = parseInt(st.data.unread, 10) || 0;
-          badge.textContent = n;
-          badge.style.display = n > 0 ? "inline-block" : "none";
-        }
-      }
-    } catch (e) {
-      // ignore
-    }
+    await refreshAdminNotifBadge().catch(() => {});
   })();
   const tooltipTriggerList = [].slice.call(
     document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -393,3 +436,21 @@ window.setLoadingState = setLoadingState;
 window.formatCurrency = formatCurrency;
 window.formatDate = formatDate;
 window.debounce = debounce;
+// Refresh notifications badge
+async function refreshAdminNotifBadge() {
+  try {
+    const st = await apiFetch("api/notifications.php?action=stats");
+    if (st && st.success && st.data && typeof st.data.unread !== "undefined") {
+      const badge = document.getElementById("notifBadge");
+      if (badge) {
+        const n = parseInt(st.data.unread, 10) || 0;
+        badge.textContent = n;
+        badge.style.display = n > 0 ? "inline-block" : "none";
+      }
+    }
+  } catch (e) {
+    // no-op
+  }
+}
+window.refreshAdminNotifBadge = refreshAdminNotifBadge;
+window.confirmDialog = confirmDialog;

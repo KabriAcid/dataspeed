@@ -50,7 +50,7 @@ require __DIR__ . '/../partials/header.php';
                                                         <?= htmlspecialchars($note['title']) ?>
                                                     </p>
                                                     <span class="text-secondary text-xs text-nowrap ms-2">
-                                                        <?= date('M j, Y g:i A', strtotime($note['created_at'])); ?>
+                                                        <?= date('g:i A', strtotime($note['created_at'])); ?>
                                                     </span>
                                                 </div>
                                                 <?php if (!empty($note['message'])): ?>

@@ -308,6 +308,32 @@ function handleUpdateStatus(PDO $pdo, array $input): void
     $stmt->execute([$dbStatus, $id]);
 
     if ($stmt->rowCount() > 0) {
+        // Admin notification
+        try {
+            $nstmt = $pdo->prepare('INSERT INTO admin_notifications (type, title, message, meta, is_read, created_at) VALUES (?,?,?,?,0,NOW())');
+            $nstmt->execute([
+                'system',
+                'Transaction Status Updated',
+                sprintf('Transaction %s marked as %s', (string)$id, ucfirst($newStatus)),
+                json_encode(['id' => $id, 'status' => $newStatus]),
+            ]);
+        } catch (Throwable $e) {
+            error_log('Notif create failed: ' . $e->getMessage());
+        }
+        // Activity log
+        try {
+            $adminId = (int)($_SESSION['admin_id'] ?? 0);
+            $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+            $lstmt = $pdo->prepare('INSERT INTO activity_log (username, action_type, action_description, ip_address, created_at) VALUES (?,?,?,?,NOW())');
+            $lstmt->execute([
+                (string)$adminId,
+                'transaction_update',
+                sprintf('Updated transaction %s to %s', (string)$id, $newStatus),
+                $ip,
+            ]);
+        } catch (Throwable $e) {
+            error_log('Activity log failed: ' . $e->getMessage());
+        }
         echo json_encode(['success' => true, 'message' => 'Status updated']);
     } else {
         echo json_encode(['success' => false, 'message' => 'No changes made']);

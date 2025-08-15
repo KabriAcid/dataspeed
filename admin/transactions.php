@@ -282,13 +282,13 @@ include 'includes/header.php';
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-primary" onclick="viewTransaction('${transaction.id}')" title="View Details">
-                                <i class="ni ni-zoom-split-in"></i>
+                            <button class="btn btn-outline-primary" onclick="viewTransaction('${transaction.txn_id}')" title="View Details">
+                                <i class="fa fa-eye"></i>
                             </button>
-                            <button class="btn btn-outline-success" onclick="approveTransaction('${transaction.id}')" title="Approve">
+                            <button class="btn btn-outline-success" onclick="approveTransaction('${transaction.txn_id}')" title="Approve">
                                 <i class="ni ni-check-bold"></i>
                             </button>
-                            <button class="btn btn-outline-danger" onclick="rejectTransaction('${transaction.id}')" title="Reject">
+                            <button class="btn btn-outline-danger" onclick="rejectTransaction('${transaction.txn_id}')" title="Reject">
                                 <i class="ni ni-fat-remove"></i>
                             </button>
                         </div>
@@ -321,17 +321,57 @@ include 'includes/header.php';
             // Implement transaction details modal
         }
 
-        function approveTransaction(transactionId) {
-            if (confirm('Are you sure you want to approve this transaction?')) {
+        async function approveTransaction(transactionId) {
+            const ok = await confirmDialog('Are you sure you want to approve this transaction?', {
+                title: 'Approve Transaction',
+                confirmText: 'Approve',
+                confirmVariant: 'success'
+            });
+            if (!ok) return;
+            try {
+                const res = await apiFetch('api/transactions.php', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'updateStatus',
+                        id: transactionId,
+                        status: 'completed'
+                    })
+                });
+                if (!res.success) throw new Error(res.message || 'Failed to approve');
                 showToasted(`Transaction ${transactionId} approved`, 'success');
+                await refreshAdminNotifBadge().catch(() => {});
                 loadTransactions();
+                loadTransactionStats();
+            } catch (err) {
+                console.error('Approve failed:', err);
+                showToasted(err.message || 'Failed to approve transaction', 'error');
             }
         }
 
-        function rejectTransaction(transactionId) {
-            if (confirm('Are you sure you want to reject this transaction?')) {
-                showToasted(`Transaction ${transactionId} rejected`, 'error');
+        async function rejectTransaction(transactionId) {
+            const ok = await confirmDialog('Are you sure you want to reject this transaction?', {
+                title: 'Reject Transaction',
+                confirmText: 'Reject',
+                confirmVariant: 'danger'
+            });
+            if (!ok) return;
+            try {
+                const res = await apiFetch('api/transactions.php', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'updateStatus',
+                        id: transactionId,
+                        status: 'failed'
+                    })
+                });
+                if (!res.success) throw new Error(res.message || 'Failed to reject');
+                showToasted(`Transaction ${transactionId} rejected`, 'success');
+                await refreshAdminNotifBadge().catch(() => {});
                 loadTransactions();
+                loadTransactionStats();
+            } catch (err) {
+                console.error('Reject failed:', err);
+                showToasted(err.message || 'Failed to reject transaction', 'error');
             }
         }
 

@@ -32,15 +32,23 @@ include 'includes/header.php';
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <input type="text" class="form-control" id="searchInput" placeholder="Search users...">
                         </div>
                         <div class="col-md-3">
-                            <select class="form-select" id="statusFilter">
-                                <option value="">All Status</option>
+                            <select class="form-select" id="accStatusFilter">
+                                <option value="">All Account Status</option>
                                 <option value="active">Active</option>
                                 <option value="locked">Locked</option>
-                                <option value="pending">Pending</option>
+                                <option value="banned">Banned</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="regStatusFilter">
+                                <option value="">All Registration Status</option>
+                                <option value="complete">Complete</option>
+                                <option value="incomplete">Incomplete</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -65,14 +73,15 @@ include 'includes/header.php';
                                     <th>User</th>
                                     <th class="d-none d-lg-table-cell">Contact</th>
                                     <th>Balance</th>
-                                    <th>Status</th>
+                                    <th>Account Status</th>
+                                    <th class="d-none d-lg-table-cell">Registration</th>
                                     <th class="d-none d-md-table-cell">Joined</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="usersTableBody">
                                 <tr>
-                                    <td colspan="6" class="text-center py-4">
+                                    <td colspan="7" class="text-center py-4">
                                         <div class="spinner-border text-primary" role="status">
                                             <span class="visually-hidden">Loading...</span>
                                         </div>
@@ -122,11 +131,19 @@ include 'includes/header.php';
                         </div>
 
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select class="form-select" name="status" id="status">
+                            <label class="form-label">Account Status</label>
+                            <select class="form-select" name="account_status" id="account_status">
                                 <option value="active">Active</option>
                                 <option value="locked">Locked</option>
-                                <option value="pending">Pending</option>
+                                <option value="banned">Banned</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Registration Status</label>
+                            <select class="form-select" name="registration_status" id="registration_status">
+                                <option value="complete">Complete</option>
+                                <option value="incomplete">Incomplete</option>
                             </select>
                         </div>
                     </div>
@@ -177,8 +194,12 @@ include 'includes/header.php';
 
             searchInput.addEventListener('input', debouncedSearch);
 
-            // Status filter
-            document.getElementById('statusFilter').addEventListener('change', () => {
+            // Status filters
+            document.getElementById('accStatusFilter').addEventListener('change', () => {
+                currentPage = 1;
+                loadUsers();
+            });
+            document.getElementById('regStatusFilter').addEventListener('change', () => {
                 currentPage = 1;
                 loadUsers();
             });
@@ -202,7 +223,8 @@ include 'includes/header.php';
         async function loadUsers() {
             const tableBody = document.getElementById('usersTableBody');
             const query = document.getElementById('searchInput').value;
-            const status = document.getElementById('statusFilter').value;
+            const accStatus = document.getElementById('accStatusFilter').value;
+            const regStatus = document.getElementById('regStatusFilter').value;
 
             try {
                 setLoadingState(tableBody, true);
@@ -211,7 +233,8 @@ include 'includes/header.php';
                     action: 'list',
                     page: currentPage,
                     query: query,
-                    status: status
+                    acc_status: accStatus,
+                    reg_status: regStatus
                 });
 
                 const response = await apiFetch(`api/users.php?${params}`);
@@ -225,7 +248,7 @@ include 'includes/header.php';
 
             } catch (error) {
                 showToasted('Error loading users', 'error');
-                tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4">Error loading users</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center py-4">Error loading users</td></tr>';
             } finally {
                 setLoadingState(tableBody, false);
             }
@@ -237,7 +260,7 @@ include 'includes/header.php';
             if (users.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="text-center py-5">
+                        <td colspan="7" class="text-center py-5">
                             <div class="empty-state">
                                 <i class="ni ni-circle-08"></i>
                                 <h3>No users found</h3>
@@ -270,7 +293,10 @@ include 'includes/header.php';
                         <span class="fw-semibold">${formatCurrency(user.balance)}</span>
                     </td>
                     <td>
-                        <span class="badge ${getStatusBadgeClass(user.status)}">${user.status}</span>
+                        <span class="badge ${getStatusBadgeClass(user.account_status_label)}">${user.account_status_label}</span>
+                    </td>
+                    <td class="d-none d-lg-table-cell">
+                        <span class="badge ${getRegStatusBadgeClass(user.registration_status)}">${user.registration_status}</span>
                     </td>
                     <td class="d-none d-md-table-cell text-nowrap">
                         <div>${formatDate(user.created_at)}</div>
@@ -279,15 +305,15 @@ include 'includes/header.php';
                     <td>
                         <div class="btn-group btn-group-sm">
                             <button class="btn btn-outline-primary" onclick="viewUser(${user.id})" title="View">
-                                <i class="ni ni-zoom-split-in"></i>
+                                <i class="fa fa-eye"></i>
                             </button>
                             <button class="btn btn-outline-secondary" onclick="editUser(${user.id})" title="Edit">
                                 <i class="ni ni-ruler-pencil"></i>
                             </button>
-                            <button class="btn btn-outline-${user.status === 'locked' ? 'success' : 'warning'}" 
-                                    onclick="toggleUserLock(${user.id}, ${user.status !== 'locked'})" 
-                                    title="${user.status === 'locked' ? 'Unlock' : 'Lock'}">
-                                <i class="ni ni-${user.status === 'locked' ? 'lock-circle-open' : 'lock-circle-open'}"></i>
+                            <button class="btn btn-outline-${user.account_status_label === 'locked' ? 'success' : 'warning'}" 
+                                    onclick="toggleUserLock(${user.id}, ${user.account_status_label !== 'locked'})" 
+                                    title="${user.account_status_label === 'locked' ? 'Unlock' : 'Lock'}">
+                                <i class="ni ni-lock-circle-open"></i>
                             </button>
                         </div>
                     </td>
@@ -295,13 +321,22 @@ include 'includes/header.php';
             `).join('');
         }
 
-        function getStatusBadgeClass(status) {
+        function getStatusBadgeClass(accountStatusLabel) {
             const classes = {
                 'active': 'bg-success',
                 'locked': 'bg-danger',
-                'pending': 'bg-warning'
+                'banned': 'bg-dark',
+                'inactive': 'bg-secondary'
             };
-            return classes[status] || 'bg-secondary';
+            return classes[accountStatusLabel] || 'bg-secondary';
+        }
+
+        function getRegStatusBadgeClass(regStatus) {
+            const classes = {
+                'complete': 'bg-success',
+                'incomplete': 'bg-warning'
+            };
+            return classes[regStatus] || 'bg-secondary';
         }
 
         function openCreateUserModal() {
@@ -321,8 +356,12 @@ include 'includes/header.php';
                     document.getElementById('userModalTitle').textContent = 'Edit User';
                     document.getElementById('passwordField').style.display = 'none';
                     document.getElementById('password').required = false;
-
-                    openModal('userModal', response.data);
+                    // Map API fields to form inputs
+                    const data = Object.assign({}, response.data, {
+                        account_status: response.data.account_status_label,
+                        registration_status: response.data.registration_status || 'complete'
+                    });
+                    openModal('userModal', data);
                 } else {
                     showToasted('Failed to load user details', 'error');
                 }
@@ -345,7 +384,8 @@ include 'includes/header.php';
                                     <tr><td><strong>Full Name:</strong></td><td>${user.full_name}</td></tr>
                                     <tr><td><strong>Email:</strong></td><td>${user.email}</td></tr>
                                     <tr><td><strong>Phone:</strong></td><td>${user.phone}</td></tr>
-                                    <tr><td><strong>Status:</strong></td><td><span class="badge ${getStatusBadgeClass(user.status)}">${user.status}</span></td></tr>
+                                    <tr><td><strong>Account Status:</strong></td><td><span class="badge ${getStatusBadgeClass(user.account_status_label)}">${user.account_status_label}</span></td></tr>
+                                    <tr><td><strong>Registration:</strong></td><td><span class="badge ${getRegStatusBadgeClass(user.registration_status)}">${user.registration_status}</span></td></tr>
                                 </table>
                             </div>
                             <div class="col-md-6">
@@ -371,10 +411,12 @@ include 'includes/header.php';
 
         async function toggleUserLock(userId, lock) {
             const action = lock ? 'lock' : 'unlock';
-
-            if (!confirm(`Are you sure you want to ${action} this user?`)) {
-                return;
-            }
+            const ok = await confirmDialog(`Are you sure you want to ${action} this user?`, {
+                title: 'Confirm',
+                confirmText: action === 'lock' ? 'Lock User' : 'Unlock User',
+                confirmVariant: action === 'lock' ? 'warning' : 'success',
+            });
+            if (!ok) return;
 
             try {
                 const response = await apiFetch('api/users.php', {
@@ -388,6 +430,7 @@ include 'includes/header.php';
 
                 if (response.success) {
                     showToasted(response.message, 'success');
+                    await refreshAdminNotifBadge().catch(() => {});
                     loadUsers();
                 } else {
                     showToasted(response.message, 'error');
@@ -425,6 +468,7 @@ include 'includes/header.php';
                 if (response.success) {
                     showToasted('User saved successfully!', 'success');
                     bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
+                    return refreshAdminNotifBadge().catch(() => {}).then(() => response);
                     loadUsers();
                 } else {
                     showToasted(response.message, 'error');
