@@ -52,24 +52,25 @@ try {
     error_log('stats: new_users_today failed: ' . $e->getMessage());
 }
 
-// 4) Total users’ balance (prefer account_balance, fallback to users.balance)
+// 4) Total users’ balance (prefer account_balance join on active users)
 try {
     $stmt = $pdo->query("
         SELECT COALESCE(SUM(ab.wallet_balance),0) AS total
         FROM account_balance ab
-        INNER JOIN users u ON u.id = ab.user_id
-        WHERE u.status = 'active' OR u.status = 101
+        INNER JOIN users u ON u.user_id = ab.user_id
+        WHERE u.account_status = 101
     ");
     $row = $stmt->fetch();
     $stats['total_users_balance'] = (float)($row['total'] ?? 0);
 } catch (PDOException $e) {
     error_log('stats: total_users_balance via account_balance failed, fallback: ' . $e->getMessage());
+    // Safe fallback: sum all balances from account_balance without status gating
     try {
-        $stmt = $pdo->query("SELECT COALESCE(SUM(balance),0) AS total FROM users WHERE status = 'active' OR status = 101");
+        $stmt = $pdo->query("SELECT COALESCE(SUM(wallet_balance),0) AS total FROM account_balance");
         $row = $stmt->fetch();
         $stats['total_users_balance'] = (float)($row['total'] ?? 0);
     } catch (PDOException $e2) {
-        error_log('stats: users.balance fallback failed: ' . $e2->getMessage());
+        error_log('stats: account_balance fallback failed: ' . $e2->getMessage());
     }
 }
 
