@@ -76,13 +76,14 @@
       setVal("phone", d.phone || "");
       setVal("role", d.role || "");
       // Gate Add Admin UI for super admins only
-      const isSuper = (d.role || '').toLowerCase() === 'super';
-      const addTab = document.getElementById('addadmin-tab');
-      const addPane = document.getElementById('addadmin');
+      const isSuper = (d.role || "").toLowerCase() === "superadmin";
+      const addTab = document.getElementById("addadmin-tab");
+      const addPane = document.getElementById("addadmin");
       if (addTab && addPane) {
-        addTab.parentElement.style.display = isSuper ? '' : 'none';
+        addTab.parentElement.style.display = isSuper ? "" : "none";
         if (!isSuper) {
-          addPane.innerHTML = '<div class="alert alert-warning">Only super admins can add new admins.</div>';
+          addPane.innerHTML =
+            '<div class="alert alert-warning">Only super admins can add new admins.</div>';
         }
       }
       setChecked("emailNotifications", !!Number(d.email_notifications));
@@ -175,25 +176,25 @@
       });
     }
 
-    const addAdmin = document.getElementById('addAdminForm');
+    const addAdmin = document.getElementById("addAdminForm");
     if (addAdmin) {
-      addAdmin.addEventListener('submit', async (e) => {
+      addAdmin.addEventListener("submit", async e => {
         e.preventDefault();
         const data = formToJSON(addAdmin);
-        data.action = 'create';
+        data.action = "create";
         try {
-          const res = await apiFetch('api/admin.php', {
-            method: 'POST',
+          const res = await apiFetch("api/admin.php", {
+            method: "POST",
             body: JSON.stringify(data),
           });
           if (res.success) {
-            showToasted(res.message || 'Admin created', 'success');
+            showToasted(res.message || "Admin created", "success");
             addAdmin.reset();
           } else {
-            showToasted(res.message || 'Failed to create admin', 'error');
+            showToasted(res.message || "Failed to create admin", "error");
           }
         } catch (err) {
-          showToasted('Failed to create admin', 'error');
+          showToasted("Failed to create admin", "error");
         }
       });
     }

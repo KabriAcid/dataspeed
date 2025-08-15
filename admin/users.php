@@ -22,9 +22,9 @@ include 'includes/header.php';
                         <h1 class="page-title">Users Management</h1>
                         <p class="page-subtitle">Manage user accounts and permissions</p>
                     </div>
-                    <button class="btn btn-primary" onclick="openCreateUserModal()">
+                    <!-- <button class="btn btn-primary" onclick="openCreateUserModal()">
                         <i class="ni ni-fat-add me-2"></i>Add User
-                    </button>
+                    </button> -->
                 </div>
             </div>
             

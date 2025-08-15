@@ -22,6 +22,9 @@ try {
             case 'stats':
                 handleStats($pdo);
                 break;
+            case 'kpi':
+                handleKpi($pdo);
+                break;
             case 'view':
                 handleView($pdo);
                 break;
@@ -48,6 +51,45 @@ try {
     error_log('Transactions API error: ' . $e->getMessage());
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Server error']);
+}
+
+function handleKpi(PDO $pdo): void
+{
+    try {
+        // Count successful transactions grouped by service slug
+        $sql = "SELECT s.slug, COUNT(*) as cnt
+                FROM transactions t
+                LEFT JOIN services s ON s.id = t.service_id
+                WHERE t.status = 'success'
+                GROUP BY s.slug";
+        $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC) ?: [];
+
+        $tot = 0;
+        $by = ['data' => 0, 'tv' => 0, 'airtime' => 0];
+        foreach ($rows as $r) {
+            $slug = strtolower((string)($r['slug'] ?? ''));
+            $cnt = (int)$r['cnt'];
+            $tot += $cnt;
+            if (isset($by[$slug])) {
+                $by[$slug] += $cnt;
+            }
+        }
+        $pct = function ($n, $d) {
+            return $d > 0 ? round(($n / $d) * 100) : 0;
+        };
+        echo json_encode([
+            'success' => true,
+            'data' => [
+                'data_percentage' => $pct($by['data'], $tot),
+                'tv_percentage' => $pct($by['tv'], $tot),
+                'airtime_percentage' => $pct($by['airtime'], $tot)
+            ]
+        ]);
+    } catch (Throwable $e) {
+        error_log('KPI error: ' . $e->getMessage());
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Failed to fetch KPIs']);
+    }
 }
 
 function handleList(PDO $pdo): void
@@ -150,31 +192,27 @@ function handleList(PDO $pdo): void
         ];
     }, $rows);
 
-    $totalPages = (int)ceil($total / $perPage);
+        // Robust buckets using slug/type patterns; total = sum of these three buckets only
+    $sql = "SELECT
+                SUM(CASE WHEN LOWER(COALESCE(s.slug, '')) LIKE '%data%' OR LOWER(COALESCE(t.type, '')) LIKE '%data%' THEN 1 ELSE 0 END) AS data_cnt,
+                SUM(CASE WHEN LOWER(COALESCE(s.slug, '')) LIKE '%tv%' OR LOWER(COALESCE(s.slug, '')) LIKE '%cable%' OR LOWER(COALESCE(t.type, '')) LIKE '%tv%' THEN 1 ELSE 0 END) AS tv_cnt,
+                SUM(CASE WHEN LOWER(COALESCE(s.slug, '')) LIKE '%air%' OR LOWER(COALESCE(s.slug, '')) LIKE '%airtime%' OR LOWER(COALESCE(t.type, '')) LIKE '%air%' THEN 1 ELSE 0 END) AS airtime_cnt
+            FROM transactions t
+            LEFT JOIN services s ON s.id = t.service_id
+        WHERE LOWER(t.status) IN ('success','successful','completed')";
+        $row = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC) ?: ['data_cnt' => 0, 'tv_cnt' => 0, 'airtime_cnt' => 0];
 
-    echo json_encode([
-        'success' => true,
-        'data' => [
-            'items' => $items,
-            'pagination' => [
-                'page' => $page,
-                'per_page' => $perPage,
-                'total_pages' => $totalPages,
-                'count' => $total
-            ]
-        ]
-    ]);
-}
-
-function handleStats(PDO $pdo): void
-{
-    try {
+        $dataCnt = (int)($row['data_cnt'] ?? 0);
+        $tvCnt = (int)($row['tv_cnt'] ?? 0);
+        $airCnt = (int)($row['airtime_cnt'] ?? 0);
+        $tot = $dataCnt + $tvCnt + $airCnt;
+        $pct = function($n, $d) { return $d > 0 ? (int)round(($n / $d) * 100) : 0; };
         $completed = (int)$pdo->query("SELECT COUNT(*) FROM transactions WHERE status = 'success'")->fetchColumn();
         $failed = (int)$pdo->query("SELECT COUNT(*) FROM transactions WHERE status = 'fail'")->fetchColumn();
         $pending = 0; // No pending in current schema
-        $totalVolume = (float)$pdo->query("SELECT COALESCE(SUM(amount),0) FROM transactions WHERE status = 'success'")->fetchColumn();
-
-        echo json_encode([
+            'data_percentage' => $pct($dataCnt, $tot),
+            'tv_percentage' => $pct($tvCnt, $tot),
+            'airtime_percentage' => $pct($airCnt, $tot)
             'success' => true,
             'data' => [
                 'completed' => $completed,

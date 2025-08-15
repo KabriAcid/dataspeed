@@ -95,12 +95,35 @@ function createAdmin(PDO $pdo, array $input): array
     $insertCols = [];
     $placeholders = [];
     $params = [];
-    if (in_array('name', $cols, true)) { $insertCols[] = 'name'; $placeholders[] = '?'; $params[] = $name; }
-    if (in_array('email', $cols, true)) { $insertCols[] = 'email'; $placeholders[] = '?'; $params[] = $email; }
-    if (in_array('password', $cols, true)) { $insertCols[] = 'password'; $placeholders[] = '?'; $params[] = $hash; }
-    if (in_array('role', $cols, true)) { $insertCols[] = 'role'; $placeholders[] = '?'; $params[] = $role; }
-    if (in_array('status', $cols, true)) { $insertCols[] = 'status'; $placeholders[] = '?'; $params[] = $status; }
-    if (in_array('created_at', $cols, true)) { $insertCols[] = 'created_at'; $placeholders[] = 'NOW()'; }
+    if (in_array('name', $cols, true)) {
+        $insertCols[] = 'name';
+        $placeholders[] = '?';
+        $params[] = $name;
+    }
+    if (in_array('email', $cols, true)) {
+        $insertCols[] = 'email';
+        $placeholders[] = '?';
+        $params[] = $email;
+    }
+    if (in_array('password', $cols, true)) {
+        $insertCols[] = 'password';
+        $placeholders[] = '?';
+        $params[] = $hash;
+    }
+    if (in_array('role', $cols, true)) {
+        $insertCols[] = 'role';
+        $placeholders[] = '?';
+        $params[] = $role;
+    }
+    if (in_array('status', $cols, true)) {
+        $insertCols[] = 'status';
+        $placeholders[] = '?';
+        $params[] = $status;
+    }
+    if (in_array('created_at', $cols, true)) {
+        $insertCols[] = 'created_at';
+        $placeholders[] = 'NOW()';
+    }
 
     if (empty($insertCols)) {
         return ['success' => false, 'message' => 'Admins table is missing required columns'];
@@ -117,11 +140,11 @@ function createAdmin(PDO $pdo, array $input): array
         // Send verification/welcome email
         $subject = 'Your DataSpeed Admin Account';
         $body = '<p>Hello ' . htmlspecialchars($name) . ',</p>'
-              . '<p>Your admin account has been created.</p>'
-              . '<p><strong>Email:</strong> ' . htmlspecialchars($email) . '<br>'
-              . '<strong>Default Password:</strong> Pa$$w0rd!</p>'
-              . '<p>Please sign in to the admin portal and keep your credentials secure.</p>'
-              . '<p>Regards,<br>DataSpeed Team</p>';
+            . '<p>Your admin account has been created.</p>'
+            . '<p><strong>Email:</strong> ' . htmlspecialchars($email) . '<br>'
+            . '<strong>Default Password:</strong> Pa$$w0rd!</p>'
+            . '<p>Please sign in to the admin portal and keep your credentials secure.</p>'
+            . '<p>Regards,<br>DataSpeed Team</p>';
         $mailOk = sendMail($email, $subject, $body);
 
         $pdo->commit();

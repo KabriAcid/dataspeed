@@ -49,6 +49,9 @@ function handlePostRequest($action, $input, $pdo)
         case 'updateAirtimeMarkup':
             updateAirtimeMarkup($input, $pdo);
             break;
+        case 'updateDataMarkup':
+            updateDataMarkup($input, $pdo);
+            break;
         default:
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Invalid action']);
@@ -91,14 +94,15 @@ function getServicePlans($pdo)
             ];
         }
 
-        // Optional: airtime markup; ignore if settings table doesn't exist
+        // Optional: markups; ignore if settings table doesn't exist
         $airtimeMarkup = 0;
+        $dataMarkup = 0;
         try {
-            $stmt2 = $pdo->query("SELECT value FROM settings WHERE `key` = 'airtime_markup' LIMIT 1");
+            $stmt2 = $pdo->query("SELECT `key`, `value` FROM settings WHERE `key` IN ('airtime_markup','data_markup')");
             if ($stmt2) {
-                $row = $stmt2->fetch(PDO::FETCH_ASSOC);
-                if ($row && isset($row['value'])) {
-                    $airtimeMarkup = (float)$row['value'];
+                foreach ($stmt2->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                    if ($row['key'] === 'airtime_markup') $airtimeMarkup = (float)$row['value'];
+                    if ($row['key'] === 'data_markup') $dataMarkup = (float)$row['value'];
                 }
             }
         } catch (PDOException $e) {
@@ -109,7 +113,8 @@ function getServicePlans($pdo)
             'success' => true,
             'data' => [
                 'plans' => $plans,
-                'airtime_markup' => $airtimeMarkup
+                'airtime_markup' => $airtimeMarkup,
+                'data_markup' => $dataMarkup
             ]
         ]);
     } catch (PDOException $e) {
@@ -257,5 +262,38 @@ function updateAirtimeMarkup($input, $pdo)
     } catch (PDOException $e) {
         error_log("Update airtime markup error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Failed to update airtime markup']);
+    }
+}
+
+function updateDataMarkup($input, $pdo)
+{
+    try {
+        $percentage = $input['percentage'] ?? '';
+
+        if (!is_numeric($percentage) || $percentage < 0) {
+            echo json_encode(['success' => false, 'message' => 'Invalid markup percentage']);
+            return;
+        }
+
+        // Ensure settings table exists with a simple schema
+        try {
+            $pdo->exec("CREATE TABLE IF NOT EXISTS settings (
+                `key` VARCHAR(100) NOT NULL PRIMARY KEY,
+                `value` VARCHAR(255) NOT NULL,
+                `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
+        } catch (PDOException $e) {
+            error_log('Failed creating settings table: ' . $e->getMessage());
+        }
+
+        // Upsert data_markup
+        $stmt = $pdo->prepare("INSERT INTO settings (`key`, `value`, `updated_at`) VALUES ('data_markup', ?, NOW())
+            ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated_at` = VALUES(`updated_at`)");
+        $stmt->execute([$percentage]);
+
+        echo json_encode(['success' => true, 'message' => 'Data markup updated successfully']);
+    } catch (PDOException $e) {
+        error_log("Update data markup error: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Failed to update data markup']);
     }
 }
