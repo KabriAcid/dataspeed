@@ -45,6 +45,14 @@
                     <span class="nav-text">Settings</span>
                 </a>
             </li>
+
+            <!-- Activity Log -->
+            <li class="nav-item">
+                <a href="activity-log.php" class="nav-link" data-page="Activity Log">
+                    <i class="ni ni-bullet-list-67"></i>
+                    <span class="nav-text">Activity Log</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </aside>

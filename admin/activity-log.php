@@ -78,7 +78,6 @@ include 'includes/header.php';
                             </tbody>
                         </table>
                     </div>
-
                     <div id="paginationContainer" class="mt-4"></div>
                 </div>
             </div>
@@ -91,7 +90,7 @@ include 'includes/header.php';
     <script>
         let currentPage = 1;
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             topbarInit();
             bindFilters();
             loadLogs();
@@ -103,10 +102,16 @@ include 'includes/header.php';
 
         function bindFilters() {
             const searchInput = document.getElementById('searchInput');
-            const debounced = debounce(() => { currentPage = 1; loadLogs(); }, 400);
+            const debounced = debounce(() => {
+                currentPage = 1;
+                loadLogs();
+            }, 400);
             searchInput.addEventListener('input', debounced);
-            ['typeFilter','dateFilter'].forEach(id => {
-                document.getElementById(id).addEventListener('change', () => { currentPage = 1; loadLogs(); });
+            ['typeFilter', 'dateFilter'].forEach(id => {
+                document.getElementById(id).addEventListener('change', () => {
+                    currentPage = 1;
+                    loadLogs();
+                });
             });
         }
 
