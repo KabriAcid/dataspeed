@@ -7,7 +7,7 @@ require __DIR__ . '/../partials/header.php';
 ?>
 
 <body>
-    <main class="container-fluid py-4 mb-5">
+    <main class="container-fluid py-4 mb-5 dashboard-page">
         <?php
         if (isset($_GET['success'])) {
             echo "<script>showToasted('Login Successful', 'success')</script>";
@@ -228,40 +228,7 @@ require __DIR__ . '/../partials/header.php';
             <div class="text-white">
                 <h6 class="mb-3">Recent Transactions</h6>
             </div>
-            <div class="transaction-list">
-                <?php
-                $transactions = getTransactions($pdo, $user_id);
-
-                // var_dump($transactions);
-
-                if (!$transactions) {
-                    echo '<p class="text-center text-muted">No transactions yet.</p>';
-                } else {
-                    foreach ($transactions as $transaction) {
-                        $icon = "<i class='{$transaction['icon']} {$transaction['color']}'></i>";
-                        $textColor = $transaction['direction'] === 'credit' ? 'text-success' : 'text-danger';
-                        $formattedAmount = number_format($transaction['amount'], 2);
-                        $date = date("h:i A . d F, Y.", strtotime($transaction['created_at']));
-                        $prefix = $transaction['direction'] === 'credit' ? '+₦' : '-₦';
-
-                        if ($transactions) {
-                ?>
-                            <div class='d-flex justify-content-between align-items-top mb-3 pb-2'>
-                                <div class='d-flex align-items-top'>
-                                    <div class='transaction-icon'><?= $icon ?></div>
-                                    <div class="mx-3">
-                                        <h6 class='mb-0 text-capitalize'><?= $transaction['type'] ?></h6>
-                                        <p class='text-sm text-secondary mb-0'><?= $date ?></p>
-                                    </div>
-                                </div>
-                                <span class='<?= $textColor ?> fw-semibold text-sm'><?= $prefix . $formattedAmount ?></span>
-                            </div>
-                <?php
-                        }
-                    }
-                }
-                ?>
-            </div>
+            <div id="recentTransactions" class="transaction-list"></div>
         </div>
 
         <audio id="balanceUpdateSound" src="../assets/sounds/ding.mp3"></audio>
@@ -358,8 +325,8 @@ require __DIR__ . '/../partials/header.php';
                             // Only animate and play sound if balance actually changed
                             if (lastKnownBalance !== null && newBalance !== currentBalance) {
                                 animateBalanceUpdate(currentBalance, newBalance);
-                                // reduce volume
-                                balanceUpdateSound.volume = 0.2;
+                                // Set ding volume moderately and play
+                                balanceUpdateSound.volume = 0.35;
                                 balanceUpdateSound.play().catch(e => console.log('Sound play failed:', e));
 
                                 // Show notification for balance increase
@@ -412,9 +379,9 @@ require __DIR__ . '/../partials/header.php';
 
             // Refresh button click handler
             refreshBtn.addEventListener('click', function() {
-                if (!isRefreshing) {
-                    updateBalance(true);
-                }
+                if (isRefreshing) return;
+                // Trigger immediate check without debounce
+                updateBalance(true);
             });
 
             // Start auto-checking for balance updates every 5 seconds
@@ -424,13 +391,12 @@ require __DIR__ . '/../partials/header.php';
                     clearInterval(balanceCheckInterval);
                 }
 
-                // Set up new interval
+                // Set up new interval (check frequently but cheap)
                 balanceCheckInterval = setInterval(() => {
-                    // Only check if user is on dashboard and tab is active
                     if (document.visibilityState === 'visible' && !isRefreshing) {
                         updateBalance(false);
                     }
-                }, 5000); // Check every 5 seconds
+                }, 5000);
 
                 console.log('Balance monitoring started - checking every 5 seconds');
             }
@@ -447,23 +413,19 @@ require __DIR__ . '/../partials/header.php';
             // Handle page visibility changes
             document.addEventListener('visibilitychange', function() {
                 if (document.visibilityState === 'visible') {
-                    // Page became visible, resume monitoring
                     startBalanceMonitoring();
-                    // Check immediately when returning to page
-                    setTimeout(() => updateBalance(false), 1000);
+                    // Check immediately when returning to page (no delay)
+                    updateBalance(false);
                 } else {
-                    // Page hidden, stop monitoring to save resources
                     stopBalanceMonitoring();
                 }
             });
 
             // Handle window focus/blur for additional optimization
             window.addEventListener('focus', function() {
-                if (!balanceCheckInterval) {
-                    startBalanceMonitoring();
-                }
+                if (!balanceCheckInterval) startBalanceMonitoring();
                 // Check immediately when window gains focus
-                setTimeout(() => updateBalance(false), 500);
+                updateBalance(false);
             });
 
             window.addEventListener('blur', function() {
@@ -471,8 +433,65 @@ require __DIR__ . '/../partials/header.php';
                 // or keep running for immediate updates
             });
 
-            // Start monitoring immediately
+            // Start monitoring immediately and do an initial fetch
             startBalanceMonitoring();
+            updateBalance(false);
+
+            // Fetch and render recent transactions dynamically
+            function fetchRecentTransactions() {
+                fetch('recent-transactions.php', {
+                        method: 'GET'
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        const list = document.getElementById('recentTransactions');
+                        if (!list) return;
+                        list.innerHTML = '';
+                        if (!data.success || !Array.isArray(data.transactions) || data.transactions.length === 0) {
+                            list.innerHTML = `
+                                <div class="text-center text-muted my-5">
+                                    <svg width="96" height="96" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M3 7a2 2 0 0 1 2-2h6l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="#c0c4cc" stroke-width="1.5" fill="none"/>
+                                        <path d="M7 13h10M7 16h6" stroke="#c0c4cc" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <p class="mt-3">No transactions yet.</p>
+                                </div>`;
+                            return;
+                        }
+                        data.transactions.forEach(tx => {
+                            const textColor = tx.direction === 'credit' ? 'text-success' : 'text-danger';
+                            const prefix = tx.direction === 'credit' ? '+₦' : '-₦';
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'd-flex justify-content-between align-items-top mb-3 pb-2';
+                            wrapper.innerHTML = `
+                                <div class='d-flex align-items-top'>
+                                    <div class='transaction-icon'>${tx.icon}</div>
+                                    <div class="mx-3">
+                                        <h6 class='mb-0 text-capitalize'>${tx.type}</h6>
+                                        <p class='text-sm text-secondary mb-0'>${tx.date}</p>
+                                    </div>
+                                </div>
+                                <span class='${textColor} fw-semibold text-sm'>${prefix}${Number(tx.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                            `;
+                            list.appendChild(wrapper);
+                        });
+                    })
+                    .catch(() => {
+                        const list = document.getElementById('recentTransactions');
+                        if (list) list.innerHTML = `
+                            <div class="text-center text-muted my-5">
+                                <svg width="96" height="96" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M3 7a2 2 0 0 1 2-2h6l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="#c0c4cc" stroke-width="1.5" fill="none"/>
+                                    <path d="M7 13h10M7 16h6" stroke="#c0c4cc" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                <p class="mt-3">Unable to load transactions.</p>
+                            </div>`;
+                    });
+            }
+
+            fetchRecentTransactions();
+            // Optionally refresh the list periodically
+            setInterval(fetchRecentTransactions, 15000);
 
             // Clean up on page unload
             window.addEventListener('beforeunload', function() {

@@ -675,6 +675,17 @@ button:disabled,
 .action-grid {
   max-width: 100%;
 }
+/* Dashboard page action grid: default 4 columns */
+.dashboard-page .action-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px 10px;
+}
+.dashboard-page .action-grid > div {
+  /* ensure grid items stretch nicely and ignore bootstrap width */
+  width: 100% !important;
+  justify-content: center;
+}
 .action-grid-btn {
   width: 80px;
   margin-bottom: 20px;
@@ -720,12 +731,41 @@ button:disabled,
   .action-grid-btn {
     width: 64px;
   }
+  /* Dashboard page responsive layout & typography (small screens) */
+  /* Typography tweaks (scoped to dashboard) */
+  .dashboard-page #balanceAmount {
+    font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+    line-height: 1.1;
+  }
+  .dashboard-page header h4.fs-4 {
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem) !important;
+  }
+  .dashboard-page .account-banner h4 {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+  }
+  .dashboard-page .account-banner .fs-5 {
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem) !important;
+  }
+  .dashboard-page .transaction-list h6 {
+    font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+  }
+  .dashboard-page .transaction-list .text-sm,
+  .dashboard-page p.text-sm {
+    font-size: clamp(0.8rem, 1.3vw, 0.9rem) !important;
+  }
   .action-grid-icon {
     width: 44px;
     height: 44px;
   }
   .action-grid-label {
     font-size: 0.85rem;
+  }
+}
+
+/* Only on very small screens: 2 columns */
+@media (max-width: 360px) {
+  .dashboard-page .action-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

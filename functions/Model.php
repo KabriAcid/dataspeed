@@ -70,6 +70,64 @@ function getTransactions($pdo, $user_id, $limit = 5)
     }
 }
 
+/**
+ * Fetch transactions for a user filtered by optional start/end date (inclusive).
+ * Dates should be in 'Y-m-d' format. If only one is provided, the other side is open-ended.
+ * Optionally limit/offset results. Results ordered newest first.
+ */
+function getTransactionsFiltered(PDO $pdo, int $user_id, ?string $startDate = null, ?string $endDate = null, ?int $limit = null, ?int $offset = null): array
+{
+    try {
+        $conditions = ["user_id = :uid"];
+        $params = [":uid" => $user_id];
+
+        // Validate and build date constraints
+        $startDt = null;
+        $endDt = null;
+        if ($startDate) {
+            $startDt = DateTime::createFromFormat('Y-m-d', $startDate) ?: null;
+        }
+        if ($endDate) {
+            $endDt = DateTime::createFromFormat('Y-m-d', $endDate) ?: null;
+        }
+
+        if ($startDt) {
+            // Start of day
+            $startDt->setTime(0, 0, 0);
+            $conditions[] = "created_at >= :start";
+            $params[':start'] = $startDt->format('Y-m-d H:i:s');
+        }
+        if ($endDt) {
+            // End of day (inclusive)
+            $endDt->setTime(23, 59, 59);
+            $conditions[] = "created_at <= :end";
+            $params[':end'] = $endDt->format('Y-m-d H:i:s');
+        }
+
+        $sql = "SELECT id, user_id, service_id, type, direction, amount, status, created_at, icon, color, description
+                FROM transactions
+                WHERE " . implode(' AND ', $conditions) . "
+                ORDER BY created_at DESC, id DESC";
+
+        if ($limit !== null) {
+            $limit = max(1, (int)$limit);
+            $sql .= " LIMIT " . $limit;
+            if ($offset !== null) {
+                $offset = max(0, (int)$offset);
+                $sql .= " OFFSET " . $offset;
+            }
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows ?: [];
+    } catch (Throwable $e) {
+        error_log('getTransactionsFiltered error: ' . $e->getMessage());
+        return [];
+    }
+}
+
 function getServiceProvider(PDO $pdo, string $type): array
 {
     $type = strtolower($type);
@@ -270,6 +328,40 @@ function groupNotificationsByDate(array $notifications): array
         }
 
         $grouped[$group][] = $notification;
+    }
+
+    return $grouped;
+}
+
+/**
+ * Group transactions by date bucket: Today, Yesterday, or a formatted date (e.g., August 10, 2025).
+ * Expects each transaction to have a 'created_at' field parseable by DateTime.
+ * Returns an associative array: [label => [transactions...]] preserving order.
+ */
+function groupTransactionsByDate(array $transactions): array
+{
+    $grouped = [];
+
+    $today = new DateTime('today');
+    $yesterday = (clone $today)->modify('-1 day');
+
+    foreach ($transactions as $t) {
+        $createdStr = $t['created_at'] ?? '';
+        try {
+            $created = new DateTime($createdStr);
+        } catch (Throwable $e) {
+            $created = new DateTime();
+        }
+
+        if ($created->format('Y-m-d') === $today->format('Y-m-d')) {
+            $label = 'Today';
+        } elseif ($created->format('Y-m-d') === $yesterday->format('Y-m-d')) {
+            $label = 'Yesterday';
+        } else {
+            $label = $created->format('F j, Y');
+        }
+
+        $grouped[$label][] = $t;
     }
 
     return $grouped;
