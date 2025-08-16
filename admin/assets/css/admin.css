@@ -1269,7 +1269,9 @@ body {
 }
 .admin-avatar-small .topbar-avatar {
   display: block;
+  padding: 1px;
   width: 100%;
+  border-radius: 12px;
 }
 
 .admin-details h6 {

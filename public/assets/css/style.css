@@ -1591,7 +1591,8 @@ th {
 .tv-plan-cards {
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  column-gap: 12px;
+  row-gap: 8px; /* reduced vertical spacing below cards */
   margin-left: 0 !important; /* override any bootstrap row negatives */
   margin-right: 0 !important;
 }
