@@ -35,13 +35,22 @@ try {
     // Fetch plans
     $plansStmt = $pdo->prepare("
         SELECT variation_code AS plan_id, price, volume, validity 
-        FROM service_plans 
+           FROM service_plans 
         WHERE service_id = ? 
         AND provider_id = ? 
         AND type = ? 
         AND is_active = 1
         ORDER BY price ASC
     ");
+    $plansStmt = $pdo->prepare("
+            SELECT variation_code AS plan_id, price, base_price, volume, validity 
+            FROM service_plans 
+            WHERE service_id = ? 
+            AND provider_id = ? 
+            AND type = ? 
+            AND is_active = 1
+            ORDER BY price ASC
+        ");
     $plansStmt->execute([$service_id, $provider_id, $type]);
     $plans = $plansStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -56,7 +65,6 @@ try {
         "plans" => $plans
     ]);
     exit;
-
 } catch (PDOException $e) {
     error_log("DB error in fetch-data-plans: " . $e->getMessage());
     echo json_encode(["success" => false, "message" => "DB error: " . $e->getMessage()]);

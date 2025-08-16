@@ -176,10 +176,6 @@ $networkProviders = getServiceProvider($pdo, 'network');
             let selectedPlan = null;
             let selectedSub = document.querySelector(".sub-tab-btn.active")?.dataset.sub || "daily";
             let buyFor = "self";
-            let dataMarkupPct = 0; // pulled once from server-side settings via embedded PHP
-
-            // Try to fetch markup from a lightweight endpoint if available; fallback to 0
-            // To avoid a new endpoint, we can embed via a data attribute from PHP in future.
 
             // --- Service selection ---
             networkTabs.forEach(tab => {
@@ -267,16 +263,13 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 plans.forEach((plan, idx) => {
                     const card = document.createElement("div");
                     card.className = "plan-col"; // width controlled by CSS grid
-                    // compute marked-up price
-                    const basePrice = Number(plan.price);
-                    const markedUp = Math.round(basePrice * (1 + (dataMarkupPct || 0) / 100));
                     card.innerHTML = `
-                        <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${basePrice}" data-volume="${plan.volume}" data-validity="${plan.validity}" data-charge="${markedUp}">
-                            <div class="data-price mb-1" style="font-size:1rem;">₦${Number(markedUp).toLocaleString()}</div>
-                            <div class="data-volume mb-1">${plan.volume}</div>
-                            <div class="data-validity mb-2">${plan.validity}</div>
-                        </div>
-                    `;
+                                    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
+                                        <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
+                                        <div class="data-volume mb-1">${plan.volume}</div>
+                                        <div class="data-validity mb-2">${plan.validity}</div>
+                                    </div>
+                                `;
 
                     // Plan card click
                     card.querySelector(".plan-card").addEventListener("click", function() {
@@ -296,8 +289,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
                         selectedPlan = {
                             plan_id: plan.plan_id,
-                            base_price: basePrice,
-                            charge_price: markedUp,
+                            price: plan.price,
                             volume: plan.volume,
                             validity: plan.validity
                         };
@@ -342,17 +334,14 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 confirmService.innerHTML = networkIcons[networkKey] || "";
 
                 confirmPlan.textContent = `${selectedPlan.volume}`;
-                // show marked-up charge to user
-                confirmAmount.textContent = `₦${Number(selectedPlan.charge_price).toLocaleString()}`;
+                confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
                 confirmValidity.textContent = `${selectedPlan.validity}`;
                 confirmModal.style.display = "flex";
             });
 
             payBtn.addEventListener("click", function() {
                 const pinpadModal = document.getElementById("pinpadModal");
-                // amount = charge to user; base_amount = provider face value
-                pinpadModal.dataset.amount = selectedPlan.charge_price;
-                pinpadModal.dataset.base_amount = selectedPlan.base_price;
+                pinpadModal.dataset.amount = selectedPlan.price;
 
                 // Fix: define phone here
                 let phone = buyFor === "self" ? "<?= $loggedInPhone ?>" : recipientPhoneInput.value.trim();
@@ -364,7 +353,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 pinpadModal.dataset.action = "data";
                 pinpadModal.dataset.plan_id = selectedPlan.plan_id;
 
-                let rawAmount = String(pinpadModal.dataset.amount).replace(/,/g, '');
+                let rawAmount = pinpadModal.dataset.amount.replace(/,/g, '');
 
                 sendAjaxRequest("check-balance.php", "POST", `amount=${rawAmount}`, function(response) {
                     if (response.success) {
@@ -404,20 +393,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
             });
 
             // --- Initial load ---
-            // Load data markup percentage first via a lightweight fetch to admin/api/pricing.php if accessible
-            (function initMarkupAndPlans() {
-                try {
-                    sendAjaxRequest("../../admin/api/pricing.php?action=list", "GET", null, function(res){
-                        if (res && res.success && res.data) {
-                            const pct = parseFloat(res.data.data_markup || 0);
-                            if (!isNaN(pct)) dataMarkupPct = pct;
-                        }
-                        loadPlans();
-                    });
-                } catch(e) {
-                    loadPlans();
-                }
-            })();
+            loadPlans();
         });
     </script>
 

@@ -82,18 +82,18 @@ include 'includes/header.php';
                 <div class="col-lg-6">
                     <div class="card h-100">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Airtime Markup</h5>
+                            <h5 class="card-title mb-0">TV Markup</h5>
                         </div>
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-md-6">
-                                    <p class="mb-0">Global markup percentage for airtime purchases</p>
+                                    <p class="mb-0">Global markup percentage for cable TV plans</p>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="airtimeMarkup" placeholder="0" min="0" max="100" step="0.1">
+                                        <input type="number" class="form-control" id="tvMarkup" placeholder="0" min="0" max="100" step="0.1">
                                         <span class="input-group-text">%</span>
-                                        <button class="btn btn-primary" onclick="updateAirtimeMarkup()">Update</button>
+                                        <button class="btn btn-primary" onclick="updateTvMarkup()">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -166,11 +166,12 @@ include 'includes/header.php';
                             <thead>
                                 <tr>
                                     <th>Plan Name</th>
-                                    <th class="d-none d-md-table-cell">Network</th>
-                                    <th class="d-none d-lg-table-cell">Data Size</th>
-                                    <th class="d-none d-lg-table-cell">Validity</th>
+                                    <th>Network</th>
+                                    <th>Data Size</th>
+                                    <th>Validity</th>
+                                    <th>Base Price (₦)</th>
                                     <th>Price (₦)</th>
-                                    <th class="d-none d-md-table-cell">Status</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -287,9 +288,10 @@ include 'includes/header.php';
                     const tv = document.getElementById('tvPercentage');
                     const airtime_markup = parseFloat(res.data.airtime_markup || 0) || 0;
                     const data_markup = parseFloat(res.data.data_markup || 0) || 0;
+                    const tv_markup = parseFloat(res.data.tv_markup || 0) || 0;
                     if (ap) ap.textContent = airtime_markup + '%';
                     if (dp) dp.textContent = data_markup + '%';
-                    if (tv) tv.textContent = '-'; // not configured yet
+                    if (tv) tv.textContent = tv_markup + '%';
                 }
             } catch (e) {
                 // Silent fail; KPI is optional
@@ -308,14 +310,16 @@ include 'includes/header.php';
                     const {
                         plans,
                         airtime_markup,
-                        data_markup
+                        data_markup,
+                        tv_markup
                     } = response.data;
 
                     // cache
                     PLANS_CACHE = Array.isArray(plans) ? plans : [];
 
-                    // Update airtime markup field
-                    document.getElementById('airtimeMarkup').value = airtime_markup;
+                    // Update TV and Data markup fields
+                    const tvMarkupEl = document.getElementById('tvMarkup');
+                    if (tvMarkupEl) tvMarkupEl.value = tv_markup;
                     const dataMarkupEl = document.getElementById('dataMarkup');
                     if (dataMarkupEl) dataMarkupEl.value = data_markup;
 
@@ -382,8 +386,8 @@ include 'includes/header.php';
             // Export currently filtered table rows to CSV
             const table = document.querySelector('table');
             const rows = Array.from(table.querySelectorAll('tbody tr'));
-            const header = ['Plan Name', 'Network', 'Data Size', 'Validity', 'Price (NGN)', 'Status'];
-            const data = rows.map(tr => Array.from(tr.querySelectorAll('td')).slice(0, 6).map(td => td.innerText.replace(/\s+/g, ' ').trim()));
+            const header = ['Plan Name', 'Network', 'Data Size', 'Validity', 'Base Price (NGN)', 'Price (NGN)', 'Status'];
+            const data = rows.map(tr => Array.from(tr.querySelectorAll('td')).slice(0, 7).map(td => td.innerText.replace(/\s+/g, ' ').trim()));
             const csv = [header].concat(data).map(r => r.map(v => '"' + (v || '').replace(/"/g, '""') + '"').join(',')).join('\r\n');
             const blob = new Blob([csv], {
                 type: 'text/csv;charset=utf-8;'
@@ -435,21 +439,20 @@ include 'includes/header.php';
                         <tr>
                             <td class="min-w-0">
                                 <div class="fw-semibold text-truncate truncate-200" title="${plan.name}">${plan.name}</div>
-                                <small class="text-muted d-none d-md-inline">Code: ${plan.code}</small>
+                                <small class="text-muted">Code: ${plan.code}</small>
                             </td>
-                            <td class="d-none d-md-table-cell">
+                            <td>
                                 <span class="badge bg-${getNetworkColor(plan.network)}">${plan.network}</span>
                             </td>
-                            <td class="d-none d-lg-table-cell">${plan.data_size || '-'}</td>
-                            <td class="d-none d-lg-table-cell">${plan.validity || '-'}</td>
+                            <td>${plan.data_size || '-'}</td>
+                            <td>${plan.validity || '-'}</td>
                             <td>
-                                <span class="inline-edit fw-semibold" 
-                                      onclick="editPrice(this, ${plan.id})"
-                                      title="Click to edit">
-                                    ₦${parseFloat(plan.price).toLocaleString()}
-                                </span>
+                                ₦${(plan.base_price != null ? parseFloat(plan.base_price) : 0).toLocaleString()}
                             </td>
-                            <td class="d-none d-md-table-cell">
+                            <td>
+                                <span class="fw-semibold">₦${parseFloat(plan.price).toLocaleString()}</span>
+                            </td>
+                            <td>
                                 <span class="badge ${plan.status === 'active' ? 'bg-success' : 'bg-secondary'}">${plan.status}</span>
                             </td>
                             <td>
@@ -470,40 +473,12 @@ include 'includes/header.php';
                 'MTN': 'warning',
                 'Airtel': 'danger',
                 'Glo': 'success',
-                '9mobile': 'info'   
+                '9mobile': 'info'
             };
             return colors[network] || 'secondary';
         }
 
-        function editPrice(element, planId) {
-            const currentPrice = element.textContent.replace('₦', '').replace(/,/g, '');
-
-            inlineEdit(element, {
-                type: 'number',
-                onSave: async (newPrice) => {
-                    try {
-                        const response = await apiFetch('api/pricing.php', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                action: 'updatePlanPrice',
-                                plan_id: planId,
-                                price: newPrice
-                            })
-                        });
-
-                        if (response.success) {
-                            showToasted('Price updated successfully', 'success');
-                            return true;
-                        } else {
-                            showToasted(response.message, 'error');
-                            throw new Error(response.message);
-                        }
-                    } catch (error) {
-                        throw error;
-                    }
-                }
-            });
-        }
+    // Inline price editing removed; use modal form only
 
         async function editPlan(planId) {
             try {
@@ -526,8 +501,8 @@ include 'includes/header.php';
             }
         }
 
-        async function updateAirtimeMarkup() {
-            const markup = document.getElementById('airtimeMarkup').value;
+        async function updateTvMarkup() {
+            const markup = document.getElementById('tvMarkup').value;
 
             if (!markup || markup < 0) {
                 showToasted('Please enter a valid markup percentage', 'error');
@@ -538,19 +513,21 @@ include 'includes/header.php';
                 const response = await apiFetch('api/pricing.php', {
                     method: 'POST',
                     body: JSON.stringify({
-                        action: 'updateAirtimeMarkup',
+                        action: 'updateTvMarkup',
                         percentage: markup
                     })
                 });
 
                 if (response.success) {
-                    showToasted('Airtime markup updated successfully', 'success');
+                    showToasted('TV markup updated successfully', 'success');
                     loadKpis();
+                    // Reload pricing to reflect recalculated plan prices
+                    loadPricingData();
                 } else {
                     showToasted(response.message, 'error');
                 }
             } catch (error) {
-                showToasted('Error updating airtime markup', 'error');
+                showToasted('Error updating TV markup', 'error');
             }
         }
 
@@ -574,6 +551,8 @@ include 'includes/header.php';
                 if (response.success) {
                     showToasted('Data markup updated successfully', 'success');
                     loadKpis();
+                    // Refresh table to reflect recalculated prices
+                    loadPricingData();
                 } else {
                     showToasted(response.message, 'error');
                 }

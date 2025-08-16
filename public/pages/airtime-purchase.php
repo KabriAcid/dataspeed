@@ -75,8 +75,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 $pin    = trim($_POST['pin'] ?? '');
-$amount = trim($_POST['amount'] ?? ''); // charge (with markup)
-$base_amount = trim($_POST['base_amount'] ?? ''); // provider face value
+$amount = trim($_POST['amount'] ?? '');
 $phone  = trim($_POST['phone'] ?? '');
 $network = trim($_POST['network'] ?? '');
 $type   = trim($_POST['type'] ?? '');
@@ -84,10 +83,6 @@ $type   = trim($_POST['type'] ?? '');
 if (!is_numeric($amount) || $amount <= 0) {
     echo json_encode(["success" => false, "message" => "Invalid amount."]);
     exit;
-}
-// base_amount is optional for back-compat; fallback to amount when missing
-if (!is_numeric($base_amount) || $base_amount <= 0) {
-    $base_amount = $amount;
 }
 if (!preg_match('/^0\d{10}$/', $phone)) {
     echo json_encode(["success" => false, "message" => "Invalid phone number."]);
@@ -144,8 +139,7 @@ try {
     exit;
 }
 
-$amount = (float)$amount; // charge
-$base_amount = (float)$base_amount; // provider face value
+$amount = (float)$amount;
 
 $stmt = $pdo->prepare("SELECT wallet_balance FROM account_balance WHERE user_id = ?");
 $stmt->execute([$user_id]);
@@ -198,8 +192,7 @@ if (!isset($balanceData['data']['balance'])) {
 
 
 $reseller_balance = (float) $balanceData['data']['balance'];
-// Ensure provider balance covers the face value only
-if ($reseller_balance < $base_amount) {
+if ($reseller_balance < $amount) {
     echo json_encode(["success" => false, "message" => "Transaction could not be completed at the moment. Please try again later."]);
     exit;
 }
@@ -209,7 +202,7 @@ $payload = json_encode([
     "request_id" => $request_id,
     "service_id" => $network,
     "phone"      => $phone,
-    "amount"     => $base_amount
+    "amount"     => $amount
 ]);
 
 $ch = curl_init($ebills_base_url . '/api/v2/airtime/');
@@ -238,8 +231,7 @@ try {
     $stmt = $pdo->prepare("UPDATE account_balance SET wallet_balance = wallet_balance - ? WHERE user_id = ?");
     $stmt->execute([$amount, $user_id]);
 
-    // Description shows the provider face value explicitly
-    $description = "You purchased ₦" . number_format($base_amount, 2) . " airtime for $phone on " . strtoupper($network);
+    $description = "You purchased ₦" . number_format($amount, 2) . " airtime for $phone on " . strtoupper($network);
     $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([
         $user_id,

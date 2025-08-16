@@ -29,8 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
       case "airtime":
         data += `&amount=${encodeURIComponent(
           pinpadModal.dataset.amount
-        )}&base_amount=${encodeURIComponent(
-          pinpadModal.dataset.base_amount || pinpadModal.dataset.amount
         )}&phone=${encodeURIComponent(
           pinpadModal.dataset.phone
         )}&network=${encodeURIComponent(
@@ -42,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
       case "data":
         data +=
           `&amount=${encodeURIComponent(pinpadModal.dataset.amount)}` +
-          `&base_amount=${encodeURIComponent(pinpadModal.dataset.base_amount || pinpadModal.dataset.amount)}` +
           `&phone=${encodeURIComponent(pinpadModal.dataset.phone)}` +
           `&network=${encodeURIComponent(pinpadModal.dataset.network)}` +
           `&type=${encodeURIComponent(pinpadModal.dataset.type)}` +
