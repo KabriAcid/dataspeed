@@ -198,6 +198,19 @@ function set_title($title = null)
 </script>
 <script src="../assets/js/password-reset.js"></script>
 <script>
+    // SessionStorage expiry logic: clear after 24 hours
+    (function() {
+        const EXPIRY_HOURS = 24;
+        const EXPIRY_MS = EXPIRY_HOURS * 60 * 60 * 1000;
+        const now = Date.now();
+        const started = parseInt(sessionStorage.getItem('reset_started_at'), 10);
+        if (!started || isNaN(started)) {
+            sessionStorage.setItem('reset_started_at', String(now));
+        } else if (now - started > EXPIRY_MS) {
+            sessionStorage.clear();
+        }
+    })();
+
     // Add functionality for the header-back-button
     document.addEventListener('DOMContentLoaded', function() {
         const backButton = document.querySelector('.header-back-button');
@@ -208,4 +221,5 @@ function set_title($title = null)
         }
     });
 </script>
+
 </html>

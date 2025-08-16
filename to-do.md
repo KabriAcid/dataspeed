@@ -4,7 +4,7 @@
 - **Session lock timeout** for the admin page.  
 - **Passkey authentication** for admin login.  
 - Fix **brute force attempts** in the Airtime, Data, and TV pages.  
-- **Account lock** after 5 wrong PIN attempts (auto logout even if already logged in).  
+- **Account lock** after 5 wrong PIN attempts (auto logout even if already logged in).  ✔️
 - **Sanitize inputs** when using quick amount buttons.  
 - **Sanitize & validate** username field.  ✔️
 - **Username already taken** flaw logic fix.

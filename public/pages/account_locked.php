@@ -12,6 +12,20 @@ if (!isset($_SESSION['locked_user_id'])) {
 
 $locked_user_id = $_SESSION['locked_user_id'] ?? null;
 
+// Fetch support contact details from settings table
+$settings = [];
+try {
+    $stmt = $pdo->query("SELECT `key`, `value` FROM settings");
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $settings[$row['key']] = $row['value'];
+    }
+} catch (Throwable $e) {
+    $settings = [];
+}
+
+$supportEmail = $settings['support_email'] ?? '';
+$supportPhone = $settings['support_phone'] ?? '';
+
 // Predefined reasons for account lock
 $reasons = [
     "Forgot PIN",
@@ -94,9 +108,9 @@ $complaintExists = $stmt->fetchColumn() > 0;
                     <button type="button" id="closeContactModal" class="btn btn-sm btn-light">Close</button>
                 </div>
                 <div>
-                    <p class="mb-2"><strong>Email:</strong> <a href="mailto:support@dataspeed.com">support@dataspeed.com</a></p>
-                    <p class="mb-2"><strong>Phone:</strong> <a href="tel:+234904883993">0904883993</a></p>
-                    <p class="mb-2"><strong>WhatsApp:</strong> <a href="https://wa.me/234904883993?text=Hello%20DataSpeed%20Support%2C%20my%20account%20is%20locked." target="_blank" rel="noopener">Chat on WhatsApp</a></p>
+                    <p class="mb-2"><strong>Email:</strong> <?php if ($supportEmail): ?><a href="mailto:<?php echo htmlspecialchars($supportEmail); ?>"><?php echo htmlspecialchars($supportEmail); ?></a><?php endif; ?></p>
+                    <p class="mb-2"><strong>Phone:</strong> <?php if ($supportPhone): ?><a href="tel:<?php echo htmlspecialchars($supportPhone); ?>"><?php echo htmlspecialchars($supportPhone); ?></a><?php endif; ?></p>
+                    <p class="mb-2"><strong>WhatsApp:</strong> <?php if ($supportPhone): ?><a href="https://wa.me/<?php echo htmlspecialchars($supportPhone); ?>?text=Hello%20DataSpeed%20Support%2C%20my%20account%20is%20locked." target="_blank" rel="noopener">Chat on WhatsApp</a><?php endif; ?></p>
                 </div>
             </div>
         </div>
@@ -161,7 +175,8 @@ $complaintExists = $stmt->fetchColumn() > 0;
                                     startCooldown(60);
                                 }
                             } catch (_) {
-                                /* noop */ }
+                                /* noop */
+                            }
                             return orig.apply(this, arguments);
                         };
                         window.__wrappedToastedCooldown = true;
