@@ -1296,29 +1296,47 @@ th {
 
 /* BUY DATA */
 .service-tabs {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* Grid layout: 4 per row by default, responsive gaps, centered with max-width */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
   width: 100%;
-  margin: auto;
-  max-width: 600px;
+  margin: 0 auto;
+  max-width: 600px; /* maintain page max width on larger screens */
+}
+@media (max-width: 575.98px) {
+  .service-tabs {
+    /* < sm screens: 2 per row */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .service-tab {
-  padding: 5px 10px;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 10px;
   box-shadow: 3px 4px 22px #eee;
-  margin: 0 5px;
+  margin: 0; /* grid handles spacing */
   width: 100%;
-  min-width: 50px;
+  min-width: 0;
   cursor: pointer;
   background-color: #fff;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  /* subtle pop-in */
+  animation: cardPop 320ms ease both;
+}
+.service-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(20, 28, 37, 0.12);
+}
+.service-tab:active {
+  transform: translateY(0);
 }
 
 .service-tab span {
@@ -1340,10 +1358,6 @@ th {
   font-weight: 600;
 }
 
-.service-tab {
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease;
-}
-
 .service-tab.selected-tab {
   transform: scale(1.05); /* Slight zoom effect when selected */
   background: var(--brand-color, #f5f5f5);
@@ -1357,6 +1371,17 @@ th {
 }
 .selected-amount {
   transform: scale(1.1); /* Slight enlarge effect when selected */
+}
+
+@keyframes cardPop {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .data-amount {
@@ -1385,7 +1410,8 @@ th {
   border-radius: 8px;
   cursor: pointer;
   padding: 5px;
-  margin: 12px 0;
+  /* reduce external spacing; grid gap handles row/col spacing */
+  margin: 4px 0;
   position: relative;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -1400,6 +1426,9 @@ th {
 .plan-card.selected-plan,
 .plan-card:hover {
   transform: scale(1.05);
+}
+.plan-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .plan-card .data-volume {
   font-size: 1.2rem;
@@ -1554,6 +1583,39 @@ th {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: var(--shadow);
+}
+
+/* Responsive grids for plan containers (Data & TV) */
+#planCards,
+#allPlanCards,
+.tv-plan-cards {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-left: 0 !important; /* override any bootstrap row negatives */
+  margin-right: 0 !important;
+}
+@media (max-width: 575.98px) {
+  #planCards,
+  #allPlanCards,
+  .tv-plan-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Ensure children fit grid cells */
+#planCards > .col-4,
+#allPlanCards > .col-4,
+.tv-plan-cards > .col-4 {
+  width: auto !important;
+}
+#planCards .plan-card,
+#allPlanCards .plan-card,
+.tv-plan-cards .plan-card {
+  width: 100%;
+}
+/* Prevent horizontal overflow within tab panes */
+.tabs .tab-content {
+  overflow-x: hidden;
 }
 .modal-backdrop {
   position: fixed;

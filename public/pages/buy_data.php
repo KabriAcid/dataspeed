@@ -25,34 +25,7 @@ try {
 ?>
 
 <body>
-    <style>
-        /* Plans grid: always 3 columns with gaps and no horizontal scroll */
-        #planCards,
-        #allPlanCards {
-            display: grid !important;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-            margin-left: 0 !important;
-            /* override .row negatives */
-            margin-right: 0 !important;
-        }
 
-        /* Ensure children don't impose widths that cause overflow */
-        #planCards>.col-4,
-        #allPlanCards>.col-4 {
-            width: auto !important;
-        }
-
-        #planCards .plan-card,
-        #allPlanCards .plan-card {
-            width: 100%;
-        }
-
-        /* Containing tab should not create horizontal scroll */
-        .tabs .tab-content {
-            overflow-x: hidden;
-        }
-    </style>
     <main class="container-fluid py-4">
         <!-- Header Section -->
         <header>

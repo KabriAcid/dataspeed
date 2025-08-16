@@ -1255,8 +1255,8 @@ body {
 }
 
 .admin-avatar-small {
-  width: 48px;
-  height: 48px;
+  width: 45px;
+  height: 45px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.2);
   display: flex;
@@ -1266,6 +1266,10 @@ body {
   color: white;
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.3);
+}
+.admin-avatar-small .topbar-avatar {
+  display: block;
+  width: 100%;
 }
 
 .admin-details h6 {

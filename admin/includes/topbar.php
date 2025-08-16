@@ -33,7 +33,7 @@
                     <div class="dropdown-header">
                         <div class="admin-info">
                             <div class="admin-avatar-small">
-                                <img id="adminAvatarSmall" src="../public/favicon.png" alt="Avatar" class="img-fluid rounded-circle" />
+                                <img id="adminAvatarSmall" src="../public/favicon.png" alt="Avatar" class="topbar-avatar" />
                             </div>
                             <div class="admin-details">
                                 <h6 id="adminNameFull" class="admin-name-full">Super Admin</h6>

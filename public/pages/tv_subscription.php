@@ -79,7 +79,7 @@ try {
                 </div>
                 <!-- Plans Section -->
                 <div class="tab-content position-relative active">
-                    <div id="planCards" class="row">
+                    <div id="planCards" class="mt-3">
                         <!-- Plan cards will be dynamically loaded here -->
                     </div>
 
