@@ -54,8 +54,13 @@ function isSuperAdmin(PDO $pdo, int $adminId): bool
     try {
         $stmt = $pdo->prepare('SELECT role FROM admins WHERE id = ? LIMIT 1');
         $stmt->execute([$adminId]);
-        $role = $stmt->fetchColumn();
-        return $role && strtolower((string)$role) === 'super';
+        $role = (string)$stmt->fetchColumn();
+        if ($role === '' || $role === null) {
+            // Fallback: treat the very first admin as super
+            return $adminId === 1;
+        }
+        $norm = strtolower(preg_replace('/[^a-z]/i', '', $role)); // normalize e.g., "Super Admin" => "superadmin"
+        return in_array($norm, ['super', 'superadmin'], true);
     } catch (Throwable $e) {
         error_log('isSuperAdmin: ' . $e->getMessage());
         return false;

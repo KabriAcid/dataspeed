@@ -75,8 +75,9 @@
       setVal("email", d.email || "");
       setVal("phone", d.phone || "");
       setVal("role", d.role || "");
-      // Gate Add Admin UI for super admins only
-      const isSuper = (d.role || "").toLowerCase() === "superadmin";
+      // Gate Add Admin UI for super admins only (accept common variants)
+      const roleLc = (d.role || "").toLowerCase();
+      const isSuper = ["super", "superadmin", "super_admin"].includes(roleLc);
       const addTab = document.getElementById("addadmin-tab");
       const addPane = document.getElementById("addadmin");
       if (addTab && addPane) {
@@ -194,7 +195,10 @@
             showToasted(res.message || "Failed to create admin", "error");
           }
         } catch (err) {
-          showToasted("Failed to create admin", "error");
+          // Surface server error message (e.g., Forbidden)
+          const msg =
+            err && err.message ? err.message : "Failed to create admin";
+          showToasted(msg, "error");
         }
       });
     }
