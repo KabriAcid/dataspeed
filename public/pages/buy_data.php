@@ -338,7 +338,7 @@ try {
                     const card = document.createElement("div");
                     card.className = "plan-col"; // width controlled by CSS grid
                     card.innerHTML = `
-                                    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.base_price ?? plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}" data-plan-name="${plan.plan_name ?? ''}">
+                                    <div class="plan-card" data-variation-code="${plan.variation_code || plan.plan_id}" data-price="${plan.base_price ?? plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}" data-plan-name="${plan.plan_name ?? ''}">
                                         <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.base_price ?? plan.price).toLocaleString()}</div>
                                         <div class="data-volume mb-1">${plan.volume}</div>
                                         <div class="data-validity mb-2">${plan.validity}</div>
@@ -363,7 +363,7 @@ try {
                         this.querySelectorAll('*').forEach(el => el.style.color = "#fff");
 
                         selectedPlan = {
-                            plan_id: plan.plan_id,
+                            variation_code: plan.variation_code || plan.plan_id,
                             // Use base_price (retail) when available, otherwise fallback to provider price
                             price: (plan.base_price ?? plan.price),
                             volume: plan.volume,
@@ -435,7 +435,10 @@ try {
                 pinpadModal.dataset.network = selectedTab;
                 pinpadModal.dataset.type = selectedPlan.volume + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "data";
-                pinpadModal.dataset.plan_id = selectedPlan.plan_id;
+                // canonical
+                pinpadModal.dataset.variation_code = selectedPlan.variation_code;
+                // deprecated alias for interim compatibility
+                pinpadModal.dataset.plan_id = selectedPlan.variation_code;
 
                 let rawAmount = pinpadModal.dataset.amount.replace(/,/g, '');
 

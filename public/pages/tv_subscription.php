@@ -278,7 +278,7 @@ try {
                     const card = document.createElement("div");
                     card.className = "col-4";
                     card.innerHTML = `
-                            <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.base_price ?? plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
+                            <div class="plan-card" data-variation-code="${plan.variation_code || plan.plan_id}" data-price="${plan.base_price ?? plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
                                 <div class="">${plan.plan_name}</div>
                                 <div class="text-muted small">${plan.validity}</div>
                                 <div class="fw-bold mt-2">₦${Number(plan.base_price ?? plan.price).toLocaleString()}</div>
@@ -301,7 +301,7 @@ try {
                         this.querySelectorAll('*').forEach(el => el.style.color = "#fff");
 
                         selectedPlan = {
-                            plan_id: plan.plan_id,
+                            variation_code: plan.variation_code || plan.plan_id,
                             price: (plan.base_price ?? plan.price),
                             name: plan.plan_name,
                             validity: plan.validity
@@ -389,7 +389,9 @@ try {
                 pinpadModal.dataset.network = selectedTab;
                 pinpadModal.dataset.type = selectedPlan.name + " (" + selectedPlan.validity + ")";
                 pinpadModal.dataset.action = "tv";
-                pinpadModal.dataset.plan_id = selectedPlan.plan_id;
+                pinpadModal.dataset.variation_code = selectedPlan.variation_code;
+                // deprecated alias for interim compatibility
+                pinpadModal.dataset.plan_id = selectedPlan.variation_code;
 
                 let rawAmount = pinpadModal.dataset.amount.replace(/,/g, '');
 

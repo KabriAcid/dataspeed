@@ -17,14 +17,19 @@ if ($provider_id <= 0) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT variation_code as plan_id, plan_name, price, base_price, validity FROM service_plans WHERE provider_id = ? AND is_active = 1");
+    $stmt = $pdo->prepare("SELECT variation_code, plan_name, price, base_price, validity FROM service_plans WHERE provider_id = ? AND is_active = 1");
     $stmt->execute([$provider_id]);
     $plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (!empty($plans)) {
+        // Attach backward-compatible alias 'plan_id' for clients not yet migrated
+        $plans_with_alias = array_map(function ($p) {
+            $p['plan_id'] = $p['variation_code']; // deprecated alias
+            return $p;
+        }, $plans);
         echo json_encode([
             'success' => true,
-            'plans' => $plans
+            'plans' => $plans_with_alias
         ]);
     } else {
         echo json_encode([

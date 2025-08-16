@@ -35,7 +35,7 @@ try {
     // Fetch plans
     // Fetch candidate plans; we'll bucket by validity below (so <7 days => daily)
     $plansStmt = $pdo->prepare("
-        SELECT variation_code AS plan_id, plan_name, price, base_price, volume, validity, type 
+        SELECT variation_code, plan_name, price, base_price, volume, validity, type 
         FROM service_plans 
         WHERE service_id = ? 
         AND provider_id = ? 
@@ -83,7 +83,10 @@ try {
             $bucket = in_array($dbType, ['daily', 'weekly', 'monthly'], true) ? $dbType : 'monthly';
         }
         $bucketed[$bucket][] = [
-            'plan_id' => $p['plan_id'],
+            // New canonical key
+            'variation_code' => $p['variation_code'],
+            // Backward compatibility during transition
+            'plan_id' => $p['variation_code'],
             'plan_name' => $p['plan_name'] ?? '',
             'price' => $p['price'],
             'base_price' => $p['base_price'] ?? null,

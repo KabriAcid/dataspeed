@@ -164,7 +164,7 @@ function handleList(PDO $pdo): void
 
     // Data
     $dataSql = "
-        SELECT t.id, t.user_id, t.service_id, t.provider_id, t.plan_id,
+        SELECT t.id, t.user_id, t.service_id, t.provider_id, t.plan_id, t.variation_code,
                t.type AS raw_type, t.direction, t.description, t.amount, t.email,
                t.reference, t.status, t.created_at,
                u.first_name, u.last_name, u.email AS user_email,
@@ -193,7 +193,9 @@ function handleList(PDO $pdo): void
             'service_type' => $serviceType,
             'amount' => (float)$r['amount'],
             'status' => $uiStatus,
-            'created_at' => $r['created_at']
+            'created_at' => $r['created_at'],
+            // Expose canonical variation_code if present else legacy plan_id
+            'variation_code' => $r['variation_code'] ?: (isset($r['plan_id']) ? (string)$r['plan_id'] : null)
         ];
     }, $rows);
 
@@ -282,7 +284,8 @@ function handleView(PDO $pdo): void
             'direction' => $tx['direction'],
             'description' => $tx['description'],
             'reference' => $tx['reference'],
-            'created_at' => $tx['created_at']
+            'created_at' => $tx['created_at'],
+            'variation_code' => $tx['variation_code'] ?? (!is_null($tx['plan_id']) ? (string)$tx['plan_id'] : null)
         ]
     ]);
 }

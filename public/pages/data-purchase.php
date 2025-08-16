@@ -29,7 +29,7 @@ function saveTokenToCache($token)
     global $token_cache_file;
     $data = [
         'token' => $token,
-        'expires_at' => time() + (6 * 24 * 60 * 60)
+        'expires_at' => time() + (6 * 24 * 60 * 60) // 6 days expiry
     ];
     file_put_contents($token_cache_file, json_encode($data));
 }
@@ -75,12 +75,13 @@ $amount  = trim($_POST['amount'] ?? ''); // client value ignored; DB is source o
 $phone   = trim($_POST['phone'] ?? '');
 $network = trim($_POST['network'] ?? '');
 $type    = trim($_POST['type'] ?? '');
-$plan_id = trim($_POST['plan_id'] ?? '');
+// Normalize incoming identifier: prefer variation_code, accept legacy plan_id
+$variation_code = trim($_POST['variation_code'] ?? ($_POST['plan_id'] ?? ''));
 
 // Fetch authoritative pricing for the selected plan
 try {
     $stmtPlan = $pdo->prepare("SELECT price, base_price FROM service_plans WHERE variation_code = ? LIMIT 1");
-    $stmtPlan->execute([$plan_id]);
+    $stmtPlan->execute([$variation_code]);
     $plan = $stmtPlan->fetch(PDO::FETCH_ASSOC);
     if (!$plan) {
         echo json_encode(["success" => false, "message" => "Invalid or unknown plan selected."]);
@@ -196,7 +197,7 @@ $payload = json_encode([
     "service_id" => $network,
     "phone"      => $phone,
     "amount"     => $retailPrice,
-    "variation_id" => $plan_id
+    "variation_id" => $variation_code
 ]);
 
 $ch = curl_init($ebills_base_url . '/api/v2/data/');
@@ -225,22 +226,49 @@ try {
     $stmt->execute([$amount, $user_id]);
 
     $description = "You purchased ₦" . number_format($retailPrice, 2) . " data for $phone on " . strtoupper($network);
-    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute([
-        $user_id,
-        2,
-        1,
-        $plan_id,
-        'Data Purchase',
-        'ni ni-world-2',
-        'text-success',
-        'debit',
-        $description,
-        $amount,
-        $user['email'],
-        $request_id,
-        'success'
-    ]);
+    // Write to variation_code column when available; fallback to legacy plan_id
+    $hasVariationCol = false;
+    try {
+        $colStmt = $pdo->query("SHOW COLUMNS FROM transactions LIKE 'variation_code'");
+        $hasVariationCol = $colStmt && $colStmt->rowCount() > 0;
+    } catch (Throwable $e) { /* ignore */
+    }
+
+    if ($hasVariationCol) {
+        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, variation_code, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->execute([
+            $user_id,
+            2,
+            1,
+            $variation_code,
+            'Data Purchase',
+            'ni ni-world-2',
+            'text-success',
+            'debit',
+            $description,
+            $amount,
+            $user['email'],
+            $request_id,
+            'success'
+        ]);
+    } else {
+        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->execute([
+            $user_id,
+            2,
+            1,
+            $variation_code,
+            'Data Purchase',
+            'ni ni-world-2',
+            'text-success',
+            'debit',
+            $description,
+            $amount,
+            $user['email'],
+            $request_id,
+            'success'
+        ]);
+    }
     $pdo->commit();
 
     pushNotification($pdo, $user_id, 'Data Purchase Successful', $description, 'data_purchase', 'ni ni-world-2', 'text-success', 0);

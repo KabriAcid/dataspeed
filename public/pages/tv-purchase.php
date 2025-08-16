@@ -18,7 +18,8 @@ $amount = trim($_POST['amount'] ?? '');
 $phone = trim($_POST['phone'] ?? '');
 $network = trim($_POST['network'] ?? '');
 $type = trim($_POST['type'] ?? 'change');
-$plan_id = trim($_POST['plan_id'] ?? '');
+// Prefer canonical variation_code but accept legacy plan_id
+$variation_code = trim($_POST['variation_code'] ?? ($_POST['plan_id'] ?? ''));
 $iuc = trim($_POST['iuc'] ?? '');
 
 if (!is_numeric($amount) || $amount <= 0) {
@@ -146,7 +147,7 @@ try {
         'request_id' => $request_id,
         'customer_id' => $iuc,
         'service_id' => strtolower($network),
-        'variation_id' => $plan_id,
+        'variation_id' => $variation_code,
         'subscription_type' => $type,
         'amount' => (int)$amount
     ]);
@@ -174,8 +175,20 @@ try {
     $desc = "TV subscription of ₦" . number_format($amount, 2) . " for IUC $iuc on " . strtoupper($network);
     $icon = 'ni ni-tv-2';
     $color = 'text-success';
-    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute([$user_id, $service_id, $provider_id, $plan_id, 'TV Subscription', $icon, $color, 'debit', $desc, $amount, $user['email'], $request_id, 'success']);
+    // Prefer new variation_code column if present; otherwise write to legacy plan_id
+    $hasVariationCol = false;
+    try {
+        $colStmt = $pdo->query("SHOW COLUMNS FROM transactions LIKE 'variation_code'");
+        $hasVariationCol = $colStmt && $colStmt->rowCount() > 0;
+    } catch (Throwable $e) { /* ignore */
+    }
+    if ($hasVariationCol) {
+        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, variation_code, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->execute([$user_id, $service_id, $provider_id, $variation_code, 'TV Subscription', $icon, $color, 'debit', $desc, $amount, $user['email'], $request_id, 'success']);
+    } else {
+        $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->execute([$user_id, $service_id, $provider_id, $variation_code, 'TV Subscription', $icon, $color, 'debit', $desc, $amount, $user['email'], $request_id, 'success']);
+    }
 
     pushNotification($pdo, $user_id, "TV Subscription Successful", $desc, 'tv_subscription', $icon, $color, 0);
 

@@ -43,7 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
           `&phone=${encodeURIComponent(pinpadModal.dataset.phone)}` +
           `&network=${encodeURIComponent(pinpadModal.dataset.network)}` +
           `&type=${encodeURIComponent(pinpadModal.dataset.type)}` +
-          `&plan_id=${encodeURIComponent(pinpadModal.dataset.plan_id)}`;
+          // canonical parameter
+          `&variation_code=${encodeURIComponent(
+            pinpadModal.dataset.variation_code || pinpadModal.dataset.plan_id
+          )}` +
+          // deprecated alias for compatibility
+          `&plan_id=${encodeURIComponent(
+            pinpadModal.dataset.plan_id || pinpadModal.dataset.variation_code
+          )}`;
         endpoint = "data-purchase.php";
         break;
 
@@ -64,7 +71,12 @@ document.addEventListener("DOMContentLoaded", function () {
           `&phone=${encodeURIComponent(pinpadModal.dataset.phone)}` +
           `&network=${encodeURIComponent(pinpadModal.dataset.network)}` +
           `&type=${encodeURIComponent(pinpadModal.dataset.type)}` +
-          `&plan_id=${encodeURIComponent(pinpadModal.dataset.plan_id)}` +
+          `&variation_code=${encodeURIComponent(
+            pinpadModal.dataset.variation_code || pinpadModal.dataset.plan_id
+          )}` +
+          `&plan_id=${encodeURIComponent(
+            pinpadModal.dataset.plan_id || pinpadModal.dataset.variation_code
+          )}` +
           `&iuc=${encodeURIComponent(pinpadModal.dataset.iuc)}`;
         endpoint = "tv-purchase.php";
         break;
