@@ -323,7 +323,8 @@ require __DIR__ . '/../partials/header.php';
             });
         });
     </script>
-    <?php #require __DIR__ . '/auth_modal.php'; ?>
+    <?php #require __DIR__ . '/auth_modal.php'; 
+    ?>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 

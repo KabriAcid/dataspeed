@@ -66,11 +66,12 @@ function getServicePlans($pdo)
     try {
         // Join plans with providers to expose network; map columns to UI shape
         $sql = "
-         SELECT sp.id,
+      SELECT sp.id,
                    sp.plan_name AS name,
                    prov.name AS network,
                    prov.icon AS provider_icon,
                    prov.slug AS provider_slug,
+             sp.provider_id AS provider_id,
                    sp.variation_code AS code,
                    sp.price,
                    sp.base_price,
@@ -80,7 +81,7 @@ function getServicePlans($pdo)
                    sp.created_at
             FROM service_plans sp
             LEFT JOIN service_providers prov ON prov.id = sp.provider_id
-            ORDER BY prov.name, sp.price ASC
+         ORDER BY sp.provider_id ASC, sp.price ASC
         ";
         $stmt = $pdo->query($sql);
         $rows = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
@@ -93,6 +94,7 @@ function getServicePlans($pdo)
                 'network' => $r['network'] ?? 'Unknown',
                 'icon' => $r['provider_icon'] ?? null,
                 'slug' => $r['provider_slug'] ?? null,
+                'provider_id' => isset($r['provider_id']) ? (int)$r['provider_id'] : null,
                 'code' => $r['code'],
                 'price' => (float)$r['price'],
                 'base_price' => isset($r['base_price']) ? (float)$r['base_price'] : null,

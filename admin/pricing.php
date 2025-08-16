@@ -363,6 +363,15 @@ include 'includes/header.php';
             // if (type) { /* implement when a plan "type" exists */ }
             // if (date) { /* implement if you add created_at range filtering */ }
 
+            // Sort by provider_id then price to match backend order and ensure stable group ordering
+            filtered.sort((a, b) => {
+                const pa = (a.provider_id ?? 0),
+                    pb = (b.provider_id ?? 0);
+                if (pa !== pb) return pa - pb;
+                const prA = parseFloat(a.price) || 0,
+                    prB = parseFloat(b.price) || 0;
+                return prA - prB;
+            });
             renderPlansTable(filtered);
 
             // Simple KPI: suggested pricing as avg price of filtered
@@ -473,7 +482,7 @@ include 'includes/header.php';
             tableBody.innerHTML = html;
         }
 
-    // getNetworkColor removed: replaced by brand icon/name rendering
+        // getNetworkColor removed: replaced by brand icon/name rendering
 
         // Inline price editing removed; use modal form only
 
