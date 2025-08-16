@@ -218,6 +218,7 @@ section:not(.jumbotoron) {
 button:disabled {
   box-shadow: var(--shadow-md);
   background-color: transparent !important;
+  background-image: none !important;
   padding: 0.75rem 1.5rem;
   text-transform: uppercase;
 
@@ -232,6 +233,15 @@ button:disabled {
   user-select: none;
   border-radius: 0.5rem;
   transition: all 0.35s ease-in;
+  border: 1px solid var(--primary);
+}
+
+/* Ensure primary-btn loses fill when disabled but keeps outline */
+.primary-btn:disabled {
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--primary) !important;
+  border: 1px solid var(--primary);
 }
 
 .button-outline {
@@ -796,6 +806,13 @@ select.select-lga {
   z-index: 999;
 }
 
+/* Ensure content above bottom nav is not obscured on small screens */
+@media (max-width: 575.98px) {
+  main.container-fluid {
+    padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 .bottom-nav .nav-link {
   text-align: center;
   font-size: 12px;
@@ -1337,6 +1354,24 @@ th {
 }
 .service-tab:active {
   transform: translateY(0);
+}
+
+/* Auto-detect highlight when network inferred from phone */
+.service-tab.auto-detected {
+  animation: detectPulse 420ms ease;
+  box-shadow: 0 0 0 2px var(--brand-color, #ffcb05) inset,
+    0 8px 22px rgba(20, 28, 37, 0.14);
+}
+@keyframes detectPulse {
+  0% {
+    transform: scale(0.98);
+  }
+  60% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .service-tab span {

@@ -233,6 +233,8 @@ require __DIR__ . '/../partials/header.php';
             serviceTabsContainer.addEventListener("click", function(e) {
                 const tab = e.target.closest(".service-tab");
                 if (!tab) return;
+                // Manual override clears auto-detected highlight
+                serviceTabsContainer.querySelectorAll('.service-tab').forEach(t => t.classList.remove('auto-detected'));
                 const networkTabs = serviceTabsContainer.querySelectorAll(".service-tab");
                 networkTabs.forEach(t => t.classList.remove("selected-tab"));
                 tab.classList.add("selected-tab");
@@ -406,6 +408,66 @@ require __DIR__ . '/../partials/header.php';
                 if (e.target === pinpadModal) {
                     pinpadModal.style.display = "none";
                 }
+            });
+
+            // --- Network auto-detect by Nigerian MSISDN prefixes ---
+            const NETWORK_PREFIXES = {
+                MTN: ['0803', '0806', '0703', '0706', '0813', '0816', '0810', '0814', '0903', '0906', '0913', '0916'],
+                AIRTEL: ['0802', '0808', '0708', '0812', '0701', '0902', '0907', '0901', '0912'],
+                GLO: ['0805', '0807', '0705', '0815', '0811', '0905'],
+                '9MOBILE': ['0809', '0817', '0818', '0909', '0908']
+            };
+            const NAME_TO_SLUG = {
+                MTN: 'mtn',
+                AIRTEL: 'airtel',
+                GLO: 'glo',
+                '9MOBILE': '9mobile'
+            };
+
+            function detectNetworkFromPhone(num) {
+                if (!num) return null;
+                const d = ('' + num).replace(/\D/g, '');
+                let prefix = null;
+                if (d.startsWith('234') && d.length >= 6) {
+                    prefix = '0' + d.slice(3, 6);
+                } else if (d.startsWith('0') && d.length >= 4) {
+                    prefix = d.slice(0, 4);
+                } else if (!d.startsWith('0') && d.length >= 3) {
+                    prefix = '0' + d.slice(0, 3);
+                } else {
+                    return null;
+                }
+                for (const [name, arr] of Object.entries(NETWORK_PREFIXES)) {
+                    if (arr.includes(prefix)) return name;
+                }
+                return null;
+            }
+
+            function selectNetworkByNameAuto(name) {
+                if (!name) return;
+                const slug = NAME_TO_SLUG[name];
+                if (!slug) return;
+                const tab = serviceTabsContainer.querySelector(`.service-tab[data-network="${slug}"]`);
+                if (tab) {
+                    serviceTabsContainer.querySelectorAll('.service-tab').forEach(t => t.classList.remove('auto-detected'));
+                    tab.classList.add('auto-detected');
+                    tab.click();
+                }
+            }
+
+            // Auto-detect on Self (logged-in phone) on load
+            (function initAutoDetectFromSelf() {
+                const selfPhone = "<?= addslashes((string)$loggedInPhone) ?>";
+                const net = detectNetworkFromPhone(selfPhone);
+                if (net) selectNetworkByNameAuto(net);
+            })();
+
+            // Auto-detect on Others tab phone input as user types
+            document.querySelectorAll('.tab-content [name="phone_number"]').forEach(inp => {
+                inp.addEventListener('input', function() {
+                    const net = detectNetworkFromPhone(this.value);
+                    if (net) selectNetworkByNameAuto(net);
+                });
             });
 
             // --- Utility Functions ---
