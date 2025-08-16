@@ -18,10 +18,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
   
     // Function to toggle LGA options based on selected state
     const selectState = (event) => {
-      // Normalize state string: remove spaces and apostrophes, title-case certain keys
-      const rawState = String(event.target.value || '').trim();
-      const normalizedKey = rawState.replace(/\s+/g, '').replace(/[^A-Za-z]/g, '');
-      const lgaMap = {
+      const state = event.target.value;
+      const lgaList = {
         Abia: [
           "Aba North",
           "Aba South",
@@ -64,7 +62,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Yola North",
           "Yola South"
         ],
-  AkwaIbom: [
+        AkwaIbom: [
           "Abak",
           "Eastern Obolo",
           "Eket",
@@ -120,7 +118,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Orumba South",
           "Oyi"
         ],
-  // Duplicate Anambra removed
         Bauchi: [
           "Alkaleri",
           "Bauchi",
@@ -311,7 +308,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Moba",
           "Oye"
         ],
-  Rivers: [
+        Rivers: [
           "Port Harcourt",
           "Obio-Akpor",
           "Okrika",
@@ -875,20 +872,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Chafe",
           "Zurmi",
         ],
-      };
-
-      // Build a mapping from normalized key to actual key in lgaMap
-      const normalizedIndex = {};
-      Object.keys(lgaMap).forEach(k => {
-        normalizedIndex[k.replace(/\s+/g, '').replace(/[^A-Za-z]/g, '')] = k;
-      });
-      const mapKey = normalizedIndex[normalizedKey] || rawState;
-      const lgaList = lgaMap[mapKey] || [];
+      }[state] || [];  // Default to an empty array if state is not found
   
   const form = event.target.closest('form'); // Get the closest form element
-  const lgaSelect = form ? form.querySelector(`.select-lga[data-state="${event.target.dataset.state}"]`) : null; // Find corresponding LGA select element
-
-  if (!lgaSelect) return;
+  const lgaSelect = form.querySelector(`.select-lga[data-state="${event.target.dataset.state}"]`); // Find corresponding LGA select element
   
       // Clear the existing options
       lgaSelect.innerHTML = '';
@@ -910,14 +897,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
   
     // Attach the selectState function to all state select elements
-    document.querySelectorAll('.select-state').forEach((selectElement, index) => {
+    const stateSelects = document.querySelectorAll('.select-state');
+    const lgaSelects = document.querySelectorAll('.select-lga');
+
+    stateSelects.forEach((selectElement, index) => {
       selectElement.addEventListener('change', selectState);
       selectElement.dataset.state = index; // Add a unique identifier to match corresponding LGA select
-    });
-  
-    // Ensure each LGA select also has the correct data-state attribute
-    document.querySelectorAll('.select-lga').forEach((selectElement, index) => {
-      selectElement.dataset.state = index;
+      if (lgaSelects[index]) {
+        lgaSelects[index].dataset.state = index;
+      }
+      // On load, if a data-selected is present on state, ensure LGA list is populated and respects its own data-selected
+      const preSelectedState = selectElement.getAttribute('data-selected');
+      const lgaSelect = lgaSelects[index];
+      if (preSelectedState && lgaSelect) {
+        // Trigger population
+        selectElement.value = preSelectedState;
+        const evt = new Event('change');
+        selectElement.dispatchEvent(evt);
+        const preSelectedLGA = lgaSelect.getAttribute('data-selected');
+        if (preSelectedLGA) {
+          // Try to select the matching option if present
+          const opt = Array.from(lgaSelect.options).find(o => o.value === preSelectedLGA);
+          if (opt) {
+            lgaSelect.value = preSelectedLGA;
+          }
+        }
+      }
     });
   });
   

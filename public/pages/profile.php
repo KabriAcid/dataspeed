@@ -59,25 +59,25 @@ $states = fetchNigerianStates($pdo);
                 <div class="row mb-1">
                     <div class="col-md-6 mb-3">
                         <label>First Name</label>
-                        <input type="text" class="input" value="<?= htmlspecialchars($user['first_name']) ?? '' ?>" disabled>
+                        <input type="text" class="input" value="<?= htmlspecialchars($user['first_name'] ?? '') ?>" disabled>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>Last Name</label>
-                        <input type="text" class="input" value="<?= htmlspecialchars($user['last_name']) ?? '' ?>" disabled>
+                        <input type="text" class="input" value="<?= htmlspecialchars($user['last_name'] ?? '') ?>" disabled>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label>Email</label>
-                        <input type="email" class="input" value="<?= htmlspecialchars($user['email']) ?? '' ?>" disabled>
+                        <input type="email" class="input" value="<?= htmlspecialchars($user['email'] ?? '') ?>" disabled>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>Phone Number</label>
-                        <input type="text" class="input" value="<?= htmlspecialchars($user['phone_number']) ?? '' ?>" disabled>
+                        <input type="text" class="input" value="<?= htmlspecialchars($user['phone_number'] ?? '') ?>" disabled>
                     </div>
                 </div>
                 <div class="text-end mt-3">
-                    <button type="button" class="disabled-btn" disabled>Update</button>
+                    <button type="button" class="disabled-btn">Update</button>
                 </div>
             </form>
 
@@ -116,7 +116,7 @@ $states = fetchNigerianStates($pdo);
                 <div class="row mb-1">
                     <div class="col-md-6 mb-3">
                         <label>State</label>
-                        <select name="state" id="state" class="select-state input" required data-selected="<?= $selectedState ?>">
+                        <select name="state" id="state" class="select-state input" required data-selected="<?= htmlspecialchars($selectedState) ?>">
                             <?php
                             //    Fetch Nigerian states from the database
                             foreach ($states as $state) {
@@ -128,15 +128,15 @@ $states = fetchNigerianStates($pdo);
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>City</label>
-                        <select name="lga" id="lga" class="select-lga input" required data-selected="<?= $selectedLGA ?>">
-                            <option value="<?= $selectedLGA ?>"><?= $selectedLGA ?></option>
+                        <select name="lga" id="lga" class="select-lga input" required data-selected="<?= htmlspecialchars($selectedLGA) ?>">
+                            <option value="<?= htmlspecialchars($selectedLGA) ?>"><?= htmlspecialchars($selectedLGA) ?></option>
                         </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label>Address</label>
-                        <input type="text" name="address" class="input" placeholder="Home Address" value="<?= htmlspecialchars($user['address']) ?>">
+                        <input type="text" name="address" class="input" placeholder="Home Address" value="<?= htmlspecialchars($user['address'] ?? '') ?>">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>Country</label>
@@ -167,14 +167,9 @@ $states = fetchNigerianStates($pdo);
             let currentStep = 0;
 
             // Show toast message when the user clicks on the disabled button
-            const disabledBtn = document.querySelector('.disabled-btn');
-            if (disabledBtn) {
-                disabledBtn.addEventListener('click', function() {
-                    if (typeof showToasted === 'function') {
-                        showToasted('This step is not editable yet.', 'info');
-                    }
-                });
-            }
+            document.querySelector('.disabled-btn').addEventListener('click', function() {
+                showToasted('This step is not editable yet.', 'info');
+            });
             /**
              * Show the form for the selected step index
              */
@@ -239,12 +234,10 @@ $states = fetchNigerianStates($pdo);
 
 
                     sendAjaxRequest('update-profile.php', 'POST', params.toString(), function(res) {
-                        if (typeof showToasted === 'function') {
-                            if (res.success) {
-                                showToasted(res.message || 'Update successful', 'success');
-                            } else {
-                                showToasted(res.message || 'Update failed', 'error');
-                            }
+                        if (res.success) {
+                            showToasted(res.message || 'Update successful', 'success');
+                        } else {
+                            showToasted(res.message || 'Update failed', 'error');
                         }
                     });
                 });

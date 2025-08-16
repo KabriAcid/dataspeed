@@ -11,37 +11,46 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+if ($method !== 'POST') {
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
+    exit;
+}
 $step = $_POST['step'] ?? '';
 
 try {
 
     if ($step === 'account') {
-        $bank = trim($_POST['bank_name'] ?? '');
-        // Ensure account number is digits-only and exactly 10 digits
-        $rawAccount = $_POST['account_number'] ?? '';
-        $account = preg_replace('/\D/', '', trim($rawAccount));
+        // Sanitize inputs
+        $bank = sanitizeInput($_POST['bank_name'] ?? '', 'default');
+        $accountRaw = trim($_POST['account_number'] ?? '');
+        $account = preg_replace('/\D/', '', $accountRaw); // digits only
         $user_name = trim($_POST['user_name'] ?? '');
 
-        if (!$bank || !$account || strlen($account) !== 10) {
-            throw new Exception('Please provide a valid bank and a 10-digit NUBAN account number.');
+        // Basic presence checks
+        if ($bank === '' || $account === '' || $user_name === '') {
+            throw new Exception('Please provide bank name, account number, and username.');
         }
-        // Username must not start with a number, must not include spaces, and must not be more than 20 characters
-        if (strlen($user_name) <= 4 || strlen($user_name) > 20) {
-            echo json_encode(["success" => false, "message" => "Invalid username length"]);
-            exit;
+
+    // Bank name: allow letters, numbers, spaces and common symbols, length 2-50
+    if (!preg_match('/^[A-Za-z0-9 &()\.\-\'\/]{2,50}$/', $bank)) {
+            throw new Exception('Enter a valid bank name (2-50 chars).');
         }
-        if (preg_match('/^\d/', $user_name)) {
-            echo json_encode(["success" => false, "message" => "Username must not start with a number."]);
-            exit;
+
+        // Account number must be exactly 10 digits
+        if (!preg_match('/^\d{10}$/', $account)) {
+            throw new Exception('Account number must be exactly 10 digits.');
         }
-        if (preg_match('/\s/', $user_name)) {
-            echo json_encode(["success" => false, "message" => "Username must not contain spaces."]);
+
+        // Username rules: start with a letter, 5-20 chars, allowed [A-Za-z0-9._-]
+        if (!preg_match('/^[A-Za-z][A-Za-z0-9._-]{4,19}$/', $user_name)) {
+            echo json_encode(["success" => false, "message" => "Username must start with a letter, be 5-20 characters, and contain only letters, numbers, '.', '_' or '-'."]);
             exit;
         }
 
-    // Check if username is taken by another user (exclude current user)
-    $stmt = $pdo->prepare("SELECT user_name FROM users WHERE user_name = ? AND user_id <> ?");
-    $stmt->execute([$user_name, $user_id]);
+        // Uniqueness: ensure no other user uses this username
+        $stmt = $pdo->prepare("SELECT user_id FROM users WHERE user_name = ? AND user_id <> ? LIMIT 1");
+        $stmt->execute([$user_name, $user_id]);
         $user = $stmt->fetch();
 
         if ($user) {
@@ -49,8 +58,8 @@ try {
             exit;
         }
 
-    $stmt = $pdo->prepare("UPDATE users SET w_bank_name = ?, w_account_number = ?, user_name = ? WHERE user_id = ?");
-    $stmt->execute([$bank, $account, $user_name, $user_id]);
+        $stmt = $pdo->prepare("UPDATE users SET w_bank_name = ?, w_account_number = ?, user_name = ? WHERE user_id = ?");
+        $stmt->execute([$bank, $account, $user_name, $user_id]);
 
         // Push notification for bank account update
         $title = "Account Details Updated";
@@ -63,11 +72,12 @@ try {
         echo json_encode(['success' => true, 'message' => 'Account details updated.']);
         exit;
     } elseif ($step === 'address') {
-        $state = trim($_POST['state'] ?? '');
-        $lga = trim($_POST['lga'] ?? '');
-        $address = trim($_POST['address'] ?? '');
+        // Sanitize inputs
+        $state = sanitizeInput($_POST['state'] ?? '', 'default');
+        $lga = sanitizeInput($_POST['lga'] ?? '', 'default');
+        $address = sanitizeInput($_POST['address'] ?? '', 'default');
 
-        if (!$state || !$lga || !$address) {
+        if ($state === '' || $lga === '' || $address === '') {
             throw new Exception('Please fill in state, LGA, and address.');
         }
 
