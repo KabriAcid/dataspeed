@@ -55,7 +55,7 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET password = ?, account_status = ?, failed_attempts = ? WHERE user_id = ?");
     $stmt->execute([$hashedPassword, ACCOUNT_STATUS_ACTIVE, 0, $user_id]);
 
-// Update the account complaints table as resolved
+    // Update the account complaints table as resolved
     $stmt = $pdo->prepare("UPDATE account_complaints SET status = 'resolved' WHERE user_id = ? AND status = 'pending'");
     $stmt->execute([$user_id]);
 
@@ -68,6 +68,24 @@ try {
     // Delete the token after successful password reset
     $stmt = $pdo->prepare("DELETE FROM account_reset_tokens WHERE token = ?");
     $stmt->execute([$token]);
+
+    // Clear any locked session marker
+    if (isset($_SESSION['locked_user_id']) && (int)$_SESSION['locked_user_id'] === (int)$user_id) {
+        unset($_SESSION['locked_user_id']);
+    }
+
+    // Best-effort activity log (non-blocking)
+    try {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+        $lstmt = $pdo->prepare('INSERT INTO activity_log (username, action_type, action_description, ip_address, created_at) VALUES (?,?,?,?,NOW())');
+        // Fetch user email for logging
+        $u = $pdo->prepare('SELECT email FROM users WHERE user_id = ?');
+        $u->execute([$user_id]);
+        $email = ($u->fetch(PDO::FETCH_ASSOC)['email'] ?? '') ?: (string)$user_id;
+        $lstmt->execute([$email, 'account_unlocked', 'User unlocked account via reset link', $ip]);
+    } catch (Throwable $e) {
+        error_log('Unlock activity log failed: ' . $e->getMessage());
+    }
 
     echo json_encode(["success" => true, "message" => "Password reset successfully."]);
 } catch (Exception $e) {

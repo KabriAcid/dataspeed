@@ -5,6 +5,12 @@ require __DIR__ . '/../../functions/sendMail.php';
 
 header("Content-Type: application/json");
 
+// Only allow POST requests (client uses POST)
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(["success" => false, "message" => "Invalid request method."]);
+    exit;
+}
+
 $user_id = $_SESSION['locked_user_id'] ?? null;
 
 if (!$user_id) {
@@ -21,6 +27,26 @@ try {
     if (!$user) {
         echo json_encode(["success" => false, "message" => "User not found."]);
         exit;
+    }
+
+    // Simple rate limit: prevent resending within the last 120 seconds
+    try {
+        $rl = $pdo->prepare("SELECT created_at FROM activity_log WHERE action_type = 'resend_account_reset' AND username = ? ORDER BY created_at DESC LIMIT 1");
+        $rl->execute([$user['email']]);
+        $last = $rl->fetch(PDO::FETCH_ASSOC);
+        if ($last) {
+            $lastTs = strtotime($last['created_at']);
+            $elapsed = time() - $lastTs;
+            $window = 120; // 2 minutes window
+            if ($elapsed < $window) {
+                $wait = max(1, $window - $elapsed);
+                echo json_encode(["success" => false, "message" => "Please wait {$wait}s before resending."]);
+                exit;
+            }
+        }
+    } catch (Throwable $e) {
+        // Don't block on rate limit check failure
+        error_log('Rate limit check failed: ' . $e->getMessage());
     }
 
     // Fetch the latest token
@@ -41,8 +67,9 @@ try {
         $token = $tokenData['token'];
         $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-        $stmt = $pdo->prepare("UPDATE account_reset_tokens SET expires_at = ? WHERE user_id = ?");
-        $stmt->execute([$expiresAt, $user_id]);
+        // Update only the selected latest token's expiry, not all rows for the user
+        $stmt = $pdo->prepare("UPDATE account_reset_tokens SET expires_at = ? WHERE user_id = ? AND token = ?");
+        $stmt->execute([$expiresAt, $user_id, $token]);
     }
 
     // Compose the email
@@ -130,6 +157,19 @@ try {
 
     // Send the email
     if (sendMail($user['email'], "Account Reset Instructions", $emailContent)) {
+        // Best-effort admin notification + activity log (won't block response)
+        try {
+            $nstmt = $pdo->prepare('INSERT INTO admin_notifications (type, title, message, meta, is_read, created_at) VALUES (?,?,?,?,0,NOW())');
+            $meta = json_encode(['user_id' => (int)$user_id]);
+            $nstmt->execute(['account_locked', 'Reset Email Resent', "A reset email was resent to {$user['email']}.", $meta]);
+
+            $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+            $lstmt = $pdo->prepare('INSERT INTO activity_log (username, action_type, action_description, ip_address, created_at) VALUES (?,?,?,?,NOW())');
+            $lstmt->execute([$user['email'], 'resend_account_reset', 'User requested resend of account reset email', $ip]);
+        } catch (Throwable $e) {
+            error_log('Resend admin notify/log failed: ' . $e->getMessage());
+        }
+
         echo json_encode(["success" => true, "message" => "Email sent successfully. Please check your inbox"]);
     } else {
         error_log("Failed to send email");

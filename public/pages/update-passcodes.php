@@ -16,14 +16,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $_SESSION['user_id'];
 
     // Trim inputs
+    $currentPassword = trim($_POST['currentPassword'] ?? '');
     $newPassword = trim($_POST['newPassword'] ?? '');
     $confirmPassword = trim($_POST['confirmPassword'] ?? '');
+    $currentPin = trim($_POST['currentPin'] ?? '');
     $newPin = trim($_POST['newPin'] ?? '');
     $confirmPin = trim($_POST['confirmPin'] ?? '');
 
     try {
         // Password section
         if ($newPassword !== '' && $confirmPassword !== '') {
+            if ($currentPassword === '') {
+                throw new Exception('Please enter your current password.');
+            }
+            // Fetch current hashed password
+            $stmt = $pdo->prepare("SELECT password FROM users WHERE user_id = ?");
+            $stmt->execute([$user_id]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$row || empty($row['password']) || !password_verify($currentPassword, $row['password'])) {
+                throw new Exception('Current password is incorrect.');
+            }
             if ($newPassword !== $confirmPassword) {
                 throw new Exception('Passwords do not match.');
             }
@@ -52,6 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // PIN section
         elseif ($newPin !== '' && $confirmPin !== '') {
+            if ($currentPin === '') {
+                throw new Exception('Please enter your current PIN.');
+            }
+            // Fetch and verify current txn_pin
+            $stmt = $pdo->prepare("SELECT txn_pin FROM users WHERE user_id = ?");
+            $stmt->execute([$user_id]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $currentHashedPin = $row['txn_pin'] ?? '';
+            if (!$currentHashedPin || !password_verify($currentPin, $currentHashedPin)) {
+                throw new Exception('Current PIN is incorrect.');
+            }
             if ($newPin !== $confirmPin) {
                 throw new Exception('PINs do not match.');
             }

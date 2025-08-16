@@ -24,8 +24,8 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </header>
         <!-- Filters -->
-        <section class="mb-3">
-            <form method="get" class="row g-2 align-items-center">
+        <div class="card mb-3">
+            <form method="get" class="card-body p-3 row g-2 align-items-center">
                 <div class="col-12 col-md-4">
                     <label for="start" class="form-label text-sm mb-1">Start date</label>
                     <input type="date" id="start" name="start" class="form-control" value="<?= htmlspecialchars($_GET['start'] ?? '') ?>">
@@ -34,12 +34,13 @@ require __DIR__ . '/../partials/header.php';
                     <label for="end" class="form-label text-sm mb-1">End date</label>
                     <input type="date" id="end" name="end" class="form-control" value="<?= htmlspecialchars($_GET['end'] ?? '') ?>">
                 </div>
-                <div class="col-12 col-md-4 d-flex gap-2">
+                <div class="col-12 col-md-4">
+                    <label for="" class="d-block"></label>
                     <button type="submit" class="btn btn-dark">Filter</button>
                     <a class="btn btn-outline-secondary" href="transactions.php">Reset</a>
                 </div>
             </form>
-        </section>
+        </div>
 
         <!-- Transaction body -->
         <div>

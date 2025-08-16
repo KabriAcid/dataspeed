@@ -7,7 +7,7 @@ require __DIR__ . '/../partials/header.php';
 ?>
 
 <body>
-    <main class="container-fluid py-5">
+    <main class="container-fluid py-5 account-settings-page">
         <!-- Header Section -->
         <header>
             <div class="page-header mb-4 text-center">
@@ -25,7 +25,7 @@ require __DIR__ . '/../partials/header.php';
         </header>
 
         <!-- User Info -->
-        <div class="text-center">
+        <div class="text-center user-info">
             <img src="<?= $user['photo'] ?>" alt="User Photo" class="avatar border-0 avatar-xl shadow">
             <h4 class="fw-bold mt-2"><?= !empty($user['user_name']) ? $user['user_name'] : $user['first_name']; ?>
                 <?php if ($user['kyc_status'] == 'verified'): ?>
@@ -37,7 +37,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
 
         <!-- Account Settings -->
-        <div class="mt-5">
+        <div class="mt-5 settings-list">
             <p class="text-muted fw-bold">Account Settings</p>
             <div class="mb-3">
                 <a href="profile.php">
@@ -120,7 +120,6 @@ require __DIR__ . '/../partials/header.php';
                                 <path d="M9 6L15 12L9 18" stroke="#94241E" stroke-width="1.5" stroke-linecap="round"
                                     stroke-linejoin="round" />
                             </svg>
-
                         </div>
                     </div>
                 </a>
@@ -268,9 +267,6 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </main>
     <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
-    <footer class="my-5">
-        <p class="text-xs text-center text-secondary">Copyright &copy; Dreamerscodes 2025. All rights reserved.</p>
-    </footer>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 

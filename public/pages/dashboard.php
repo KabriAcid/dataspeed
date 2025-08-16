@@ -454,7 +454,7 @@ require __DIR__ . '/../partials/header.php';
                                         <path d="M3 7a2 2 0 0 1 2-2h6l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="#c0c4cc" stroke-width="1.5" fill="none"/>
                                         <path d="M7 13h10M7 16h6" stroke="#c0c4cc" stroke-width="1.5" stroke-linecap="round"/>
                                     </svg>
-                                    <p class="mt-3">No transactions yet.</p>
+                                    <p class="mt-3 text-sm">No transactions yet.</p>
                                 </div>`;
                             return;
                         }

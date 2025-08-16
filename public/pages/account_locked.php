@@ -29,7 +29,7 @@ $complaintExists = $stmt->fetchColumn() > 0;
 ?>
 
 <body>
-    <main class="container py-4">
+    <main class="container py-4 account-locked-page">
         <?php if ($complaintExists): ?>
             <div class="success-message">
                 <div class="d-flex justify-content-between mb-5 align-items-center">
@@ -56,7 +56,7 @@ $complaintExists = $stmt->fetchColumn() > 0;
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-5">
-                <a href="" class="fw-bold fs-6">Contact Us Here</a>
+                <a href="#" id="contact_us" class="fw-bold">Contact Us Here</a>
             </div>
         <?php else: ?>
             <?php if (!isset($_GET['submitted']) || $_GET['submitted'] !== 'true'): ?>
@@ -67,7 +67,7 @@ $complaintExists = $stmt->fetchColumn() > 0;
             <?php endif; ?>
 
             <!-- Show the complaint form -->
-            <form id="accountLockForm" method="POST" class="form-container">
+            <form id="accountLockForm" method="POST" class="form-container animate-fade-in">
                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($locked_user_id); ?>">
 
                 <div class="form-group">
@@ -86,6 +86,21 @@ $complaintExists = $stmt->fetchColumn() > 0;
             </form>
         <?php endif; ?>
 
+        <!-- Contact Modal -->
+        <div id="contactModal" class="modal-backdrop" style="display:none;">
+            <div class="modal-content-box">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="m-0">Contact Support</h6>
+                    <button type="button" id="closeContactModal" class="btn btn-sm btn-light">Close</button>
+                </div>
+                <div>
+                    <p class="mb-2"><strong>Email:</strong> <a href="mailto:support@dataspeed.com">support@dataspeed.com</a></p>
+                    <p class="mb-2"><strong>Phone:</strong> <a href="tel:+234904883993">0904883993</a></p>
+                    <p class="mb-2"><strong>WhatsApp:</strong> <a href="https://wa.me/234904883993?text=Hello%20DataSpeed%20Support%2C%20my%20account%20is%20locked." target="_blank" rel="noopener">Chat on WhatsApp</a></p>
+                </div>
+            </div>
+        </div>
+
         <!-- Overlay -->
         <div id="bodyOverlay" class="body-overlay" style="display: none;">
             <div class="overlay-spinner"></div>
@@ -96,6 +111,68 @@ $complaintExists = $stmt->fetchColumn() > 0;
     </main>
     <script src="../assets/js/ajax.js"></script>
     <script src="../assets/js/account-locked.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contactBtn = document.getElementById('contact_us');
+            const contactModal = document.getElementById('contactModal');
+            const closeModal = document.getElementById('closeContactModal');
+            const resendBtn = document.getElementById('resend_email');
+            if (contactBtn && contactModal) {
+                contactBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    contactModal.style.display = 'flex';
+                });
+            }
+            if (closeModal) {
+                closeModal.addEventListener('click', () => contactModal.style.display = 'none');
+            }
+            if (contactModal) {
+                contactModal.addEventListener('click', (e) => {
+                    if (e.target === contactModal) contactModal.style.display = 'none';
+                });
+            }
+
+            // Light client-side cooldown after a successful resend (listens to toasted success)
+            if (resendBtn) {
+                const originalText = resendBtn.textContent;
+                const startCooldown = (secs = 60) => {
+                    let remaining = secs;
+                    resendBtn.disabled = true;
+                    const tick = () => {
+                        resendBtn.textContent = `Resend Email (${remaining}s)`;
+                        remaining--;
+                        if (remaining < 0) {
+                            resendBtn.textContent = originalText;
+                            resendBtn.disabled = false;
+                        } else {
+                            setTimeout(tick, 1000);
+                        }
+                    };
+                    tick();
+                };
+
+                // Hook into global showToasted if present to detect success messages
+                const maybeWrapShowToasted = () => {
+                    if (typeof window.showToasted === 'function' && !window.__wrappedToastedCooldown) {
+                        const orig = window.showToasted;
+                        window.showToasted = function(message, type) {
+                            try {
+                                if (type === 'success' && /email sent successfully|resent|check your inbox/i.test(String(message))) {
+                                    startCooldown(60);
+                                }
+                            } catch (_) {
+                                /* noop */ }
+                            return orig.apply(this, arguments);
+                        };
+                        window.__wrappedToastedCooldown = true;
+                    }
+                };
+                // Attempt immediate wrap and again shortly in case scripts load late
+                maybeWrapShowToasted();
+                setTimeout(maybeWrapShowToasted, 500);
+            }
+        });
+    </script>
 </body>
 
 </html>

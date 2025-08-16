@@ -850,6 +850,56 @@ select.select-lga {
   }
 }
 
+/* Account Settings page responsive text */
+.account-settings-page .page-header h5 {
+  font-size: clamp(1rem, 2.8vw, 1.25rem);
+}
+.account-settings-page .user-info h4 {
+  font-size: clamp(1.05rem, 3.4vw, 1.5rem);
+}
+.account-settings-page .settings-list > p.fw-bold {
+  font-size: clamp(0.9rem, 2.6vw, 1rem);
+}
+.account-settings-page .settings-list p.fw-semibold {
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+}
+.account-settings-page .settings-list span.text-sm {
+  font-size: clamp(0.8rem, 2.3vw, 0.95rem) !important;
+}
+
+/* Account Locked page responsive text */
+.account-locked-page header h3,
+.account-locked-page .success-message h3 {
+  font-size: clamp(1.15rem, 3.6vw, 1.6rem);
+}
+.account-locked-page header p,
+.account-locked-page .success-message p,
+.account-locked-page .success-message li,
+.account-locked-page p,
+.account-locked-page li {
+  font-size: clamp(0.92rem, 2.6vw, 1.05rem);
+  line-height: 1.6;
+}
+.account-locked-page .form-container label,
+.account-locked-page .form-container .form-label {
+  font-size: clamp(0.9rem, 2.4vw, 1rem);
+}
+.account-locked-page .form-container .input,
+.account-locked-page .form-container select.input {
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+}
+.account-locked-page .primary-btn,
+.account-locked-page .outline-btn {
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+}
+.account-locked-page .modal-content-box h6 {
+  font-size: clamp(1rem, 2.8vw, 1.1rem);
+}
+.account-locked-page .modal-content-box p,
+.account-locked-page .modal-content-box a {
+  font-size: clamp(0.9rem, 2.4vw, 1rem);
+}
+
 .bottom-nav .nav-link {
   text-align: center;
   font-size: 12px;

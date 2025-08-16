@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Insert the complaint into the database
         $stmt = $pdo->prepare("INSERT INTO account_complaints (user_id, reason, status) VALUES (?, ?, ?)");
         $stmt->execute([$user_id, $reason, 'pending']);
+        $complaint_id = $pdo->lastInsertId();
 
         // Generate a secure token for resetting the account
         $token = bin2hex(random_bytes(32));
@@ -129,6 +130,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Send the email
         if (sendMail($user['email'], "Account Reset Instructions", $emailContent)) {
+            // Push admin notification
+            try {
+                $nstmt = $pdo->prepare('INSERT INTO admin_notifications (type, title, message, meta, is_read, created_at) VALUES (?,?,?,?,0,NOW())');
+                $meta = json_encode(['user_id' => $user_id, 'complaint_id' => $complaint_id, 'reason' => $reason]);
+                $nstmt->execute(['account_locked', 'Account Unlock Request', "User {$user['first_name']} submitted an unlock complaint.", $meta]);
+            } catch (Throwable $e) {
+                error_log('Admin notify failed: ' . $e->getMessage());
+            }
+            // Activity log
+            try {
+                $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+                $lstmt = $pdo->prepare('INSERT INTO activity_log (username, action_type, action_description, ip_address, created_at) VALUES (?,?,?,?,NOW())');
+                $lstmt->execute([$user['email'] ?? (string)$user_id, 'account_locked_complaint', 'User submitted account unlock complaint', $ip]);
+            } catch (Throwable $e) {
+                error_log('Activity log failed: ' . $e->getMessage());
+            }
             echo json_encode(["success" => true, "message" => "Complaint submitted successfully. Reset instructions sent to your email."]);
         } else {
             error_log("Failed to send email to " . $user['email']);
