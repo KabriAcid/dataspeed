@@ -87,7 +87,6 @@ try {
         exit;
     }
     $retailPrice = (float)($plan['price'] ?? 0);
-    $facePrice = $plan['base_price'] !== null ? (float)$plan['base_price'] : $retailPrice; // fallback
     if ($retailPrice <= 0) {
         echo json_encode(["success" => false, "message" => "Plan price not configured."]);
         exit;
@@ -186,8 +185,8 @@ if (!isset($balanceData['data']['balance'])) {
 }
 
 $reseller_balance = (float) $balanceData['data']['balance'];
-// Ensure reseller balance covers the provider face amount
-if ($reseller_balance < $facePrice) {
+// Ensure reseller balance covers the outgoing amount (using retail price per new rule)
+if ($reseller_balance < $retailPrice) {
     echo json_encode(["success" => false, "message" => "Transaction could not be completed at the moment. Please try again later."]);
     exit;
 }
@@ -196,7 +195,7 @@ $payload = json_encode([
     "request_id" => $request_id,
     "service_id" => $network,
     "phone"      => $phone,
-    "amount"     => $facePrice,
+    "amount"     => $retailPrice,
     "variation_id" => $plan_id
 ]);
 
@@ -225,7 +224,7 @@ try {
     $stmt = $pdo->prepare("UPDATE account_balance SET wallet_balance = wallet_balance - ? WHERE user_id = ?");
     $stmt->execute([$amount, $user_id]);
 
-    $description = "You purchased ₦" . number_format($facePrice, 2) . " data for $phone on " . strtoupper($network);
+    $description = "You purchased ₦" . number_format($retailPrice, 2) . " data for $phone on " . strtoupper($network);
     $stmt = $pdo->prepare("INSERT INTO transactions (user_id, service_id, provider_id, plan_id, type, icon, color, direction, description, amount, email, reference, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([
         $user_id,

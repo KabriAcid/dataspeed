@@ -7,6 +7,21 @@ require __DIR__ . '/../partials/initialize.php';
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 $networkProviders = getServiceProvider($pdo, 'network');
 
+// Check feature toggle for airtime purchase
+$airtimeEnabled = true; // default to enabled
+try {
+    $stmt = $pdo->prepare("SELECT `value` FROM settings WHERE `key` = 'enable_airtime_purchase' LIMIT 1");
+    if ($stmt->execute()) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row && isset($row['value'])) {
+            $val = strtolower(trim((string)$row['value']));
+            $airtimeEnabled = in_array($val, ['true', '1', 'yes', 'on'], true);
+        }
+    }
+} catch (Throwable $e) {
+    // keep default
+}
+
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -46,75 +61,88 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </header>
 
-        <!-- Service Selection -->
-        <div class="service-section">
-            <div class="service-tabs">
-                <?php foreach ($networkProviders as $i => $provider): ?>
-                    <div
-                        class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
-                        data-network="<?= htmlspecialchars($provider['slug']) ?>"
-                        data-provider-id="<?= (int)$provider['id'] ?>"
-                        style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
-                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>" class="<?= $provider['slug'] . '-logo'; ?>">
-                        <span><?= htmlspecialchars($provider['name']) ?></span>
+        <?php if (!$airtimeEnabled): ?>
+            <!-- Feature Disabled State -->
+            <section class="py-5 d-flex flex-column align-items-center justify-content-center text-center">
+                <svg width="140" height="140" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M6 2h12a2 2 0 012 2v9a2 2 0 01-2 2h-3l-3 4-3-4H6a2 2 0 01-2-2V4a2 2 0 012-2z" stroke="#9AA5B1" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M8 6h8M8 10h5" stroke="#9AA5B1" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                <h5 class="mt-3 mb-2">Airtime purchase is currently unavailable</h5>
+                <p class="text-secondary mb-4" style="max-width:480px;">We’re performing maintenance or updates on this service. Please check back later or try other services.</p>
+                <a href="dashboard.php" class="btn btn-outline-primary">Go to Dashboard</a>
+            </section>
+        <?php else: ?>
+            <!-- Service Selection -->
+            <div class="service-section">
+                <div class="service-tabs">
+                    <?php foreach ($networkProviders as $i => $provider): ?>
+                        <div
+                            class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
+                            data-network="<?= htmlspecialchars($provider['slug']) ?>"
+                            data-provider-id="<?= (int)$provider['id'] ?>"
+                            style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
+                            <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>" class="<?= $provider['slug'] . '-logo'; ?>">
+                            <span><?= htmlspecialchars($provider['name']) ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <!-- Purchase Tabs -->
+            <div class="tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="self">Buy For Self</button>
+                    <button class="tab-btn" data-tab="others">Buy For Others</button>
+                </div>
+                <!-- BFS -->
+                <div class="tab-content active" data-tab="self">
+                    <div class="quick-amounts d-flex flex-wrap justify-content-between my-3 mx-1">
+                        <!-- add data-amount attribute to the buttons -->
+                        <button class="btn amount-btn" data-amount="100">₦100</button>
+                        <button class="btn amount-btn" data-amount="200">₦200</button>
+                        <button class="btn amount-btn" data-amount="500">₦500</button>
+                        <button class="btn amount-btn" data-amount="1000">₦1,000</button>
+                        <button class="btn amount-btn" data-amount="2000">₦2,000</button>
+                        <button class="btn amount-btn" data-amount="5000">₦5,000</button>
                     </div>
-                <?php endforeach; ?>
+
+                    <div class="input-group-container">
+                        <span class="input-group-prefix">₦</span>
+                        <input type="text" class="input amount-input" placeholder="Enter Amount">
+                    </div>
+                    <button type="submit" class="btn w-100 mt-3 primary-btn purchase-btn" disabled>Purchase</button>
+                </div>
+
+                <!-- BFO -->
+                <div class="tab-content" data-tab="others">
+                    <div class="quick-amounts d-flex flex-wrap justify-content-between my-3 mx-1">
+                        <button class="btn amount-btn" data-amount="100">₦100</button>
+                        <button class="btn amount-btn" data-amount="200">₦200</button>
+                        <button class="btn amount-btn" data-amount="500">₦500</button>
+                        <button class="btn amount-btn" data-amount="1000">₦1,000</button>
+                        <button class="btn amount-btn" data-amount="2000">₦2,000</button>
+                        <button class="btn amount-btn" data-amount="5000">₦5,000</button>
+                    </div>
+
+                    <div class="input-group-container mb-3">
+                        <span class="input-group-prefix">₦</span>
+                        <input type="text" class="input amount-input" placeholder="Enter Amount" inputmode="numeric" required>
+                    </div>
+
+                    <!-- Phone Number Input -->
+                    <div class="input-group-container">
+                        <span class="input-group-prefix text-xs">
+                            <img src="../assets/img/ng.png" alt=""> +234
+                        </span>
+                        <input type="tel" id="phone-number" name="phone_number" maxlength="10"
+                            placeholder="Phone Number" class="input phone-input" required inputmode="numeric">
+                    </div>
+                    <button type="submit" class="btn w-100 mt-3 primary-btn purchase-btn" disabled>Purchase</button>
+                </div>
+
             </div>
-        </div>
-
-        <!-- Purchase Tabs -->
-        <div class="tabs">
-            <div class="tab-buttons">
-                <button class="tab-btn active" data-tab="self">Buy For Self</button>
-                <button class="tab-btn" data-tab="others">Buy For Others</button>
-            </div>
-            <!-- BFS -->
-            <div class="tab-content active" data-tab="self">
-                <div class="quick-amounts d-flex flex-wrap justify-content-between my-3 mx-1">
-                    <!-- add data-amount attribute to the buttons -->
-                    <button class="btn amount-btn" data-amount="100">₦100</button>
-                    <button class="btn amount-btn" data-amount="200">₦200</button>
-                    <button class="btn amount-btn" data-amount="500">₦500</button>
-                    <button class="btn amount-btn" data-amount="1000">₦1,000</button>
-                    <button class="btn amount-btn" data-amount="2000">₦2,000</button>
-                    <button class="btn amount-btn" data-amount="5000">₦5,000</button>
-                </div>
-
-                <div class="input-group-container">
-                    <span class="input-group-prefix">₦</span>
-                    <input type="text" class="input amount-input" placeholder="Enter Amount">
-                </div>
-                <button type="submit" class="btn w-100 mt-3 primary-btn purchase-btn" disabled>Purchase</button>
-            </div>
-
-            <!-- BFO -->
-            <div class="tab-content" data-tab="others">
-                <div class="quick-amounts d-flex flex-wrap justify-content-between my-3 mx-1">
-                    <button class="btn amount-btn" data-amount="100">₦100</button>
-                    <button class="btn amount-btn" data-amount="200">₦200</button>
-                    <button class="btn amount-btn" data-amount="500">₦500</button>
-                    <button class="btn amount-btn" data-amount="1000">₦1,000</button>
-                    <button class="btn amount-btn" data-amount="2000">₦2,000</button>
-                    <button class="btn amount-btn" data-amount="5000">₦5,000</button>
-                </div>
-
-                <div class="input-group-container mb-3">
-                    <span class="input-group-prefix">₦</span>
-                    <input type="text" class="input amount-input" placeholder="Enter Amount" inputmode="numeric" required>
-                </div>
-
-                <!-- Phone Number Input -->
-                <div class="input-group-container">
-                    <span class="input-group-prefix text-xs">
-                        <img src="../assets/img/ng.png" alt=""> +234
-                    </span>
-                    <input type="tel" id="phone-number" name="phone_number" maxlength="10"
-                        placeholder="Phone Number" class="input phone-input" required inputmode="numeric">
-                </div>
-                <button type="submit" class="btn w-100 mt-3 primary-btn purchase-btn" disabled>Purchase</button>
-            </div>
-
-        </div>
+        <?php endif; ?>
 
         <!-- Confirm Modal -->
         <div id="confirmModal" class="modal-overlay" style="display: none;">
@@ -157,6 +185,10 @@ require __DIR__ . '/../partials/header.php';
     <script src="../assets/js/pinpad.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            const airtimeEnabled = <?= $airtimeEnabled ? 'true' : 'false' ?>;
+            if (!airtimeEnabled) {
+                return; // do not bind events if feature is disabled
+            }
             const networkIcons = {
                 MTN: `<img src="../assets/img/icons/mtn.png" alt="MTN" style="height:25px;widht:25px;">`,
                 AIRTEL: `<img src="../assets/img/icons/airtel.png" alt="Airtel" style="height:25px;widht:25px;">`,

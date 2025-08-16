@@ -169,8 +169,8 @@ include 'includes/header.php';
                                     <th>Network</th>
                                     <th>Data Size</th>
                                     <th>Validity</th>
-                                    <th>Base Price (₦)</th>
                                     <th>Price (₦)</th>
+                                    <th>Base Price (₦)</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -242,8 +242,8 @@ include 'includes/header.php';
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="planPrice" class="form-label">Price (₦)</label>
-                                    <input type="number" class="form-control" name="price" id="planPrice" required min="0" step="0.01">
+                                    <label for="planPrice" class="form-label">Base (retail) Price (₦)</label>
+                                    <input type="number" class="form-control" name="base_price" id="planPrice" required min="0" step="0.01">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -447,10 +447,10 @@ include 'includes/header.php';
                             <td>${plan.data_size || '-'}</td>
                             <td>${plan.validity || '-'}</td>
                             <td>
-                                ₦${(plan.base_price != null ? parseFloat(plan.base_price) : 0).toLocaleString()}
+                                <span>₦${parseFloat(plan.price).toLocaleString()}</span>
                             </td>
-                            <td>
-                                <span class="fw-semibold">₦${parseFloat(plan.price).toLocaleString()}</span>
+                            <td class="fw-semibold" style="color: var(--primary)">
+                                ₦${(plan.base_price != null ? parseFloat(plan.base_price) : 0).toLocaleString()}
                             </td>
                             <td>
                                 <span class="badge ${plan.status === 'active' ? 'bg-success' : 'bg-secondary'}">${plan.status}</span>
@@ -478,7 +478,7 @@ include 'includes/header.php';
             return colors[network] || 'secondary';
         }
 
-    // Inline price editing removed; use modal form only
+        // Inline price editing removed; use modal form only
 
         async function editPlan(planId) {
             try {
@@ -490,6 +490,7 @@ include 'includes/header.php';
                     if (plan) {
                         openModal('planModal', {
                             ...plan,
+                            base_price: plan.base_price,
                             action: 'updatePlan'
                         });
                     }

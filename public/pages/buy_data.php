@@ -7,6 +7,21 @@ require __DIR__ . '/../partials/header.php';
 
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 $networkProviders = getServiceProvider($pdo, 'network');
+
+// Check feature toggle for data purchase
+$dataPurchaseEnabled = true; // default to enabled if setting missing
+try {
+    $stmt = $pdo->prepare("SELECT `value` FROM settings WHERE `key` = 'enable_data_purchase' LIMIT 1");
+    if ($stmt->execute()) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row && isset($row['value'])) {
+            $val = strtolower(trim((string)$row['value']));
+            $dataPurchaseEnabled = in_array($val, ['true', '1', 'yes', 'on'], true);
+        }
+    }
+} catch (Throwable $e) {
+    // If settings table doesn't exist or any error occurs, keep feature enabled silently
+}
 ?>
 
 <body>
@@ -55,51 +70,65 @@ $networkProviders = getServiceProvider($pdo, 'network');
             </div>
         </header>
 
-        <!-- Service Selection -->
-        <div class="service-section">
-            <div class="service-tabs">
-                <?php foreach ($networkProviders as $i => $provider): ?>
-                    <div
-                        class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
-                        data-network="<?= htmlspecialchars($provider['slug']) ?>"
-                        data-provider-id="<?= (int)$provider['id'] ?>"
-                        style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
-                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
-                        <span><?= htmlspecialchars($provider['name']) ?></span>
+        <?php if (!$dataPurchaseEnabled): ?>
+            <!-- Feature Disabled State -->
+            <section class="py-5 d-flex flex-column align-items-center justify-content-center text-center">
+                <svg width="140" height="140" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 3C7.582 3 4 6.582 4 11v2.5A2.5 2.5 0 006.5 16H7v-5a5 5 0 1110 0v5h.5a2.5 2.5 0 002.5-2.5V11c0-4.418-3.582-8-8-8z" stroke="#9AA5B1" stroke-width="1.5" stroke-linecap="round" />
+                    <rect x="7" y="11" width="10" height="9" rx="2" stroke="#9AA5B1" stroke-width="1.5" />
+                    <path d="M12 14v3" stroke="#9AA5B1" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                <h5 class="mt-3 mb-2">Data purchase is currently unavailable</h5>
+                <p class="text-secondary mb-4" style="max-width:480px;">We’re performing maintenance or updates on this service. Please check back later or try other services.</p>
+                <a href="dashboard.php" class="secondary-btn">Go to Dashboard</a>
+            </section>
+        <?php else: ?>
+            <!-- Service Selection -->
+            <div class="service-section">
+                <div class="service-tabs">
+                    <?php foreach ($networkProviders as $i => $provider): ?>
+                        <div
+                            class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
+                            data-network="<?= htmlspecialchars($provider['slug']) ?>"
+                            data-provider-id="<?= (int)$provider['id'] ?>"
+                            style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
+                            <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                            <span><?= htmlspecialchars($provider['name']) ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <!-- Purchase Tabs -->
+            <div class="tabs mb-5">
+                <div class="tab-buttons d-flex">
+                    <button class="tab-btn active" data-tab="self" type="button">Buy For Self</button>
+                    <button class="tab-btn" data-tab="others" type="button">Buy For Others</button>
+                </div>
+                <div class="sub-tab-buttons d-flex mt-2">
+                    <button class="sub-tab-btn active" data-sub="daily" type="button">Daily</button>
+                    <button class="sub-tab-btn" data-sub="weekly" type="button">Weekly</button>
+                    <button class="sub-tab-btn" data-sub="monthly" type="button">Monthly</button>
+                </div>
+                <!-- Plans Section -->
+                <div class="tab-content position-relative active">
+                    <div id="planCards" class="mt-3">
+                        <!-- Plan cards will be dynamically loaded here -->
                     </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
 
-        <!-- Purchase Tabs -->
-        <div class="tabs mb-5">
-            <div class="tab-buttons d-flex">
-                <button class="tab-btn active" data-tab="self" type="button">Buy For Self</button>
-                <button class="tab-btn" data-tab="others" type="button">Buy For Others</button>
-            </div>
-            <div class="sub-tab-buttons d-flex mt-2">
-                <button class="sub-tab-btn active" data-sub="daily" type="button">Daily</button>
-                <button class="sub-tab-btn" data-sub="weekly" type="button">Weekly</button>
-                <button class="sub-tab-btn" data-sub="monthly" type="button">Monthly</button>
-            </div>
-            <!-- Plans Section -->
-            <div class="tab-content position-relative active">
-                <div id="planCards" class="mt-3">
-                    <!-- Plan cards will be dynamically loaded here -->
+                    <!-- Recipient Phone (for Buy For Others) -->
+                    <div class="input-group-container" id="recipientPhoneWrap" style="display: none;">
+                        <span class="input-group-prefix text-xs">
+                            <img src="../assets/img/ng.png" alt=""> +234
+                        </span>
+                        <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
+                            placeholder="Phone Number" class="input phone-input" required>
+                    </div>
+
+                    <button type="button" class="btn w-100 mt-3 mb-5 primary-btn" id="purchaseBtn" disabled>Purchase</button>
                 </div>
-
-                <!-- Recipient Phone (for Buy For Others) -->
-                <div class="input-group-container" id="recipientPhoneWrap" style="display: none;">
-                    <span class="input-group-prefix text-xs">
-                        <img src="../assets/img/ng.png" alt=""> +234
-                    </span>
-                    <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
-                        placeholder="Phone Number" class="input phone-input" required>
-                </div>
-
-                <button type="button" class="btn w-100 mt-3 mb-5 primary-btn" id="purchaseBtn" disabled>Purchase</button>
             </div>
-        </div>
+        <?php endif; ?>
 
 
         <!-- Confirm Modal -->
@@ -150,6 +179,11 @@ $networkProviders = getServiceProvider($pdo, 'network');
         };
 
         document.addEventListener("DOMContentLoaded", function() {
+            const dataPurchaseEnabled = <?= $dataPurchaseEnabled ? 'true' : 'false' ?>;
+            if (!dataPurchaseEnabled) {
+                // Feature disabled: don't run interactive JS
+                return;
+            }
             // --- Element references ---
             const networkTabs = document.querySelectorAll(".service-tab");
             const tabBtns = document.querySelectorAll(".tab-btn");
@@ -264,15 +298,16 @@ $networkProviders = getServiceProvider($pdo, 'network');
                     const card = document.createElement("div");
                     card.className = "plan-col"; // width controlled by CSS grid
                     card.innerHTML = `
-                                    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
-                                        <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.price).toLocaleString()}</div>
+                                    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.base_price ?? plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
+                                        <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.base_price ?? plan.price).toLocaleString()}</div>
                                         <div class="data-volume mb-1">${plan.volume}</div>
                                         <div class="data-validity mb-2">${plan.validity}</div>
                                     </div>
                                 `;
 
                     // Plan card click
-                    card.querySelector(".plan-card").addEventListener("click", function() {
+                    const planDiv = card.querySelector(".plan-card");
+                    planDiv.addEventListener("click", function() {
                         document.querySelectorAll(forModal ? "#allPlanCards .plan-card" : "#planCards .plan-card").forEach(c => {
                             c.classList.remove("selected-plan");
                             c.style.backgroundColor = "";
@@ -289,7 +324,8 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
                         selectedPlan = {
                             plan_id: plan.plan_id,
-                            price: plan.price,
+                            // Use base_price (retail) when available, otherwise fallback to provider price
+                            price: (plan.base_price ?? plan.price),
                             volume: plan.volume,
                             validity: plan.validity
                         };
@@ -334,6 +370,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
                 confirmService.innerHTML = networkIcons[networkKey] || "";
 
                 confirmPlan.textContent = `${selectedPlan.volume}`;
+                // Show retail amount (base_price if available)
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
                 confirmValidity.textContent = `${selectedPlan.validity}`;
                 confirmModal.style.display = "flex";
@@ -341,6 +378,7 @@ $networkProviders = getServiceProvider($pdo, 'network');
 
             payBtn.addEventListener("click", function() {
                 const pinpadModal = document.getElementById("pinpadModal");
+                // Charge retail amount (base_price if available)
                 pinpadModal.dataset.amount = selectedPlan.price;
 
                 // Fix: define phone here

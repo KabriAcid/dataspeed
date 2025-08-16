@@ -104,7 +104,6 @@ include 'includes/header.php';
                         <div class="mb-3">
                             <label for="settingValue" class="form-label" id="settingLabel">Value</label>
                             <input type="text" class="form-control" name="value" id="settingValue" required>
-                            <div class="form-text" id="settingDescription"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -144,7 +143,7 @@ include 'includes/header.php';
                     allSettings = response.data;
                     renderSettings();
                 } else {
-                    showToasted('Failed to load settings', 'error');
+                    showToasted(response.message || 'Failed to load settings', 'error');
                 }
 
             } catch (error) {
@@ -201,14 +200,12 @@ include 'includes/header.php';
             return settingKeys.map(key => {
                 const setting = allSettings[key];
                 const value = setting ? setting.value : 'Not set';
-                const description = setting ? setting.description : '';
 
                 return `
                     <div class="setting-item mb-3 p-3 border rounded">
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="flex-grow-1">
                                 <h6 class="mb-1">${formatSettingKey(key)}</h6>
-                                <p class="text-muted mb-1 small">${description}</p>
                                 <div class="fw-semibold">${value}</div>
                             </div>
                             <button class="btn btn-outline-primary btn-sm" onclick="editSetting('${key}')">
@@ -224,7 +221,6 @@ include 'includes/header.php';
             return settingKeys.map(key => {
                 const setting = allSettings[key];
                 const value = setting ? setting.value : 'false';
-                const description = setting ? setting.description : '';
                 const isEnabled = value === 'true' || value === '1';
 
                 return `
@@ -232,7 +228,6 @@ include 'includes/header.php';
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="flex-grow-1">
                                 <h6 class="mb-1">${formatSettingKey(key)}</h6>
-                                <p class="text-muted mb-0 small">${description}</p>
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" 
@@ -254,12 +249,10 @@ include 'includes/header.php';
         function editSetting(key) {
             const setting = allSettings[key];
             const value = setting ? setting.value : '';
-            const description = setting ? setting.description : '';
 
             document.getElementById('settingKey').value = key;
             document.getElementById('settingValue').value = value;
             document.getElementById('settingLabel').textContent = formatSettingKey(key);
-            document.getElementById('settingDescription').textContent = description;
             document.getElementById('settingsModalTitle').textContent = `Edit ${formatSettingKey(key)}`;
 
             openModal('settingsModal');

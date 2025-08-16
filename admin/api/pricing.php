@@ -169,7 +169,7 @@ function updatePlan($input, $pdo)
         $name = trim($input['name'] ?? '');
         $network = trim($input['network'] ?? ''); // provider name
         $code = trim($input['code'] ?? ''); // variation_code
-        $price = $input['price'] ?? '';
+        $basePrice = $input['base_price'] ?? '';
         $dataSize = trim($input['data_size'] ?? ''); // volume
         $validity = trim($input['validity'] ?? '');
         $status = $input['status'] ?? 'active'; // maps to is_active (1/0)
@@ -182,7 +182,7 @@ function updatePlan($input, $pdo)
         $errors = [];
         if ($name === '') $errors[] = 'Plan name is required';
         if ($code === '') $errors[] = 'Plan code is required';
-        if ($price === '' || !is_numeric($price) || $price < 0) $errors[] = 'Valid price is required';
+        if ($basePrice === '' || !is_numeric($basePrice) || $basePrice < 0) $errors[] = 'Valid retail (base) price is required';
         if (!empty($errors)) {
             echo json_encode(['success' => false, 'message' => implode(', ', $errors)]);
             return;
@@ -213,12 +213,12 @@ function updatePlan($input, $pdo)
         $columns = [
             'plan_name = ?',
             'variation_code = ?',
-            'price = ?',
+            'base_price = ?',
             'volume = ?',
             'validity = ?',
             'is_active = ?'
         ];
-        $params = [$name, $code, $price, $dataSize, $validity, ($status === 'active' ? 1 : 0)];
+        $params = [$name, $code, $basePrice, $dataSize, $validity, ($status === 'active' ? 1 : 0)];
         // Do not override base_price here; it's sourced from provider ingest. If you plan to allow editing base_price, add a field and include it.
         if ($providerId !== null) {
             $columns[] = 'provider_id = ?';
@@ -226,11 +226,39 @@ function updatePlan($input, $pdo)
         }
         $params[] = $planId;
 
+        // Fetch previous base_price for change detection
+        $prev = null;
+        try {
+            $st = $pdo->prepare('SELECT base_price FROM service_plans WHERE id = ?');
+            $st->execute([$planId]);
+            $prev = $st->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) { /* ignore */
+        }
+
         $sql = 'UPDATE service_plans SET ' . implode(', ', $columns) . ' WHERE id = ?';
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
 
         if ($stmt->rowCount() > 0) {
+            // Admin notification/activity on base price change
+            try {
+                $adminId = $_SESSION['admin_id'] ?? null;
+                $old = $prev && isset($prev['base_price']) ? (float)$prev['base_price'] : null;
+                $new = (float)$basePrice;
+                if ($adminId && $old !== null && $old != $new) {
+                    $title = 'Plan Retail Price Updated';
+                    $message = 'Plan ID ' . $planId . ' retail price changed from ₦' . number_format($old, 2) . ' to ₦' . number_format($new, 2) . '.';
+                    $stmtN = $pdo->prepare("INSERT INTO admin_notifications (admin_id, title, message, type, icon, color, is_read, created_at) VALUES (?, ?, ?, ?, ?, ?, 0, NOW())");
+                    $stmtN->execute([$adminId, $title, $message, 'pricing', 'ni ni-money-coins', 'text-info']);
+                    // Optional activity log (best-effort)
+                    try {
+                        $pdo->prepare("INSERT INTO admin_activity_log (admin_id, action, details, created_at) VALUES (?, 'update_plan_price', ?, NOW())")
+                            ->execute([$adminId, $message]);
+                    } catch (PDOException $e) { /* ignore if table missing */
+                    }
+                }
+            } catch (PDOException $e) { /* ignore */
+            }
             echo json_encode(['success' => true, 'message' => 'Plan updated successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Plan not found or no changes made']);
@@ -334,19 +362,19 @@ function updateDataMarkup($input, $pdo)
             error_log('Backfill base_price failed: ' . $e->getMessage());
         }
 
-        // Recalculate retail price from base_price using the new percentage for DATA plans only
+        // Recalculate retail base_price from provider price using the new percentage for DATA plans only
         $pct = (float)$percentage;
         try {
             if ($dataServiceId) {
-                $stmtU = $pdo->prepare("UPDATE service_plans SET price = ROUND(base_price * (1 + ?/100), 2) WHERE service_id = ?");
+                $stmtU = $pdo->prepare("UPDATE service_plans SET base_price = ROUND(price * (1 + ?/100), 2) WHERE service_id = ?");
                 $stmtU->execute([$pct, $dataServiceId]);
             } else {
                 // Fallback: update all rows
-                $stmtU = $pdo->prepare("UPDATE service_plans SET price = ROUND(base_price * (1 + ?/100), 2) WHERE base_price IS NOT NULL");
+                $stmtU = $pdo->prepare("UPDATE service_plans SET base_price = ROUND(price * (1 + ?/100), 2)");
                 $stmtU->execute([$pct]);
             }
         } catch (PDOException $e) {
-            error_log('Recalculate data prices failed: ' . $e->getMessage());
+            error_log('Recalculate data base prices failed: ' . $e->getMessage());
         }
 
         // Try to push an admin notification/activity entry (best-effort)
@@ -358,12 +386,18 @@ function updateDataMarkup($input, $pdo)
                 // Attempt admin_notifications table
                 $stmtN = $pdo->prepare("INSERT INTO admin_notifications (admin_id, title, message, type, icon, color, is_read, created_at) VALUES (?, ?, ?, ?, ?, ?, 0, NOW())");
                 $stmtN->execute([$adminId, $title, $message, 'pricing', 'ni ni-chart-bar-32', 'text-info']);
+                // Activity log
+                try {
+                    $stmtA = $pdo->prepare("INSERT INTO admin_activity_log (admin_id, action, details, created_at) VALUES (?, 'update_data_markup', ?, NOW())");
+                    $stmtA->execute([$adminId, $message]);
+                } catch (PDOException $e) { /* ignore */
+                }
             }
         } catch (PDOException $e) {
             // Ignore if table doesn't exist
         }
 
-        echo json_encode(['success' => true, 'message' => 'Data markup updated and prices recalculated']);
+        echo json_encode(['success' => true, 'message' => 'Data markup updated and retail prices recalculated']);
     } catch (PDOException $e) {
         error_log("Update data markup error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Failed to update data markup']);
@@ -427,14 +461,14 @@ function updateTvMarkup($input, $pdo)
             error_log('Backfill TV base_price failed: ' . $e->getMessage());
         }
 
-        // Recalculate retail prices for TV plans
+        // Recalculate retail base_price for TV plans from provider price
         try {
             if ($tvServiceId) {
-                $stmtU = $pdo->prepare("UPDATE service_plans SET price = ROUND(base_price * (1 + ?/100), 2) WHERE service_id = ?");
+                $stmtU = $pdo->prepare("UPDATE service_plans SET base_price = ROUND(price * (1 + ?/100), 2) WHERE service_id = ?");
                 $stmtU->execute([(float)$percentage, $tvServiceId]);
             }
         } catch (PDOException $e) {
-            error_log('Recalculate TV prices failed: ' . $e->getMessage());
+            error_log('Recalculate TV base prices failed: ' . $e->getMessage());
         }
 
         // Admin notification best-effort
@@ -445,6 +479,12 @@ function updateTvMarkup($input, $pdo)
                 $message = 'Global TV markup set to ' . $percentage . '%; plan prices recalculated.';
                 $stmtN = $pdo->prepare("INSERT INTO admin_notifications (admin_id, title, message, type, icon, color, is_read, created_at) VALUES (?, ?, ?, ?, ?, ?, 0, NOW())");
                 $stmtN->execute([$adminId, $title, $message, 'pricing', 'ni ni-tv-2', 'text-info']);
+                // Activity log
+                try {
+                    $stmtA = $pdo->prepare("INSERT INTO admin_activity_log (admin_id, action, details, created_at) VALUES (?, 'update_tv_markup', ?, NOW())");
+                    $stmtA->execute([$adminId, $message]);
+                } catch (PDOException $e) { /* ignore */
+                }
             }
         } catch (PDOException $e) {
             // ignore

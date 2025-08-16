@@ -7,6 +7,23 @@ require __DIR__ . '/../partials/header.php';
 
 $loggedInPhone = isset($user['phone_number']) ? $user['phone_number'] : '';
 $providers = getServiceProvider($pdo, 'TV');
+
+// Check feature toggle for TV/bill payment
+$tvEnabled = true; // default to enabled
+try {
+    // Prefer a specific TV toggle if present, else fall back to generic bill payment toggle
+    $stmt = $pdo->query("SELECT `key`, `value` FROM settings WHERE `key` IN ('enable_tv_purchase','enable_bill_payment')");
+    $rows = $stmt ? $stmt->fetchAll(PDO::FETCH_KEY_PAIR) : [];
+    if (isset($rows['enable_tv_purchase'])) {
+        $val = strtolower(trim((string)$rows['enable_tv_purchase']));
+        $tvEnabled = in_array($val, ['true', '1', 'yes', 'on'], true);
+    } elseif (isset($rows['enable_bill_payment'])) {
+        $val = strtolower(trim((string)$rows['enable_bill_payment']));
+        $tvEnabled = in_array($val, ['true', '1', 'yes', 'on'], true);
+    }
+} catch (Throwable $e) {
+    // keep default
+}
 ?>
 
 <body>
@@ -27,60 +44,73 @@ $providers = getServiceProvider($pdo, 'TV');
             </div>
         </header>
 
-        <!-- Service Selection -->
-        <div class="service-section">
-            <div class="service-tabs">
-                <?php foreach ($providers as $i => $provider): ?>
-                    <div class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
-                        data-network="<?= htmlspecialchars($provider['slug']) ?>"
-                        data-provider-id="<?= $provider['id'] ?>"
-                        style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
-                        <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
-                        <span><?= htmlspecialchars($provider['name']) ?></span>
+        <?php if (!$tvEnabled): ?>
+            <!-- Feature Disabled State -->
+            <section class="py-5 d-flex flex-column align-items-center justify-content-center text-center">
+                <svg width="140" height="140" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="12" rx="2" stroke="#9AA5B1" stroke-width="1.5" />
+                    <path d="M8 19h8" stroke="#9AA5B1" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                <h5 class="mt-3 mb-2">TV subscriptions are currently unavailable</h5>
+                <p class="text-secondary mb-4" style="max-width:480px;">We’re performing maintenance on this service. Please check back later or try other services.</p>
+                <a href="dashboard.php" class="btn btn-outline-primary">Go to Dashboard</a>
+            </section>
+        <?php else: ?>
+            <!-- Service Selection -->
+            <div class="service-section">
+                <div class="service-tabs">
+                    <?php foreach ($providers as $i => $provider): ?>
+                        <div class="service-tab<?= $i === 0 ? ' selected-tab' : '' ?>"
+                            data-network="<?= htmlspecialchars($provider['slug']) ?>"
+                            data-provider-id="<?= $provider['id'] ?>"
+                            style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
+                            <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                            <span><?= htmlspecialchars($provider['name']) ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <!-- Purchase Tabs -->
+            <div class="tabs mb-6">
+                <div class="tab-buttons d-flex">
+                    <button class="tab-btn active" data-tab="self" type="button">Pay For Self</button>
+                    <button class="tab-btn" data-tab="others" type="button">Pay For Others</button>
+                </div>
+                <!-- Plans Section -->
+                <div class="tab-content position-relative active">
+                    <div id="planCards" class="row">
+                        <!-- Plan cards will be dynamically loaded here -->
                     </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
 
-        <!-- Purchase Tabs -->
-        <div class="tabs mb-6">
-            <div class="tab-buttons d-flex">
-                <button class="tab-btn active" data-tab="self" type="button">Pay For Self</button>
-                <button class="tab-btn" data-tab="others" type="button">Pay For Others</button>
-            </div>
-            <!-- Plans Section -->
-            <div class="tab-content position-relative active">
-                <div id="planCards" class="row">
-                    <!-- Plan cards will be dynamically loaded here -->
+                    <!-- IUC/Smartcard Number -->
+                    <div class="mt-2" id="iucNumberWrap">
+                        <input
+                            type="text"
+                            id="iucNumber"
+                            name="iuc_number"
+                            maxlength="10"
+                            inputmode="numeric"
+                            pattern="\d*"
+                            placeholder="IUC/Smartcard Number"
+                            class="input"
+                            required
+                            autocomplete="off">
+                    </div>
+
+                    <!-- Recipient Phone (for Pay For Others) -->
+                    <div class="input-group-container mt-2" id="recipientPhoneWrap" style="display: none;">
+                        <span class="input-group-prefix text-xs">
+                            <img src="../assets/img/ng.png" alt=""> +234
+                        </span>
+                        <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
+                            placeholder="Phone Number" class="input phone-input" required>
+                    </div>
+
+                    <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
                 </div>
-
-                <!-- IUC/Smartcard Number -->
-                <div class="mt-2" id="iucNumberWrap">
-                    <input
-                        type="text"
-                        id="iucNumber"
-                        name="iuc_number"
-                        maxlength="10"
-                        inputmode="numeric"
-                        pattern="\d*"
-                        placeholder="IUC/Smartcard Number"
-                        class="input"
-                        required
-                        autocomplete="off">
-                </div>
-
-                <!-- Recipient Phone (for Pay For Others) -->
-                <div class="input-group-container mt-2" id="recipientPhoneWrap" style="display: none;">
-                    <span class="input-group-prefix text-xs">
-                        <img src="../assets/img/ng.png" alt=""> +234
-                    </span>
-                    <input type="tel" id="recipientPhone" name="recipient_phone" maxlength="11"
-                        placeholder="Phone Number" class="input phone-input" required>
-                </div>
-
-                <button type="button" class="btn w-100 mt-3 primary-btn" id="purchaseBtn" disabled>Purchase</button>
             </div>
-        </div>
+        <?php endif; ?>
 
         <!-- Confirm Modal -->
         <div id="confirmModal" class="modal-overlay" style="display: none;">
@@ -122,6 +152,10 @@ $providers = getServiceProvider($pdo, 'TV');
     <script src="../assets/js/pinpad.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            const tvEnabled = <?= $tvEnabled ? 'true' : 'false' ?>;
+            if (!tvEnabled) {
+                return; // do not bind events if feature is disabled
+            }
             // --- Element references ---
             const networkTabs = document.querySelectorAll(".service-tab");
             const planCardsContainer = document.getElementById("planCards");
@@ -244,10 +278,10 @@ $providers = getServiceProvider($pdo, 'TV');
                     const card = document.createElement("div");
                     card.className = "col-4";
                     card.innerHTML = `
-                            <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
+                            <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.base_price ?? plan.price}" data-name="${plan.name}" data-validity="${plan.validity}">
                                 <div class="">${plan.plan_name}</div>
                                 <div class="text-muted small">${plan.validity}</div>
-                                <div class="fw-bold mt-2">₦${Number(plan.price).toLocaleString()}</div>
+                                <div class="fw-bold mt-2">₦${Number(plan.base_price ?? plan.price).toLocaleString()}</div>
                             </div>
                         `;
                     card.querySelector(".plan-card").addEventListener("click", function() {
@@ -268,7 +302,7 @@ $providers = getServiceProvider($pdo, 'TV');
 
                         selectedPlan = {
                             plan_id: plan.plan_id,
-                            price: plan.price,
+                            price: (plan.base_price ?? plan.price),
                             name: plan.plan_name,
                             validity: plan.validity
                         };
