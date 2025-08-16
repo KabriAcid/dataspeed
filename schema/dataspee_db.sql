@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2025 at 11:48 PM
+-- Generation Time: Aug 16, 2025 at 02:04 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -50,7 +50,7 @@ INSERT INTO `account_balance` (`account_id`, `user_id`, `email`, `phone_number`,
 (8, 244, 'zzetim@gmail.com', '08041375606', 0.00, '2025-07-16 07:10:37'),
 (9, 246, 'johik@gmail.com', '09090779344', 0.00, '2025-07-25 05:07:47'),
 (10, 219, 'rademu910@gmail.com', '09045144840', 0.00, '2025-07-31 08:22:53'),
-(11, 258, 'zuruvo@gmail.com', '08028596499', 901.00, '2025-08-14 21:07:08'),
+(11, 258, 'zuruvo@gmail.com', '08028596499', 901.00, '2025-08-15 05:57:42'),
 (12, 259, 'abdullahikabri@gmail.com', '09113369958', 100.00, '2025-08-14 03:52:06');
 
 -- --------------------------------------------------------
@@ -76,7 +76,9 @@ INSERT INTO `account_complaints` (`id`, `user_id`, `reason`, `status`, `created_
 (1, 136, 'Forgot PIN', 'rejected', '2025-07-12 20:30:01', '2025-07-12 21:12:37'),
 (5, 136, 'Forgot PIN', 'rejected', '2025-07-12 21:48:30', '2025-07-12 21:48:30'),
 (6, 136, 'Multiple failed PIN attempts', 'resolved', '2025-07-12 21:52:31', '2025-07-16 06:14:33'),
-(7, 136, 'Multiple failed PIN attempts', 'pending', '2025-07-16 06:20:38', '2025-07-16 06:20:38');
+(7, 136, 'Multiple failed PIN attempts', 'pending', '2025-07-16 06:20:38', '2025-07-16 06:20:38'),
+(8, 258, 'Forgot PIN', 'pending', '2025-08-15 04:33:14', '2025-08-15 04:33:14'),
+(9, 258, 'Forgot PIN', 'pending', '2025-08-15 04:34:21', '2025-08-15 04:34:21');
 
 -- --------------------------------------------------------
 
@@ -92,6 +94,41 @@ CREATE TABLE `account_reset_tokens` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `account_reset_tokens`
+--
+
+INSERT INTO `account_reset_tokens` (`id`, `user_id`, `token`, `expires_at`, `created_at`) VALUES
+(9, 258, 'aa0c94e87d4938ea00919e0f13bf9ca52d2c15c5aacabf1c3a12638e1a45763c', '2025-08-15 06:34:52', '2025-08-15 04:33:14'),
+(10, 258, '796c5c757c725dffb774a4c11c94045d4fe125589d978fae69c416a36fcfdeec', '2025-08-15 06:34:52', '2025-08-15 04:34:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `activity_log`
+--
+
+CREATE TABLE `activity_log` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `username` varchar(100) DEFAULT NULL,
+  `action_type` varchar(50) NOT NULL,
+  `action_description` text NOT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `activity_log`
+--
+
+INSERT INTO `activity_log` (`id`, `user_id`, `username`, `action_type`, `action_description`, `ip_address`, `user_agent`, `created_at`) VALUES
+(1, NULL, '1', 'user_toggle_lock', 'User #251 unlocked', '::1', NULL, '2025-08-15 16:58:19'),
+(2, NULL, '1', 'user_toggle_lock', 'User #251 locked', '::1', NULL, '2025-08-15 18:10:31'),
+(3, NULL, '1', 'user_toggle_lock', 'User #251 unlocked', '::1', NULL, '2025-08-15 23:42:04'),
+(4, NULL, '1', 'user_update', 'Updated user zainababdullahi2003@gmail.com (zainababdullahi2003@gmail.com)', '::1', NULL, '2025-08-15 23:59:28');
+
 -- --------------------------------------------------------
 
 --
@@ -101,6 +138,7 @@ CREATE TABLE `account_reset_tokens` (
 CREATE TABLE `admins` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('superadmin','admin','support','auditor') NOT NULL DEFAULT 'admin',
@@ -117,8 +155,35 @@ CREATE TABLE `admins` (
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`id`, `name`, `email`, `password`, `role`, `status`, `otp_secret`, `failed_attempts`, `locked_until`, `last_login_at`, `created_at`, `updated_at`) VALUES
-(1, 'System Admin', 'dataspeedcontact@gmail.com', '$2y$10$6UzqaMPMcSwVKHmR6.07VuteblXui/GZPw.bwNAfxyeKN2x6rSCpG', 'superadmin', 'active', NULL, 0, NULL, NULL, '2025-08-14 00:57:02', '2025-08-14 07:14:26');
+INSERT INTO `admins` (`id`, `name`, `username`, `email`, `password`, `role`, `status`, `otp_secret`, `failed_attempts`, `locked_until`, `last_login_at`, `created_at`, `updated_at`) VALUES
+(1, 'System Admin', '', 'dataspeedcontact@gmail.com', '$2y$10$YD0G4qHhRjGwL5iYhNaWheim0v.bT19cNJb0ehPmlAOU842VCwgOW', 'superadmin', 'active', NULL, 0, NULL, '2025-08-15 19:13:11', '2025-08-14 00:57:02', '2025-08-15 18:13:11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_notifications`
+--
+
+CREATE TABLE `admin_notifications` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `type` enum('system','user','security') NOT NULL DEFAULT 'system',
+  `title` varchar(200) NOT NULL,
+  `message` text NOT NULL,
+  `meta` text DEFAULT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin_notifications`
+--
+
+INSERT INTO `admin_notifications` (`id`, `type`, `title`, `message`, `meta`, `is_read`, `created_at`, `updated_at`) VALUES
+(13, 'security', 'Account Status Changed', 'User #251 account was unlocked', '{\"user_id\":251,\"action\":\"unlocked\"}', 1, '2025-08-15 17:58:19', '2025-08-15 19:27:27'),
+(14, 'security', 'Account Status Changed', 'User #251 account was locked', '{\"user_id\":251,\"action\":\"locked\"}', 1, '2025-08-15 19:10:31', '2025-08-15 19:27:27'),
+(15, 'security', 'Account Status Changed', 'User #251 account was unlocked', '{\"user_id\":251,\"action\":\"unlocked\"}', 0, '2025-08-16 00:42:04', NULL),
+(16, 'user', 'User Updated', 'User zainababdullahi2003@gmail.com (zainababdullahi2003@gmail.com) was updated', '{\"user_id\":189}', 0, '2025-08-16 00:59:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -428,7 +493,12 @@ INSERT INTO `notifications` (`id`, `user_id`, `title`, `message`, `type`, `color
 (175, 258, 'Deposit Received', '₦100.00 credited from 5764363053 (****3053). Ref: R-BRFGDOBMGS', 'deposit', 'text-success', 'ni ni-money-coins', 0, '2025-08-14 03:53:16'),
 (176, 258, 'Airtime Purchase Failed', 'INVALID MTN NUMBER. Please enter a valid MTN number.', 'airtime_failed', 'text-danger', 'ni ni-mobile-button', 0, '2025-08-14 21:04:06'),
 (177, 258, 'Data Purchase Failed', 'INVALID MTN NUMBER. Please enter a valid MTN number.', 'data_failed', 'text-danger', 'ni ni-world-2', 0, '2025-08-14 21:05:38'),
-(178, 258, 'Data Purchase Successful', 'You purchased ₦299.00 data for 08028596499 on AIRTEL', 'data_purchase', 'text-success', 'ni ni-world-2', 0, '2025-08-14 21:07:09');
+(178, 258, 'Data Purchase Successful', 'You purchased ₦299.00 data for 08028596499 on AIRTEL', 'data_purchase', 'text-success', 'ni ni-world-2', 0, '2025-08-14 21:07:09'),
+(179, 258, 'Referral Reward Claimed', 'Congratulations! You have successfully claimed your ₦100.00 referral bonus.', 'referral', 'text-info', 'ni ni-trophy', 0, '2025-08-15 04:55:09'),
+(180, 258, 'Money Transfer failed', '  must complete registration before receiving any funds.', 'transfer_fail', 'text-danger', 'ni ni-fat-remove', 0, '2025-08-15 05:24:30'),
+(181, 258, 'Money Transfer failed', '  must complete registration before receiving any funds.', 'transfer_fail', 'text-danger', 'ni ni-fat-remove', 0, '2025-08-15 05:24:34'),
+(182, 258, 'Airtime Purchase Successful', 'You purchased ₦100.00 airtime for 07069525470 on MTN', 'airtime_purchase', 'text-success', 'ni ni-mobile-button', 0, '2025-08-15 05:57:42'),
+(183, 258, 'Money Transfer failed', '  must complete registration before receiving any funds.', 'transfer_fail', 'text-danger', 'ni ni-fat-remove', 0, '2025-08-15 06:02:25');
 
 -- --------------------------------------------------------
 
@@ -518,7 +588,7 @@ INSERT INTO `referral_reward` (`referral_id`, `reward`, `user_id`, `referee_emai
 (9, 100.00, 133, '', 'claimed', '2025-05-20 04:53:16'),
 (10, 100.00, 136, '', 'claimed', '2025-05-28 04:34:36'),
 (11, 100.00, 136, '', 'claimed', '2025-06-01 08:49:40'),
-(12, 100.00, 258, 'abdullahikabri@gmail.com', 'pending', '2025-08-14 03:40:28');
+(12, 100.00, 258, 'abdullahikabri@gmail.com', 'claimed', '2025-08-15 04:55:08');
 
 -- --------------------------------------------------------
 
@@ -745,6 +815,44 @@ INSERT INTO `service_providers` (`id`, `service_id`, `name`, `slug`, `type`, `br
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `key` varchar(100) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`key`, `value`, `description`, `updated_at`) VALUES
+('admin_1_avatar_url', '../public/assets/img/admin-avatars/admin_1_1755237280.jpg', NULL, '2025-08-15 06:54:41'),
+('admin_1_email_notifications', '1', NULL, '2025-08-15 01:15:33'),
+('admin_1_language', 'en', NULL, '2025-08-15 01:15:33'),
+('admin_1_phone', '08013625167', NULL, '2025-08-15 16:33:40'),
+('admin_1_theme', 'light', NULL, '2025-08-15 01:15:33'),
+('admin_1_transaction_alerts', '1', NULL, '2025-08-15 01:15:33'),
+('admin_1_two_factor_enabled', '0', NULL, '2025-08-15 01:15:33'),
+('admin_1_username', 'kabriacid', NULL, '2025-08-15 16:33:40'),
+('airtime_markup', '10', NULL, '2025-08-15 08:26:14'),
+('data_markup', '10', NULL, '2025-08-15 02:06:54'),
+('enable_airtime_purchase', 'true', NULL, '2025-08-15 00:32:24'),
+('enable_bill_payment', 'true', NULL, '2025-08-15 00:32:26'),
+('enable_data_purchase', 'true', NULL, '2025-08-15 00:32:16'),
+('enable_user_registration', 'true', NULL, '2025-08-15 00:32:28'),
+('max_funding_amount', '10000', NULL, '2025-08-15 00:33:48'),
+('min_funding_amount', '100', NULL, '2025-08-15 00:31:53'),
+('site_name', 'Dataspeed', NULL, '2025-08-15 00:27:14'),
+('support_email', 'dataspeedcontact@gmail.com', NULL, '2025-08-15 00:28:00'),
+('support_phone', '08141788924', NULL, '2025-08-15 00:30:42');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `transactions`
 --
 
@@ -771,81 +879,6 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id`, `user_id`, `service_id`, `provider_id`, `plan_id`, `type`, `icon`, `color`, `direction`, `description`, `amount`, `email`, `reference`, `status`, `created_at`) VALUES
-(1, 136, 2, NULL, NULL, 'Airtime Self', '', '', 'debit', '', 200.00, NULL, '0', 'success', '2025-06-09 22:41:31'),
-(2, 187, 2, NULL, NULL, 'Airtime Self', '', '', 'debit', '', 5000.00, NULL, '0', 'success', '2025-06-09 22:48:45'),
-(3, 187, 2, NULL, NULL, 'Airtime Self', '', '', 'debit', '', 100.00, NULL, '0', 'success', '2025-06-10 00:10:20'),
-(4, 187, 2, NULL, NULL, 'Airtime Self', '', '', 'debit', '', 200.00, NULL, '0', 'success', '2025-06-10 00:13:16'),
-(5, 187, 2, NULL, NULL, 'Airtime Self', '', '', 'debit', '', 500.00, NULL, '0', 'success', '2025-06-10 01:27:59'),
-(6, 187, 2, NULL, NULL, 'Airtime Self', '', '', 'debit', '', 1000.00, 'majugulde03@gmail.com', '0', 'success', '2025-06-10 01:30:21'),
-(7, 187, 2, NULL, NULL, 'Airtime Self', '', '', 'debit', '', 5000.00, 'majugulde03@gmail.com', '0', 'success', '2025-06-10 01:31:22'),
-(8, 187, 2, NULL, NULL, 'Airtime Other', '', '', 'debit', '', 500.00, 'majugulde03@gmail.com', '0', 'success', '2025-06-10 01:33:50'),
-(9, 187, 2, NULL, NULL, 'Airtime Other', '', '', 'debit', '', 500.00, 'majugulde03@gmail.com', '0', 'success', '2025-06-10 01:34:31'),
-(10, 187, 2, NULL, NULL, 'Airtime Self', '', '', 'debit', '', 50.00, 'majugulde03@gmail.com', '0', 'success', '2025-06-10 01:37:33'),
-(12, 136, 1, 3, NULL, 'Airtime self', 'ni ni-default', 'text-dark', 'debit', '', 1000.00, 'kabriacid01@gmail.com', 'airtime_684cd23036ff32.62873582', '', '2025-06-14 01:37:00'),
-(13, 136, 1, 2, NULL, 'Airtime self', 'ni ni-mobile-button', 'text-danger', 'debit', 'Airtime purchase of ₦500.00 for 07037943396 on AIRTEL failed. Reason: TRANSACTION FAILED', 500.00, 'kabriacid01@gmail.com', 'airtime_684cd48acafc64.07731635', '', '2025-06-14 01:47:03'),
-(14, 136, 1, 3, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-danger', 'debit', 'Airtime purchase of ₦2,000.00 for 00803063154 on GLO failed. Reason: TRANSACTION FAILED', 2000.00, 'kabriacid01@gmail.com', 'airtime_684cd4f1f256e9.50043283', '', '2025-06-14 01:48:45'),
-(15, 136, 1, 3, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-danger', 'debit', 'Airtime purchase of ₦2,000.00 for 00803063154 on GLO failed. Reason: This transaction appears to be ', 2000.00, 'kabriacid01@gmail.com', 'airtime_684cd4fe627216.82721378', '', '2025-06-14 01:48:47'),
-(16, 136, 1, 3, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-danger', 'debit', 'Airtime purchase of ₦2,000.00 for 00803063154 on GLO failed. Reason: This transaction appears to be ', 2000.00, 'kabriacid01@gmail.com', 'airtime_684cd4ff6b2a25.40973241', '', '2025-06-14 01:48:48'),
-(17, 136, 1, 3, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-danger', 'debit', 'Airtime purchase of ₦2,000.00 for 00803063154 on GLO failed. Reason: This transaction appears to be ', 2000.00, 'kabriacid01@gmail.com', 'airtime_684cd5008c1f13.52555147', '', '2025-06-14 01:48:49'),
-(18, 136, 1, 3, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-danger', 'debit', 'Airtime purchase of ₦2,000.00 for 00803063154 on GLO failed. Reason: This transaction appears to be ', 2000.00, 'kabriacid01@gmail.com', 'airtime_684cd5019273b4.47253417', '', '2025-06-14 01:48:50'),
-(19, 136, 1, 2, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-danger', 'debit', 'Airtime purchase of ₦5,000.00 for 00803063154 on AIRTEL failed. Reason: TRANSACTION FAILED', 5000.00, 'kabriacid01@gmail.com', 'airtime_684cd5c1721009.05128222', '', '2025-06-14 01:52:13'),
-(20, 136, 1, 1, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-danger', 'debit', 'Airtime purchase of ₦2,000.00 for 07012589879 on MTN failed. Reason: TRANSACTION FAILED', 2000.00, 'kabriacid01@gmail.com', 'airtime_684cd6343752b7.90314628', '', '2025-06-14 01:54:08'),
-(21, 136, 1, 2, NULL, 'Airtime self', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦5,000.00 airtime for 08011111111 on AIRTEL.', 5000.00, 'kabriacid01@gmail.com', 'airtime_684cd6a046ba31.61032287', 'success', '2025-06-14 01:55:52'),
-(22, 136, 1, 1, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦1,350.00 airtime for 08011111111 on MTN.', 1350.00, 'kabriacid01@gmail.com', 'airtime_684cd7c36313b3.54202473', 'success', '2025-06-14 02:00:44'),
-(23, 136, 1, 1, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦1,000.00 airtime for 08011111111 on MTN.', 1000.00, 'kabriacid01@gmail.com', 'airtime_684cdf38324b21.86687482', 'success', '2025-06-14 02:32:33'),
-(24, 136, 0, NULL, NULL, 'Money Transfer', 'ni-send', 'text-warning', 'debit', 'Transfer to musajidder@gmail.com', 1000.00, NULL, '', 'success', '2025-06-14 02:47:43'),
-(25, 133, 0, NULL, NULL, 'Money Transfer', 'ni-send', 'text-success', 'credit', 'Received transfer from user 136', 1000.00, NULL, '', 'success', '2025-06-14 02:47:43'),
-(26, 136, 0, NULL, NULL, 'Money Transfer', 'ni-send', 'text-warning', 'debit', 'Transfer to musajidder@gmail.com', 1000.00, 'kabriacid01@gmail.com', 'transfer_684ce40d8a2972.68551337', 'success', '2025-06-14 02:53:01'),
-(27, 133, 0, NULL, NULL, 'Money Transfer', 'ni-send', 'text-success', 'credit', 'Received transfer from user 136', 1000.00, 'musajidder@gmail.com', 'transfer_684ce40d8a2972.68551337', 'success', '2025-06-14 02:53:01'),
-(28, 136, 0, NULL, NULL, 'Money Transfer', 'ni-send', 'text-warning', 'debit', 'Transfer to musajidder@gmail.com', 3000.00, 'kabriacid01@gmail.com', 'transfer_684ce4bb2ffc09.96864282', 'success', '2025-06-14 02:55:55'),
-(29, 133, 0, NULL, NULL, 'Money Transfer', 'ni-send', 'text-success', 'credit', 'Received transfer from user 136', 3000.00, 'musajidder@gmail.com', 'transfer_684ce4bb2ffc09.96864282', 'success', '2025-06-14 02:55:55'),
-(30, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Transfer to Musa Jidder', 59553.00, 'kabriacid01@gmail.com', 'tf_6850d88bb88d38.21696666', 'success', '2025-06-17 02:52:59'),
-(31, 133, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Received transfer from Abdullahi Kabri', 59553.00, 'musajidder@gmail.com', 'tf_6850d88bb88d38.21696666', 'success', '2025-06-17 02:52:59'),
-(32, 136, 1, 4, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦1,000.00 airtime for 08011111111 on 9MOBILE.', 1000.00, 'kabriacid01@gmail.com', 'airtime_6852b9cc5e3772.99029728', 'success', '2025-06-18 13:06:30'),
-(33, 136, 1, 4, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦5,000.00 airtime for 08011111111 on MTN.', 5000.00, 'kabriacid01@gmail.com', '17502535822826', 'success', '2025-06-18 13:33:12'),
-(34, 136, 2, 1, 2, 'Data Purchase', 'ni ni-mobile-button', 'text-danger', 'debit', 'Data purchase of ₦550.00 for 07037943396 on MTN failed.', 550.00, 'kabriacid01@gmail.com', 'data_6852cf8f731fc9.95002805', '', '2025-06-18 14:39:23'),
-(35, 136, 2, 3, 2, 'Data Purchase', 'ni ni-check-bold', 'text-success', 'debit', 'You purchased ₦550.00 data for 08011111111 on GLO.', 550.00, 'kabriacid01@gmail.com', 'data_6852cfbcb3dd09.88486009', 'success', '2025-06-18 14:40:06'),
-(36, 136, 3, 5, 30, 'TV Subscription', 'ni ni-tv-2', 'text-danger', 'debit', 'TV subscription of ₦3,500.00 for IUC 9076567890 on DSTV failed.', 3500.00, 'kabriacid01@gmail.com', '17502653223137', '', '2025-06-18 16:48:43'),
-(37, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Transfer to Jamal Jugulde', 3000.00, 'kabriacid01@gmail.com', 'tf_6852efec417d91.94578376', 'success', '2025-06-18 16:57:16'),
-(38, 187, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Received transfer from Abdullahi Kabri', 3000.00, 'majugulde03@gmail.com', 'tf_6852efec417d91.94578376', 'success', '2025-06-18 16:57:16'),
-(39, 136, 3, 5, 34, 'TV Subscription', 'ni ni-tv-2', 'text-danger', 'debit', 'TV subscription of ₦3,500.00 for IUC 3456789854 on DSTV failed.', 3500.00, 'kabriacid01@gmail.com', '17503077373859', '', '2025-06-19 04:35:40'),
-(40, 136, 3, 5, 34, 'TV Subscription', 'ni ni-tv-2', 'text-danger', 'debit', 'TV subscription of ₦3,500.00 for IUC 3456789854 on DSTV failed.', 3500.00, 'kabriacid01@gmail.com', '17503078492833', '', '2025-06-19 04:37:29'),
-(41, 136, 3, 5, 43, 'TV Subscription', 'ni ni-tv-2', 'text-danger', 'debit', 'TV subscription of ₦3,500.00 for IUC 9876556789 on DSTV failed.', 3500.00, 'kabriacid01@gmail.com', '17503088797603', '', '2025-06-19 04:54:40'),
-(42, 136, 3, 5, 0, 'TV Subscription', 'ni ni-tv-2', 'text-success', 'debit', 'You purchased ₦2,500.00 TV subscription for IUC 1212121212 on DSTV.', 2500.00, 'kabriacid01@gmail.com', '17503091727718', 'success', '2025-06-19 04:59:40'),
-(43, 136, 2, 1, 0, 'Data Purchase', 'ni ni-mobile-button', 'text-danger', 'debit', 'Data purchase of ₦550.00 for 08011111111 on MTN failed.', 550.00, 'kabriacid01@gmail.com', '17505828969473', '', '2025-06-22 09:01:36'),
-(44, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Transfer to Jamal Jugulde', 1000.00, 'kabriacid01@gmail.com', 'tf_68598609bbfcb7.77936497', 'success', '2025-06-23 16:51:21'),
-(45, 187, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Received transfer from Abdullahi Kabri', 1000.00, 'majugulde03@gmail.com', 'tf_68598609bbfcb7.77936497', 'success', '2025-06-23 16:51:21'),
-(46, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Transfer to Quemby Woodard', 5400.00, 'kabriacid01@gmail.com', 'tf_685cdb20d1b840.47445070', 'success', '2025-06-26 05:31:12'),
-(47, 236, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Received transfer from Abdullahi Kabri', 5400.00, 'weqyrod@gmail.com', 'tf_685cdb20d1b840.47445070', 'success', '2025-06-26 05:31:12'),
-(48, 236, 3, 5, 0, 'TV Subscription', 'ni ni-tv-2', 'text-danger', 'debit', 'TV subscription of ₦3,500.00 for IUC 1111111111 on DSTV failed.', 3500.00, 'weqyrod@gmail.com', '17509160778441', '', '2025-06-26 05:34:52'),
-(49, 236, 2, 3, 0, 'Data Purchase', 'ni ni-check-bold', 'text-success', 'debit', 'You purchased ₦250.00 data for 08011111111 on GLO.', 250.00, 'weqyrod@gmail.com', '17509163184019', 'success', '2025-06-26 05:38:47'),
-(50, 236, 1, 1, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦200.00 airtime for 08011111111 on MTN.', 200.00, 'weqyrod@gmail.com', '17509166721339', 'success', '2025-06-26 05:44:39'),
-(51, 136, 2, 1, 0, 'Data Purchase', 'ni ni-mobile-button', 'text-danger', 'debit', 'Data purchase of ₦250.00 for 07037943396 on MTN failed.', 250.00, 'kabriacid01@gmail.com', '17523622695977', '', '2025-07-12 23:18:11'),
-(52, 136, 2, 1, 0, 'Data Purchase', 'ni ni-check-bold', 'text-success', 'debit', 'You purchased ₦150.00 data for 08011111111 on MTN.', 150.00, 'kabriacid01@gmail.com', '17523646949942', 'success', '2025-07-12 23:58:27'),
-(53, 136, 2, 1, 0, 'Data Purchase', 'ni ni-mobile-button', 'text-danger', 'debit', 'Data purchase of ₦150.00 for 07037943396 on MTN failed.', 150.00, 'kabriacid01@gmail.com', '17523649633942', '', '2025-07-13 00:02:54'),
-(54, 136, 2, 1, 0, 'Data Purchase', 'ni ni-check-bold', 'text-success', 'debit', 'You purchased ₦550.00 data for 08011111111 on MTN.', 550.00, 'kabriacid01@gmail.com', '17523649894478', 'success', '2025-07-13 00:03:20'),
-(55, 136, 1, 1, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦5,000.00 airtime for 08011111111 on MTN.', 5000.00, NULL, '17523650445336', 'success', '2025-07-13 00:04:12'),
-(56, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Ray Solis', 5000.00, 'kabriacid01@gmail.com', 'tf_6873064aa484d1.12239992', 'success', '2025-07-13 01:05:14'),
-(57, 242, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Abdullahi Kabri', 5000.00, 'jepacibet@gmail.com', 'tf_6873064aa484d1.12239992', 'success', '2025-07-13 01:05:14'),
-(58, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Ray Solis', 3500.00, 'kabriacid01@gmail.com', 'tf_687308b5245a48.26665807', 'success', '2025-07-13 01:15:33'),
-(59, 242, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Abdullahi Kabri', 3500.00, 'jepacibet@gmail.com', 'tf_687308b5245a48.26665807', 'success', '2025-07-13 01:15:33'),
-(60, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Ray Solis', 300.00, 'kabriacid01@gmail.com', 'tf_687328aedcc1e4.61878518', 'success', '2025-07-13 03:31:58'),
-(61, 242, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Abdullahi Kabri', 300.00, 'jepacibet@gmail.com', 'tf_687328aedcc1e4.61878518', 'success', '2025-07-13 03:31:58'),
-(62, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Ray Solis', 300.00, 'kabriacid01@gmail.com', 'tf_687328e986e6d8.94009617', 'success', '2025-07-13 03:32:57'),
-(63, 242, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Abdullahi Kabri', 300.00, 'jepacibet@gmail.com', 'tf_687328e986e6d8.94009617', 'success', '2025-07-13 03:32:57'),
-(64, 242, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Abdullahi Kabri', 3000.00, 'jepacibet@gmail.com', 'tf_68732a16937062.13521658', 'success', '2025-07-13 03:37:58'),
-(65, 136, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Ray Solis', 3000.00, 'kabriacid01@gmail.com', 'tf_68732a16937062.13521658', 'success', '2025-07-13 03:37:58'),
-(66, 242, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Abdullahi Kabri', 200.00, 'jepacibet@gmail.com', 'tf_68732bb3e6d995.97643602', 'success', '2025-07-13 03:44:51'),
-(67, 136, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Ray Solis', 200.00, 'kabriacid01@gmail.com', 'tf_68732bb3e6d995.97643602', 'success', '2025-07-13 03:44:51'),
-(68, 242, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Abdullahi Kabri', 1000.00, 'jepacibet@gmail.com', 'tf_68738eff9f7ff4.14835483', 'success', '2025-07-13 10:48:31'),
-(69, 136, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Ray Solis', 1000.00, 'kabriacid01@gmail.com', 'tf_68738eff9f7ff4.14835483', 'success', '2025-07-13 10:48:31'),
-(70, 242, 2, 1, 0, 'Data Purchase', 'ni ni-check-bold', 'text-success', 'debit', 'You purchased ₦250.00 data for 08011111111 on MTN.', 250.00, 'jepacibet@gmail.com', '17524037667726', 'success', '2025-07-13 10:49:36'),
-(71, 242, 1, 1, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦1,000.00 airtime for 08011111111 on MTN.', 1000.00, NULL, '17524038024142', 'success', '2025-07-13 10:50:11'),
-(72, 136, 3, 5, 0, 'TV Subscription', 'ni ni-tv-2', 'text-success', 'debit', 'You purchased ₦2,500.00 TV subscription for IUC 1212121212 on DSTV.', 2500.00, 'kabriacid01@gmail.com', '17524287764315', 'success', '2025-07-13 17:46:29'),
-(73, 136, 3, 5, 0, 'TV Subscription', 'ni ni-tv-2', 'text-success', 'debit', 'You purchased ₦2,500.00 TV subscription for IUC 1212121212 on DSTV.', 2500.00, 'kabriacid01@gmail.com', '17524292753401', 'success', '2025-07-13 17:54:43'),
-(74, 242, 1, 1, NULL, 'Airtime others', 'ni ni-mobile-button', 'text-success', 'debit', 'You have purchased ₦200.00 airtime for 08011111111 on MTN.', 200.00, NULL, '17524327851082', 'success', '2025-07-13 18:53:15'),
-(75, 136, 2, 1, 0, 'Data Purchase', 'ni ni-mobile-button', 'text-danger', 'debit', 'Data purchase of ₦150.00 for 07037943396 on MTN failed.', 150.00, 'kabriacid01@gmail.com', 'AT-136-1753704240-6374', '', '2025-07-28 12:04:11'),
-(76, 136, 0, NULL, NULL, 'Money Transfer', 'ni ni-send', 'text-success', 'debit', 'Musa Jidder', 1000.00, 'kabriacid01@gmail.com', 'tf_68877202e11233.40585025', 'success', '2025-07-28 12:50:10'),
 (77, 133, 0, NULL, NULL, 'Money Received', 'ni ni-money-coins', 'text-success', 'credit', 'Shelley Wheeler', 1000.00, 'musajidder@gmail.com', 'tf_68877202e11233.40585025', 'success', '2025-07-28 12:50:10'),
 (78, 136, 1, 1, NULL, 'Airtime Purchase', 'ni ni-mobile-button', 'text-success', 'debit', 'You purchased ₦100.00 airtime for 07037943396 on MTN', 100.00, 'kabriacid01@gmail.com', 'AT-136-1753869524-3394', 'success', '2025-07-30 09:59:00'),
 (79, 136, 1, 1, NULL, 'Airtime Purchase', 'ni ni-mobile-button', 'text-success', 'debit', 'You purchased ₦100.00 airtime for 08132936452 on MTN', 100.00, 'kabriacid01@gmail.com', 'AT-136-1753869664-4926', 'success', '2025-07-30 10:01:36'),
@@ -854,11 +887,10 @@ INSERT INTO `transactions` (`id`, `user_id`, `service_id`, `provider_id`, `plan_
 (82, 136, 2, 1, 354408, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦99.00 data for 08062365769 on MTN', 99.00, 'kabriacid01@gmail.com', 'DT-136-1753885277-4963', 'success', '2025-07-30 14:21:28'),
 (83, 136, 1, 1, NULL, 'Airtime Purchase', 'ni ni-mobile-button', 'text-success', 'debit', 'You purchased ₦600.00 airtime for 07037943396 on MTN', 600.00, 'kabriacid01@gmail.com', 'AT-136-1753887173-2161', 'success', '2025-07-30 14:53:03'),
 (84, 136, 2, 1, 354406, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦499.00 data for 07037943396 on MTN', 499.00, 'kabriacid01@gmail.com', 'DT-136-1753887249-7917', 'success', '2025-07-30 14:54:20'),
-(85, 258, 5, NULL, NULL, 'Deposit', 'ni ni-money-coins', 'text-success', 'credit', 'Deposit from Browser Tester', 1000.00, 'zuruvo@gmail.com', 'BROWSER_TEST_1755140767980', 'success', '2025-08-14 03:06:11'),
-(86, 258, 5, NULL, NULL, 'Deposit', 'ni ni-money-coins', 'text-success', 'credit', 'Deposit from Browser Tester', 100.00, 'zuruvo@gmail.com', 'BROWSER_TEST_1755140922343', 'success', '2025-08-14 03:08:45'),
-(87, 259, 5, NULL, NULL, 'Deposit', 'ni ni-money-coins', 'text-success', 'credit', 'Billstack deposit from 5764363369 (****3369) | wiaxy_ref: 100004250814034224138972028410 | merchant_', 100.00, 'abdullahikabri@gmail.com', 'R-MBCERHNFVX', 'success', '2025-08-14 03:52:06'),
 (88, 258, 5, NULL, NULL, 'Deposit', 'ni ni-money-coins', 'text-success', 'credit', 'Billstack deposit from 5764363053 (****3053) | wiaxy_ref: 100004250814022010138971991158 | merchant_', 100.00, 'zuruvo@gmail.com', 'R-BRFGDOBMGS', 'success', '2025-08-14 03:53:16'),
-(89, 258, 2, 1, 354444, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦299.00 data for 08028596499 on AIRTEL', 299.00, 'zuruvo@gmail.com', 'DT-258-1755205615-1894', 'success', '2025-08-14 21:07:08');
+(89, 258, 2, 1, 354444, 'Data Purchase', 'ni ni-world-2', 'text-success', 'debit', 'You purchased ₦299.00 data for 08028596499 on AIRTEL', 299.00, 'zuruvo@gmail.com', 'DT-258-1755205615-1894', 'success', '2025-08-14 21:07:08'),
+(90, 258, 5, NULL, NULL, 'Referral Reward', 'ni ni-money-coins', 'text-info', 'credit', 'referral', 100.00, NULL, '', 'success', '2025-08-15 04:55:08'),
+(91, 258, 1, 1, NULL, 'Airtime Purchase', 'ni ni-mobile-button', 'text-success', 'debit', 'You purchased ₦100.00 airtime for 07069525470 on MTN', 100.00, 'kabriacid01@gmail.com', 'AT-258-1755237446-3879', 'success', '2025-08-15 05:57:42');
 
 -- --------------------------------------------------------
 
@@ -918,7 +950,7 @@ INSERT INTO `users` (`user_id`, `virtual_account`, `account_name`, `bank_name`, 
 (179, '5761525724', 'VTU-Stacy Spencer', '9PSB Bank', 'R-JPQMONHLWF', '', 'Stacy', 'Spencer', 'duvuba@gmail.com', '9005648888', '$2y$10$u7yByZ0ZDGb0F6aDbwfOUOXQcGGbqjmyVVGYpXw9Ryy4GStCHVRQ6', 'Opay', '9876543456', '', '$2y$10$r/GtFOrjTjGCEp7//xoTbelkErl6FD/eMyv74ob/9nNZYHpDRkHFm', '923 White Old Boulevard', 'Kogi', '', 'Ijumu', 'uploads/default.png', '3668197e736c6474910dcf53083b3f9f', 'OYFGEV9KQM', '', 'XL5ZJWK4DO', 'complete', '101', 0, '', 'unverified', NULL, '2025-06-17 17:24:40', NULL),
 (187, '5761552748', 'VTU-Jamal Jugulde', '9PSB Bank', 'R-SPSNWVUCTU', '', 'Jamal', 'Jugulde', 'majugulde03@gmail.com', '7012589879', '$2y$10$BJyFCfypbUzymQbf7/Y/D.Rb5eDjtH27WxIIRuImoKML.CmomzhqC', 'Opay', '7012589879', '', '$2y$10$QPFHHNxqJk1vF7P31J8lLuZsfk0b8OiDnCNybXl2YKpMe52xkdJdO', 'Samunaka Junction, Jalingo', 'Taraba', '', 'Sardauna', 'uploads/default.png', 'e6fcfac8a582baa3d5ebe083c1fba0ae', '79SHT013JG', '', NULL, 'complete', '101', 0, '', 'unverified', NULL, '2025-06-17 17:24:40', NULL),
 (188, NULL, '', '', '', '', 'Keegan', 'Snow', 'watulipe@gmail.com', '8052351598', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', '43aae076197f597aac9937edf6f6d601', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-06-17 17:24:40', NULL),
-(189, NULL, '', '', '', '', '', '', 'zainababdullahi2003@gmail.com', '9076567895', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'b9819072e7bfd0a001969cc3c0c0775d', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-06-17 17:24:40', NULL),
+(189, NULL, '', '', '', '', 'zainababdullahi2003@', '', 'zainababdullahi2003@gmail.com', '09076567895', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'b9819072e7bfd0a001969cc3c0c0775d', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-08-15 23:59:28', '2025-08-16 00:59:28'),
 (210, '6646625932', 'BillStack/VTU-Hakeem', 'PalmPay', 'R-CLRTMENZEZ', 'xazuxywiz', 'Hakeem', 'Cameron', 'nykyqym@gmail.com', '08083842646', '$2y$10$UnyyP6b46zmxMsUH3/SC8.6t9iVRQensna3UFP0zwIP3.PI6UoQRq', '', '', '', '$2y$10$CUQwpvZoVGqIbT43mYQBEe42vFLXULcqZfphiGY5oDqzt44ZRG9lu', '', '', '', '', 'uploads/default.png', 'c6e1c7dcd79d9cbe1788a3ec3f19d0ee', 'H4Y8TBKF0U', '', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-06-20 19:11:13', NULL),
 (214, '6628651282', 'BillStack/VTU-Muhammad', 'PalmPay', 'R-VTPXCKSJYV', 'Mjidder', 'Muhammad', 'jidda', 'muhammadmjidder8@gmail.com', '08146785103', '$2y$10$3HWENXRoD8XSflOwBE.RXe5tPWK/GFHfBAj/8TrV6x7K1eICpHCxq', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'dd2bf6b66e8a547be99b82b2fa1c3368', 'A4O7SR9YWK', '', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-06-20 19:11:13', NULL),
 (218, '6654615891', 'BillStack/VTU-Rabiu', 'PalmPay', 'R-XTQJRDYPMK', 'muhammedRabiu', 'Rabiu', 'Muhammed', 'ademu0882@gmail.com', '08110237625', '$2y$10$t/3Lqq.DiRrgMRnEVva8vu78yxPNf1jSzowVvENTmlwFtnIb5Iw8a', '', '', '', '$2y$10$JoyFRNH2qhVQ3gf6r09ZTurtZJxZTzUxYCTg/QO.Te7OAm8F5tPf.', '', '', '', '', 'uploads/default.png', '50ed09409d987d8d5b7fa4b0268a400a', 'L40M5KXGC1', '', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-06-20 19:11:13', NULL),
@@ -926,15 +958,15 @@ INSERT INTO `users` (`user_id`, `virtual_account`, `account_name`, `bank_name`, 
 (220, '5761525346', 'VTU-Sadik Dahiru', '9PSB Bank', 'R-JWQUSYDTGM', 'Sadik_kabure', 'Sadik', 'Dahiru', 'sadikdahiru419@gmail.com', '09035124276', '$2y$10$2lEJS5ZDe/G5d5QfGuWPsOz5saBZtptq5/5Jp67x/OQo.ZLQ63zwW', '', '', '', '$2y$10$.99Sq1IgxDEy22DoJXXOxuxB2FvDSqsun373PbAgM2gMP6Med9dk.', '', '', '', '', 'uploads/default.png', '66dee1d2bcbe08dec9110d7e6f40d44d', '4ZDEY09RXN', '', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-06-20 19:11:13', NULL),
 (221, '5761960530', 'VTU-Aliyu Abba Suleiman', '9PSB Bank', 'R-ZHAWKRNSDT', 'AASuleiman', 'Aliyu Abba', 'Suleiman', 'aliyuabbasuleiman59@gmail.com', '09034212496', '$2y$10$unIiRQ.NqpKGkvpQ2MqtMeFSY/P3WcHYw5e6fvlcfNhT/nUkuFFQW', 'Opay', '9034212496', '', '$2y$10$p4AOdFN044PUOcaqTGQIMOkxacjRXfxmciKyRYaMSebmzY/0M77Qi', 'Gulma Road', 'Kebbi', '', 'Argungu', 'uploads/default.png', 'fa3a47fc7cf5c6b9f80cfcb404c3ba3f', 'ETDXSF3RGQ', '', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-07-30 19:01:47', '2025-07-30 20:01:47'),
 (222, '5761968488', 'VTU-Abdussalam Abubakar', '9PSB Bank', 'R-KEYWQPNUHH', 'Abdul', 'Abdussalam', 'Abubakar', 'abdulsalamiismaila@gmail.com', '07033398766', '$2y$10$6H6EFOTsVRMWWvPebcGgjui9849MDbA5ajS64WYSwzsYMFozeXRsK', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'd40fccc258a5a19488909eacc1bf9cb3', '6ZGYH4UNWJ', '', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-06-17 22:36:12', NULL),
-(236, '5762443948', 'VTU-Quemby Woodard', '9PSB Bank', 'R-KJOGRJHBNQ', 'Bozyko', 'Quemby', 'Woodard', 'weqyrod@gmail.com', '09062128726', '$2y$10$fpLGC.KW6b03jleFTQXdMusUKbCZ19S6tDBUT.A9Kkn.mElOGP9Rm', '', '', '', '$2y$10$FWmMQDcfoXZXvfC/vWuw.O6XJ0a/rgmhzsbm9gaxrTTIOSLnmf1YC', '', '', '', '', 'uploads/default.png', '5e3c90bf85f82a884d26e390cc2c1454', 'UFSEPLKGD4', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=UFSEPLKGD4', NULL, 'complete', '102', 5, NULL, 'unverified', NULL, '2025-06-26 11:36:50', NULL),
+(236, '5762443948', 'VTU-Quemby Woodard', '9PSB Bank', 'R-KJOGRJHBNQ', 'Bozyko', 'Quemby', 'Woodard', 'weqyrod@gmail.com', '09062128726', '$2y$10$fpLGC.KW6b03jleFTQXdMusUKbCZ19S6tDBUT.A9Kkn.mElOGP9Rm', '', '', '', '$2y$10$FWmMQDcfoXZXvfC/vWuw.O6XJ0a/rgmhzsbm9gaxrTTIOSLnmf1YC', '', '', '', '', 'uploads/default.png', '5e3c90bf85f82a884d26e390cc2c1454', 'UFSEPLKGD4', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=UFSEPLKGD4', NULL, 'complete', '101', 5, NULL, 'unverified', NULL, '2025-08-15 15:49:33', '2025-08-15 16:49:33'),
 (237, '5762462378', 'VTU-Idola Bentley', '9PSB Bank', 'R-VOAXQEREHZ', 'Varitome', 'Idola', 'Bentley', 'haje@gmail.com', '09048448693', '$2y$10$bLnzCA39nKekPF0k.JWW3e6xWVNIAsXEHu659VMbtMn7ZG1mRJJSS', '', '', '', NULL, '', '', '', '', 'uploads/default.png', '1b2e43d24f383cc2a2df3aa2c6a9e6ac', '6EMK4XLPTH', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=6EMK4XLPTH', NULL, 'complete', '101', 1, NULL, 'unverified', NULL, '2025-06-26 12:54:04', NULL),
-(242, '5763327379', 'VTU-Ray Solis', '9PSB Bank', 'R-SEZKNMQYBM', 'Fuduluti', 'Ray', 'Solis', 'jepacibet@gmail.com', '08095784833', '$2y$10$o3GB04TQU6m5ld8g9G/OrulEVn8CTWIfU9q12/wb5ub4lvXYhc2/y', '', '', '', '$2y$10$hCvD93IJfQqXZrTZDgFYHuuND0MQwCo674Pc47obogXTZJjdIa4Ai', 'Samunaka Junction, Jalingo', 'Bauchi', '', 'Bogoro', 'uploads/default.png', '86503d3a702362a19b8889f2afced1f4', 'EH6VAOMB7S', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=EH6VAOMB7S', NULL, 'complete', '102', 5, NULL, 'unverified', NULL, '2025-07-13 18:56:40', '2025-07-13 04:37:33'),
+(242, '5763327379', 'VTU-Ray Solis', '9PSB Bank', 'R-SEZKNMQYBM', 'Fuduluti', 'Ray', 'Solis', 'jepacibet@gmail.com', '08095784833', '$2y$10$o3GB04TQU6m5ld8g9G/OrulEVn8CTWIfU9q12/wb5ub4lvXYhc2/y', '', '', '', '$2y$10$hCvD93IJfQqXZrTZDgFYHuuND0MQwCo674Pc47obogXTZJjdIa4Ai', 'Samunaka Junction, Jalingo', 'Bauchi', '', 'Bogoro', 'uploads/default.png', '86503d3a702362a19b8889f2afced1f4', 'EH6VAOMB7S', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=EH6VAOMB7S', NULL, 'complete', '101', 5, NULL, 'unverified', NULL, '2025-08-15 15:49:03', '2025-08-15 16:49:03'),
 (243, NULL, '', '', '', '', '', '', 'koxob@gmail.com', NULL, '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'f21c3b0a0530d6fffa094b48e3873c57', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-07-16 02:00:59', NULL),
 (244, '5763443237', 'VTU-Hyatt Obrien', '9PSB Bank', 'R-RSXYMJLRTM', 'Wodev', 'Hyatt', 'Obrien', 'zzetim@gmail.com', '08041375606', '$2y$10$lMj1aNU1ZF8wWu8s5x7mo.WCqRP5IQZVodviVDQfLWeZbehw9tdJe', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'dd8ed1e7b8dccb3592ce72b02e6abc8a', 'YXGCBWSZ7T', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=YXGCBWSZ7T', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-07-16 07:10:36', NULL),
 (246, '5763744147', 'VTU-Lester Hawkins', '9PSB Bank', 'R-SXYWLTZJLZ', 'Renev', 'Lester', 'Hawkins', 'johik@gmail.com', '09090779344', '$2y$10$jfNgTKM6tdBJplChh90edOdpoS7CpfL5XsEhwS47iCQxgIYBLdE1K', '', '', '', NULL, '', '', '', '', 'uploads/default.png', '96050b9883be8f1d01cb20add7065f1c', '2M71KLXFVJ', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=2M71KLXFVJ', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-07-25 05:07:47', NULL),
-(251, NULL, '', '', '', 'Kabure', 'Sadik', 'Dahiru', 'sadikdahiru419@yahoo.com', '08081514371', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', '2122f7201dbfc7dba43a57657fbefeeb', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-07-31 11:17:20', NULL),
-(256, NULL, '', '', '', '', '', '', 'eced235731@students.umyu.edu.ng', '07037943396', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'ad9fa5e67bc954120be095033f9c7553', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-08-01 22:46:08', NULL),
-(258, '5764363053', 'VTU-Michael Perkins', '9PSB Bank', 'R-BRFGDOBMGS', 'Cupihed', 'Michael', 'Perkins', 'zuruvo@gmail.com', '08028596499', '$2y$10$l2BZLA1pssrsQnRsymR7gu8M447VCeiRIXwJxCrO4RiYcGN5R4z6S', '', '', '', '$2y$10$Jhkk6IQkfp7L8hkey2Qr4edFVgIZEnQr/qweXChz2Htfb62ufcy/.', '', '', '', '', 'uploads/default.png', 'f00e8e1964cac0a602a967038cde019d', 'YT31ZWEUXF', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=YT31ZWEUXF', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-08-14 21:06:55', '2025-08-14 04:20:49'),
+(251, NULL, '', '', '', 'Kabure', 'Sadik', 'Dahiru', 'sadikdahiru419@yahoo.com', '08081514371', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', '2122f7201dbfc7dba43a57657fbefeeb', NULL, '', NULL, 'incomplete', '101', 0, NULL, 'unverified', NULL, '2025-08-15 23:42:03', '2025-08-16 00:42:03'),
+(256, NULL, '', '', '', '', 'Umar', 'Musa', 'eced235731@students.umyu.edu.ng', '07037943396', '', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'ad9fa5e67bc954120be095033f9c7553', NULL, '', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-08-15 15:47:40', '2025-08-15 16:47:40'),
+(258, '5764363053', 'VTU-Michael Perkins', '9PSB Bank', 'R-BRFGDOBMGS', 'Cupihed', 'Michael', 'Perkins', 'kabriacid01@gmail.com', '08028596499', '$2y$10$l2BZLA1pssrsQnRsymR7gu8M447VCeiRIXwJxCrO4RiYcGN5R4z6S', '', '', '', '$2y$10$Jhkk6IQkfp7L8hkey2Qr4edFVgIZEnQr/qweXChz2Htfb62ufcy/.', '', '', '', '', 'uploads/default.png', 'f00e8e1964cac0a602a967038cde019d', 'YT31ZWEUXF', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=YT31ZWEUXF', NULL, 'complete', '101', 0, NULL, 'unverified', NULL, '2025-08-15 04:47:31', '2025-08-15 05:35:20'),
 (259, '5764363369', 'VTU-Abdullahi Abubakar Kabri', '9PSB Bank', 'R-MBCERHNFVX', 'Abdusat', 'Abdullahi', 'Abubakar Kabri', 'abdullahikabri@gmail.com', '09113369958', '$2y$10$a4PWs0vuxL1.rjhdPC/QXeogzhdxgNsk8KYXNFB4wFg2tzehOWo66', '', '', '', NULL, '', '', '', '', 'uploads/default.png', 'bcbba2c9342346990085b06e7e71ecf9', '10R9IZK47D', 'https://dataspeed.com.ng/public/pages/register.php?referral_code=10R9IZK47D', 'YT31ZWEUXF', 'complete', '101', 0, NULL, 'unverified', NULL, '2025-08-14 03:40:27', NULL);
 
 -- --------------------------------------------------------
@@ -1016,6 +1048,15 @@ ALTER TABLE `account_reset_tokens`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `action_type` (`action_type`),
+  ADD KEY `created_at` (`created_at`);
+
+--
 -- Indexes for table `admins`
 --
 ALTER TABLE `admins`
@@ -1023,6 +1064,15 @@ ALTER TABLE `admins`
   ADD UNIQUE KEY `uq_admins_email` (`email`),
   ADD KEY `idx_admins_role` (`role`),
   ADD KEY `idx_admins_status` (`status`);
+
+--
+-- Indexes for table `admin_notifications`
+--
+ALTER TABLE `admin_notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_created_at` (`created_at`),
+  ADD KEY `idx_is_read` (`is_read`),
+  ADD KEY `idx_type` (`type`);
 
 --
 -- Indexes for table `audit_logs`
@@ -1088,6 +1138,12 @@ ALTER TABLE `service_providers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`key`);
+
+--
 -- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
@@ -1130,19 +1186,31 @@ ALTER TABLE `account_balance`
 -- AUTO_INCREMENT for table `account_complaints`
 --
 ALTER TABLE `account_complaints`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `account_reset_tokens`
 --
 ALTER TABLE `account_reset_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `admin_notifications`
+--
+ALTER TABLE `admin_notifications`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `audit_logs`
@@ -1172,7 +1240,7 @@ ALTER TABLE `nigerian_states`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=179;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 
 --
 -- AUTO_INCREMENT for table `otp_codes`
@@ -1208,7 +1276,7 @@ ALTER TABLE `service_providers`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `users`
