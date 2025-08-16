@@ -435,6 +435,8 @@ include 'includes/header.php';
                 const networkPlans = groupedPlans[network];
 
                 networkPlans.forEach((plan, index) => {
+                    const iconSrc = plan.icon ? ('../public/assets/icons/' + plan.icon) : '';
+                    const networkName = plan.network || (plan.slug ? plan.slug.toUpperCase() : '—');
                     html += `
                         <tr>
                             <td class="min-w-0">
@@ -442,7 +444,10 @@ include 'includes/header.php';
                                 <small class="text-muted">Code: ${plan.code}</small>
                             </td>
                             <td>
-                                <span class="badge bg-${getNetworkColor(plan.network)}">${plan.network}</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    ${iconSrc ? `<img src="${iconSrc}" alt="${networkName} icon" style="width:22px;height:22px;object-fit:contain;border-radius:4px;">` : ''}
+                                    <span>${networkName}</span>
+                                </div>
                             </td>
                             <td>${plan.data_size || '-'}</td>
                             <td>${plan.validity || '-'}</td>
@@ -468,15 +473,7 @@ include 'includes/header.php';
             tableBody.innerHTML = html;
         }
 
-        function getNetworkColor(network) {
-            const colors = {
-                'MTN': 'warning',
-                'Airtel': 'danger',
-                'Glo': 'success',
-                '9mobile': 'info'
-            };
-            return colors[network] || 'secondary';
-        }
+    // getNetworkColor removed: replaced by brand icon/name rendering
 
         // Inline price editing removed; use modal form only
 

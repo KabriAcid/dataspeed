@@ -158,9 +158,9 @@ require __DIR__ . '/../partials/header.php';
                 return;
             }
 
-            // --- Close confirm modal ---
+            // Ensure close button closes the confirm modal
             closeConfirm.addEventListener("click", function() {
-                confirmModal.style.display = "none";
+                document.getElementById('confirmModal').style.display = 'none';
             });
 
             // Hide confirm modal and show pin pad modal
@@ -172,12 +172,22 @@ require __DIR__ . '/../partials/header.php';
             pinpadModal.dataset.phone = phone;
             pinpadModal.dataset.amount = amount;
             pinpadModal.dataset.action = 'transfer';
-
-            // Clear any previous purchase-related attributes
-            delete pinpadModal.dataset.phone;
-            delete pinpadModal.dataset.network;
-            delete pinpadModal.dataset.type;
         };
+
+        // Hide confirm modal when clicking outside modal-content
+        const confirmModal = document.getElementById('confirmModal');
+        confirmModal.addEventListener('click', function(e) {
+            if (e.target === confirmModal) {
+                confirmModal.style.display = 'none';
+            }
+        });
+
+        // Close confirm modal on ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && confirmModal.style.display !== 'none') {
+                confirmModal.style.display = 'none';
+            }
+        });
 
         function formatPhoneNumber(num) {
             // Remove all non-digits

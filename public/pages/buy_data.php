@@ -479,6 +479,13 @@ try {
                 if (e.target === confirmModal) confirmModal.style.display = "none";
             });
 
+            // --- Close confirm modal on ESC ---
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && confirmModal.style.display !== 'none') {
+                    confirmModal.style.display = 'none';
+                }
+            });
+
             // --- Initial load ---
             loadPlans();
         });

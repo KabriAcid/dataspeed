@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const backspaceBtn = pinpadModal.querySelector("#backspace");
   const exitBtn = pinpadModal.querySelector("#pin-exit-btn");
   const forgotBtn = pinpadModal.querySelector("#pin-forgot-btn");
+  const closeBtn = pinpadModal.querySelector("#pinpad-close-btn");
 
   let pin = "";
 
@@ -222,6 +223,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Exit and Forgot PIN actions
+  closeBtn?.addEventListener("click", function () {
+    pinpadModal.style.display = "none";
+    pin = "";
+    updateDots();
+    updateBackspace();
+  });
   exitBtn?.addEventListener("click", function () {
     pinpadModal.style.display = "none";
     pin = "";

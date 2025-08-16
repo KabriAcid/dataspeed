@@ -10,6 +10,8 @@ $ebills_username = $_ENV['EBILLS_USERNAME'] ?? '';
 $ebills_password = $_ENV['EBILLS_PASSWORD'] ?? '';
 $ebills_base_url = $_ENV['EBILLS_BASE_URL'] ?? 'https://ebills.africa/wp-json';
 $token_cache_file = __DIR__ . '/../../cache/ebills_token.json';
+// Cache for reseller balance to avoid an extra network call on every purchase
+$reseller_balance_cache_file = __DIR__ . '/../../cache/ebills_reseller_balance.json';
 
 function getCachedToken()
 {
@@ -50,6 +52,14 @@ function getEbillToken($username, $password, $forceRefresh = false)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    // Performance options
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+    curl_setopt($ch, CURLOPT_ENCODING, ''); // enable gzip/deflate
+    if (defined('CURL_HTTP_VERSION_2TLS')) {
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2TLS);
+    }
     $res = curl_exec($ch);
     curl_close($ch);
 
@@ -61,6 +71,51 @@ function getEbillToken($username, $password, $forceRefresh = false)
     }
 
     return null;
+}
+
+// Cached reseller balance: returns float|false; refreshes if stale beyond TTL
+function getResellerBalanceCached($token, $ttlSeconds = 45)
+{
+    global $ebills_base_url, $reseller_balance_cache_file;
+    // Try cache first
+    if (file_exists($reseller_balance_cache_file)) {
+        $raw = @file_get_contents($reseller_balance_cache_file);
+        if ($raw) {
+            $data = json_decode($raw, true);
+            if (!empty($data['balance']) && !empty($data['ts']) && (time() - (int)$data['ts'] < $ttlSeconds)) {
+                return (float)$data['balance'];
+            }
+        }
+    }
+
+    // Fetch fresh
+    $ch = curl_init($ebills_base_url . '/api/v2/balance');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Authorization: Bearer $token",
+        "Content-Type: application/json"
+    ]);
+    // Performance options
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+    curl_setopt($ch, CURLOPT_ENCODING, '');
+    if (defined('CURL_HTTP_VERSION_2TLS')) {
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2TLS);
+    }
+    $balanceResponse = curl_exec($ch);
+    curl_close($ch);
+
+    $balanceData = json_decode($balanceResponse, true);
+    if (isset($balanceData['code']) && $balanceData['code'] === 'rest_forbidden') {
+        // Caller should refresh token and retry externally if needed
+        return false;
+    }
+    $balance = $balanceData['data']['balance'] ?? null;
+    if ($balance === null) return false;
+    // Write cache best-effort
+    @file_put_contents($reseller_balance_cache_file, json_encode(['balance' => (float)$balance, 'ts' => time()]));
+    return (float)$balance;
 }
 
 
@@ -157,42 +212,18 @@ if (!$token) {
     exit;
 }
 
-// Admin wallet balance check
-$ch = curl_init($ebills_base_url . '/api/v2/balance');
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Authorization: Bearer $token",
-    "Content-Type: application/json"
-]);
-$balanceResponse = curl_exec($ch);
-curl_close($ch);
-
-$balanceData = json_decode($balanceResponse, true);
-
-if (isset($balanceData['code']) && $balanceData['code'] === 'rest_forbidden') {
-    // Token was invalidated, regenerate and retry once
+// Admin wallet balance check (cached to avoid extra hop each request)
+$reseller_balance = getResellerBalanceCached($token, 45);
+if ($reseller_balance === false) {
+    // Retry once with refreshed token
     $token = getEbillToken($ebills_username, $ebills_password, true);
-
-    $ch = curl_init($ebills_base_url . '/api/v2/balance');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        "Authorization: Bearer $token",
-        "Content-Type: application/json"
-    ]);
-    $balanceResponse = curl_exec($ch);
-    curl_close($ch);
-
-    $balanceData = json_decode($balanceResponse, true);
+    $reseller_balance = getResellerBalanceCached($token, 45);
 }
-
-if (!isset($balanceData['data']['balance'])) {
+if ($reseller_balance === false) {
     echo json_encode(["success" => false, "message" => "Unable to check reseller balance. Try again later."]);
     exit;
 }
-
-
-$reseller_balance = (float) $balanceData['data']['balance'];
-if ($reseller_balance < $amount) {
+if ($reseller_balance < (float)$amount) {
     echo json_encode(["success" => false, "message" => "Transaction could not be completed at the moment. Please try again later."]);
     exit;
 }
@@ -213,6 +244,14 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Authorization: Bearer $token",
     "Content-Type: application/json"
 ]);
+// Performance options
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+curl_setopt($ch, CURLOPT_TIMEOUT, 25);
+curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+curl_setopt($ch, CURLOPT_ENCODING, '');
+if (defined('CURL_HTTP_VERSION_2TLS')) {
+    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2TLS);
+}
 $response = curl_exec($ch);
 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);

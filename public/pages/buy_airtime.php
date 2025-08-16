@@ -373,6 +373,13 @@ require __DIR__ . '/../partials/header.php';
                 }
             });
 
+            // Close confirm modal on ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && confirmModal.style.display !== 'none') {
+                    confirmModal.style.display = 'none';
+                }
+            });
+
             // PIN PAD functionality
             payBtn.addEventListener("click", function() {
                 let amountText = document.getElementById('confirm-amount').textContent;
