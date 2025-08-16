@@ -35,13 +35,13 @@ try {
     // Fetch plans
     // Fetch candidate plans; we'll bucket by validity below (so <7 days => daily)
     $plansStmt = $pdo->prepare("
-                SELECT variation_code AS plan_id, price, base_price, volume, validity, type 
-                FROM service_plans 
-                WHERE service_id = ? 
-                AND provider_id = ? 
-                AND is_active = 1
-                ORDER BY price ASC
-            ");
+        SELECT variation_code AS plan_id, plan_name, price, base_price, volume, validity, type 
+        FROM service_plans 
+        WHERE service_id = ? 
+        AND provider_id = ? 
+        AND is_active = 1
+        ORDER BY price ASC
+        ");
     $plansStmt->execute([$service_id, $provider_id]);
     $allPlans = $plansStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -84,6 +84,7 @@ try {
         }
         $bucketed[$bucket][] = [
             'plan_id' => $p['plan_id'],
+            'plan_name' => $p['plan_name'] ?? '',
             'price' => $p['price'],
             'base_price' => $p['base_price'] ?? null,
             'volume' => $p['volume'] ?? '',

@@ -90,7 +90,7 @@ try {
                     </div>
 
                     <!-- Recipient Phone (for Buy For Others) -->
-                    <div class="input-group-container" id="recipientPhoneWrap" style="display: none;">
+                    <div class="input-group-container mt-3" id="recipientPhoneWrap" style="display: none;">
                         <span class="input-group-prefix text-xs">
                             <img src="../assets/img/ng.png" alt=""> +234
                         </span>
@@ -332,11 +332,13 @@ try {
             function renderPlans(plans, forModal = false) {
                 const container = forModal ? allPlanCards : planCardsContainer;
                 container.innerHTML = "";
+                // Reset selection for main list before rendering
+                if (!forModal) selectedPlan = null;
                 plans.forEach((plan, idx) => {
                     const card = document.createElement("div");
                     card.className = "plan-col"; // width controlled by CSS grid
                     card.innerHTML = `
-                                    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.base_price ?? plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}">
+                                    <div class="plan-card" data-plan-id="${plan.plan_id}" data-price="${plan.base_price ?? plan.price}" data-volume="${plan.volume}" data-validity="${plan.validity}" data-plan-name="${plan.plan_name ?? ''}">
                                         <div class="data-price mb-1" style="font-size:1rem;">₦${Number(plan.base_price ?? plan.price).toLocaleString()}</div>
                                         <div class="data-volume mb-1">${plan.volume}</div>
                                         <div class="data-validity mb-2">${plan.validity}</div>
@@ -365,13 +367,18 @@ try {
                             // Use base_price (retail) when available, otherwise fallback to provider price
                             price: (plan.base_price ?? plan.price),
                             volume: plan.volume,
-                            validity: plan.validity
+                            validity: plan.validity,
+                            plan_name: plan.plan_name ?? ''
                         };
                         checkPurchaseReady();
                     });
                     container.appendChild(card);
                 });
-                selectedPlan = null;
+                // Auto-select the first plan so Purchase/Confirm reflects it
+                if (!forModal) {
+                    const firstCard = container.querySelector('.plan-card');
+                    if (firstCard) firstCard.click();
+                }
                 checkPurchaseReady();
             }
 
@@ -407,7 +414,8 @@ try {
                 const networkKey = selectedTab?.toUpperCase() || "MTN";
                 confirmService.innerHTML = networkIcons[networkKey] || "";
 
-                confirmPlan.textContent = `${selectedPlan.volume}`;
+                const planLine = selectedPlan.plan_name ? `${selectedPlan.volume} — ${selectedPlan.plan_name}` : `${selectedPlan.volume}`;
+                confirmPlan.textContent = planLine;
                 // Show retail amount (base_price if available)
                 confirmAmount.textContent = `₦${Number(selectedPlan.price).toLocaleString()}`;
                 confirmValidity.textContent = `${selectedPlan.validity}`;
