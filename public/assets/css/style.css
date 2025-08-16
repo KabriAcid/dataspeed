@@ -73,11 +73,35 @@ input[type="number"],
       transparent
     ),
     radial-gradient(circle at 70% 70%, rgba(255, 201, 228, 0.2), transparent);
-  z-index: 0;
-  filter: blur(100px);
-  pointer-events: none;
+}
+.plan-card.selected-plan,
+.plan-card:hover {
+  /* no scaling on active/hover; color changes handled in JS */
+  transform: none;
+}
+.plan-card {
+  transition: box-shadow 0.2s ease;
 }
 
+/* Responsive typography for plan cards (Data & TV) */
+.plan-card .data-price,
+.plan-card .fw-bold {
+  /* price text */
+  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+  font-weight: 700;
+}
+.plan-card .data-volume,
+.plan-card > div:first-child {
+  /* volume or plan name */
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  font-weight: 600;
+}
+.plan-card .data-validity,
+.plan-card .text-muted.small {
+  /* validity text */
+  font-size: clamp(0.75rem, 0.95vw, 0.9rem);
+  opacity: 0.9;
+}
 .loading-spinner {
   border: 4px solid var(--primary-light);
   border-top: 4px solid var(--primary);
@@ -215,7 +239,16 @@ section:not(.jumbotoron) {
   color: white;
 }
 
-button:disabled {
+/* Keep global disabled minimal to not override other libs */
+button:disabled,
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+/* Scoped disabled style for our buttons only */
+.primary-btn:disabled,
+.secondary-btn:disabled,
+.outline-btn:disabled {
   box-shadow: var(--shadow-md);
   background-color: transparent !important;
   background-image: none !important;
@@ -229,7 +262,6 @@ button:disabled {
   color: var(--primary);
   text-align: center;
   vertical-align: middle;
-  cursor: not-allowed;
   user-select: none;
   border-radius: 0.5rem;
   transition: all 0.35s ease-in;
@@ -750,44 +782,9 @@ select.select-lga {
   pointer-events: auto;
 }
 
-/* MULTI-STEP */
-.form-top-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.form-step-header {
-  text-align: center;
-  margin: 15px 0;
-}
-
+/* MULTI-STEP (deduped: see earlier definitions) */
 .strong-color {
   color: var(--primary);
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin: 10px 0;
-}
-
-.page {
-  width: 8px;
-  height: 8px;
-  background-color: #ccc;
-  border-radius: 50%;
-  transition: background 0.3s ease-in-out, transform 0.3s;
-}
-
-.page.active {
-  background-color: #722f37;
-  transform: scale(1.2);
-}
-
-.error-input {
-  border: 1px solid rgb(245, 0, 0) !important;
 }
 
 /* BOTTOM NAVIGATIONS */
@@ -1025,17 +1022,7 @@ select.select-lga {
 }
 
 /* Default styling for icon wrapper */
-.icon-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  font-size: 18px;
-  color: white;
-  background-color: #ccc;
-}
+/* Removed duplicate .icon-wrapper default block below to avoid override */
 
 /* Specific styles for different notification types */
 
@@ -1458,28 +1445,7 @@ th {
   max-height: 140px;
   padding: 12px 16px;
 }
-.plan-card.selected-plan,
-.plan-card:hover {
-  transform: scale(1.05);
-}
-.plan-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.plan-card .data-volume {
-  font-size: 1.2rem;
-  letter-spacing: 1.1px;
-  margin-bottom: 0 !important;
-  font-weight: 700;
-}
-.plan-card .data-validity {
-  font-size: 0.75rem;
-  margin-bottom: 0 !important;
-}
-.plan-card .data-price {
-  font-size: 0.9rem;
-  margin-bottom: 0 !important;
-  font-weight: 500;
-}
+/* Deduped: no scaling on hover/selected; responsive typography defined earlier */
 
 /* BUY AIRTIME */
 .amount-btn {
@@ -1517,7 +1483,7 @@ th {
 }
 
 /* Slide-up content */
-.modal-content {
+.modal-overlay .modal-content {
   background: #fff;
   width: 100%;
   max-height: 100%;
@@ -1862,9 +1828,7 @@ th {
   }
 }
 
-.page-header.scrolled {
-  box-shadow: 0 3px 66px rgba(0, 0, 0, 0.06);
-}
+/* Duplicate .page-header.scrolled removed; earlier definition retained */
 
 /* TRANSACTION SUCCESSFUL PAGE */
 .lottie-center {
@@ -1948,14 +1912,7 @@ footer a:hover {
   color: var(--primary) !important;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* Duplicate @keyframes spin removed; earlier definition retained */
 
 #refresh-balance {
   transition: opacity 0.3s ease;
@@ -1995,3 +1952,4 @@ footer a:hover {
     transform: scale(1);
   }
 }
+/* stray closing brace removed */

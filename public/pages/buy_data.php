@@ -65,7 +65,7 @@ try {
                             data-network="<?= htmlspecialchars($provider['slug']) ?>"
                             data-provider-id="<?= (int)$provider['id'] ?>"
                             style="--brand-color: <?= htmlspecialchars($provider['brand_color']) ?>;">
-                            <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>">
+                            <img src="../assets/icons/<?= htmlspecialchars($provider['icon']) ?>" alt="<?= htmlspecialchars($provider['name']) ?>" class="<?= htmlspecialchars($provider['slug']) . '-logo' ?>">
                             <span><?= htmlspecialchars($provider['name']) ?></span>
                         </div>
                     <?php endforeach; ?>
