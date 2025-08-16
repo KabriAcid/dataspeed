@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - DataSpeed VTU</title>
+    <title>Admin Dashboard - DataSpeed</title>
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="../public/favicon.png">

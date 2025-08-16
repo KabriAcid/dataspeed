@@ -99,7 +99,7 @@ include 'includes/header.php';
                     <div class="stat-card">
                         <div class="stat-card-body">
                             <div class="stat-icon bg-warning">
-                                <i class="ni ni-wallet-43"></i>
+                                <i class="ni ni-briefcase-24"></i>
                             </div>
                             <div class="stat-content">
                                 <h3 class="stat-value" id="totalBalance">₦0</h3>
