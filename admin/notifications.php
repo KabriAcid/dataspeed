@@ -11,20 +11,22 @@ require __DIR__ . '/includes/header.php';
     <?php include __DIR__ . '/includes/topbar.php'; ?>
     <?php include __DIR__ . '/includes/sidebar.php'; ?>
 
-    <main class="main-content">
+    <main class="main-content notifications-page">
         <div class="container-fluid">
-            <div class="page-header d-flex align-items-center justify-content-between">
-                <div>
-                    <h1 class="page-title" id="pageTitle">Notifications</h1>
-                    <p class="page-subtitle">All system, user, and security alerts</p>
+            <div class="page-header row g-2 align-items-center">
+                <div class="col-12 col-md">
+                    <h1 class="page-title mb-1" id="pageTitle">Notifications</h1>
+                    <p class="page-subtitle mb-0">All system, user, and security alerts</p>
                 </div>
-                <div class="d-flex gap-2">
-                    <button id="markAllBtn" class="btn btn-sm btn-outline-primary">
-                        <i class="ni ni-check-bold me-1"></i> Mark all as read
-                    </button>
-                    <button id="refreshBtn" class="btn btn-sm btn-outline-secondary">
-                        <i class="ni ni-refresh-02 me-1"></i> Refresh
-                    </button>
+                <div class="col-12 col-md-auto">
+                    <div class="d-flex gap-2 flex-wrap justify-content-md-end">
+                        <button id="markAllBtn" class="btn btn-outline-primary btn-sm w-100 w-md-auto">
+                            <i class="ni ni-check-bold me-1"></i> Mark all as read
+                        </button>
+                        <button id="refreshBtn" class="btn btn-outline-secondary btn-sm w-100 w-md-auto">
+                            <i class="ni ni-refresh-02 me-1"></i> Refresh
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -129,6 +131,42 @@ require __DIR__ . '/includes/header.php';
 
     <?php include __DIR__ . '/includes/footer.php'; ?>
     <?php include __DIR__ . '/includes/scripts.php'; ?>
+    <style>
+        /* Responsive tweaks for notifications list */
+        .notifications-page #listContainer .list-group-item {
+            gap: .5rem;
+        }
+
+        .notifications-page .notif-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .notifications-page .notif-message {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        @media (max-width: 576px) {
+            .notifications-page #listContainer .list-group-item {
+                padding-right: 1rem;
+                padding-left: 1rem;
+            }
+
+            .notifications-page .notif-actions {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+            }
+
+            .notifications-page .notif-date {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
     <script>
         (function() {
             const listEl = document.getElementById('listContainer');
@@ -175,21 +213,21 @@ require __DIR__ . '/includes/header.php';
             function itemTemplate(n) {
                 const readCls = n.is_read == 1 ? '' : 'list-group-item-warning';
                 return `
-				<div class="list-group-item d-flex align-items-start ${readCls}">
-					<div class="me-3 mt-1 flex-shrink-0">
-						${typeBadge(n.type)}
-					</div>
-					<div class="flex-grow-1 min-w-0">
-						<div class="d-flex justify-content-between align-items-start">
-							<h6 class="mb-1 text-truncate">${n.title}</h6>
-							<small class="text-muted ms-3">${formatDate(n.created_at)}</small>
-						</div>
-						<div class="text-muted small text-truncate">${n.message}</div>
-					</div>
-					<div class="ms-3">
-						${n.is_read == 1 ? '' : `<button class=\"btn btn-sm btn-outline-primary\" data-action=\"mark\" data-id=\"${n.id}\"><i class=\"ni ni-check-bold\"></i></button>`}
-					</div>
-				</div>`;
+                <div class="list-group-item d-flex align-items-start flex-wrap ${readCls}">
+                    <div class="me-3 mt-1 flex-shrink-0">
+                        ${typeBadge(n.type)}
+                    </div>
+                    <div class="flex-grow-1 min-w-0">
+                        <div class="d-flex align-items-start justify-content-between flex-column flex-sm-row gap-1">
+                            <h6 class="mb-1 notif-title w-100">${n.title}</h6>
+                            <small class="text-muted notif-date flex-shrink-0">${formatDate(n.created_at)}</small>
+                        </div>
+                        <div class="text-muted small notif-message">${n.message}</div>
+                    </div>
+                    <div class="notif-actions ms-0 ms-sm-3 mt-2 mt-sm-0">
+                        ${n.is_read == 1 ? '' : `<button class=\"btn btn-sm btn-outline-primary\" data-action=\"mark\" data-id=\"${n.id}\"><i class=\"ni ni-check-bold\"></i></button>`}
+                    </div>
+                </div>`;
             }
 
             function bindRowActions() {
@@ -206,6 +244,10 @@ require __DIR__ . '/includes/header.php';
                                 })
                             });
                             await Promise.all([loadStats(), loadList()]);
+                            // Update topbar badge count
+                            if (window.refreshAdminNotifBadge) {
+                                await window.refreshAdminNotifBadge().catch(() => {});
+                            }
                         } catch (e) {
                             /* noop */
                         } finally {
@@ -264,6 +306,10 @@ require __DIR__ . '/includes/header.php';
                         })
                     });
                     await Promise.all([loadStats(), loadList()]);
+                    // Update topbar badge count
+                    if (window.refreshAdminNotifBadge) {
+                        await window.refreshAdminNotifBadge().catch(() => {});
+                    }
                 } catch (e) {
                     /* noop */
                 } finally {
