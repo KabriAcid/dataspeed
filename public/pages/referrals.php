@@ -13,7 +13,7 @@ require __DIR__ . '/../partials/header.php';
 ?>
 
 <body>
-    <main class="container-fluid py-5">
+    <main class="container-fluid py-5" style="padding-bottom: 84px;">
         <!-- Header Section -->
         <header>
             <div class="page-header mb-4 text-center">
@@ -31,32 +31,34 @@ require __DIR__ . '/../partials/header.php';
         </header>
 
         <div>
-            <div class="row mb-5">
+            <div class="row g-3 mb-5">
                 <!-- Pending Reward -->
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="card px-3 py-2">
                         <div class="card-header mb-0 p-0">
                             <p class="text-sm mb-0 font-weight-bold text-secondary">Pending Reward</p>
                         </div>
                         <div class="card-body p-0">
                             <?php
-                            $color = ($rewards['pending'] > 0) ? 'text-warning' : 'text-dark'
+                            $pendingVal = isset($rewards['pending']) ? (float)$rewards['pending'] : 0;
+                            $color = ($pendingVal > 0) ? 'text-warning' : 'text-dark'
                             ?>
-                            <h4 id="pendingAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358; <?= number_format($rewards['pending'], 2) ?></h4>
+                            <h4 id="pendingAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358; <?= number_format($pendingVal, 2) ?></h4>
                         </div>
                     </div>
                 </div>
                 <!-- Claimed reward -->
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="card px-3 py-2">
                         <div class="card-header mb-0 p-0">
                             <p class="text-sm mb-0 font-weight-bold text-secondary">Claimed Reward</p>
                         </div>
                         <div class="card-body p-0">
                             <?php
-                            $color = ($rewards['claimed'] > 0) ? 'text-success' : 'text-dark'
+                            $claimedVal = isset($rewards['claimed']) ? (float)$rewards['claimed'] : 0;
+                            $color = ($claimedVal > 0) ? 'text-success' : 'text-dark'
                             ?>
-                            <h4 id="claimedAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358; <?= number_format($rewards['claimed'], 2) ?></h4>
+                            <h4 id="claimedAmount" class="amount mb-0 <?= $color; ?> font-weight-bolder">&#8358; <?= number_format($claimedVal, 2) ?></h4>
                         </div>
                     </div>
                 </div>
@@ -70,15 +72,15 @@ require __DIR__ . '/../partials/header.php';
                 </div>
 
                 <div class="tab-content active" id="pending">
-                    <div class="table-responsive">
-                        <table class="table mb-0" style="overflow-x: scroll;">
+                    <div class="table-responsive" style="overflow-x:auto;">
+                        <table class="table table-striped mb-0">
                             <thead class="table-white">
                                 <tr>
-                                    <th>Reward</th>
-                                    <th>Referee</th>
-                                    <th>Status</th>
-                                    <th>Timestamp</th>
-                                    <th>Action</th>
+                                    <th scope="col">Reward</th>
+                                    <th scope="col">Referee</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Timestamp</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,8 +91,7 @@ require __DIR__ . '/../partials/header.php';
                                         ?>
                                         <tr>
                                             <td><strong>&#8358;<?= htmlspecialchars($referral['reward']); ?></strong></td>
-
-                                            <td><?= htmlspecialchars($referral['referee_email']); ?></td>
+                                            <td class="text-truncate" style="max-width:220px;"><?= htmlspecialchars($referral['referee_email']); ?></td>
                                             <td class="text-warning">
                                                 <?= htmlspecialchars(ucfirst($referral['status'])); ?></td>
                                             <td><?= $formattedDate; ?></td>
@@ -103,7 +104,7 @@ require __DIR__ . '/../partials/header.php';
                                     <?php endforeach; ?>
                                 <?php else : ?>
                                     <tr>
-                                        <td colspan=" 5" class="text-center text-muted p-5">No pending referrals found.
+                                        <td colspan="5" class="text-center text-muted p-5">No pending referrals found.
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -113,14 +114,14 @@ require __DIR__ . '/../partials/header.php';
                 </div>
 
                 <div class="tab-content" id="completed">
-                    <div class="table-responsive">
-                        <table class="table mb-0">
+                    <div class="table-responsive" style="overflow-x:auto;">
+                        <table class="table table-striped mb-0">
                             <thead class="">
                                 <tr>
-                                    <th>Reward</th>
-                                    <th>Referee</th>
-                                    <th>Status</th>
-                                    <th>Timestamp</th>
+                                    <th scope="col">Reward</th>
+                                    <th scope="col">Referee</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Timestamp</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -131,8 +132,7 @@ require __DIR__ . '/../partials/header.php';
                                         ?>
                                         <tr>
                                             <td><strong>&#8358;<?= htmlspecialchars($referral['reward']); ?></strong></td>
-
-                                            <td><?= htmlspecialchars($referral['referee_email']); ?></td>
+                                            <td class="text-truncate" style="max-width:220px;"><?= htmlspecialchars($referral['referee_email']); ?></td>
                                             <td class="text-success"><?= htmlspecialchars(ucfirst($referral['status'])); ?></td>
                                             <td><?= $formattedDate; ?></td>
                                         </tr>
@@ -148,7 +148,7 @@ require __DIR__ . '/../partials/header.php';
                     </div>
                 </div>
             </div>
-
+            <!--  -->
             <div class="row mt-5 px-3">
                 <div class="col-lg-6 col-12">
                     <div class="d-flex justify-content-center align-items-center">
@@ -161,10 +161,12 @@ require __DIR__ . '/../partials/header.php';
                                         <?= $referrals['referral_code'] ?></h4>
                                 </div>
                                 <div class="ms-2 ms-md-5">
-                                    <svg width="24" id="copy-icon" class="cursor-pointer" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.83333 6.61539C5.12206 6.61539 4.54545 7.18938 4.54545 7.89744V19.1795C4.54545 19.8875 5.12206 20.4615 5.83333 20.4615H14.0758C14.787 20.4615 15.3636 19.8875 15.3636 19.1795V11.3112C15.3636 10.9712 15.2279 10.6451 14.9864 10.4047L11.5571 6.99089C11.3156 6.75046 10.988 6.61539 10.6465 6.61539H5.83333ZM3 7.89744C3 6.33971 4.26853 5.07692 5.83333 5.07692H10.6465C11.3979 5.07692 12.1186 5.37408 12.6499 5.90303L16.0792 9.3168C16.6106 9.84575 16.9091 10.5632 16.9091 11.3112V19.1795C16.9091 20.7372 15.6406 22 14.0758 22H5.83333C4.26853 22 3 20.7372 3 19.1795V7.89744Z" fill="#030D45" />
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.12121 2.76923C7.12121 2.3444 7.46717 2 7.89394 2H12.1919C12.9434 2 13.664 2.29716 14.1954 2.82611L19.1701 7.77834C19.7015 8.30729 20 9.0247 20 9.77275V17.1282C20 17.553 19.654 17.8974 19.2273 17.8974C18.8005 17.8974 18.4545 17.553 18.4545 17.1282V9.77275C18.4545 9.43273 18.3189 9.10663 18.0773 8.8662L13.1026 3.91397C12.8611 3.67353 12.5335 3.53846 12.1919 3.53846H7.89394C7.46717 3.53846 7.12121 3.19407 7.12121 2.76923Z" fill="#030D45" />
-                                    </svg>
+                                    <button type="button" id="copyBtn" aria-label="Copy referral code" style="background:none;border:0;padding:0;cursor:pointer;">
+                                        <svg width="24" class="cursor-pointer" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.83333 6.61539C5.12206 6.61539 4.54545 7.18938 4.54545 7.89744V19.1795C4.54545 19.8875 5.12206 20.4615 5.83333 20.4615H14.0758C14.787 20.4615 15.3636 19.8875 15.3636 19.1795V11.3112C15.3636 10.9712 15.2279 10.6451 14.9864 10.4047L11.5571 6.99089C11.3156 6.75046 10.988 6.61539 10.6465 6.61539H5.83333ZM3 7.89744C3 6.33971 4.26853 5.07692 5.83333 5.07692H10.6465C11.3979 5.07692 12.1186 5.37408 12.6499 5.90303L16.0792 9.3168C16.6106 9.84575 16.9091 10.5632 16.9091 11.3112V19.1795C16.9091 20.7372 15.6406 22 14.0758 22H5.83333C4.26853 22 3 20.7372 3 19.1795V7.89744Z" fill="#030D45" />
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.12121 2.76923C7.12121 2.3444 7.46717 2 7.89394 2H12.1919C12.9434 2 13.664 2.29716 14.1954 2.82611L19.1701 7.77834C19.7015 8.30729 20 9.0247 20 9.77275V17.1282C20 17.553 19.654 17.8974 19.2273 17.8974C18.8005 17.8974 18.4545 17.553 18.4545 17.1282V9.77275C18.4545 9.43273 18.3189 9.10663 18.0773 8.8662L13.1026 3.91397C12.8611 3.67353 12.5335 3.53846 12.1919 3.53846H7.89394C7.46717 3.53846 7.12121 3.19407 7.12121 2.76923Z" fill="#030D45" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -183,10 +185,6 @@ require __DIR__ . '/../partials/header.php';
             </div>
             <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
     </main>
-    <footer class=" my-4">
-        <p class="text-xs text-center text-secondary">Copyright &copy; Dreamerscodes 2025. All
-            rights reserved.</p>
-    </footer>
     <script src="../assets/js/ajax.js"></script>
     <script>
         document.getElementById("shareButton").addEventListener("click", () => {
@@ -205,32 +203,20 @@ require __DIR__ . '/../partials/header.php';
             }
         });
 
-        document.getElementById('copy-icon').addEventListener('click', function() {
-            const referralCode = document.getElementById('referral_code').innerText.trim();
-
-            // Copy to clipboard
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const referralCode = (document.getElementById('referral_code').innerText || '').trim();
+            if (!referralCode) return;
+            const btn = this;
             navigator.clipboard.writeText(referralCode).then(() => {
-                const copyBtn = document.getElementById('copy-icon');
-                // Change icon to checkmark and color to green
-
                 showToasted('Copied successfully', 'success');
-
-                document.getElementById('copy-icon').innerHTML = `
+                const original = btn.innerHTML;
+                btn.innerHTML = `
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.9989 11.2858V19.1429C16.9989 20.6735 15.7637 22 14.1168 22H5.88213C4.33813 22 3 20.7756 3 19.1429V7.91841C3 6.3878 4.2352 5.06127 5.88213 5.06127H10.72C11.4405 5.06127 12.1611 5.36739 12.7787 5.8776L16.1755 9.24495C16.6901 9.85719 16.9989 10.5715 16.9989 11.2858Z" fill="#030D45"/>
-                <path d="M19.2635 17.9184C18.8517 17.9184 18.44 17.6123 18.44 17.1021V9.75515C18.44 9.44903 18.3371 9.1429 18.0283 8.83678L13.0875 3.93882C12.8816 3.73474 12.4699 3.53066 12.1611 3.53066H7.9408C7.52907 3.6327 7.11733 3.22454 7.11733 2.81637C7.11733 2.40821 7.52907 2.00005 7.9408 2.00005H12.264C12.9845 2.00005 13.7051 2.30617 14.2197 2.81637L19.1605 7.71433C19.6752 8.22454 19.984 8.93882 19.984 9.65311V17.1021C20.0869 17.5103 19.6752 17.9184 19.2635 17.9184Z" fill="#030D45"/>
-                </svg>
-            `;
-
+                  <path d="M20 6L9 17L4 12" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`;
                 setTimeout(() => {
-                    document.getElementById('copy-icon').innerHTML = `
-                    <svg width="24" id="copy-icon" class="cursor-pointer" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.83333 6.61539C5.12206 6.61539 4.54545 7.18938 4.54545 7.89744V19.1795C4.54545 19.8875 5.12206 20.4615 5.83333 20.4615H14.0758C14.787 20.4615 15.3636 19.8875 15.3636 19.1795V11.3112C15.3636 10.9712 15.2279 10.6451 14.9864 10.4047L11.5571 6.99089C11.3156 6.75046 10.988 6.61539 10.6465 6.61539H5.83333ZM3 7.89744C3 6.33971 4.26853 5.07692 5.83333 5.07692H10.6465C11.3979 5.07692 12.1186 5.37408 12.6499 5.90303L16.0792 9.3168C16.6106 9.84575 16.9091 10.5632 16.9091 11.3112V19.1795C16.9091 20.7372 15.6406 22 14.0758 22H5.83333C4.26853 22 3 20.7372 3 19.1795V7.89744Z" fill="#030D45"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.12121 2.76923C7.12121 2.3444 7.46717 2 7.89394 2H12.1919C12.9434 2 13.664 2.29716 14.1954 2.82611L19.1701 7.77834C19.7015 8.30729 20 9.0247 20 9.77275V17.1282C20 17.553 19.654 17.8974 19.2273 17.8974C18.8005 17.8974 18.4545 17.553 18.4545 17.1282V9.77275C18.4545 9.43273 18.3189 9.10663 18.0773 8.8662L13.1026 3.91397C12.8611 3.67353 12.5335 3.53846 12.1919 3.53846H7.89394C7.46717 3.53846 7.12121 3.19407 7.12121 2.76923Z" fill="#030D45"/>
-                    </svg>
-                `;
+                    btn.innerHTML = original;
                 }, 2000);
-
             }).catch(err => {
                 showToasted('Could not copy code', 'error');
                 console.error('Copy failed: ', err);
@@ -269,57 +255,47 @@ require __DIR__ . '/../partials/header.php';
         });
 
         document.addEventListener("DOMContentLoaded", () => {
+            // Wire claim buttons
             document.querySelectorAll(".claim-btn").forEach(button => {
                 button.addEventListener("click", () => {
                     const referralId = button.getAttribute("data-id");
-
                     if (!referralId) return;
-
                     button.disabled = true;
-
-                    sendAjaxRequest("claim-reward.php", "POST", `referral_id=${referralId}`, (
-                        response) => {
+                    sendAjaxRequest("claim-reward.php", "POST", `referral_id=${encodeURIComponent(referralId)}`, (response) => {
                         if (response.success) {
                             button.textContent = "Claimed";
                             button.classList.remove("bg-success");
-                            button.classList.add("badge");
-                            button.classList.add("bg-secondary");
+                            button.classList.add("badge", "bg-secondary");
                             button.disabled = true;
-                            showToasted('Reward Claimed Successfully!', 'success')
-
+                            showToasted('Reward Claimed Successfully!', 'success');
                             setTimeout(() => {
                                 window.location.href = 'referrals.php';
-                            }, 3000);
-
+                            }, 2000);
                         } else {
                             button.disabled = false;
                             button.textContent = "Claim";
-                            showToasted("Failed to claim reward.", 'error');
-                            console.log(response.message || "Failed to claim reward.");
+                            showToasted(response.message || "Failed to claim reward.", 'error');
                         }
                     });
+                });
+            });
 
-                }) // Fetch and update rewards
-                sendAjaxRequest("get_reward_totals.php", "GET", null, (res) => {
-                    if (res.success) {
-                        const pendingElem = document.getElementById("pendingAmount");
-                        const claimedElem = document.getElementById("claimedAmount");
-
-                        if (pendingElem) {
-                            pendingElem.textContent = `₦${res.data.pending}`;
-                            pendingElem.classList.toggle("text-warning", res.data.pending !==
-                                "0.00");
-                            pendingElem.classList.toggle("text-dark", res.data.pending === "0.00");
-                        }
-
-                        if (claimedElem) {
-                            claimedElem.textContent = `₦${res.data.claimed}`;
-                            claimedElem.classList.toggle("text-success", res.data.claimed !==
-                                "0.00");
-                            claimedElem.classList.toggle("text-dark", res.data.claimed === "0.00");
-                        }
+            // Fetch and update rewards totals once on load
+            sendAjaxRequest("get_reward_totals.php", "GET", null, (res) => {
+                if (res && res.success && res.data) {
+                    const pendingElem = document.getElementById("pendingAmount");
+                    const claimedElem = document.getElementById("claimedAmount");
+                    if (pendingElem) {
+                        pendingElem.textContent = `₦${res.data.pending}`;
+                        pendingElem.classList.toggle("text-warning", res.data.pending !== "0.00");
+                        pendingElem.classList.toggle("text-dark", res.data.pending === "0.00");
                     }
-                });;
+                    if (claimedElem) {
+                        claimedElem.textContent = `₦${res.data.claimed}`;
+                        claimedElem.classList.toggle("text-success", res.data.claimed !== "0.00");
+                        claimedElem.classList.toggle("text-dark", res.data.claimed === "0.00");
+                    }
+                }
             });
         });
     </script>
