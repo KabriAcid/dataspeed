@@ -8,9 +8,24 @@ require __DIR__ . '/../partials/header.php';
 
 <body>
     <main class="container-fluid py-4">
+        <!-- Header Section -->
+        <header>
+            <div class="page-header mb-4 text-center">
+                <svg class="header-back-button" width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 1L1 7L7 13" stroke="#141C25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <h5 class="fw-bold">Transactions</h5>
+                <div class="notification-icon">
+                    <a href="notifications.php">
+                        <i class="ni ni-bell-55 fs-5 text-gradient text-dark"></i>
+                        <span class="notification-badge"></span>
+                    </a>
+                </div>
+            </div>
+        </header>
         <!-- Filters -->
         <section class="mb-3">
-            <form method="get" class="row g-2 align-items-end">
+            <form method="get" class="row g-2 align-items-center">
                 <div class="col-12 col-md-4">
                     <label for="start" class="form-label text-sm mb-1">Start date</label>
                     <input type="date" id="start" name="start" class="form-control" value="<?= htmlspecialchars($_GET['start'] ?? '') ?>">

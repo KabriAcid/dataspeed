@@ -77,7 +77,7 @@ $states = fetchNigerianStates($pdo);
                     </div>
                 </div>
                 <div class="text-end mt-3">
-                    <button type="button" class="disabled-btn">Update</button>
+                    <button type="button" class="secondary-btn" disabled>Update</button>
                 </div>
             </form>
 
@@ -120,8 +120,9 @@ $states = fetchNigerianStates($pdo);
                             <?php
                             //    Fetch Nigerian states from the database
                             foreach ($states as $state) {
+                                $name = htmlspecialchars($state['state_name'] ?? '');
                                 $selected = ($state['state_name'] === $selectedState) ? 'selected' : '';
-                                echo "<option value=\"{$state['state_name']}\" $selected>{$state['state_name']}</option>";
+                                echo "<option value=\"{$name}\" $selected>{$name}</option>";
                             }
                             ?>
                         </select>
@@ -160,6 +161,9 @@ $states = fetchNigerianStates($pdo);
     <script src="../assets/js/state-capital.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Back button behavior
+            const backBtn = document.querySelector('.header-back-button');
+            if (backBtn) backBtn.addEventListener('click', () => history.back());
             const stepForms = document.querySelectorAll('.wizard-step');
             const stepIndicators = document.querySelectorAll('.step-indicator');
             const stepIds = ['biodata', 'account', 'address'];
@@ -167,9 +171,14 @@ $states = fetchNigerianStates($pdo);
             let currentStep = 0;
 
             // Show toast message when the user clicks on the disabled button
-            document.querySelector('.disabled-btn').addEventListener('click', function() {
-                showToasted('This step is not editable yet.', 'info');
-            });
+            const disabledBtn = document.querySelector('.disabled-btn');
+            if (disabledBtn) {
+                disabledBtn.addEventListener('click', function() {
+                    if (typeof showToasted === 'function') {
+                        showToasted('This step is not editable yet.', 'info');
+                    }
+                });
+            }
             /**
              * Show the form for the selected step index
              */

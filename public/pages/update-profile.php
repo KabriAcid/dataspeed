@@ -21,8 +21,8 @@ $step = $_POST['step'] ?? '';
 try {
 
     if ($step === 'account') {
-        // Sanitize inputs
-        $bank = sanitizeInput($_POST['bank_name'] ?? '', 'default');
+        // Sanitize inputs (store raw text, not HTML-encoded)
+        $bank = trim(strip_tags($_POST['bank_name'] ?? ''));
         $accountRaw = trim($_POST['account_number'] ?? '');
         $account = preg_replace('/\D/', '', $accountRaw); // digits only
         $user_name = trim($_POST['user_name'] ?? '');
@@ -32,8 +32,8 @@ try {
             throw new Exception('Please provide bank name, account number, and username.');
         }
 
-    // Bank name: allow letters, numbers, spaces and common symbols, length 2-50
-    if (!preg_match('/^[A-Za-z0-9 &()\.\-\'\/]{2,50}$/', $bank)) {
+        // Bank name: allow letters, numbers, spaces and common symbols, length 2-50
+        if (!preg_match('/^[A-Za-z0-9 &()\\.\\-\'\\/]{2,50}$/', $bank)) {
             throw new Exception('Enter a valid bank name (2-50 chars).');
         }
 
@@ -72,13 +72,24 @@ try {
         echo json_encode(['success' => true, 'message' => 'Account details updated.']);
         exit;
     } elseif ($step === 'address') {
-        // Sanitize inputs
-        $state = sanitizeInput($_POST['state'] ?? '', 'default');
-        $lga = sanitizeInput($_POST['lga'] ?? '', 'default');
-        $address = sanitizeInput($_POST['address'] ?? '', 'default');
+        // Sanitize inputs (store raw text, not HTML-encoded)
+        $state = trim(strip_tags($_POST['state'] ?? ''));
+        $lga = trim(strip_tags($_POST['lga'] ?? ''));
+        $address = trim(strip_tags($_POST['address'] ?? ''));
 
         if ($state === '' || $lga === '' || $address === '') {
             throw new Exception('Please fill in state, LGA, and address.');
+        }
+
+        // Optional: basic length checks
+        if (strlen($state) < 2 || strlen($state) > 50) {
+            throw new Exception('Please select a valid state.');
+        }
+        if (strlen($lga) < 2 || strlen($lga) > 50) {
+            throw new Exception('Please select a valid city/LGA.');
+        }
+        if (strlen($address) < 5 || strlen($address) > 120) {
+            throw new Exception('Address should be between 5 and 120 characters.');
         }
 
         $stmt = $pdo->prepare("UPDATE users SET state = ?, city = ?, address = ? WHERE user_id = ?");

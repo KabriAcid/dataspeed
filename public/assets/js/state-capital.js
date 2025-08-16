@@ -1,25 +1,26 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    // Function to toggle visibility of elements with class 'input-location-dependant'
-    const hideLoadingAnimation = () => {
-      document.querySelectorAll('.input-location-dependant').forEach(element => {
-        element.classList.remove('d-none');
-      });
-    };
-  
-    // Call the function to hide the loading animation
-    hideLoadingAnimation();
-  
-    // Function to set multiple attributes at once
-    const setAttributes = (el, attrs) => {
-      for (let key in attrs) {
-        el.setAttribute(key, attrs[key]);
-      }
-    };
-  
-    // Function to toggle LGA options based on selected state
-    const selectState = (event) => {
-      const state = event.target.value;
-      const lgaList = {
+document.addEventListener("DOMContentLoaded", event => {
+  // Function to toggle visibility of elements with class 'input-location-dependant'
+  const hideLoadingAnimation = () => {
+    document.querySelectorAll(".input-location-dependant").forEach(element => {
+      element.classList.remove("d-none");
+    });
+  };
+
+  // Call the function to hide the loading animation
+  hideLoadingAnimation();
+
+  // Function to set multiple attributes at once
+  const setAttributes = (el, attrs) => {
+    for (let key in attrs) {
+      el.setAttribute(key, attrs[key]);
+    }
+  };
+
+  // Function to toggle LGA options based on selected state
+  const selectState = event => {
+    const state = event.target.value;
+    const lgaList =
+      {
         Abia: [
           "Aba North",
           "Aba South",
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Ukwa West",
           "Umuahia North",
           "muahia South",
-          "Umu Nneochi"
+          "Umu Nneochi",
         ],
         Adamawa: [
           "Demsa",
@@ -60,7 +61,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Song",
           "Toungo",
           "Yola North",
-          "Yola South"
+          "Yola South",
         ],
         AkwaIbom: [
           "Abak",
@@ -93,9 +94,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Ukanafun",
           "Uruan",
           "Urue-Offong Oruko",
-          "Uyo"
+          "Uyo",
         ],
-  Anambra: [
+        Anambra: [
           "Aguata",
           "Anambra East",
           "Anambra West",
@@ -116,7 +117,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Onitsha South",
           "Orumba North",
           "Orumba South",
-          "Oyi"
+          "Oyi",
         ],
         Bauchi: [
           "Alkaleri",
@@ -138,9 +139,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Tafawa Balewa",
           " Toro",
           " Warji",
-          " Zaki"
+          " Zaki",
         ],
-  
+
         Bayelsa: [
           "Brass",
           "Ekeremor",
@@ -149,7 +150,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Ogbia",
           "Sagbama",
           "Southern Ijaw",
-          "Yenagoa"
+          "Yenagoa",
         ],
         Benue: [
           "Agatu",
@@ -174,7 +175,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Tarka",
           "Ukum",
           "Ushongo",
-          "Vandeikya"
+          "Vandeikya",
         ],
         Borno: [
           "Abadam",
@@ -203,7 +204,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Monguno",
           "Ngala",
           "Nganzai",
-          "Shani"
+          "Shani",
         ],
         "Cross River": [
           "Abi",
@@ -223,9 +224,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Odukpani",
           "Ogoja",
           "Yakuur",
-          "Yala"
+          "Yala",
         ],
-  
+
         Delta: [
           "Aniocha North",
           "Aniocha South",
@@ -251,9 +252,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Uvwie",
           "Warri North",
           "Warri South",
-          "Warri South West"
+          "Warri South West",
         ],
-  
+
         Ebonyi: [
           "Abakaliki",
           "Afikpo North",
@@ -267,7 +268,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Izzi",
           "Ohaozara",
           "Ohaukwu",
-          "Onicha"
+          "Onicha",
         ],
         Edo: [
           "Akoko-Edo",
@@ -287,9 +288,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Ovia South-West",
           "Owan East",
           "Owan West",
-          "Uhunmwonde"
+          "Uhunmwonde",
         ],
-  
+
         Ekiti: [
           "Ado Ekiti",
           "Efon",
@@ -306,7 +307,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Irepodun-Ifelodun",
           "Ise-Orun",
           "Moba",
-          "Oye"
+          "Oye",
         ],
         Rivers: [
           "Port Harcourt",
@@ -331,7 +332,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Emohua",
           "Ikwerre",
           "Etche",
-          "Omuma"
+          "Omuma",
         ],
         Enugu: [
           "Aninri",
@@ -350,7 +351,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Oji River",
           "Udenu",
           "Udi",
-          "Uzo Uwani"
+          "Uzo Uwani",
         ],
         FCT: [
           "Abaji",
@@ -358,7 +359,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Gwagwalada",
           "Kuje",
           "Kwali",
-          "Municipal Area Council"
+          "Municipal Area Council",
         ],
         Gombe: [
           "Akko",
@@ -371,7 +372,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Kwami",
           "Nafada",
           "Shongom",
-          "Yamaltu-Deba"
+          "Yamaltu-Deba",
         ],
         Imo: [
           "Aboh Mbaise",
@@ -400,7 +401,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Owerri Municipal",
           "Owerri North",
           "Owerri West",
-          "Unuimo"
+          "Unuimo",
         ],
         Jigawa: [
           "Auyo",
@@ -429,7 +430,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Roni",
           "Sule Tankarkar",
           "Taura",
-          "Yankwashi"
+          "Yankwashi",
         ],
         Kaduna: [
           "Birnin Gwari",
@@ -454,7 +455,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Sanga",
           "Soba",
           "Zangon Kataf",
-          "Zaria"
+          "Zaria",
         ],
         Kano: [
           "Ajingi",
@@ -500,7 +501,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Tudun Wada",
           "Ungogo",
           "Warawa",
-          "Wudil"
+          "Wudil",
         ],
         Katsina: [
           "Bakori",
@@ -536,7 +537,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Sabuwa",
           "Safana",
           "Sandamu",
-          "Zango"
+          "Zango",
         ],
         Kebbi: [
           "Aleiro",
@@ -559,7 +560,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Suru",
           "Wasagu Danko",
           "Yauri",
-          "Zuru"
+          "Zuru",
         ],
         Kogi: [
           "Adavi",
@@ -582,7 +583,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Olamaboro",
           "Omala",
           "Yagba East",
-          "Yagba West"
+          "Yagba West",
         ],
         Kwara: [
           "Asa",
@@ -600,7 +601,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Offa",
           "Oke Ero",
           "Oyun",
-          "Pategi"
+          "Pategi",
         ],
         Lagos: [
           "Agege",
@@ -622,7 +623,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Ojo",
           "Oshodi-Isolo",
           "Shomolu",
-          "Surulere"
+          "Surulere",
         ],
         Nasarawa: [
           "Akwanga",
@@ -637,7 +638,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Nasarawa Egon",
           "Obi",
           "Toto",
-          "Wamba"
+          "Wamba",
         ],
         Niger: [
           "Agaie",
@@ -664,7 +665,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Shiroro",
           "Suleja",
           "Tafa",
-          "Wushishi"
+          "Wushishi",
         ],
         Ogun: [
           "Abeokuta North",
@@ -686,7 +687,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Odogbolu",
           "Ogun Waterside",
           "Remo North",
-          "Shagamu"
+          "Shagamu",
         ],
         Ondo: [
           "Akoko North-East",
@@ -706,7 +707,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Ondo East",
           "Ondo West",
           "Ose",
-          "Owo"
+          "Owo",
         ],
         Osun: [
           "Atakunmosa East",
@@ -738,7 +739,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Olorunda",
           "Oriade",
           "Orolu",
-          "Osogbo"
+          "Osogbo",
         ],
         Oyo: [
           "Afijio",
@@ -773,7 +774,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Oyo East",
           "Saki East",
           "Saki West",
-          "Surulere"
+          "Surulere",
         ],
         Plateau: [
           "Bokkos",
@@ -792,7 +793,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Qua an Pan",
           "Riyom",
           "Shendam",
-          "Wase"
+          "Wase",
         ],
         Sokoto: [
           "Binji",
@@ -817,7 +818,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Tureta",
           "Wamako",
           "Wurno",
-          "Yabo"
+          "Yabo",
         ],
         Taraba: [
           "Ardo Kola",
@@ -872,57 +873,60 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Chafe",
           "Zurmi",
         ],
-      }[state] || [];  // Default to an empty array if state is not found
-  
-  const form = event.target.closest('form'); // Get the closest form element
-  const lgaSelect = form.querySelector(`.select-lga[data-state="${event.target.dataset.state}"]`); // Find corresponding LGA select element
-  
-      // Clear the existing options
-      lgaSelect.innerHTML = '';
-  
-      // Create and add "Select LGA..." option
-      const defaultOption = document.createElement('option');
-      defaultOption.textContent = '...Select LGA...';
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      lgaSelect.appendChild(defaultOption);
-  
-      // Populate LGA select element with new options
-      lgaList.forEach(lga => {
-        const opt = document.createElement('option');
-        opt.textContent = lga;
-        opt.value = lga;
-        lgaSelect.appendChild(opt);
-      });
-    };
-  
-    // Attach the selectState function to all state select elements
-    const stateSelects = document.querySelectorAll('.select-state');
-    const lgaSelects = document.querySelectorAll('.select-lga');
+      }[state] || []; // Default to an empty array if state is not found
 
-    stateSelects.forEach((selectElement, index) => {
-      selectElement.addEventListener('change', selectState);
-      selectElement.dataset.state = index; // Add a unique identifier to match corresponding LGA select
-      if (lgaSelects[index]) {
-        lgaSelects[index].dataset.state = index;
-      }
-      // On load, if a data-selected is present on state, ensure LGA list is populated and respects its own data-selected
-      const preSelectedState = selectElement.getAttribute('data-selected');
-      const lgaSelect = lgaSelects[index];
-      if (preSelectedState && lgaSelect) {
-        // Trigger population
-        selectElement.value = preSelectedState;
-        const evt = new Event('change');
-        selectElement.dispatchEvent(evt);
-        const preSelectedLGA = lgaSelect.getAttribute('data-selected');
-        if (preSelectedLGA) {
-          // Try to select the matching option if present
-          const opt = Array.from(lgaSelect.options).find(o => o.value === preSelectedLGA);
-          if (opt) {
-            lgaSelect.value = preSelectedLGA;
-          }
+    const form = event.target.closest("form"); // Get the closest form element
+    const lgaSelect = form.querySelector(
+      `.select-lga[data-state="${event.target.dataset.state}"]`
+    ); // Find corresponding LGA select element
+
+    // Clear the existing options
+    lgaSelect.innerHTML = "";
+
+    // Create and add "Select LGA..." option
+    const defaultOption = document.createElement("option");
+    defaultOption.textContent = "...Select LGA...";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    lgaSelect.appendChild(defaultOption);
+
+    // Populate LGA select element with new options
+    lgaList.forEach(lga => {
+      const opt = document.createElement("option");
+      opt.textContent = lga;
+      opt.value = lga;
+      lgaSelect.appendChild(opt);
+    });
+  };
+
+  // Attach the selectState function to all state select elements
+  const stateSelects = document.querySelectorAll(".select-state");
+  const lgaSelects = document.querySelectorAll(".select-lga");
+
+  stateSelects.forEach((selectElement, index) => {
+    selectElement.addEventListener("change", selectState);
+    selectElement.dataset.state = index; // Add a unique identifier to match corresponding LGA select
+    if (lgaSelects[index]) {
+      lgaSelects[index].dataset.state = index;
+    }
+    // On load, if a data-selected is present on state, ensure LGA list is populated and respects its own data-selected
+    const preSelectedState = selectElement.getAttribute("data-selected");
+    const lgaSelect = lgaSelects[index];
+    if (preSelectedState && lgaSelect) {
+      // Trigger population
+      selectElement.value = preSelectedState;
+      const evt = new Event("change");
+      selectElement.dispatchEvent(evt);
+      const preSelectedLGA = lgaSelect.getAttribute("data-selected");
+      if (preSelectedLGA) {
+        // Try to select the matching option if present
+        const opt = Array.from(lgaSelect.options).find(
+          o => o.value === preSelectedLGA
+        );
+        if (opt) {
+          lgaSelect.value = preSelectedLGA;
         }
       }
-    });
+    }
   });
-  
+});
