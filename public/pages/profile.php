@@ -167,9 +167,14 @@ $states = fetchNigerianStates($pdo);
             let currentStep = 0;
 
             // Show toast message when the user clicks on the disabled button
-            document.querySelector('.disabled-btn').addEventListener('click', function() {
-                showToasted('This step is not editable yet.', 'info');
-            });
+            const disabledBtn = document.querySelector('.disabled-btn');
+            if (disabledBtn) {
+                disabledBtn.addEventListener('click', function() {
+                    if (typeof showToasted === 'function') {
+                        showToasted('This step is not editable yet.', 'info');
+                    }
+                });
+            }
             /**
              * Show the form for the selected step index
              */
@@ -234,10 +239,12 @@ $states = fetchNigerianStates($pdo);
 
 
                     sendAjaxRequest('update-profile.php', 'POST', params.toString(), function(res) {
-                        if (res.success) {
-                            showToasted(res.message || 'Update successful', 'success');
-                        } else {
-                            showToasted(res.message || 'Update failed', 'error');
+                        if (typeof showToasted === 'function') {
+                            if (res.success) {
+                                showToasted(res.message || 'Update successful', 'success');
+                            } else {
+                                showToasted(res.message || 'Update failed', 'error');
+                            }
                         }
                     });
                 });

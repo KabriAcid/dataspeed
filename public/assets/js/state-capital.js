@@ -18,8 +18,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   
     // Function to toggle LGA options based on selected state
     const selectState = (event) => {
-      const state = event.target.value;
-      const lgaList = {
+      // Normalize state string: remove spaces and apostrophes, title-case certain keys
+      const rawState = String(event.target.value || '').trim();
+      const normalizedKey = rawState.replace(/\s+/g, '').replace(/[^A-Za-z]/g, '');
+      const lgaMap = {
         Abia: [
           "Aba North",
           "Aba South",
@@ -62,7 +64,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Yola North",
           "Yola South"
         ],
-        AkwaIbom: [
+  AkwaIbom: [
           "Abak",
           "Eastern Obolo",
           "Eket",
@@ -95,7 +97,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Urue-Offong Oruko",
           "Uyo"
         ],
-        Anambra: [
+  Anambra: [
           "Aguata",
           "Anambra East",
           "Anambra West",
@@ -118,30 +120,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Orumba South",
           "Oyi"
         ],
-  
-        Anambra: [
-          "Aguata",
-          "Anambra East",
-          "Anambra West",
-          "Anaocha",
-          "Awka North",
-          "Awka South",
-          "Ayamelum",
-          "Dunukofia",
-          "Ekwusigo",
-          "Idemili North",
-          "Idemili South",
-          "Ihiala",
-          "Njikoka",
-          "Nnewi North",
-          "Nnewi South",
-          "Ogbaru",
-          "Onitsha North",
-          "Onitsha South",
-          "Orumba North",
-          "Orumba South",
-          "Oyi"
-        ],
+  // Duplicate Anambra removed
         Bauchi: [
           "Alkaleri",
           "Bauchi",
@@ -332,7 +311,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Moba",
           "Oye"
         ],
-        Rivers: [
+  Rivers: [
           "Port Harcourt",
           "Obio-Akpor",
           "Okrika",
@@ -896,10 +875,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "Chafe",
           "Zurmi",
         ],
-      }[state] || [];  // Default to an empty array if state is not found
+      };
+
+      // Build a mapping from normalized key to actual key in lgaMap
+      const normalizedIndex = {};
+      Object.keys(lgaMap).forEach(k => {
+        normalizedIndex[k.replace(/\s+/g, '').replace(/[^A-Za-z]/g, '')] = k;
+      });
+      const mapKey = normalizedIndex[normalizedKey] || rawState;
+      const lgaList = lgaMap[mapKey] || [];
   
-      const form = event.target.closest('form'); // Get the closest form element
-      const lgaSelect = form.querySelector(`.select-lga[data-state="${event.target.dataset.state}"]`); // Find corresponding LGA select element
+  const form = event.target.closest('form'); // Get the closest form element
+  const lgaSelect = form ? form.querySelector(`.select-lga[data-state="${event.target.dataset.state}"]`) : null; // Find corresponding LGA select element
+
+  if (!lgaSelect) return;
   
       // Clear the existing options
       lgaSelect.innerHTML = '';

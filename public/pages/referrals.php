@@ -30,7 +30,7 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </header>
 
-        <div>
+        <div class="mb-5">
             <div class="row g-3 mb-5">
                 <!-- Pending Reward -->
                 <div class="col-12 col-md-6">

@@ -17,11 +17,13 @@ try {
 
     if ($step === 'account') {
         $bank = trim($_POST['bank_name'] ?? '');
-        $account = trim($_POST['account_number'] ?? '');
+        // Ensure account number is digits-only and exactly 10 digits
+        $rawAccount = $_POST['account_number'] ?? '';
+        $account = preg_replace('/\D/', '', trim($rawAccount));
         $user_name = trim($_POST['user_name'] ?? '');
 
-        if (!$bank || !$account || strlen($account) < 10) {
-            throw new Exception('Please provide a valid bank and 10-digit account number.');
+        if (!$bank || !$account || strlen($account) !== 10) {
+            throw new Exception('Please provide a valid bank and a 10-digit NUBAN account number.');
         }
         // Username must not start with a number, must not include spaces, and must not be more than 20 characters
         if (strlen($user_name) <= 4 || strlen($user_name) > 20) {
@@ -37,8 +39,9 @@ try {
             exit;
         }
 
-        $stmt = $pdo->prepare("SELECT user_name FROM users WHERE user_name = ?");
-        $stmt->execute([$user_name]);
+    // Check if username is taken by another user (exclude current user)
+    $stmt = $pdo->prepare("SELECT user_name FROM users WHERE user_name = ? AND user_id <> ?");
+    $stmt->execute([$user_name, $user_id]);
         $user = $stmt->fetch();
 
         if ($user) {
@@ -46,8 +49,8 @@ try {
             exit;
         }
 
-        $stmt = $pdo->prepare("UPDATE users SET w_bank_name = ?, w_account_number = ?, user_name = ? WHERE user_id = ?");
-        $stmt->execute([$bank, $account, $user_name, $user_id]);
+    $stmt = $pdo->prepare("UPDATE users SET w_bank_name = ?, w_account_number = ?, user_name = ? WHERE user_id = ?");
+    $stmt->execute([$bank, $account, $user_name, $user_id]);
 
         // Push notification for bank account update
         $title = "Account Details Updated";
