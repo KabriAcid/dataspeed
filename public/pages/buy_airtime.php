@@ -165,7 +165,9 @@ require __DIR__ . '/../partials/header.php';
             };
 
             let selectedTab = null;
-            let selectedAmount = null;
+            let selectedAmount = null; // charge amount (with markup)
+            let baseAmount = null;     // provider face value
+            let airtimeMarkupPct = 0;
 
             const serviceTabsContainer = document.querySelector(".service-tabs");
             const amountButtons = document.querySelectorAll(".amount-btn");
@@ -230,7 +232,7 @@ require __DIR__ . '/../partials/header.php';
             });
 
             // --- Amount Selection ---
-            amountButtons.forEach(btn => {
+        amountButtons.forEach(btn => {
                 btn.addEventListener("click", function() {
                     if (!selectedTab) {
                         showToasted("Please select a network first.", 'error');
@@ -240,8 +242,9 @@ require __DIR__ . '/../partials/header.php';
                         return;
                     }
                     // Set value in active tab's amount input
-                    const input = getActiveAmountInput();
-                    input.value = this.textContent.replace(/₦/, "").trim();
+            const input = getActiveAmountInput();
+            const btnBase = this.getAttribute('data-amount');
+            input.value = btnBase;
                     // Reset previous selections
                     amountButtons.forEach(b => {
                         b.classList.remove("selected-amount");
@@ -249,7 +252,8 @@ require __DIR__ . '/../partials/header.php';
                         b.style.color = "";
                     });
                     this.classList.add("selected-amount");
-                    selectedAmount = input.value;
+            baseAmount = Number(btnBase);
+            selectedAmount = applyMarkup(baseAmount, airtimeMarkupPct);
                     // Brand color
                     const selectedTabEl = document.querySelector(".service-tab.selected-tab");
                     if (selectedTabEl) {
@@ -261,9 +265,10 @@ require __DIR__ . '/../partials/header.php';
             });
 
             // --- Input Listeners ---
-            document.querySelectorAll(".amount-input").forEach(input => {
+        document.querySelectorAll(".amount-input").forEach(input => {
                 input.addEventListener("input", function() {
-                    selectedAmount = input.value.trim().replace(/[\s,.]/g, '');
+            baseAmount = Number(input.value.trim().replace(/[\s,.]/g, '')) || 0;
+            selectedAmount = applyMarkup(baseAmount, airtimeMarkupPct);
                     // Clear quick amount highlights if user types
                     amountButtons.forEach(b => {
                         b.classList.remove("selected-amount");
@@ -294,7 +299,7 @@ require __DIR__ . '/../partials/header.php';
                         return;
                     }
 
-                    if (amount > 1000000) {
+                    if (Number(amount) > 1000000) {
                         showToasted("Amount cannot exceed ₦1,000,000.", "error");
                         return;
                     }
@@ -302,7 +307,10 @@ require __DIR__ . '/../partials/header.php';
                     // Get selected amount from button if present
                     const selectedBtn = activeTab.querySelector('.amount-btn.selected-amount');
                     if (selectedBtn) {
-                        amount = selectedBtn.getAttribute('data-amount');
+                        baseAmount = Number(selectedBtn.getAttribute('data-amount'));
+                        amount = String(baseAmount);
+                    } else {
+                        baseAmount = Number(amount) || 0;
                     }
 
                     // Get selected network
@@ -322,7 +330,8 @@ require __DIR__ . '/../partials/header.php';
                     document.getElementById('customer-phone').setAttribute('data-raw', phone);
                     document.getElementById('confirm-network').innerHTML = networkIcons[network] || '';
                     document.getElementById('confirm-plan').textContent = activeTab.dataset.tab === "self" ? "Self" : "Others";
-                    document.getElementById('confirm-amount').textContent = formattedAmount(amount);
+                    const chargeAmt = applyMarkup(Number(amount) || 0, airtimeMarkupPct);
+                    document.getElementById('confirm-amount').textContent = formattedAmount(chargeAmt);
 
                     confirmModal.style.display = "flex";
                 });
@@ -353,6 +362,7 @@ require __DIR__ . '/../partials/header.php';
 
                 // Set data attributes for the PIN pad modal
                 pinpadModal.dataset.amount = rawAmount;
+                pinpadModal.dataset.base_amount = String(baseAmount || rawAmount);
                 pinpadModal.dataset.phone = phone;
                 pinpadModal.dataset.network = network;
                 pinpadModal.dataset.type = type;
@@ -427,6 +437,21 @@ require __DIR__ . '/../partials/header.php';
         function formattedAmount(amount) {
             return amount ? `₦${Number(amount).toLocaleString()}` : "";
         }
+        function applyMarkup(base, pct) {
+            if (!base || !pct) return Number(base) || 0;
+            return Math.round(Number(base) * (1 + Number(pct) / 100));
+        }
+        // Fetch current markup from admin pricing API
+        (function loadAirtimeMarkup(){
+            try {
+                sendAjaxRequest("../../admin/api/pricing.php?action=list", "GET", null, function(res){
+                    if (res && res.success && res.data) {
+                        const pct = parseFloat(res.data.airtime_markup || 0);
+                        if (!isNaN(pct)) airtimeMarkupPct = pct;
+                    }
+                });
+            } catch(e) {}
+        })();
     </script>
     <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>

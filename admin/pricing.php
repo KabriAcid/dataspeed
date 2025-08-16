@@ -26,12 +26,25 @@ include 'includes/header.php';
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card">
                         <div class="stat-card-body">
+                            <div class="stat-icon bg-info">
+                                <i class="ni ni-bullet-list-67"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" id="airtimePercentage">0%</h3>
+                                <p class="stat-label">Airtime Markup</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-card-body">
                             <div class="stat-icon bg-primary">
                                 <i class="ni ni-chart-bar-32"></i>
                             </div>
                             <div class="stat-content">
                                 <h3 class="stat-value" id="dataPercentage">0%</h3>
-                                <p class="stat-label">Data Purchases %</p>
+                                <p class="stat-label">Data Markup</p>
                             </div>
                         </div>
                     </div>
@@ -43,21 +56,8 @@ include 'includes/header.php';
                                 <i class="ni ni-tv-2"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="stat-value" id="tvPercentage">0%</h3>
-                                <p class="stat-label">TV Purchases %</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="stat-card">
-                        <div class="stat-card-body">
-                            <div class="stat-icon bg-info">
-                                <i class="ni ni-bullet-list-67"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 class="stat-value" id="airtimePercentage">0%</h3>
-                                <p class="stat-label">Airtime Purchases %</p>
+                                <h3 class="stat-value" id="tvPercentage">-</h3>
+                                <p class="stat-label">TV Markup</p>
                             </div>
                         </div>
                     </div>
@@ -275,31 +275,21 @@ include 'includes/header.php';
             topbarInit();
             loadPricingData();
             loadKpis();
-
-            // Bind modal form
-            const planModal = document.getElementById('planModal');
-            bindModalForm(planModal, {
-                endpoint: 'api/pricing.php',
-                onSuccess: () => {
-                    loadPricingData();
-                }
-            });
         });
 
         async function loadKpis() {
             try {
-                const res = await apiFetch('api/transactions.php?action=kpi');
-                if (res.success) {
-                    const {
-                        data_percentage,
-                        tv_percentage,
-                        airtime_percentage
-                    } = res.data;
-
-                    document.getElementById('dataPercentage').textContent = (data_percentage || 0) + '%';
-                    document.getElementById('tvPercentage').textContent = (tv_percentage || 0) + '%';
+                // Show markup settings as KPI values
+                const res = await apiFetch('api/pricing.php?action=plans');
+                if (res && res.success && res.data) {
                     const ap = document.getElementById('airtimePercentage');
-                    if (ap) ap.textContent = (airtime_percentage || 0) + '%';
+                    const dp = document.getElementById('dataPercentage');
+                    const tv = document.getElementById('tvPercentage');
+                    const airtime_markup = parseFloat(res.data.airtime_markup || 0) || 0;
+                    const data_markup = parseFloat(res.data.data_markup || 0) || 0;
+                    if (ap) ap.textContent = airtime_markup + '%';
+                    if (dp) dp.textContent = data_markup + '%';
+                    if (tv) tv.textContent = '-'; // not configured yet
                 }
             } catch (e) {
                 // Silent fail; KPI is optional
@@ -480,7 +470,7 @@ include 'includes/header.php';
                 'MTN': 'warning',
                 'Airtel': 'danger',
                 'Glo': 'success',
-                '9mobile': 'info'
+                '9mobile': 'info'   
             };
             return colors[network] || 'secondary';
         }
@@ -555,6 +545,7 @@ include 'includes/header.php';
 
                 if (response.success) {
                     showToasted('Airtime markup updated successfully', 'success');
+                    loadKpis();
                 } else {
                     showToasted(response.message, 'error');
                 }
@@ -582,6 +573,7 @@ include 'includes/header.php';
 
                 if (response.success) {
                     showToasted('Data markup updated successfully', 'success');
+                    loadKpis();
                 } else {
                     showToasted(response.message, 'error');
                 }
