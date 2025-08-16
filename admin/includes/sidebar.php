@@ -64,6 +64,10 @@
 
         </ul>
     </nav>
+    <!-- Bottom favicon only visible when collapsed -->
+    <div class="sidebar-footer">
+        <img src="../public/favicon.png" alt="" class="img-fluid favicon cursor pointer">
+    </div>
 </aside>
 
 <div class="sidebar-overlay" id="sidebarOverlay"></div>

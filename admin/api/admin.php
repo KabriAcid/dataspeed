@@ -94,6 +94,9 @@ function createAdmin(PDO $pdo, array $input): array
     }
 
     $hash = password_hash('Pa$$w0rd!', PASSWORD_BCRYPT);
+    // Generate a non-default random passphrase for secondary verification
+    $rawPassphrase = bin2hex(random_bytes(8)); // 16 hex chars (~64 bits)
+    $passphraseHash = password_hash($rawPassphrase, PASSWORD_BCRYPT);
 
     // Insert using available columns only
     $cols = getTableColumns($pdo, 'admins');
@@ -125,6 +128,11 @@ function createAdmin(PDO $pdo, array $input): array
         $placeholders[] = '?';
         $params[] = $status;
     }
+    if (in_array('passphrase', $cols, true)) {
+        $insertCols[] = 'passphrase';
+        $placeholders[] = '?';
+        $params[] = $passphraseHash;
+    }
     if (in_array('created_at', $cols, true)) {
         $insertCols[] = 'created_at';
         $placeholders[] = 'NOW()';
@@ -147,7 +155,8 @@ function createAdmin(PDO $pdo, array $input): array
         $body = '<p>Hello ' . htmlspecialchars($name) . ',</p>'
             . '<p>Your admin account has been created.</p>'
             . '<p><strong>Email:</strong> ' . htmlspecialchars($email) . '<br>'
-            . '<strong>Default Password:</strong> Pa$$w0rd!</p>'
+            . '<strong>Default Password:</strong> Pa$$w0rd!<br>'
+            . '<strong>Passphrase:</strong> ' . htmlspecialchars($rawPassphrase) . '</p>'
             . '<p>Please sign in to the admin portal and keep your credentials secure.</p>'
             . '<p>Regards,<br>DataSpeed Team</p>';
         $mailOk = sendMail($email, $subject, $body);

@@ -72,6 +72,27 @@ if (!empty($_SESSION['admin_id'])) {
     <script src="assets/js/admin.js"></script>
     <!-- Toast Container -->
     <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
+    <!-- Passphrase Modal -->
+    <div class="modal fade" id="passphraseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enter Passphrase</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="adminPassphrase">Security Passphrase</label>
+                        <input type="password" id="adminPassphrase" class="form-control" placeholder="Enter your passphrase" autocomplete="one-time-code">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="passphraseSubmit">Verify</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loginForm = document.getElementById('loginForm');
@@ -146,7 +167,50 @@ if (!empty($_SESSION['admin_id'])) {
                         })
                     });
 
-                    if (loginResponse.success) {
+                    if (loginResponse.success && loginResponse.step === 'passphrase') {
+                        // Show passphrase modal
+                        const modal = new bootstrap.Modal(document.getElementById('passphraseModal'));
+                        modal.show();
+                        const input = document.getElementById('adminPassphrase');
+                        const submitBtn = document.getElementById('passphraseSubmit');
+                        const submitHandler = async () => {
+                            const passphrase = input.value.trim();
+                            if (!passphrase) {
+                                showToasted('Please enter your passphrase.', 'error');
+                                input.focus();
+                                return;
+                            }
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Verifying...';
+                            try {
+                                const verifyRes = await apiFetch('api/auth.php', {
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        action: 'verify_passphrase',
+                                        passphrase
+                                    })
+                                });
+                                if (verifyRes.success) {
+                                    showToasted('Login successful! Redirecting...', 'success');
+                                    setTimeout(() => {
+                                        window.location.href = verifyRes.redirect;
+                                    }, 500);
+                                } else {
+                                    showToasted(verifyRes.message || 'Invalid passphrase', 'error');
+                                }
+                            } catch (err) {
+                                showToasted('Verification failed. Try again.', 'error');
+                            } finally {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = 'Verify';
+                            }
+                        };
+                        submitBtn.onclick = submitHandler;
+                        input.onkeydown = (e) => {
+                            if (e.key === 'Enter') submitHandler();
+                        };
+                        input.focus();
+                    } else if (loginResponse.success) {
                         showToasted('Login successful! Redirecting...', 'success');
                         setTimeout(() => {
                             window.location.href = loginResponse.redirect;

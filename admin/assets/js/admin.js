@@ -108,24 +108,20 @@ function updateActiveNavLink() {
   const navLinks = document.querySelectorAll(
     ".sidebar .nav-link, .bottom-nav .nav-link"
   );
+  let matched = false;
   navLinks.forEach(link => {
     link.classList.remove("active");
-    const href = link.getAttribute("href");
-    if (href && href.includes(currentPage)) link.classList.add("active");
+    const href = link.getAttribute("href") || "";
+    if (!matched && href.includes(currentPage)) {
+      link.classList.add("active");
+      matched = true;
+    }
   });
 }
 
 // Topbar Initialization
 function topbarInit() {
   initSidebar();
-  const activeNavLink = document.querySelector(".nav-link.active");
-  const pageTitle = document.getElementById("pageTitle");
-  if (activeNavLink && pageTitle) {
-    const title =
-      activeNavLink.getAttribute("data-page") ||
-      activeNavLink.textContent.trim();
-    pageTitle.textContent = title;
-  }
 }
 
 // Modal Helpers

@@ -55,11 +55,10 @@ body {
   border-radius: 50%;
 }
 
-
 .brand-icons {
-    width: 50px;
-    height: 50px;
-    min-height: 40px;
+  width: 50px;
+  height: 50px;
+  min-height: 40px;
 }
 
 /* Login Page Styles */
@@ -246,6 +245,7 @@ body {
   justify-content: space-between;
   height: 100%;
   padding: 0 24px;
+  transition: var(--transition);
 }
 
 .topbar-left {
@@ -454,7 +454,7 @@ body {
 }
 
 .sidebar-nav {
-  padding: 16px 8px;
+  padding: 16px 8px 80px; /* reserve space for bottom favicon */
 }
 
 .nav-list {
@@ -491,6 +491,11 @@ body {
 .nav-link i {
   font-size: 18px;
   width: 22px;
+  height: 22px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 .nav-text {
@@ -500,6 +505,17 @@ body {
   justify-content: center;
   padding-left: 12px;
   padding-right: 12px;
+  gap: 0; /* no gap when text is hidden */
+}
+/* In collapsed state, fully hide text elements so icons can center perfectly */
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .logo-text {
+  display: none !important;
+}
+
+/* Prevent hover nudge in collapsed mode to avoid icon misalignment */
+.sidebar.collapsed .nav-link:hover {
+  transform: none;
 }
 
 /* Ensure nav items don't stretch on collapse */
@@ -529,6 +545,27 @@ body {
 .sidebar-overlay.show {
   opacity: 1;
   visibility: visible;
+}
+
+/* Bottom favicon (shows in collapsed state) */
+.sidebar-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.sidebar-footer .favicon {
+  width: 36px;
+  height: 36px;
+}
+.sidebar.collapsed .sidebar-footer {
+  display: flex;
+}
+.sidebar.collapsed .sidebar-header .favicon {
+  display: none;
 }
 
 /* Main Content */
@@ -947,6 +984,14 @@ body {
   }
   .admin-body.sidebar-collapsed {
     padding-left: var(--sidebar-collapsed-width);
+  }
+
+  /* Make topbar content align with main content when sidebar width changes */
+  .admin-body .topbar-container {
+    padding-left: calc(24px + var(--sidebar-width));
+  }
+  .admin-body.sidebar-collapsed .topbar-container {
+    padding-left: calc(24px + var(--sidebar-collapsed-width));
   }
 
   .sidebar {

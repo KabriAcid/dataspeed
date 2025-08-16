@@ -4,9 +4,6 @@
             <button class="sidebar-toggle" id="sidebarToggle">
                 <i class="ni ni-menu-2"></i>
             </button>
-            <div class="page-breadcrumb">
-                <h4 class="page-title" id="pageTitle">Dashboard</h4>
-            </div>
         </div>
 
         <div class="topbar-right">
