@@ -464,11 +464,11 @@ include 'includes/header.php';
             apiFetch('api/users.php', {
                 method: 'POST',
                 body: JSON.stringify(data)
-            }).then(response => {
+            }).then(async response => {
                 if (response.success) {
                     showToasted('User saved successfully!', 'success');
                     bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
-                    return refreshAdminNotifBadge().catch(() => {}).then(() => response);
+                    await refreshAdminNotifBadge().catch(() => {});
                     loadUsers();
                 } else {
                     showToasted(response.message, 'error');
