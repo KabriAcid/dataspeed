@@ -154,7 +154,8 @@ echo json_encode([
         ],
         // + provider balances (nullable)
         'providers' => [
-            'ebills'    => ebills_get_balance(60),
+            '
+            '    => ebills_get_balance(60),
             'billstack' => billstack_get_balance(60),
         ]
     ])

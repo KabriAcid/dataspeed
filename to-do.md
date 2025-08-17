@@ -169,6 +169,6 @@ Collecting workspace informationHere are recommendations and captured flaws base
 18. **Front-End Security**
     - No Content Security Policy (CSP) headers set; risk of XSS via injected scripts.
 
----
-
-You can add these to your improvement blueprint and share with your client for prioritization.
+19. Total user balance in admin dashboard not working properly.
+20. Admin needs to regulate the price of referrals.
+21. Last user login not working properly.

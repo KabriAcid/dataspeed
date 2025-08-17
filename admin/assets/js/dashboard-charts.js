@@ -181,6 +181,20 @@
     const container = document.getElementById("billChart");
     if (!container) return;
 
+    // Empty state: no bills found or all values are zero
+    const values = data.map(d => Number(d.value || 0));
+    const hasBills = data.length > 0 && values.some(v => v > 0);
+    if (!hasBills) {
+      container.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:220px;">
+          <img src="/public/assets/img/empty-bills.svg" alt="No bills" style="width:72px;height:72px;opacity:0.7;margin-bottom:12px;" onerror="this.style.display='none'">
+          <div style="color:#6b7280;font-size:1.1rem;">No bill transactions found</div>
+        </div>
+      `;
+      if (billChart) billChart.destroy();
+      return;
+    }
+
     container.innerHTML = '<canvas id="billChartCanvas"></canvas>';
     const ctx = document.getElementById("billChartCanvas").getContext("2d");
     if (billChart) billChart.destroy();
@@ -193,8 +207,6 @@
       colors.danger,
       colors.secondary,
     ];
-
-    const values = data.map(d => Number(d.value || 0));
 
     billChart = new Chart(ctx, {
       type: "doughnut",
