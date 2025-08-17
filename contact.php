@@ -118,7 +118,7 @@
       <a href="https://instagram.com/dataspeed" target="_blank"><i class="fab fa-instagram"></i></a>
       <a href="https://facebook.com/dataspeed" target="_blank"><i class="fab fa-facebook"></i></a>
       <a href="https://t.me/dataspeed" target="_blank"><i class="fab fa-telegram"></i></a>
-      <a href="mailto:info@dataspeed.com"><i class="fas fa-envelope"></i></a>
+      <a href="mailto:dataspeedcontact@gmail.com"><i class="fas fa-envelope"></i></a>
     </p>
     <p>&copy; 2025 Dataspeed. All rights reserved.</p>
   </div>

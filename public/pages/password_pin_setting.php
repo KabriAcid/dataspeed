@@ -4,6 +4,16 @@ require __DIR__ . '/../../functions/Model.php';
 require __DIR__ . '/../../functions/utilities.php';
 require __DIR__ . '/../partials/initialize.php';
 require __DIR__ . '/../partials/header.php';
+
+// Check if user is setting PIN for the first time
+$user_id = $_SESSION['user_id'] ?? null;
+$isFirstPin = false;
+if ($user_id) {
+    $stmt = $pdo->prepare("SELECT txn_pin FROM users WHERE user_id = ? LIMIT 1");
+    $stmt->execute([$user_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $isFirstPin = empty($row['txn_pin']);
+}
 ?>
 
 <body>
@@ -63,13 +73,15 @@ require __DIR__ . '/../partials/header.php';
 
                 <!-- PIN Tab -->
                 <div class="tab-content" id="pin-tab">
-                    <div>
-                        <label for="currentPin" class="form-label">Current PIN</label>
-                        <div class="mb-3 password-wrapper" style="position: relative;">
-                            <input type="password" placeholder="Current PIN" id="currentPin" name="currentPin" class="input" pattern="\d{4}" maxlength="4" inputmode="numeric" required>
-                            <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                    <?php if (!$isFirstPin): ?>
+                        <div id="currentPinField">
+                            <label for="currentPin" class="form-label">Current PIN</label>
+                            <div class="mb-3 password-wrapper" style="position: relative;">
+                                <input type="password" placeholder="Current PIN" id="currentPin" name="currentPin" class="input" pattern="\d{4}" maxlength="4" inputmode="numeric" required>
+                                <button type="button" class="eye-button" aria-label="Toggle visibility"><span class="eye-icon"></span></button>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                     <div>
                         <label for="newPin" class="form-label">New PIN</label>
                         <div class="mb-3 password-wrapper" style="position: relative;">
@@ -149,7 +161,11 @@ require __DIR__ . '/../partials/header.php';
             form.addEventListener("submit", function(e) {
                 e.preventDefault();
 
-                const activeInputs = document.querySelectorAll(`#${activeTab}-tab input`);
+                // If PIN tab and first time, skip currentPin validation
+                let activeInputs = document.querySelectorAll(`#${activeTab}-tab input`);
+                if (activeTab === "pin" && <?php echo json_encode($isFirstPin); ?>) {
+                    activeInputs = Array.from(activeInputs).filter(input => input.name !== "currentPin");
+                }
                 for (const input of activeInputs) {
                     if (!input.checkValidity()) {
                         showToasted(`Please fill the ${input.placeholder} field correctly.`, "error");
