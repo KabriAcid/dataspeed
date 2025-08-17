@@ -1,0 +1,34 @@
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Force HTTPS (optional, if SSL is enabled)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Remove trailing slash
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# Pretty URLs for public/pages (e.g. /login -> /public/pages/login.php)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9_-]+)$ public/pages/$1.php [L,QSA]
+
+# Pretty URLs for admin (e.g. /admin/users -> /admin/users.php)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^admin/([a-zA-Z0-9_-]+)$ admin/$1.php [L,QSA]
+
+# Security: Deny access to .env and config files
+<FilesMatch "^(\.env|\.env\.example|config\.php|composer\.json|composer\.lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Security: Prevent directory listing
+Options -Indexes
+
+# Set basic security headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"

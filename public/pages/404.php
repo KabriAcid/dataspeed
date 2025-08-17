@@ -1,11 +1,13 @@
 <?php
-function set_title($title = null) {
+function set_title($title = null)
+{
     $default = "404 | DataSpeed";
     return htmlspecialchars($title ?: $default);
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +23,7 @@ function set_title($title = null) {
             display: flex;
             flex-direction: column;
         }
+
         .error-container {
             flex: 1;
             display: flex;
@@ -30,29 +33,39 @@ function set_title($title = null) {
             padding: 40px 16px 0 16px;
             text-align: center;
         }
+
         .error-title {
             font-size: clamp(2.2rem, 6vw, 3.5rem);
             font-weight: 700;
             color: #0d6efd;
             margin-bottom: 0.5rem;
         }
+
         .error-desc {
             font-size: clamp(1.1rem, 2vw, 1.3rem);
             color: #333;
             margin-bottom: 2rem;
         }
+
         .error-actions .btn {
             min-width: 140px;
             margin: 0 8px 8px 0;
         }
+
         @media (max-width: 576px) {
-            .error-title { font-size: 2.1rem; }
-            .error-desc { font-size: 1rem; }
+            .error-title {
+                font-size: 2.1rem;
+            }
+
+            .error-desc {
+                font-size: 1rem;
+            }
         }
     </style>
     <!-- Lottie Animations -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
+
 <body>
     <nav class="navbar fixed-top bg-white shadow-sm">
         <div class="container-fluid d-flex justify-content-between align-items-center">
@@ -111,4 +124,5 @@ function set_title($title = null) {
         </div>
     </footer>
 </body>
+
 </html>

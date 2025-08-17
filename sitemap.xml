@@ -1,19 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost/dataspeed/</loc>
+    <loc>https://dataspeed.com.ng/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>http://localhost/dataspeed/public/pages/login.php</loc>
+    <loc>https://dataspeed.com.ng/public/pages/login.php</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/dataspeed/public/pages/register.php</loc>
+    <loc>https://dataspeed.com.ng/public/pages/register.php</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost/dataspeed/public/pages/forgot_password.php</loc>
+    <loc>https://dataspeed.com.ng/public/pages/forgot_password.php</loc>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/buy_airtime.php</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/buy_data.php</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/tv_subscription.php</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/transactions.php</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/referrals.php</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/contact.php</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/about.php</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/privacy-policy.php</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/account_settings.php</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/profile.php</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dataspeed.com.ng/public/pages/404.php</loc>
+    <priority>0.1</priority>
   </url>
 </urlset>

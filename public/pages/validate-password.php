@@ -58,7 +58,7 @@ try {
         $secretKey = $_ENV['BILLSTACK_SECRET_KEY'];
 
         $bank_type = ["9PSB", "PALMPAY"];
-        $random = floor(rand(0, 1));
+        // $random = floor(rand(0, 1));
 
         $data = [
             "email" => $email,
@@ -66,7 +66,7 @@ try {
             "firstName" => $firstName,
             "lastName" => $lastName,
             "phone" => $phone_number,
-            "bank" => $bank_type[$random]
+            "bank" => $bank_type[1]
         ];
 
         $payload = json_encode($data);
