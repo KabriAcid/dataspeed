@@ -255,6 +255,7 @@ function uploadAvatar(PDO $pdo, int $adminId): array
         'image/jpeg' => 'jpg',
         'image/png' => 'png',
         'image/webp' => 'webp',
+        'image/heic' => 'heic',
     ];
     if (!isset($allowed[$mime])) {
         return ['success' => false, 'message' => 'Unsupported file type'];
