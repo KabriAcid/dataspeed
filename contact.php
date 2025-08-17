@@ -5,9 +5,11 @@
   <title>Contact Us | Dataspeed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Bootstrap 4.5 CSS -->
+   <link rel="shortcut icon" href="public/favicon.png" type="image/x-icon">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="public/assets/css/style.css">
   <style>
     body {
       background-color: #f2f2f2;
@@ -83,7 +85,7 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <div class="contact-section">
-          <form action="send_message.php" method="POST">
+          <form action="" method="POST">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="name">Full Name</label>

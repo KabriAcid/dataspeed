@@ -1,0 +1,114 @@
+<?php
+function set_title($title = null) {
+    $default = "404 | DataSpeed";
+    return htmlspecialchars($title ?: $default);
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= set_title("404 | DataSpeed") ?></title>
+    <link rel="shortcut icon" href="../../public/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
+    <link rel="stylesheet" href="../../public/assets/css/style.css">
+    <style>
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .error-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px 0 16px;
+            text-align: center;
+        }
+        .error-title {
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            font-weight: 700;
+            color: #0d6efd;
+            margin-bottom: 0.5rem;
+        }
+        .error-desc {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        .error-actions .btn {
+            min-width: 140px;
+            margin: 0 8px 8px 0;
+        }
+        @media (max-width: 576px) {
+            .error-title { font-size: 2.1rem; }
+            .error-desc { font-size: 1rem; }
+        }
+    </style>
+    <!-- Lottie Animations -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+<body>
+    <nav class="navbar fixed-top bg-white shadow-sm">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a href="../../index.php" class="d-block fw-bold"><img src="../../public/favicon.png" alt="Dataspeed" class="favicon" style="height:32px;"></a>
+            <div class="d-flex align-items-center">
+                <a href="../pages/login.php" class="secondary-btn me-2">LOGIN</a>
+                <a href="../pages/register.php" class="btn primary-btn">CREATE ACCOUNT</a>
+            </div>
+        </div>
+    </nav>
+    <main class="error-container">
+        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_2ksjpv2g.json" background="transparent" speed="1" style="width: 220px; height: 220px;" loop autoplay></lottie-player>
+        <div class="error-title">404 - Page Not Found</div>
+        <div class="error-desc">
+            Sorry, the page you’re looking for doesn’t exist.<br>
+            It may have been moved, deleted, or you may have mistyped the address.
+        </div>
+        <div class="error-actions">
+            <a href="../../index.php" class="btn primary-btn">Go Home</a>
+            <a href="../pages/contact.php" class="btn secondary-btn">Contact Support</a>
+        </div>
+    </main>
+    <footer style="background-color: #111; color: #fff; font-family: Arial, sans-serif; padding: 40px 20px 20px 20px;">
+        <div style="max-width: 1200px; margin: auto;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #333; padding-bottom: 30px;">
+                <div style="flex: 1 1 180px; margin: 10px 0;">
+                    <h2 style="font-size: 22px; font-weight: bold; margin-bottom: 10px;">Dataspeed</h2>
+                    <p style="font-size: 13px; color: #ccc;">Your trusted tech insights and creative code solutions.</p>
+                </div>
+                <div style="flex: 1 1 180px; margin: 10px 0;">
+                    <h3 style="font-size: 17px; margin-bottom: 10px;">Links</h3>
+                    <p><a href="../../index.php" style="color: #ccc; text-decoration: none;">Home</a></p>
+                    <p><a href="../pages/about.php" style="color: #ccc; text-decoration: none;">About</a></p>
+                </div>
+                <div style="flex: 1 1 180px; margin: 10px 0;">
+                    <h3 style="font-size: 17px; margin-bottom: 10px;">Contact</h3>
+                    <p><a href="../pages/privacy-policy.php" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
+                    <p><a href="../pages/contact.php" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
+                </div>
+                <div style="flex: 1 1 200px; margin: 10px 0;">
+                    <h3 style="font-size: 17px; margin-bottom: 10px;">Follow Me</h3>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="https://www.youtube.com/" target="_blank"><img width="30" src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube-alt" /></a>
+                        <a href="https://www.instagram.com/" target="_blank"><img width="30" src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram Alt" /></a>
+                        <a href="https://x.com/" target="_blank"><img width="24" src="https://img.icons8.com/ios-filled/50/ffffff/x.png" alt="X Logo White" /></a>
+                        <a href="https://facebook.com/" target="_blank"><img width="30" src="https://img.icons8.com/color/48/facebook--v1.png" alt="Facebook" /></a>
+                        <a href="https://t.me/" target="_blank"><img width="30" src="https://img.icons8.com/color/48/telegram-app--v1.png" alt="Telegram Alt" /></a>
+                        <a href="mailto:dataspeedcontact@gmail.com"><img width="30" src="https://img.icons8.com/color/48/filled-message--v1.png" alt="Email" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 30px; font-size: 13px; color: #666;">
+            <div>Designed & Created by Dreamerscodes</div>
+            <div>&copy; 2025 dataspeed</div>
+        </div>
+    </footer>
+</body>
+</html>

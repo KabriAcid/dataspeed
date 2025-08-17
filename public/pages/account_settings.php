@@ -7,7 +7,7 @@ require __DIR__ . '/../partials/header.php';
 ?>
 
 <body>
-    <main class="container-fluid py-5 account-settings-page">
+    <main class="container-fluid mb-5 py-5 account-settings-page">
         <!-- Header Section -->
         <header>
             <div class="page-header mb-4 text-center">
