@@ -38,7 +38,6 @@ function set_title($title = null)
         .error-title {
             font-size: clamp(2.2rem, 6vw, 3.5rem);
             font-weight: 700;
-            color: #0d6efd;
             margin-bottom: 0.5rem;
         }
 
@@ -68,12 +67,14 @@ function set_title($title = null)
 </head>
 
 <body>
-    <nav class="navbar fixed-top bg-white shadow-sm">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <a href="index.php" class="d-block fw-bold"><img src="public/favicon.png" alt="Dataspeed" class="favicon" style="height:32px;"></a>
+    <nav class="navbar fixed-top">
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <div>
+                <a href="index.php" class="d-block fw-bold"><img src="public/favicon.png" alt="" class="favicon"></a>
+            </div>
             <div class="d-flex align-items-center">
-                <a href="pages/login.php" class="secondary-btn me-2">LOGIN</a>
-                <a href="pages/register.php" class="btn primary-btn">CREATE ACCOUNT</a>
+                <a href="public/pages/login.php" class="secondary-btn m-0 me-2">LOGIN</a>
+                <a href="public/pages/register.php" class="btn primary-btn m-0">CREATE ACCOUNT</a>
             </div>
         </div>
     </nav>
