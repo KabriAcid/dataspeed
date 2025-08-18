@@ -64,16 +64,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // PIN section
         elseif ($newPin !== '' && $confirmPin !== '') {
-            if ($currentPin === '') {
-                throw new Exception('Please enter your current PIN.');
-            }
-            // Fetch and verify current txn_pin
+            // Fetch current txn_pin
             $stmt = $pdo->prepare("SELECT txn_pin FROM users WHERE user_id = ?");
             $stmt->execute([$user_id]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $currentHashedPin = $row['txn_pin'] ?? '';
-            if (!$currentHashedPin || !password_verify($currentPin, $currentHashedPin)) {
-                throw new Exception('Current PIN is incorrect.');
+
+            if (empty($currentHashedPin)) {
+                // First time PIN setup: skip currentPin check
+            } else {
+                if ($currentPin === '') {
+                    throw new Exception('Please enter your current PIN.');
+                }
+                if (!password_verify($currentPin, $currentHashedPin)) {
+                    throw new Exception('Current PIN is incorrect.');
+                }
             }
             if ($newPin !== $confirmPin) {
                 throw new Exception('PINs do not match.');
@@ -92,14 +97,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             // Push notification for PIN change
-            $title = "PIN Changed";
-            $message = "Your transaction PIN was changed successfully.";
+            $title = empty($currentHashedPin) ? "PIN Set" : "PIN Changed";
+            $message = empty($currentHashedPin)
+                ? "Your transaction PIN was set successfully."
+                : "Your transaction PIN was changed successfully.";
             $type = "security";
             $icon = "ni ni-key-25";
             $color = "text-warning";
             pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 
-            echo json_encode(['success' => true, 'message' => 'PIN updated successfully.']);
+            echo json_encode(['success' => true, 'message' => $message]);
             exit;
         }
 
