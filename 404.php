@@ -62,8 +62,6 @@ function set_title($title = null)
             }
         }
     </style>
-    <!-- Lottie Animations -->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 
 <body>
@@ -79,7 +77,6 @@ function set_title($title = null)
         </div>
     </nav>
     <main class="error-container">
-        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_2ksjpv2g.json" background="transparent" speed="1" style="width: 220px; height: 220px;" loop autoplay></lottie-player>
         <div class="error-title primary">404 - Page Not Found</div>
         <div class="error-desc">
             Sorry, the page you’re looking for doesn’t exist.<br>
