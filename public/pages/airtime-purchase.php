@@ -139,6 +139,12 @@ if (!is_numeric($amount) || $amount <= 0) {
     echo json_encode(["success" => false, "message" => "Invalid amount."]);
     exit;
 }
+// if amount is below N100
+if ($amount < 100) {
+    echo json_encode(["success" => false, "message" => "Minimum amount is N100."]);
+    exit;
+}
+
 if (!preg_match('/^0\d{10}$/', $phone)) {
     echo json_encode(["success" => false, "message" => "Invalid phone number."]);
     exit;
