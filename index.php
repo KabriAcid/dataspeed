@@ -15,10 +15,36 @@ function set_title($title = null)
     <!-- Page title is set dynamically -->
     <title><?= set_title($title ?? null) ?></title>
     <link rel="shortcut icon" href="public/favicon.png" type="image/x-icon">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Dataspeed VTU platform: Buy data, airtime, pay bills, and subscribe to TV instantly. Nigeria's trusted VTU site for secure wallet funding, transfers, and instant settlements. VTU for MTN, Airtel, Glo, 9mobile, DStv, GOtv, Startimes, and more.">
+    <meta name="keywords" content="VTU, VTU Nigeria, VTU platform, Buy Data, Buy Airtime, VTU Bill Payment, VTU TV Subscription, VTU Wallet, VTU Transfer, VTU Secure Payments, VTU MTN, VTU Airtel, VTU Glo, VTU 9mobile, VTU DStv, VTU GOtv, VTU Startimes, VTU Electricity, VTU Betting, Dataspeed VTU, VTU API, VTU Reseller, VTU Business, VTU Portal, VTU Site, VTU Online, VTU Fast, VTU Reliable, VTU Secure">
+    <meta name="author" content="Dataspeed VTU Team">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="7 days">
+    <meta name="language" content="en">
+    <meta name="theme-color" content="#94241e">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Dataspeed VTU - Buy Data, Airtime, Pay Bills & TV Subscription">
+    <meta property="og:description" content="VTU platform for instant data, airtime, bill payments, and TV subscriptions. Secure wallet funding and transfers. Nigeria's trusted VTU site.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dataspeed.com.ng/">
+    <meta property="og:image" content="https://dataspeed.com.ng/public/favicon.png">
+    <meta property="og:site_name" content="Dataspeed VTU">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dataspeed VTU - Buy Data, Airtime, Pay Bills & TV Subscription">
+    <meta name="twitter:description" content="VTU platform for instant data, airtime, bill payments, and TV subscriptions. Secure wallet funding and transfers. Nigeria's trusted VTU site.">
+    <meta name="twitter:image" content="https://dataspeed.com.ng/public/favicon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dataspeed.com.ng/">
+
+    <!-- Bootstrap & Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css">
-
-    <!-- Font Awesome for icons -->
     <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet">
     <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet">
 
@@ -30,10 +56,8 @@ function set_title($title = null)
     <link rel="stylesheet" href="public/assets/css/toasted.css" />
     <script src="public/assets/js/toasted.js"></script>
 
-
     <link rel="stylesheet" href="public/assets/css/soft-design-system-pro.min3f71.css">
     <link rel="stylesheet" href="public/assets/css/style.css">
-
 </head>
 
 <body>
@@ -255,7 +279,6 @@ function set_title($title = null)
                             <img width="30" src="https://img.icons8.com/color/48/filled-message--v1.png" alt="Email" />
                         </a>
                     </div>
-                    <!-- Social Links -->
                 </div>
             </div>
 
@@ -272,7 +295,6 @@ function set_title($title = null)
         </div>
         </div>
     </footer>
-
 </body>
 
 </html>

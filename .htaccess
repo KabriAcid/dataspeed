@@ -28,6 +28,10 @@ RewriteRule ^admin/([a-zA-Z0-9_-]+)$ admin/$1.php [L,QSA]
 # Security: Prevent directory listing
 Options -Indexes
 
+# Block direct access to directories from URL and show custom 404 page
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ /404.php [L]
+
 # Set basic security headers
 Header set X-Content-Type-Options "nosniff"
 Header set X-Frame-Options "SAMEORIGIN"
