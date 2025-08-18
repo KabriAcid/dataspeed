@@ -70,23 +70,23 @@ function set_title($title = null)
 <body>
     <nav class="navbar fixed-top bg-white shadow-sm">
         <div class="container-fluid d-flex justify-content-between align-items-center">
-            <a href="../../index.php" class="d-block fw-bold"><img src="../../public/favicon.png" alt="Dataspeed" class="favicon" style="height:32px;"></a>
+            <a href="index.php" class="d-block fw-bold"><img src="public/favicon.png" alt="Dataspeed" class="favicon" style="height:32px;"></a>
             <div class="d-flex align-items-center">
-                <a href="../pages/login.php" class="secondary-btn me-2">LOGIN</a>
-                <a href="../pages/register.php" class="btn primary-btn">CREATE ACCOUNT</a>
+                <a href="pages/login.php" class="secondary-btn me-2">LOGIN</a>
+                <a href="pages/register.php" class="btn primary-btn">CREATE ACCOUNT</a>
             </div>
         </div>
     </nav>
     <main class="error-container">
         <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_2ksjpv2g.json" background="transparent" speed="1" style="width: 220px; height: 220px;" loop autoplay></lottie-player>
-        <div class="error-title">404 - Page Not Found</div>
+        <div class="error-title primary">404 - Page Not Found</div>
         <div class="error-desc">
             Sorry, the page you’re looking for doesn’t exist.<br>
             It may have been moved, deleted, or you may have mistyped the address.
         </div>
         <div class="error-actions">
-            <a href="../../index.php" class="btn primary-btn">Go Home</a>
-            <a href="../pages/contact.php" class="btn secondary-btn">Contact Support</a>
+            <a href="index.php" class="btn primary-btn">Go Home</a>
+            <a href="pages/contact.php" class="btn secondary-btn">Contact Support</a>
         </div>
     </main>
     <footer style="background-color: #111; color: #fff; font-family: Arial, sans-serif; padding: 40px 20px 20px 20px;">
@@ -98,13 +98,13 @@ function set_title($title = null)
                 </div>
                 <div style="flex: 1 1 180px; margin: 10px 0;">
                     <h3 style="font-size: 17px; margin-bottom: 10px;">Links</h3>
-                    <p><a href="../../index.php" style="color: #ccc; text-decoration: none;">Home</a></p>
-                    <p><a href="../pages/about.php" style="color: #ccc; text-decoration: none;">About</a></p>
+                    <p><a href="index.php" style="color: #ccc; text-decoration: none;">Home</a></p>
+                    <p><a href="pages/about.php" style="color: #ccc; text-decoration: none;">About</a></p>
                 </div>
                 <div style="flex: 1 1 180px; margin: 10px 0;">
                     <h3 style="font-size: 17px; margin-bottom: 10px;">Contact</h3>
-                    <p><a href="../pages/privacy-policy.php" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
-                    <p><a href="../pages/contact.php" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
+                    <p><a href="pages/privacy-policy.php" style="color: #ccc; text-decoration: none;">Privacy Policy</a></p>
+                    <p><a href="pages/contact.php" style="color: #ccc; text-decoration: none;">Contact Us</a></p>
                 </div>
                 <div style="flex: 1 1 200px; margin: 10px 0;">
                     <h3 style="font-size: 17px; margin-bottom: 10px;">Follow Me</h3>
