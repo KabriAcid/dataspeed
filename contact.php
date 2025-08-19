@@ -96,7 +96,7 @@
               <img width="30" src="https://img.icons8.com/color/48/tiktok--v1.png" alt="TikTok" />
               <div class="mt-2">TikTok</div>
             </a>
-            <a href="https://wa.me/234904883993" target="_blank" class="mx-3" title="WhatsApp">
+            <a href="https://wa.me/+2348102516052" target="_blank" class="mx-3" title="WhatsApp">
               <img width="30" src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="WhatsApp" />
               <div class="mt-2">WhatsApp</div>
             </a>
@@ -110,7 +110,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

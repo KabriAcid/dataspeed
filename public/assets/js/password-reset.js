@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const emailInput = document.getElementById("email");
   const emailSubmit = document.getElementById("email-submit");
-
+  const bodyOverlay = docuemnt.getElementById('bodyOverlay');
   emailSubmit.addEventListener("click", function () {
     handleButtonClick(emailSubmit, done => {
       const email = emailInput.value.trim();
@@ -52,6 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
         showToasted("Invalid email address.", "error");
         return done();
       }
+      
+      bodyOverlay.style.display = 'flex';
 
       sendAjaxRequest(
         "send-token.php",
@@ -64,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (!response.success) {
             showToasted(response.message, "error");
           } else {
+            bodyOverlay.style.display = 'none';
             sessionStorage.setItem("reset_email", email);
             showToasted(response.message, "success");
             setTimeout(() => {

@@ -91,7 +91,7 @@ if (!empty($missing_env)) {
                 <div class="form-step d-none">
                     <div class="form-step-header">
                         <h4>What's your email address?</h4>
-                        <p class="text-sm">You will receive a verification code, so make sure it is active.</p>
+                        <p class="text-sm">Please enter your correct email address.</p>
                     </div>
                     <div class="form-field">
                         <input type="email" name="email" id="email" placeholder="Email address" class="input">
