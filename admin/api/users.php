@@ -540,7 +540,7 @@ function toggleUserLock($input, $pdo)
 
         $newStatus = $lock ? ACCOUNT_STATUS_LOCKED : ACCOUNT_STATUS_ACTIVE;
 
-        $stmt = $pdo->prepare("UPDATE users SET account_status = ?, updated_at = NOW() WHERE user_id = ?");
+        $stmt = $pdo->prepare("UPDATE users SET account_status = ?, failed_attempts = 0, updated_at = NOW() WHERE user_id = ?");
         $stmt->execute([$newStatus, $userId]);
 
         if ($stmt->rowCount() > 0) {
