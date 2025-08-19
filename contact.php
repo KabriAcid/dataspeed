@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Contact Us | Dataspeed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Bootstrap 4.5 CSS -->
-   <link rel="shortcut icon" href="public/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="public/favicon.png" type="image/x-icon">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="public/assets/css/soft-design-system-pro.min3f71.css">
   <link rel="stylesheet" href="public/assets/css/style.css">
   <style>
     body {
@@ -72,6 +74,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Hero Section -->
@@ -79,33 +82,31 @@
     <h1>Contact Dataspeed</h1>
     <p class="lead">Let’s connect — we’d love to hear from you.</p>
   </section>
-
-  <!-- Contact Form Section -->
+  <!-- Contact Social Section -->
   <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <div class="contact-section">
-          <form action="" method="POST">
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="name">Full Name</label>
-                <input type="text" class="form-control" name="name" id="name" required>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="email">Email Address</label>
-                <input type="email" class="form-control" name="email" id="email" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="subject">Subject</label>
-              <input type="text" class="form-control" name="subject" id="subject">
-            </div>
-            <div class="form-group">
-              <label for="message">Message</label>
-              <textarea class="form-control" name="message" id="message" rows="5" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-red btn-block">Send Message</button>
-          </form>
+        <div class="contact-section text-center">
+          <h3 class="mb-4">Connect with us on Social Media</h3>
+          <div class="d-flex justify-content-center align-items-center flex-wrap" style="gap: 32px;">
+            <a href="https://facebook.com/dataspeed" target="_blank" class="mx-3" title="Facebook">
+              <i class="fab fa-facebook fa-3x" style="color:#1877f3;"></i>
+              <div class="mt-2">Facebook</div>
+            </a>
+            <a href="https://tiktok.com/@dataspeed" target="_blank" class="mx-3" title="TikTok">
+              <i class="fab fa-tiktok fa-3x" style="color:#000;"></i>
+              <div class="mt-2">TikTok</div>
+            </a>
+            <a href="https://wa.me/234904883993" target="_blank" class="mx-3" title="WhatsApp">
+              <i class="fab fa-whatsapp fa-3x" style="color:#25d366;"></i>
+              <div class="mt-2">WhatsApp</div>
+            </a>
+            <a href="https://t.me/dataspeed" target="_blank" class="mx-3" title="Telegram">
+              <i class="fab fa-telegram fa-3x" style="color:#229ED9;"></i>
+              <div class="mt-2">Telegram</div>
+            </a>
+          </div>
+          <p class="mt-4 text-muted">We respond fastest on WhatsApp and Telegram!</p>
         </div>
       </div>
     </div>
@@ -128,4 +129,5 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
