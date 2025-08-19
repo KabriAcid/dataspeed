@@ -251,24 +251,21 @@ function set_title($title = null)
                 <div style="flex: 1 1 200px; margin: 10px 0;">
                     <h3 style="font-size: 20px; margin-bottom: 10px;">Follow Me</h3>
                     <div style="display: flex; gap: 15px;">
-                        <!-- YouTube  -->
-                        <a href="https://www.youtube.com/" target="_blank">
-                            <img width="30" src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube-alt" /></a>
-
-                        <!-- Instagram -->
-                        <a href="https://www.instagram.com//" target="_blank">
-                            <img width="30" src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram Alt" />
-                        </a>
-                        <!-- Twitter  -->
-                        <a href="https://x.com/" target="_blank">
-                            <img width="24" src="https://img.icons8.com/ios-filled/50/ffffff/x.png" alt="X Logo White" />
-                        </a>
 
                         <!-- Facebook -->
                         <a href="https://facebook.com/" target="_blank">
                             <img width="30" src="https://img.icons8.com/color/48/facebook--v1.png" alt="Facebook" />
                         </a>
 
+                        <!-- Whatsapp -->
+                        <a href="https://wa.me/234904883993" target="_blank">
+                            <img width="30" src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="WhatsApp" />
+                        </a>
+                        
+                        <!-- Tiktok -->
+                        <a href="https://tiktok.com/@dataspeed" target="_blank">
+                            <img width="30" src="https://img.icons8.com/color/48/tiktok--v1.png" alt="Tiktok" />
+                        </a>
                         <!-- Telegram -->
                         <a href="https://t.me/" target="_blank">
                             <img width="30" src="https://img.icons8.com/color/48/telegram-app--v1.png" alt="Telegram Alt" />

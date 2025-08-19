@@ -89,19 +89,19 @@
           <h3 class="mb-4">Connect with us on Social Media</h3>
           <div class="d-flex justify-content-center align-items-center flex-wrap" style="gap: 32px;">
             <a href="https://facebook.com/dataspeed" target="_blank" class="mx-3" title="Facebook">
-              <i class="fab fa-facebook fa-3x" style="color:#1877f3;"></i>
+              <img width="30" src="https://img.icons8.com/color/48/facebook--v1.png" alt="Facebook" />
               <div class="mt-2">Facebook</div>
             </a>
             <a href="https://tiktok.com/@dataspeed" target="_blank" class="mx-3" title="TikTok">
-              <i class="fab fa-tiktok fa-3x" style="color:#000;"></i>
+              <img width="30" src="https://img.icons8.com/color/48/tiktok--v1.png" alt="TikTok" />
               <div class="mt-2">TikTok</div>
             </a>
             <a href="https://wa.me/234904883993" target="_blank" class="mx-3" title="WhatsApp">
-              <i class="fab fa-whatsapp fa-3x" style="color:#25d366;"></i>
+              <img width="30" src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="WhatsApp" />
               <div class="mt-2">WhatsApp</div>
             </a>
             <a href="https://t.me/dataspeed" target="_blank" class="mx-3" title="Telegram">
-              <i class="fab fa-telegram fa-3x" style="color:#229ED9;"></i>
+              <img width="30" src="https://img.icons8.com/color/48/telegram-app--v1.png" alt="Telegram" />
               <div class="mt-2">Telegram</div>
             </a>
           </div>
@@ -110,19 +110,7 @@
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <p>Follow Dataspeed on:
-      <a href="https://x.com/dataspeed" target="_blank"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://instagram.com/dataspeed" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://facebook.com/dataspeed" target="_blank"><i class="fab fa-facebook"></i></a>
-      <a href="https://t.me/dataspeed" target="_blank"><i class="fab fa-telegram"></i></a>
-      <a href="mailto:dataspeedcontact@gmail.com"><i class="fas fa-envelope"></i></a>
-    </p>
-    <p>&copy; 2025 Dataspeed. All rights reserved.</p>
-  </div>
-
+  
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

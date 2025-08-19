@@ -1555,8 +1555,22 @@ body {
   font-weight: 600;
 }
 
-@media (min-width: 992px) {
+/* Hide bottom nav when sidebar is visible (≥768px) */
+@media (min-width: 768px) {
   .bottom-nav {
-    display: none;
+    display: none !important;
+  }
+  #sidebar {
+    display: block !important;
+  }
+}
+
+/* Show bottom nav only on small screens (<768px) */
+@media (max-width: 767px) {
+  .bottom-nav {
+    display: flex !important;
+  }
+  #sidebar {
+    display: none !important;
   }
 }
