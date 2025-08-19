@@ -30,11 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         }
 
-        if ($user['account_status'] !== ACCOUNT_STATUS_ACTIVE) {
-            echo json_encode(["success" => false, "message" => "Account is not active."]);
-            exit;
-        }
-
         // Choose table and email content based on type
         if ($type === 'pin') {
             $table = 'forgot_pin';
