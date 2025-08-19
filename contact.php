@@ -76,7 +76,6 @@
 </head>
 
 <body>
-
   <!-- Hero Section -->
   <section class="contact-hero">
     <h1>Contact Dataspeed</h1>
