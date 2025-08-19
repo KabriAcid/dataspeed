@@ -8,7 +8,7 @@ header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'] ?? '';
-    $type = $_POST['type'] ?? 'password'; // default to password
+    $type = $_POST['type'] ?? 'password';
 
     // Generate token and expiration
     $token = md5(uniqid());
@@ -56,11 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->execute([$email, $token, $tokenExpiry]);
 
         // Send email
-        if (sendMail($email, $subject, $body)) {
-            echo json_encode(["success" => true, "message" => "Token sent to your email."]);
-        } else {
-            echo json_encode(["success" => false, "message" => "Failed to send email."]);
-        }
+        sendMail($email, $subject, $body);
+
     } catch (Exception $e) {
         error_log("Error in send-token.php: " . $e->getMessage());
         echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
