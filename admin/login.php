@@ -64,6 +64,8 @@ if (!empty($_SESSION['admin_id'])) {
                         <span class="spinner-border spinner-border-sm" role="status"></span>
                     </span>
                 </button>
+
+                <p class="text-secondary text-sm text-center mt-3"><a class="text-secondary" href="../index.php">Back to homepage</a></p>
             </form>
         </div>
     </div>
