@@ -68,7 +68,7 @@ require __DIR__ . '/../partials/header.php';
                 <button type="button" class="btn w-100 mt-3 primary-btn pay-btn" id="payBtnSelf" disabled>Pay</button>
             </div>
             <div class="tab-content position-relative" data-tab="others">
-                <div class="input-group-container mb-3">
+                <div class="input-group-container my-3">
                     <span class="input-group-prefix">Meter No</span>
                     <input type="text" class="input meter-input" id="meterNumberOthers" maxlength="12" placeholder="Enter Meter Number" inputmode="numeric" required>
                 </div>
@@ -133,6 +133,11 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </div>
 
+        <!-- Overlay -->
+        <div id="bodyOverlay" class="body-overlay" style="display: none;">
+            <div class="overlay-spinner"></div>
+        </div>
+
         <?php require __DIR__ . '/../partials/bottom-nav.php' ?>
         <?php require __DIR__ . '/../partials/pinpad.php' ?>
     </main>
@@ -160,6 +165,16 @@ require __DIR__ . '/../partials/header.php';
         // Verification and payment logic
         let verifiedData = {};
 
+        function showBodyOverlay() {
+            const overlay = document.getElementById('bodyOverlay');
+            if (overlay) overlay.style.display = 'flex';
+        }
+
+        function hideBodyOverlay() {
+            const overlay = document.getElementById('bodyOverlay');
+            if (overlay) overlay.style.display = 'none';
+        }
+
         function verifyCustomer(tabType) {
             const provider = document.querySelector('.service-tab.selected-tab').dataset.network;
             const meterType = document.getElementById('meterType' + tabType).value;
@@ -168,6 +183,7 @@ require __DIR__ . '/../partials/header.php';
                 showToasted('Please fill all fields.', 'error');
                 return;
             }
+            showBodyOverlay();
             fetch('verify-electricity.php', {
                     method: 'POST',
                     headers: {
@@ -177,6 +193,7 @@ require __DIR__ . '/../partials/header.php';
                 })
                 .then(res => res.json())
                 .then(data => {
+                    hideBodyOverlay();
                     if (data.success) {
                         verifiedData = data;
                         document.getElementById('customerDetails').style.display = 'block';
@@ -188,6 +205,10 @@ require __DIR__ . '/../partials/header.php';
                         document.getElementById('customerDetails').style.display = 'none';
                         document.getElementById('payBtn' + tabType).disabled = true;
                     }
+                })
+                .catch(() => {
+                    hideBodyOverlay();
+                    showToasted('Network error. Please try again.', 'error');
                 });
         }
         document.getElementById('verifyBtnSelf').onclick = function() {

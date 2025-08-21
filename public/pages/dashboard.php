@@ -130,9 +130,10 @@ require __DIR__ . '/../partials/header.php';
 
         <!-- Action Buttons -->
         <div class="row my-3 action-grid">
-            <div class="col-3 text-center d-flex justify-content-center">
+            <div class="col-4 text-center d-flex justify-content-center">
                 <a href="buy_airtime.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
+                        <!-- ...existing SVG... -->
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <path d="M12 5C12.5523 5 13 4.55228 13 4C13 3.44772 12.5523 3 12 3C11.4477 3 11 3.44772 11 4C11 4.55228 11.4477 5 12 5ZM12 5L14.5 14M12 5L9.5 14M16 1C16 1 17.5 2 17.5 4C17.5 6 16 7 16 7M8 1C8 1 6.5 2 6.5 4C6.5 6 8 7 8 7M14.5 14H9.5M14.5 14L15.8889 19M9.5 14L8.11111 19M7 23L8.11111 19M8.11111 19H15.8889M15.8889 19L17 23"
                                 stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -141,9 +142,10 @@ require __DIR__ . '/../partials/header.php';
                     <span class="action-grid-label">Airtime</span>
                 </a>
             </div>
-            <div class="col-3 text-center d-flex justify-content-center">
+            <div class="col-4 text-center d-flex justify-content-center">
                 <a href="buy_data.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
+                        <!-- ...existing SVG... -->
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <path d="M12 19.51L12.01 19.4989M2 8C8 3.5 16 3.5 22 8M5 12C9 8.99999 15 9 19 12M8.5 15.5C10.7504 14.1 13.2498 14.0996 15.5001 15.5"
                                 stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -152,9 +154,10 @@ require __DIR__ . '/../partials/header.php';
                     <span class="action-grid-label">Data</span>
                 </a>
             </div>
-            <div class="col-3 text-center d-flex justify-content-center">
+            <div class="col-4 text-center d-flex justify-content-center">
                 <a href="transfer_money.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
+                        <!-- ...existing SVG... -->
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="10" stroke="var(--primary)" stroke-width="1.5" />
                             <circle cx="12" cy="12" r="4" fill="var(--primary)" fill-opacity="0.12" />
@@ -163,9 +166,10 @@ require __DIR__ . '/../partials/header.php';
                     <span class="action-grid-label">Transfer</span>
                 </a>
             </div>
-            <div class="col-3 text-center d-flex justify-content-center">
+            <div class="col-4 text-center d-flex justify-content-center">
                 <a href="tv_subscription.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
+                        <!-- ...existing SVG... -->
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <rect x="4" y="7" width="16" height="10" rx="2" stroke="var(--primary)" stroke-width="1.5" />
                             <path d="M8 17V19M16 17V19" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" />
@@ -174,9 +178,10 @@ require __DIR__ . '/../partials/header.php';
                     <span class="action-grid-label">TV</span>
                 </a>
             </div>
-            <div class="col-3 text-center d-flex justify-content-center">
+            <div class="col-4 text-center d-flex justify-content-center">
                 <a href="electricity_bills.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
+                        <!-- ...existing SVG... -->
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <path d="M12 17C15.3137 17 18 14.3137 18 11C18 7.68629 15.3137 5 12 5C8.68629 5 6 7.68629 6 11C6 14.3137 8.68629 17 12 17Z"
                                 stroke="var(--primary)" stroke-width="1.5" />
@@ -186,20 +191,10 @@ require __DIR__ . '/../partials/header.php';
                     <span class="action-grid-label">Electricity</span>
                 </a>
             </div>
-            <div class="col-3 text-center d-flex justify-content-center">
-                <a href="loan.php" class="action-grid-btn d-flex flex-column align-items-center">
-                    <span class="action-grid-icon mb-1">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                            <rect x="6" y="8" width="12" height="8" rx="2" stroke="var(--primary)" stroke-width="1.5" />
-                            <path d="M12 12V16" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
-                    </span>
-                    <span class="action-grid-label">Withdraw</span>
-                </a>
-            </div>
-            <div class="col-3 text-center d-flex justify-content-center">
+            <div class="col-4 text-center d-flex justify-content-center">
                 <a href="referrals.php" class="action-grid-btn d-flex flex-column align-items-center">
                     <span class="action-grid-icon mb-1">
+                        <!-- ...existing SVG... -->
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
                                 stroke="var(--primary)" stroke-width="1.5" />
@@ -207,18 +202,6 @@ require __DIR__ . '/../partials/header.php';
                         </svg>
                     </span>
                     <span class="action-grid-label">Referrals</span>
-                </a>
-            </div>
-            <div class="col-3 text-center d-flex justify-content-center">
-                <a href="airtime-2-cash.php" class="action-grid-btn d-flex flex-column align-items-center">
-                    <span class="action-grid-icon mb-1">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="2" fill="var(--primary)" />
-                            <circle cx="12" cy="5" r="2" fill="var(--primary)" />
-                            <circle cx="12" cy="19" r="2" fill="var(--primary)" />
-                        </svg>
-                    </span>
-                    <span class="action-grid-label">Airtime2Cash</span>
                 </a>
             </div>
         </div>

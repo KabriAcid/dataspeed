@@ -675,10 +675,10 @@ button:disabled,
 .action-grid {
   max-width: 100%;
 }
-/* Dashboard page action grid: default 4 columns */
+/* Dashboard page action grid: now 3 columns for 3x2 layout */
 .dashboard-page .action-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px 10px;
 }
 .dashboard-page .action-grid > div {
