@@ -125,7 +125,7 @@ try {
                     <div class="info-row"><span>Service:</span><span id="confirmService" class="fw-bold"></span></div>
                     <div class="info-row"><span>Plan:</span><span id="confirmPlan" class="fw-bold"></span></div>
                     <div class="info-row"><span>Amount:</span><span id="confirmAmount" class="fw-bolder primary fs-6"></span></div>
-                    <div class="info-row"><span>Validity:</span><span id="confirmValidity" class="fw-bold"></span></div>
+                    <div class="info-row"><span>Validity:</span><span id="confirmValidity" class="fw-bold">N/A</span></div>
                     <div class="info-row"><span>Phone:</span><span id="confirmPhone" class="fw-bold"></span></div>
                     <div class="info-row">
                         <span>Customer Name:</span>
