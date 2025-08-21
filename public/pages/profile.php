@@ -85,21 +85,15 @@ $states = fetchNigerianStates($pdo);
             <form class="wizard-step" id="step-account">
                 <div class="row mb-3">
                     <div class="col-md-6 mb-3">
-                        <label>Bank Name</label>
-                        <input type="text" name="bank_name" placeholder="e.g OPay" class="input" value="<?= htmlspecialchars($user['w_bank_name']) ?>">
+                        <label>KYC Type</label>
+                        <select name="kyc_type" class="input" required>
+                            <option value="bvn" <?= ($user['kyc_type'] == 'bvn') ? 'selected' : '' ?>>BVN</option>
+                            <option value="nin" <?= ($user['kyc_type'] == 'nin') ? 'selected' : '' ?>>NIN</option>
+                        </select>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label>Account Number</label>
-                        <input type="text"
-                            id="account_number"
-                            name="account_number"
-                            maxlength="10"
-                            inputmode="numeric"
-                            pattern="\d*"
-                            class="input"
-                            placeholder="10-digit NUBAN"
-                            value="<?= htmlspecialchars($user['w_account_number']) ?>">
-
+                        <label>KYC Value</label>
+                        <input type="text" name="kyc_value" class="input" placeholder="Enter KYC value" value="<?= htmlspecialchars($user['kyc_value']) ?>" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label>Username</label>

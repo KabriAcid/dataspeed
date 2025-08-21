@@ -22,24 +22,27 @@ try {
 
     if ($step === 'account') {
         // Sanitize inputs (store raw text, not HTML-encoded)
-        $bank = trim(strip_tags($_POST['bank_name'] ?? ''));
-        $accountRaw = trim($_POST['account_number'] ?? '');
-        $account = preg_replace('/\D/', '', $accountRaw); // digits only
+        $kyc_type = strtoupper(trim(strip_tags($_POST['kyc_type'] ?? '')));
+        $kyc_value = trim(strip_tags($_POST['kyc_value'] ?? ''));
         $user_name = trim($_POST['user_name'] ?? '');
 
         // Basic presence checks
-        if ($bank === '' || $account === '' || $user_name === '') {
-            throw new Exception('Please provide bank name, account number, and username.');
+        if ($kyc_type === '' || $kyc_value === '' || $user_name === '') {
+            throw new Exception('Please provide KYC type, KYC value, and username.');
         }
 
-        // Bank name: allow letters, numbers, spaces and common symbols, length 2-50
-        if (!preg_match('/^[A-Za-z0-9 &()\\.\\-\'\\/]{2,50}$/', $bank)) {
-            throw new Exception('Enter a valid bank name (2-50 chars).');
+        // KYC type: must be one of allowed values (all caps for ENUM)
+        $allowed_types = ['BVN', 'NIN'];
+        if (!in_array($kyc_type, $allowed_types)) {
+            throw new Exception('Invalid KYC type selected.');
         }
 
-        // Account number must be exactly 10 digits
-        if (!preg_match('/^\d{10}$/', $account)) {
-            throw new Exception('Account number must be exactly 10 digits.');
+        // KYC value: basic validation (length, digits for BVN/NIN, etc)
+        if ($kyc_type === 'BVN' && !preg_match('/^\d{11}$/', $kyc_value)) {
+            throw new Exception('BVN must be exactly 11 digits.');
+        }
+        if ($kyc_type === 'NIN' && !preg_match('/^\d{11}$/', $kyc_value)) {
+            throw new Exception('NIN must be exactly 11 digits.');
         }
 
         // Username rules: start with a letter, 5-20 chars, allowed [A-Za-z0-9._-]
@@ -58,18 +61,18 @@ try {
             exit;
         }
 
-        $stmt = $pdo->prepare("UPDATE users SET w_bank_name = ?, w_account_number = ?, user_name = ? WHERE user_id = ?");
-        $stmt->execute([$bank, $account, $user_name, $user_id]);
+        $stmt = $pdo->prepare("UPDATE users SET kyc_type = ?, kyc_value = ?, user_name = ? WHERE user_id = ?");
+        $stmt->execute([$kyc_type, $kyc_value, $user_name, $user_id]);
 
-        // Push notification for bank account update
-        $title = "Account Details Updated";
-        $message = "Your account details were updated successfully.";
+        // Push notification for KYC update
+        $title = "KYC Details Updated";
+        $message = "Your KYC details were updated successfully.";
         $type = "profile";
         $icon = "ni ni-single-02";
         $color = "text-info";
         pushNotification($pdo, $user_id, $title, $message, $type, $icon, $color, '0');
 
-        echo json_encode(['success' => true, 'message' => 'Account details updated.']);
+        echo json_encode(['success' => true, 'message' => 'KYC details updated.']);
         exit;
     } elseif ($step === 'address') {
         // Sanitize inputs (store raw text, not HTML-encoded)

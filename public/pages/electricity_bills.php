@@ -287,6 +287,7 @@ require __DIR__ . '/../partials/header.php';
             document.getElementById('receiptModal').style.display = 'none';
         };
     </script>
+    <?php require __DIR__ . '/../partials/scripts.php'; ?>
 </body>
 
 </html>
