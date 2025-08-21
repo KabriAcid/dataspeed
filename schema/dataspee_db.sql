@@ -577,7 +577,7 @@ INSERT INTO `referral_reward` (`referral_id`, `reward`, `user_id`, `referee_emai
 -- Table structure for table `services`
 --
 
-CREATE TABLE `services` (
+CREATE ABLE `services` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `slug` varchar(50) NOT NULL,
