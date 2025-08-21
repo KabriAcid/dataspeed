@@ -43,7 +43,7 @@ require __DIR__ . '/../partials/header.php';
                 <div class="tab-content active" id="nin-tab">
                     <div class="mb-3">
                         <input type="text" placeholder="NIN" id="nin" name="nin"
-                            class="input" maxlength="11" pattern="\d{11}" inputmode="numeric" required>
+                            class="input" maxlength="11" inputmode="numeric" required>
                     </div>
                     <!--Verification consent toggle  -->
                     <div class="form-check mb-3">
@@ -64,7 +64,7 @@ require __DIR__ . '/../partials/header.php';
                 <div class="tab-content" id="bvn-tab">
                     <div class="mb-3">
                         <input type="text" placeholder="BVN" id="bvn" name="bvn"
-                            class="input" maxlength="11" pattern="\d{11}" inputmode="numeric" required>
+                            class="input" maxlength="11" inputmode="numeric" required>
                     </div>
                     <!--Verification consent toggle  -->
                     <div class="form-check mb-3">
@@ -111,7 +111,7 @@ require __DIR__ . '/../partials/header.php';
 
     <script src="../assets/js/ajax.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", function() {
             const ninInput = document.getElementById("nin");
             const bvnInput = document.getElementById("bvn");
             const ninButton = document.getElementById("nin-btn");
@@ -119,32 +119,22 @@ require __DIR__ . '/../partials/header.php';
             const tabButtons = document.querySelectorAll(".tab-btn");
             const tabContents = document.querySelectorAll(".tab-content");
 
-            // Enable/Disable buttons based on input length
-            ninInput.addEventListener("input", () => {
-                ninButton.disabled = ninInput.value.length !== 11;
-            });
-
-            bvnInput.addEventListener("input", () => {
-                bvnButton.disabled = bvnInput.value.length !== 11;
-            });
+            // Enable/Disable buttons based on input length and numeric check
+            function validateInput(input, button) {
+                const val = input.value;
+                button.disabled = !(val.length === 11 && /^\d{11}$/.test(val));
+            }
+            ninInput.addEventListener("input", () => validateInput(ninInput, ninButton));
+            bvnInput.addEventListener("input", () => validateInput(bvnInput, bvnButton));
 
             // Tab switching logic
             tabButtons.forEach((button) => {
                 button.addEventListener("click", () => {
                     const targetTab = button.getAttribute("data-tab");
                     const targetContent = document.getElementById(`${targetTab}-tab`);
-
-                    // Ensure the target content exists
-                    if (!targetContent) {
-                        console.error(`Tab content with ID "${targetTab}-tab" not found.`);
-                        return;
-                    }
-
-                    // Remove active class from all buttons and contents
-                    tabButtons.forEach((btn) => btn.classList.remove("active"));
-                    tabContents.forEach((content) => content.classList.remove("active"));
-
-                    // Add active class to the clicked button and corresponding content
+                    if (!targetContent) return;
+                    tabButtons.forEach(btn => btn.classList.remove("active"));
+                    tabContents.forEach(content => content.classList.remove("active"));
                     button.classList.add("active");
                     targetContent.classList.add("active");
                 });
@@ -154,36 +144,33 @@ require __DIR__ . '/../partials/header.php';
             const form = document.getElementById("KYCForm");
             form.addEventListener("submit", function(e) {
                 e.preventDefault();
-
                 const activeTab = document.querySelector(".tab-content.active");
-                const activeInputs = activeTab.querySelectorAll("input");
-                for (const input of activeInputs) {
-                    // Check if strings is not a number
-                    if (!/^\d{11}$/.test(input.value)) {
-                        showToasted("Please enter a valid 11-digit number.", "error");
-                        input.focus();
-                        return;
-                    }
-                    if (!input.checkValidity()) {
-                        showToasted(`Please fill the ${input.placeholder} field correctly.`, "error");
-                        input.focus();
-                        return;
-                    }
+                const input = activeTab.querySelector("input[type='text']");
+                if (!input || input.value.length !== 11 || !/^\d{11}$/.test(input.value)) {
+                    showToasted("Please enter a valid 11-digit number.", "error");
+                    input && input.focus();
+                    return;
                 }
-
-                const data = Array.from(activeInputs).map(input =>
-                    `${encodeURIComponent(input.name)}=${encodeURIComponent(input.value)}`
-                ).join("&");
-
-                sendAjaxRequest("verify-kyc.php", "POST", data, (response) => {
+                const consent = activeTab.querySelector("input[type='checkbox']");
+                if (!consent || !consent.checked) {
+                    showToasted("Please provide your consent for verification.", "error");
+                    consent && consent.focus();
+                    return;
+                }
+                const data = `${encodeURIComponent(input.name)}=${encodeURIComponent(input.value)}`;
+                sendAjaxRequest("verify-kyc.php", "POST", data, function(response) {
                     if (response.success) {
-                        showToasted(response.message, "success");
                         form.reset();
                         ninButton.disabled = true;
                         bvnButton.disabled = true;
-
-                        // Show the modal (Bootstrap 5)
                         document.getElementById('kycConfirmationModal').classList.add('show');
+                        
+                        // redirect to the dashboard page-header after 1s
+                        showToasted(response.message, "success");
+                        setTimeout(() => {
+                            window.location.href = "dashboard.php";
+                        }, 1000);
+
                     } else {
                         showToasted(response.message, "error");
                     }
